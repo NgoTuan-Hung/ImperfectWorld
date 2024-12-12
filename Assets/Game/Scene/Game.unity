@@ -497,6 +497,7 @@ GameObject:
   - component: {fileID: 949286780}
   - component: {fileID: 949286782}
   - component: {fileID: 949286781}
+  - component: {fileID: 949286783}
   m_Layer: 0
   m_Name: MainComponent
   m_TagString: Untagged
@@ -596,6 +597,18 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &949286783
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 949286779}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0182cb3923f57a1458b6708ef0d49809, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1057863856
 GameObject:
   m_ObjectHideFlags: 0
@@ -840,6 +853,7 @@ GameObject:
   - component: {fileID: 1582844846}
   - component: {fileID: 1582844845}
   - component: {fileID: 1582844844}
+  - component: {fileID: 1582844847}
   m_Layer: 0
   m_Name: Bot
   m_TagString: Untagged
@@ -875,6 +889,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4ae2c2d3186a9fc488532551d8419d91, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  moveSpeed: 1
 --- !u!114 &1582844845
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -900,6 +915,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b87c37419bc8378469d5ad31c079ff05, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1582844847
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1582844842}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2623757eb5f46ee4abafbe08eaddd68d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  attackCooldown: 1
+  attackRange: 0.5
 --- !u!1 &2001132135
 GameObject:
   m_ObjectHideFlags: 0

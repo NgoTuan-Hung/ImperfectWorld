@@ -5,6 +5,7 @@ public class BotMovable : Movable
 {
 	public enum MoveMode {Walk}
 	private MoveMode moveMode = MoveMode.Walk;
+	private int walkBoolHash = Animator.StringToHash("Walk");
 	
 	private void Start() 
 	{
@@ -16,6 +17,7 @@ public class BotMovable : Movable
 		switch (mode)
 		{
 			case MoveMode.Walk:
+				moveMode = MoveMode.Walk;
 				HandleWalk();
 				break;
 			default:
@@ -25,7 +27,7 @@ public class BotMovable : Movable
 	
 	public void HandleWalk()
 	{
-		customMono.AnimatorWrapper.Animator.SetBool("Walk", true);
+		customMono.AnimatorWrapper.Animator.SetBool(walkBoolHash, true);
 		StartCoroutine(WalkCoroutine());
 	}
 	
@@ -36,10 +38,5 @@ public class BotMovable : Movable
 			Move(customMono.Target.transform.position - transform.position);
 			yield return new WaitForSeconds(Time.fixedDeltaTime);
 		}
-	}
-	
-	private void FixedUpdate() 
-	{
-
 	}
 }

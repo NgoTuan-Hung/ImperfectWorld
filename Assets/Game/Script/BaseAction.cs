@@ -8,5 +8,10 @@ public class BaseAction : MonoBehaviour
 	public virtual void Awake() 
 	{
 		customMono = GetComponent<CustomMono>();
-	}	
+	}
+	
+	public virtual void ToggleAnim(int boolHash, bool value)
+	{
+		customMono.AnimatorWrapper.Animator.SetBool(boolHash, value);
+	}
 }
