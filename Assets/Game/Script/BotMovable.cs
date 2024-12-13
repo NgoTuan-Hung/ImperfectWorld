@@ -5,7 +5,6 @@ public class BotMovable : Movable
 {
 	public enum MoveMode {Walk}
 	private MoveMode moveMode = MoveMode.Walk;
-	private int walkBoolHash = Animator.StringToHash("Walk");
 	
 	private void Start() 
 	{
@@ -27,7 +26,7 @@ public class BotMovable : Movable
 	
 	public void HandleWalk()
 	{
-		customMono.AnimatorWrapper.Animator.SetBool(walkBoolHash, true);
+		ToggleMoveAnim(true);
 		StartCoroutine(WalkCoroutine());
 	}
 	

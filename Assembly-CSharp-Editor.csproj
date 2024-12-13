@@ -65,8 +65,49 @@
     <Analyzer Include="E:\Program\Unity\Editor\6000.0.30f1\Editor\Data\Tools\Unity.SourceGenerators\Unity.UIToolkit.SourceGenerator.dll" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\Aseprite2Unity\Editor\AseAssetPostprocessor.cs" />
+    <Compile Include="Assets\Aseprite2Unity\Editor\AseReader\LayerType.cs" />
     <Compile Include="Assets\TutorialInfo\Scripts\Editor\ReadmeEditor.cs" />
+    <Compile Include="Assets\Aseprite2Unity\Editor\AseReader\AseColorProfileChunk.cs" />
+    <Compile Include="Assets\Aseprite2Unity\Editor\AseReader\AsePaletteChunk.cs" />
+    <Compile Include="Assets\Aseprite2Unity\Editor\EnumExtensions.cs" />
+    <Compile Include="Assets\Aseprite2Unity\Editor\AseReader\AseDummyChunk.cs" />
+    <Compile Include="Assets\Aseprite2Unity\Editor\AseReader\AseFrame.cs" />
+    <Compile Include="Assets\Aseprite2Unity\Editor\AseReader\IAseVisitor.cs" />
     <Compile Include="Assets\Game\Script\Editor\BotAttackInspector.cs" />
+    <Compile Include="Assets\Aseprite2Unity\Editor\AseReader\BlendMode.cs" />
+    <Compile Include="Assets\Aseprite2Unity\Editor\AseReader\AseLayerChunk.cs" />
+    <Compile Include="Assets\Aseprite2Unity\Editor\AseReader\AseFrameTagEntry.cs" />
+    <Compile Include="Assets\Aseprite2Unity\Editor\AseReader\ColorProfileType.cs" />
+    <Compile Include="Assets\Aseprite2Unity\Editor\Deploy.cs" />
+    <Compile Include="Assets\Aseprite2Unity\Editor\AseReader\LayerChunkFlags.cs" />
+    <Compile Include="Assets\Aseprite2Unity\Editor\AseReader\ColorDepth.cs" />
+    <Compile Include="Assets\Aseprite2Unity\Editor\AseReader\UserDataFlags.cs" />
+    <Compile Include="Assets\Aseprite2Unity\Editor\AseReader\AsePaletteEntry.cs" />
+    <Compile Include="Assets\Aseprite2Unity\Editor\AseReader\ChunkFactory.cs" />
+    <Compile Include="Assets\Aseprite2Unity\Editor\DocColor.cs" />
+    <Compile Include="Assets\Aseprite2Unity\Editor\PixmanCombine.cs" />
+    <Compile Include="Assets\Aseprite2Unity\Editor\AseReader\ChunkType.cs" />
+    <Compile Include="Assets\Aseprite2Unity\Editor\AseReader\AseSliceEntry.cs" />
+    <Compile Include="Assets\Aseprite2Unity\Editor\AseReader\AseSliceChunk.cs" />
+    <Compile Include="Assets\Aseprite2Unity\Editor\AseReader\CelType.cs" />
+    <Compile Include="Assets\Aseprite2Unity\Editor\AseReader\AseHeader.cs" />
+    <Compile Include="Assets\Aseprite2Unity\Editor\AsepriteImporterEditor.cs" />
+    <Compile Include="Assets\Aseprite2Unity\Editor\AseReader\SliceFlags.cs" />
+    <Compile Include="Assets\Aseprite2Unity\Editor\UniqueNameifier.cs" />
+    <Compile Include="Assets\Aseprite2Unity\Editor\AseReader\AseChunk.cs" />
+    <Compile Include="Assets\Aseprite2Unity\Editor\Blender.cs" />
+    <Compile Include="Assets\Aseprite2Unity\Editor\AseReader\AseUserDataChunk.cs" />
+    <Compile Include="Assets\Aseprite2Unity\Editor\AseReader\ColorProfileFlags.cs" />
+    <Compile Include="Assets\Aseprite2Unity\Editor\AsepriteImporter.cs" />
+    <Compile Include="Assets\Aseprite2Unity\Editor\AseReader\HeaderFlags.cs" />
+    <Compile Include="Assets\Aseprite2Unity\Editor\AssetDatabaseEx.cs" />
+    <Compile Include="Assets\Aseprite2Unity\Editor\AseReader\LoopAnimationDirection.cs" />
+    <Compile Include="Assets\Aseprite2Unity\Editor\AseReader\AseCelChunk.cs" />
+    <Compile Include="Assets\Aseprite2Unity\Editor\SpriteAtlasUserAsset.cs" />
+    <Compile Include="Assets\Aseprite2Unity\Editor\AseReader\AseFile.cs" />
+    <Compile Include="Assets\Aseprite2Unity\Editor\AseReader\AseReader.cs" />
+    <Compile Include="Assets\Aseprite2Unity\Editor\AseReader\AseFrameTagsChunk.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="UnityEngine">
@@ -1121,20 +1162,16 @@
       <HintPath>Library\ScriptAssemblies\Unity.AI.Navigation.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="Unity.2D.Common.Editor">
-      <HintPath>Library\ScriptAssemblies\Unity.2D.Common.Editor.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="Unity.2D.Common.Path.Editor">
-      <HintPath>Library\ScriptAssemblies\Unity.2D.Common.Path.Editor.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
     <Reference Include="Unity.RenderPipeline.Universal.ShaderLibrary">
       <HintPath>Library\ScriptAssemblies\Unity.RenderPipeline.Universal.ShaderLibrary.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Unity.RenderPipelines.Universal.Shaders">
       <HintPath>Library\ScriptAssemblies\Unity.RenderPipelines.Universal.Shaders.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Unity.Cinemachine.Editor">
+      <HintPath>Library\ScriptAssemblies\Unity.Cinemachine.Editor.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Unity.RenderPipelines.Core.Runtime.Shared">
@@ -1165,16 +1202,16 @@
       <HintPath>Library\ScriptAssemblies\Unity.RenderPipelines.Core.ShaderLibrary.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="Unity.2D.Aseprite.Editor">
-      <HintPath>Library\ScriptAssemblies\Unity.2D.Aseprite.Editor.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
     <Reference Include="Unity.PlasticSCM.Editor">
       <HintPath>Library\ScriptAssemblies\Unity.PlasticSCM.Editor.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Unity.Multiplayer.Center.Editor">
       <HintPath>Library\ScriptAssemblies\Unity.Multiplayer.Center.Editor.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Unity.Splines">
+      <HintPath>Library\ScriptAssemblies\Unity.Splines.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Unity.Mathematics.Editor">
@@ -1185,8 +1222,8 @@
       <HintPath>Library\ScriptAssemblies\Unity.RenderPipelines.GPUDriven.Runtime.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="Unity.InternalAPIEditorBridge.001">
-      <HintPath>Library\ScriptAssemblies\Unity.InternalAPIEditorBridge.001.dll</HintPath>
+    <Reference Include="Unity.Cinemachine">
+      <HintPath>Library\ScriptAssemblies\Unity.Cinemachine.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Unity.Collections">
@@ -1205,10 +1242,6 @@
       <HintPath>Library\ScriptAssemblies\Unity.VisualScripting.Core.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="Unity.InternalAPIEngineBridge.001">
-      <HintPath>Library\ScriptAssemblies\Unity.InternalAPIEngineBridge.001.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
     <Reference Include="Unity.2D.Tilemap.Editor">
       <HintPath>Library\ScriptAssemblies\Unity.2D.Tilemap.Editor.dll</HintPath>
       <Private>False</Private>
@@ -1217,8 +1250,8 @@
       <HintPath>Library\ScriptAssemblies\Unity.RenderPipelines.Universal.Config.Runtime.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="Unity.2D.Aseprite.Common">
-      <HintPath>Library\ScriptAssemblies\Unity.2D.Aseprite.Common.dll</HintPath>
+    <Reference Include="Unity.Splines.Editor">
+      <HintPath>Library\ScriptAssemblies\Unity.Splines.Editor.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Unity.RenderPipelines.Universal.Editor">
@@ -1263,10 +1296,6 @@
     </Reference>
     <Reference Include="Unity.2D.Tilemap.Extras">
       <HintPath>Library\ScriptAssemblies\Unity.2D.Tilemap.Extras.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="Unity.2D.Common.Runtime">
-      <HintPath>Library\ScriptAssemblies\Unity.2D.Common.Runtime.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Unity.VisualScripting.SettingsProvider.Editor">
@@ -1347,6 +1376,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="Assembly-CSharp-firstpass.csproj" />
     <ProjectReference Include="Assembly-CSharp.csproj" />
     <ProjectReference Include="Plugins.BackgroundRecompiler.Editor.csproj" />
   </ItemGroup>
