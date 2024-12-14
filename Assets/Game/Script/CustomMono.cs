@@ -27,6 +27,11 @@ public class CustomMono : MonoBehaviour
 		animationEventFunctionCaller = mainComponent.GetComponentInChildren<AnimationEventFunctionCaller>();
 	}
 	
+	private void Start() 
+	{
+		InitUI();	
+	}
+	
 	void GetBotBaseAction()
 	{
 		botMovable = GetComponent<BotMovable>();
@@ -36,5 +41,10 @@ public class CustomMono : MonoBehaviour
 	void GetBaseAction()
 	{
 		
+	}
+	
+	void InitUI()
+	{
+		GameUIManager.Instance.MainView.InstantiateAndHandleHealthBar(transform, Camera.main);
 	}
 }

@@ -125,6 +125,7 @@ public class GameUIManager : MonoSingleton<GameUIManager>
 		layers[(int)LayerUse.MainView].RegisterCallback<PointerDownEvent>((evt) => 
 		{
 			Touch touch = TouchExtension.GetTouchOverlapRect(new Rect(evt.position, new Vector2(1, 1)), layers[0].panel);
+			if (touch.Equals(default)) return;
 			StartCoroutine(MainViewSwipeHandle(touch));
 		});
 	}

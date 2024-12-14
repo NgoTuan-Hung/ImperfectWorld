@@ -32,6 +32,6 @@ public class TouchExtension
             }
         }
 
-        return new Touch();
+        return default;
     }
 }
