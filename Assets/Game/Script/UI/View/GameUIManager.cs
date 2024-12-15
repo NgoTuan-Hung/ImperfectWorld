@@ -47,13 +47,18 @@ public class GameUIManager : MonoSingleton<GameUIManager>
 	private ConfigView configView; 
 	[SerializeField] private VisualTreeAsset configMenuVTA;
 	VisualElement configMenu;
-
+	GameObject radialProgressPrefab;
+	ObjectPool radialProgressPool;
+	[SerializeField] private Vector3 radialProgressOffset = new Vector3(-0.5f, 1.5f, 0);
+	[SerializeField] private float radialProgressPositionLerpTime = 0.5f;
 	public MainView MainView { get => mainView; set => mainView = value; }
 	public ConfigView ConfigView { get => configView; set => configView = value; }
 	public List<VisualElement> Layers { get => layers; set => layers = value; }
 
 	private void Awake() 
 	{
+		LoadAssets();
+		InitPools();
 		EnhancedTouchSupport.Enable();
 		mainUIDocument = GetComponent<UIDocument>();
 		root = mainUIDocument.rootVisualElement;
@@ -68,6 +73,16 @@ public class GameUIManager : MonoSingleton<GameUIManager>
 		InitViewComponents();
 		
 		HandleSafeArea();
+	}
+	
+	void InitPools()
+	{
+		radialProgressPool = new ObjectPool(radialProgressPrefab, 100, new PoolArgument(typeof(RadialProgress), PoolArgument.WhereComponent.Child));
+	}
+	
+	void LoadAssets()
+	{
+		radialProgressPrefab = Resources.Load<GameObject>("RadialProgress");
 	}
 
 	private void GetViewComponents()
@@ -124,9 +139,7 @@ public class GameUIManager : MonoSingleton<GameUIManager>
 	{
 		layers[(int)LayerUse.MainView].RegisterCallback<PointerDownEvent>((evt) => 
 		{
-			Touch touch = TouchExtension.GetTouchOverlapRect(new Rect(evt.position, new Vector2(1, 1)), layers[0].panel);
-			if (touch.Equals(default)) return;
-			StartCoroutine(MainViewSwipeHandle(touch));
+
 		});
 	}
 
@@ -173,18 +186,41 @@ public class GameUIManager : MonoSingleton<GameUIManager>
 	{
 		return layers[layerIndex];
 	}
-
-	public delegate void MainViewSwipeDelegate(Vector2 vector2);
-	public MainViewSwipeDelegate mainViewSwipeDelegate;
-	Vector2 previousSwipePosition, swipeVector;
-	public IEnumerator MainViewSwipeHandle(Touch touch)
+	
+	public RadialProgress CreateAndHandleRadialProgressFollowing(Transform transform)
 	{
-		previousSwipePosition = touch.screenPosition;
-		while (touch.phase != UnityEngine.InputSystem.TouchPhase.Ended)
+		PoolObject radialProgressPoolObject = radialProgressPool.PickOne();
+		RadialProgress radialProgress = radialProgressPoolObject.RadialProgress;
+		StartCoroutine(HandleRadialProgressFollowing(transform, radialProgressPoolObject.GameObject));
+		return radialProgress;
+	}
+	
+	public IEnumerator HandleRadialProgressFollowing(Transform transform, GameObject radialProgress)
+	{
+		Vector2 newVector2Position = transform.position + radialProgressOffset, prevVector2Position, expectedVector2Position;
+		float currentTime;
+		
+		while (true)
 		{
-			swipeVector = touch.screenPosition - previousSwipePosition;
-			mainViewSwipeDelegate?.Invoke(swipeVector);
-			previousSwipePosition = touch.screenPosition;
+			prevVector2Position = newVector2Position;
+			/* Check current health bar position */
+			newVector2Position = transform.position + radialProgressOffset;
+			
+			/* Start lerping position for specified duration if position change detected.*/
+			if (prevVector2Position != newVector2Position)
+			{
+				currentTime = 0;
+				while (currentTime < radialProgressPositionLerpTime + Time.fixedDeltaTime)
+				{
+					expectedVector2Position = Vector2.Lerp(prevVector2Position, newVector2Position, currentTime / radialProgressPositionLerpTime);
+					radialProgress.transform.position = new Vector2(expectedVector2Position.x, expectedVector2Position.y);
+					
+					yield return new WaitForSeconds(currentTime += Time.fixedDeltaTime);
+				}
+			}
+			
+			radialProgress.transform.position = new Vector2(newVector2Position.x, newVector2Position.y);
+
 			yield return new WaitForSeconds(Time.fixedDeltaTime);
 		}
 	}

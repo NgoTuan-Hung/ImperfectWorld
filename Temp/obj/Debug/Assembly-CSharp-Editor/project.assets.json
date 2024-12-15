@@ -1,0 +1,112 @@
+{
+  "version": 3,
+  "targets": {
+    ".NETStandard,Version=v2.1": {
+      "Assembly-CSharp/1.0.0": {
+        "type": "project",
+        "framework": ".NETStandard,Version=v2.1",
+        "dependencies": {
+          "Plugins.BackgroundRecompiler.Editor": "1.0.0"
+        },
+        "compile": {
+          "bin/placeholder/Assembly-CSharp.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/Assembly-CSharp.dll": {}
+        }
+      },
+      "Plugins.BackgroundRecompiler.Editor/1.0.0": {
+        "type": "project",
+        "framework": ".NETStandard,Version=v2.1",
+        "compile": {
+          "bin/placeholder/Plugins.BackgroundRecompiler.Editor.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/Plugins.BackgroundRecompiler.Editor.dll": {}
+        }
+      }
+    }
+  },
+  "libraries": {
+    "Assembly-CSharp/1.0.0": {
+      "type": "project",
+      "path": "Assembly-CSharp.csproj",
+      "msbuildProject": "Assembly-CSharp.csproj"
+    },
+    "Plugins.BackgroundRecompiler.Editor/1.0.0": {
+      "type": "project",
+      "path": "Plugins.BackgroundRecompiler.Editor.csproj",
+      "msbuildProject": "Plugins.BackgroundRecompiler.Editor.csproj"
+    }
+  },
+  "projectFileDependencyGroups": {
+    ".NETStandard,Version=v2.1": [
+      "Assembly-CSharp >= 1.0.0",
+      "Plugins.BackgroundRecompiler.Editor >= 1.0.0"
+    ]
+  },
+  "packageFolders": {
+    "C:\\Users\\vuvub\\.nuget\\packages\\": {}
+  },
+  "project": {
+    "version": "1.0.0",
+    "restore": {
+      "projectUniqueName": "E:\\Program\\Unity\\Project\\test\\ImperfectWorld\\Assembly-CSharp-Editor.csproj",
+      "projectName": "Assembly-CSharp-Editor",
+      "projectPath": "E:\\Program\\Unity\\Project\\test\\ImperfectWorld\\Assembly-CSharp-Editor.csproj",
+      "packagesPath": "C:\\Users\\vuvub\\.nuget\\packages\\",
+      "outputPath": "E:\\Program\\Unity\\Project\\test\\ImperfectWorld\\Temp\\obj\\Debug\\Assembly-CSharp-Editor\\",
+      "projectStyle": "PackageReference",
+      "configFilePaths": [
+        "C:\\Users\\vuvub\\AppData\\Roaming\\NuGet\\NuGet.Config"
+      ],
+      "originalTargetFrameworks": [
+        "netstandard2.1"
+      ],
+      "sources": {
+        "https://api.nuget.org/v3/index.json": {}
+      },
+      "frameworks": {
+        "netstandard2.1": {
+          "targetAlias": "netstandard2.1",
+          "projectReferences": {
+            "E:\\Program\\Unity\\Project\\test\\ImperfectWorld\\Assembly-CSharp.csproj": {
+              "projectPath": "E:\\Program\\Unity\\Project\\test\\ImperfectWorld\\Assembly-CSharp.csproj"
+            },
+            "E:\\Program\\Unity\\Project\\test\\ImperfectWorld\\Plugins.BackgroundRecompiler.Editor.csproj": {
+              "projectPath": "E:\\Program\\Unity\\Project\\test\\ImperfectWorld\\Plugins.BackgroundRecompiler.Editor.csproj"
+            }
+          }
+        }
+      },
+      "warningProperties": {
+        "warnAsError": [
+          "NU1605"
+        ]
+      },
+      "restoreAuditProperties": {
+        "enableAudit": "true",
+        "auditLevel": "low",
+        "auditMode": "direct"
+      },
+      "SdkAnalysisLevel": "9.0.100"
+    },
+    "frameworks": {
+      "netstandard2.1": {
+        "targetAlias": "netstandard2.1",
+        "imports": [
+          "net461",
+          "net462",
+          "net47",
+          "net471",
+          "net472",
+          "net48",
+          "net481"
+        ],
+        "assetTargetFallback": true,
+        "warn": true,
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.101\\RuntimeIdentifierGraph.json"
+      }
+    }
+  }
+}

@@ -90,6 +90,7 @@
     <Compile Include="Assets\Aseprite2Unity\Editor\AseReader\ChunkType.cs" />
     <Compile Include="Assets\Aseprite2Unity\Editor\AseReader\AseSliceEntry.cs" />
     <Compile Include="Assets\Aseprite2Unity\Editor\AseReader\AseSliceChunk.cs" />
+    <Compile Include="Assets\Game\Script\Editor\StatInspector.cs" />
     <Compile Include="Assets\Aseprite2Unity\Editor\AseReader\CelType.cs" />
     <Compile Include="Assets\Aseprite2Unity\Editor\AseReader\AseHeader.cs" />
     <Compile Include="Assets\Aseprite2Unity\Editor\AsepriteImporterEditor.cs" />
@@ -1372,7 +1373,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="Assembly-CSharp-firstpass.csproj" />
     <ProjectReference Include="Assembly-CSharp.csproj" />
     <ProjectReference Include="Plugins.BackgroundRecompiler.Editor.csproj" />
   </ItemGroup>

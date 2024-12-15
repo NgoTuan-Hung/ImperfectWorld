@@ -29,7 +29,7 @@ public class CustomMono : MonoBehaviour
 	
 	private void Start() 
 	{
-		InitUI();	
+		
 	}
 	
 	void GetBotBaseAction()
@@ -41,10 +41,5 @@ public class CustomMono : MonoBehaviour
 	void GetBaseAction()
 	{
 		
-	}
-	
-	void InitUI()
-	{
-		GameUIManager.Instance.MainView.InstantiateAndHandleHealthBar(transform, Camera.main);
 	}
 }
