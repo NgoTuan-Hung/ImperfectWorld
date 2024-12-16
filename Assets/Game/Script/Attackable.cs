@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class Attackable : BaseAction
 {
+	GameObject attackColliderPrefab;
+	protected static ObjectPool attackColliderPool;
 	private int attackBoolHash = Animator.StringToHash("Attack");
 	private AnimationClip attackClip;
 	private bool canAttack = true;
@@ -27,12 +29,18 @@ public class Attackable : BaseAction
 	public override void Awake() 
 	{
 		base.Awake();
+		attackColliderPrefab = Resources.Load("AttackCollider") as GameObject;
+		attackColliderPool ??= new ObjectPool(attackColliderPrefab, 100, new PoolArgument(typeof(CollideAndDamage), PoolArgument.WhereComponent.Self));
 	}
 	
-	public virtual void Start() 
+	public override void Start()
 	{
+		base.Start();
 		attackClip = customMono.AnimatorWrapper.GetAnimationClip("Attack");	
 		moveSpeedReduced = customMono.BotMovable.DefaultMoveSpeed * moveSpeedReduceRate;
+		#if UNITY_EDITOR
+		onExitPlayModeEvent += () => attackColliderPool = null;
+		#endif
 	}
 
 	public void ToggleAttackAnim(bool value)

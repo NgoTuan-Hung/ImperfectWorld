@@ -32,7 +32,6 @@ public class RadialProgressUI : VisualElement
 		set 
 		{
 			progress = value;
-			Debug.Log(progress);
 			MarkDirtyRepaint();
 		}
 	}

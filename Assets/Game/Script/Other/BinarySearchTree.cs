@@ -73,7 +73,9 @@ public class BinarySearchTree<T> where T : IComparable<T>
 
 	/// <summary>
 	/// Special case where we don't know what the data is, only the key
-	/// and we cannot create an empty object with the key (MonoBehaviour).
+	/// and we cannot create an empty object with the key (says you want
+	/// to search for a Monobehaviour with specific key but you can't
+	/// create a new Monobehaviour right ? Because Unity doesn't allow that).
 	/// You can specify a function to return the key from current node.
 	/// </summary>
 	/// <param name="getKey"></param>

@@ -8,12 +8,13 @@ public class BotAttackInspector : Editor
 {	
 	BotAttack botAttack;
 	[SerializeField] private VisualTreeAsset botAttackVisualTreeAsset;
-	VisualElement root; FloatField floatField;
+	VisualElement root; FloatField floatField, colliderForceFloatField;
 	private void OnEnable() 
 	{
 		botAttack = (BotAttack)target;
 		root = botAttackVisualTreeAsset.Instantiate();
 		floatField = root.Q<FloatField>("bot-attack-inspector__float-field");
+		colliderForceFloatField = root.Q<FloatField>("bot-attack-inspector__collider-force-float-field");
 		
 		floatField.value = botAttack.MoveSpeedReduceRate;
 		botAttack.changeMoveSpeedReduceRate = () => floatField.value = botAttack.MoveSpeedReduceRate;
@@ -21,6 +22,8 @@ public class BotAttackInspector : Editor
 		{
 			botAttack.MoveSpeedReduceRate = floatField.value;
 		});
+		
+		colliderForceFloatField.RegisterValueChangedCallback((evt) => botAttack.ColliderForce = colliderForceFloatField.value);
 	}
 
 	public override VisualElement CreateInspectorGUI()

@@ -4,11 +4,14 @@ using UnityEngine.Events;
 
 public class BotAttack : Attackable
 {
+	private float colliderForce = 1f;
 	[SerializeField] private float attackRange = 0.5f;
 	public enum AttackMode {AttackWhenNear};
 	private AttackMode attackMode = AttackMode.AttackWhenNear;
-	
-	public void ChangeMode(AttackMode mode)
+
+    public float ColliderForce { get => colliderForce; set => colliderForce = value; }
+
+    public void ChangeMode(AttackMode mode)
 	{
 		switch (mode)
 		{
@@ -28,13 +31,22 @@ public class BotAttack : Attackable
 	
 	IEnumerator AttackWhenNearCoroutine()
 	{
+		Vector3 targetVector;
 		while (true)
 		{
-			if (CanAttack && Vector3.Distance(transform.position, customMono.Target.transform.position) < attackRange)
+			targetVector = customMono.Target.transform.position - transform.position;
+			if (CanAttack && targetVector.magnitude < attackRange)
 			{
 				customMono.BotMovable.MoveSpeed = MoveSpeedReduced;
 				ToggleAttackAnim(true);
 				CanAttack = false;
+				CollideAndDamage attackCollider = attackColliderPool.PickOne().CollideAndDamage;
+				attackCollider.transform.position = transform.position;
+				attackCollider.Rigidbody2D.AddForce
+				(
+					targetVector.normalized * colliderForce,
+					ForceMode2D.Impulse
+				);
 			}
 			
 			yield return new WaitForSeconds(Time.fixedDeltaTime);
