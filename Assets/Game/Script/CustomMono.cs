@@ -1,8 +1,10 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 public class CustomMono : MonoBehaviour, IComparable<CustomMono>
 {
 	[SerializeField] private bool isBot = true;
+	Dictionary<string, bool> alliesTag = new Dictionary<string, bool>();
 	private GameObject target;
 	private GameObject mainComponent;
 	private AnimatorWrapper animatorWrapper;
@@ -17,10 +19,12 @@ public class CustomMono : MonoBehaviour, IComparable<CustomMono>
 	public BotMovable BotMovable { get => botMovable; set => botMovable = value; }
 	public BotAttack BotAttack { get => botAttack; set => botAttack = value; }
 	public Stat Stat { get => stat; set => stat = value; }
+    public Dictionary<string, bool> AlliesTag { get => alliesTag; set => alliesTag = value; }
 
-	private void Awake() 
+    private void Awake() 
 	{
 		GameManager.Instance.AddCustomMono(this);
+		alliesTag[gameObject.tag] = true;
 		GetAllComponents();
 		if (isBot)
 		{

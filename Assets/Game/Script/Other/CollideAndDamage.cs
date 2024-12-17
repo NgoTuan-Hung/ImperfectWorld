@@ -1,9 +1,11 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class CollideAndDamage : MonoBehaviour
 {
+	Dictionary<string, bool> alliesTag = new Dictionary<string, bool>();
 	new Rigidbody2D rigidbody2D;
 	public enum CollideType {Single, Multiple}
 	private CollideType collideType = CollideType.Single;
@@ -13,8 +15,9 @@ public class CollideAndDamage : MonoBehaviour
 	[SerializeField] private float collideDamage = 1f;
 
 	public Rigidbody2D Rigidbody2D { get => rigidbody2D; set => rigidbody2D = value; }
+    public Dictionary<string, bool> AlliesTag { get => alliesTag; set => alliesTag = value; }
 
-	private void Awake() 
+    private void Awake() 
 	{
 		if (isDeactivatedAfterTime) deactiveAfterTime += () => 
 		{
@@ -36,6 +39,9 @@ public class CollideAndDamage : MonoBehaviour
 	
 	private void OnTriggerEnter2D(Collider2D other) 
 	{
-		GameManager.Instance.GetCustomMono(other.gameObject).Stat.Health -= collideDamage;	
+		if (!alliesTag.ContainsKey(other.tag))
+		{
+			GameManager.Instance.GetCustomMono(other.gameObject).Stat.Health -= collideDamage;	
+		}
 	}
 }

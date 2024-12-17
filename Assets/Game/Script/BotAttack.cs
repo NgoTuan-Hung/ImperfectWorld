@@ -9,9 +9,9 @@ public class BotAttack : Attackable
 	public enum AttackMode {AttackWhenNear};
 	private AttackMode attackMode = AttackMode.AttackWhenNear;
 
-    public float ColliderForce { get => colliderForce; set => colliderForce = value; }
+	public float ColliderForce { get => colliderForce; set => colliderForce = value; }
 
-    public void ChangeMode(AttackMode mode)
+	public void ChangeMode(AttackMode mode)
 	{
 		switch (mode)
 		{
@@ -41,6 +41,7 @@ public class BotAttack : Attackable
 				ToggleAttackAnim(true);
 				CanAttack = false;
 				CollideAndDamage attackCollider = attackColliderPool.PickOne().CollideAndDamage;
+				attackCollider.AlliesTag = customMono.AlliesTag;
 				attackCollider.transform.position = transform.position;
 				attackCollider.Rigidbody2D.AddForce
 				(
