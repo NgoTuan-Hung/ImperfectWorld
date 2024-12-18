@@ -231,14 +231,14 @@ public class MainView : ViewBase
 				/* Check When locked is set to true, lock the scroll view. Also scroll happen at 
 				scrollview.contentContainer.PointerDownEvent(TrickleDown) so we can block it here */
 				if (skillScrollViewUIInfo.ScrollViewLockState == ScrollViewLockState.Locked) evt.StopPropagation();
-				SkillScrollViewPointerDown(skillScrollViewUIInfo);
+				else SkillScrollViewPointerDown(skillScrollViewUIInfo);
 			}, TrickleDown.TrickleDown);
 			
-			skillScrollViews[i].RegisterCallback<PointerDownEvent>((evt) => 
-			{
-				/* Used to block touch screen swipe event */
-				evt.StopPropagation();
-			});
+			// skillScrollViews[i].RegisterCallback<PointerDownEvent>((evt) => 
+			// {
+			// 	/* Used to block touch screen swipe event */
+			// 	evt.StopPropagation();
+			// });
 			
 			/* Used to determine some final style of scroll view (height,...)*/
 			skillScrollViews[i].RegisterCallback<GeometryChangedEvent>
@@ -267,6 +267,7 @@ public class MainView : ViewBase
 
 	public void SkillScrollViewPointerDown(SkillScrollViewUIInfo skillScrollViewUIInfo)
 	{
+		print("Pointer down");
 		if (skillScrollViewUIInfo.ScrollViewLockState == ScrollViewLockState.Locked) return;
 		if (skillScrollViewUIInfo.ScrollSnapCoroutine != null) StopCoroutine(skillScrollViewUIInfo.ScrollSnapCoroutine);
 		skillScrollViewUIInfo.ScrollView.scrollDecelerationRate = defaultScrollDecelerationRate;
@@ -289,6 +290,8 @@ public class MainView : ViewBase
 	{
 		/* Find any first touch that overlaps the skill scroll view */
 		Touch associatedTouch = TouchExtension.GetTouchOverlapVisualElement(skillScrollViewUIInfo.ScrollView, root.panel);
+		
+		if (associatedTouch.Equals(default)) yield break;
 
 		/* snap logic only happens when we release the touch */
 		while (associatedTouch.phase != UnityEngine.InputSystem.TouchPhase.Ended) yield return new WaitForSeconds(Time.deltaTime);
@@ -300,6 +303,7 @@ public class MainView : ViewBase
 		/* snap logic only happens when the scroll speed is low enough */
 		while (Math.Abs(skillScrollViewUIInfo.ScrollView.verticalScroller.value - prevPosition) > skillScrollViewUIInfo.DistanceToSnap)
 		{
+			print(Math.Abs(skillScrollViewUIInfo.ScrollView.verticalScroller.value - prevPosition));
 			prevPosition = skillScrollViewUIInfo.ScrollView.verticalScroller.value;
 			yield return new WaitForSeconds(Time.fixedDeltaTime);
 		} skillScrollViewUIInfo.ScrollView.scrollDecelerationRate = 0f;
