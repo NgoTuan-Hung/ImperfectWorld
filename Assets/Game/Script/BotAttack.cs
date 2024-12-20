@@ -4,12 +4,18 @@ using UnityEngine.Events;
 
 public class BotAttack : Attackable
 {
-	private float colliderForce = 1f;
+	
 	[SerializeField] private float attackRange = 0.5f;
 	public enum AttackMode {AttackWhenNear};
 	private AttackMode attackMode = AttackMode.AttackWhenNear;
-
-	public float ColliderForce { get => colliderForce; set => colliderForce = value; }
+	public float MoveSpeedReduceRate { get => moveSpeedReduceRate; set 
+	{
+		moveSpeedReduceRate = value;
+		moveSpeedReduced = customMono.BotMovable.DefaultMoveSpeed * moveSpeedReduceRate;
+		// #if UNITY_EDITOR
+		// changeMoveSpeedReduceRate?.Invoke();
+		// #endif
+	} }
 
 	public void ChangeMode(AttackMode mode)
 	{
@@ -39,7 +45,7 @@ public class BotAttack : Attackable
 			{
 				customMono.BotMovable.MoveSpeed = MoveSpeedReduced;
 				ToggleAttackAnim(true);
-				CanAttack = false;
+				canAttack = false;
 				CollideAndDamage attackCollider = attackColliderPool.PickOne().CollideAndDamage;
 				attackCollider.AlliesTag = customMono.AlliesTag;
 				attackCollider.transform.position = transform.position;
@@ -62,6 +68,7 @@ public class BotAttack : Attackable
 	public override void Start() 
 	{
 		base.Start();
+		moveSpeedReduced = customMono.BotMovable.DefaultMoveSpeed * moveSpeedReduceRate;
 		customMono.AnimationEventFunctionCaller.resetAttackAction += ResetAttack;
 		customMono.AnimatorWrapper.AddAnimationEvent(AttackClip, "ResetAttack", AnimatorWrapper.AddAnimationEventMode.End);
 		ChangeMode(attackMode);	
@@ -77,6 +84,6 @@ public class BotAttack : Attackable
 	public IEnumerator ResetAttackCoroutine()
 	{
 		yield return new WaitForSeconds(AttackCooldown);
-		CanAttack = true;
+		canAttack = true;
 	}
 }

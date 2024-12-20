@@ -2,6 +2,8 @@ using UnityEngine;
 
 public class GameManager : MonoSingleton<GameManager>
 {
+	public readonly int attackButtonScrollViewIndex = 7;
+	public readonly int attackButtonIndex = 0;
 	BinarySearchTree<CustomMono> customMonos = new BinarySearchTree<CustomMono>();
 	
 	public void AddCustomMono(CustomMono customMono)

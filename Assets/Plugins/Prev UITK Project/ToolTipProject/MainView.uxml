@@ -41,7 +41,7 @@
                     <ui:Instance template="SkillHolder" name="SkillHolder" />
                 </ui:ScrollView>
                 <ui:ScrollView vertical-scroller-visibility="Hidden" name="ScrollView" class="main-view__skill-scroll-view dynamic-ui__movable" style="position: absolute; bottom: 0; right: 0;">
-                    <ui:VisualElement name="SkillHolder" style="position: relative; right: 0; bottom: 0;">
+                    <ui:VisualElement name="AttackButton" style="position: relative; right: 0; bottom: 0;">
                         <Style src="project://database/Assets/Plugins/Prev%20UITK%20Project/ToolTipProject/SkillHolder.uss?fileID=7433441132597879392&amp;guid=6eb72e730b98c3b459748405555df513&amp;type=3#SkillHolder" />
                         <ui:VisualElement name="skill-holder-out" style="opacity: 0.5;">
                             <ui:VisualElement name="skill-holder-in" style="-unity-background-scale-mode: scale-to-fit; background-image: url(&quot;project://database/Assets/Plugins/Prev%20UITK%20Project/ToolTipProject/attack-button.png?fileID=2800000&amp;guid=dc49a4618c7839a4bab0f240a8d3cb8a&amp;type=3#attack-button&quot;); background-color: rgb(13, 70, 127);" />

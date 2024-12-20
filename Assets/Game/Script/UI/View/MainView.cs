@@ -19,6 +19,9 @@ public class MainView : ViewBase
 	[SerializeField] private AudioSource audioSource;
 	bool optionExpandButtonExpanded = true, scrollLockExpandButtonExpanded = true, 
 	lockExpandLocked = true;
+	public Action clickAttackButtonEvent = () => { };
+	public Action<Vector2> holdAttackButtonEvent = (vector2) => { };
+	Vector2 attackDirection, inverseY = new Vector2(1, -1);
 
 	public void Init() 
 	{
@@ -33,12 +36,13 @@ public class MainView : ViewBase
 		HandleScrollLockExpandLock();
 		HandleExpandButton();
 		PopulateOptions();
+		HandleAttackButton();
 	}
 
-	List<ScrollView> skillScrollViews;
+	List<ScrollView> skillScrollViews; List<SkillScrollViewUIInfo> skillScrollViewUIInfos = new List<SkillScrollViewUIInfo>();
 	VisualElement root, helperLensRoot, optionExpandButton, options, mainViewLayer, skillScrollViewHolder
 	, scrollLockParent, scrollLockExpandButton, scrollLockExpandLock, joyStickHolder, joyStickOuter, joyStickInner;
-	public void FindAllVisualElements()
+	void FindAllVisualElements()
 	{
 		var uiDocument = GetComponent<UIDocument>();
 		root = uiDocument.rootVisualElement;
@@ -66,7 +70,7 @@ public class MainView : ViewBase
 		helperLensRoot.style.position = Position.Absolute;
 	}
 
-	public void PopulateOptions()
+	void PopulateOptions()
 	{
 		List<MainViewOptionData> mainViewOptionDatas = Resources.LoadAll<MainViewOptionData>("UI/MainViewOptionData").ToList();
 		
@@ -96,7 +100,7 @@ public class MainView : ViewBase
 		});
 	}
 
-	public void HandleExpandButton()
+	void HandleExpandButton()
 	{
 		optionExpandButton.RegisterCallback<PointerDownEvent>((evt) => 
 		{
@@ -135,7 +139,7 @@ public class MainView : ViewBase
 		});
 	}
 	
-	private void HandleScrollLockExpandLock()
+	void HandleScrollLockExpandLock()
 	{
 		scrollLockExpandLock.RegisterCallback<MouseDownEvent>(evt => 
 		{
@@ -151,7 +155,7 @@ public class MainView : ViewBase
 	/// Handle scroll view lock (mostly skill)
 	/// . Lock state: Lock -> Unlocked -> AutoLocked -> Lock -> ...
 	/// </summary>
-	public void HandleScrollLock(SkillScrollViewUIInfo skillScrollViewUIInfo)
+	void HandleScrollLock(SkillScrollViewUIInfo skillScrollViewUIInfo)
 	{	
 		switch (skillScrollViewUIInfo.ScrollViewLockState)
 		{
@@ -181,7 +185,7 @@ public class MainView : ViewBase
 	/// <summary>
 	/// Populate the skill slots info
 	/// </summary>
-	public void HandleSkillView()
+	void HandleSkillView()
 	{	
 		/* Load datas from scriptable object and create skill ui.
 		Also handle tooltip of each skill*/
@@ -192,7 +196,10 @@ public class MainView : ViewBase
 		{
 			var newSkillHolder = skillHolderTemplate.Instantiate();
 			skillScrollViews[skillData.skillButtonIndex].contentContainer.Add(newSkillHolder);
-			new skillHolderView(skillData, newSkillHolder);
+			
+			/* Add image for skill holder */
+			newSkillHolder.Q<VisualElement>("skill-holder-in").style.backgroundImage = new StyleBackground(skillData.skillImage);
+			
 			var skillTooltip = new SkillTooltipView(skillTooltipTemplate.Instantiate(), skillData.skillName, skillData.skillHelperImage, skillData.skillHelperDescription, skillTooltipSS).VisualElement();
 			newSkillHolder.GetLayer().Add(skillTooltip);
 			skillTooltip.style.position = new StyleEnum<Position>(Position.Absolute);
@@ -208,7 +215,8 @@ public class MainView : ViewBase
 
 		/* Handle scroll logic, scrolling, snapping */
 		for (int i=0;i<skillScrollViews.Count;i++)
-		{
+		{	
+			/* Allow tooltip for the first skill holder */
 			if (skillScrollViews[i].contentContainer.childCount != 0) skillScrollViews[i].contentContainer.ElementAt(0).RemoveFromClassList("helper-invisible");
 
 			SkillScrollViewUIInfo skillScrollViewUIInfo = new SkillScrollViewUIInfo(skillScrollViews[i], i, null);
@@ -221,6 +229,21 @@ public class MainView : ViewBase
 				evt.StopPropagation();
 				HandleScrollLock(skillScrollViewUIInfo);
 			});
+			/* Add reference for all skill holders in this scroll view */
+			var t_children = skillScrollViews[i].contentContainer.Children();
+			foreach (VisualElement skillHolder in t_children)
+			{
+				/* hmm */
+				SkillHolderView skillHolderView = new SkillHolderView(skillHolder, skillScrollViews[i]);
+				skillHolder.RegisterCallback<PointerMoveEvent>((evt) => 
+				{
+					/* Check When locked is set to true, lock the scroll view. Also scroll happen at 
+					scrollview.contentContainer.PointerMoveEvent(Bubble Up phase) so we can block it here */
+					if (skillScrollViewUIInfo.ScrollViewLockState == ScrollViewLockState.Locked) evt.StopPropagation();
+				});
+				
+				skillScrollViewUIInfo.skillHolderViews.Add(skillHolderView);
+			}
 			
 			scrollLockParent.Insert(i, skillScrollViewUIInfo.ScrollViewLock.parent);
 
@@ -228,23 +251,22 @@ public class MainView : ViewBase
 			
 			skillScrollViews[i].RegisterCallback<PointerDownEvent>((evt) => 
 			{
-				/* Check When locked is set to true, lock the scroll view. Also scroll happen at 
-				scrollview.contentContainer.PointerDownEvent(TrickleDown) so we can block it here */
-				if (skillScrollViewUIInfo.ScrollViewLockState == ScrollViewLockState.Locked) evt.StopPropagation();
-				else SkillScrollViewPointerDown(skillScrollViewUIInfo);
+				SkillScrollViewPointerDown(skillScrollViewUIInfo);
 			}, TrickleDown.TrickleDown);
 			
-			// skillScrollViews[i].RegisterCallback<PointerDownEvent>((evt) => 
-			// {
-			// 	/* Used to block touch screen swipe event */
-			// 	evt.StopPropagation();
-			// });
+			skillScrollViews[i].RegisterCallback<PointerDownEvent>((evt) => 
+			{
+				/* Used to block touch screen swipe event */
+				evt.StopPropagation();
+			});
 			
 			/* Used to determine some final style of scroll view (height,...)*/
 			skillScrollViews[i].RegisterCallback<GeometryChangedEvent>
 			(
 				(evt) => SkillScrollViewGeometryChanged(skillScrollViewUIInfo)
 			);
+			
+			skillScrollViewUIInfos.Add(skillScrollViewUIInfo);
 		}
 	}
 
@@ -252,7 +274,7 @@ public class MainView : ViewBase
 	/// Mostly used to play sound if scroll view scroll passed a element
 	/// </summary>
 	/// <param name="skillScrollViewUIInfo"></param>
-	public void SkillScrollViewEvent(SkillScrollViewUIInfo skillScrollViewUIInfo)
+	void SkillScrollViewEvent(SkillScrollViewUIInfo skillScrollViewUIInfo)
 	{
 		skillScrollViewUIInfo.SkillScrollViewNewIndex = (int)Math.Floor(skillScrollViewUIInfo.ScrollView.verticalScroller.value / skillScrollViewUIInfo.ScrollViewHeight + 0.5f);
 		if (skillScrollViewUIInfo.SkillScrollViewNewIndex != skillScrollViewUIInfo.SkillScrollViewPreviousIndex)
@@ -265,19 +287,25 @@ public class MainView : ViewBase
 		skillScrollViewUIInfo.SkillScrollViewPreviousIndex = skillScrollViewUIInfo.SkillScrollViewNewIndex;
 	}
 
-	public void SkillScrollViewPointerDown(SkillScrollViewUIInfo skillScrollViewUIInfo)
+	void SkillScrollViewPointerDown(SkillScrollViewUIInfo skillScrollViewUIInfo)
 	{
-		print("Pointer down");
 		if (skillScrollViewUIInfo.ScrollViewLockState == ScrollViewLockState.Locked) return;
 		if (skillScrollViewUIInfo.ScrollSnapCoroutine != null) StopCoroutine(skillScrollViewUIInfo.ScrollSnapCoroutine);
 		skillScrollViewUIInfo.ScrollView.scrollDecelerationRate = defaultScrollDecelerationRate;
 		skillScrollViewUIInfo.ScrollSnapCoroutine = StartCoroutine(HandleScrollSnap(skillScrollViewUIInfo));
 	}
 	
-	public void SkillScrollViewGeometryChanged(SkillScrollViewUIInfo skillScrollViewUIInfo)
+	void SkillScrollViewGeometryChanged(SkillScrollViewUIInfo skillScrollViewUIInfo)
 	{
-		skillScrollViewUIInfo.ScrollViewHeight = skillScrollViewUIInfo.ScrollView.resolvedStyle.height;
+		var t_skillScrollView = skillScrollViewUIInfo.ScrollView;
+		skillScrollViewUIInfo.ScrollViewHeight = t_skillScrollView.resolvedStyle.height;
 		skillScrollViewUIInfo.DistanceToSnap = skillScrollViewUIInfo.ScrollViewHeight * distanceToSnapScale;
+		
+		/* Update mid position of all skill holders in this scroll view */
+		skillScrollViewUIInfo.skillHolderViews.ForEach(skillHolderView => 
+		{
+			skillHolderView.midPos = t_skillScrollView.worldBound.position + t_skillScrollView.worldBound.size / 2;
+		});
 	}
 
 	[SerializeField] private float snapTime = 0.3f;
@@ -286,7 +314,7 @@ public class MainView : ViewBase
 	[SerializeField] private float distanceToSnapScale = 0.5f;
 	private float defaultScrollDecelerationRate = 0.135f;
 
-	public IEnumerator HandleScrollSnap(SkillScrollViewUIInfo skillScrollViewUIInfo)
+	IEnumerator HandleScrollSnap(SkillScrollViewUIInfo skillScrollViewUIInfo)
 	{
 		/* Find any first touch that overlaps the skill scroll view */
 		Touch associatedTouch = TouchExtension.GetTouchOverlapVisualElement(skillScrollViewUIInfo.ScrollView, root.panel);
@@ -303,7 +331,6 @@ public class MainView : ViewBase
 		/* snap logic only happens when the scroll speed is low enough */
 		while (Math.Abs(skillScrollViewUIInfo.ScrollView.verticalScroller.value - prevPosition) > skillScrollViewUIInfo.DistanceToSnap)
 		{
-			print(Math.Abs(skillScrollViewUIInfo.ScrollView.verticalScroller.value - prevPosition));
 			prevPosition = skillScrollViewUIInfo.ScrollView.verticalScroller.value;
 			yield return new WaitForSeconds(Time.fixedDeltaTime);
 		} skillScrollViewUIInfo.ScrollView.scrollDecelerationRate = 0f;
@@ -358,7 +385,7 @@ public class MainView : ViewBase
 	/// <param name="healthBar"></param>
 	/// <param name="camera"></param>
 	/// <returns></returns>
-	public IEnumerator HandleHealthBarFloating(Transform transform, VisualElement healthBar, Camera camera)
+	IEnumerator HandleHealthBarFloating(Transform transform, VisualElement healthBar, Camera camera)
 	{
 		Vector2 newVector2Position = RuntimePanelUtils.CameraTransformWorldToPanel(root.panel, transform.position + healthBarOffset, camera)
 		, prevVector2Position, expectedVector2Position;
@@ -395,7 +422,7 @@ public class MainView : ViewBase
 	/// You can add your custom event here whenever joystick is moved, function will be populated with a vector2
 	/// </summary>
 	public JoyStickMoveEvent joyStickMoveEvent;
-	public void HandleJoyStickView()
+	void HandleJoyStickView()
 	{	
 		prepareJoyStickStartValue += PrepareJoyStickStartValue;
 		joyStickHolder.parent.RegisterCallback<GeometryChangedEvent>((evt) => PrepareValue());
@@ -414,7 +441,7 @@ public class MainView : ViewBase
 		});
 	}
 	
-	public void PrepareJoyStickStartValue()
+	void PrepareJoyStickStartValue()
 	{
 		outerRadius = joyStickOuter.resolvedStyle.width / 2f;
 		outerRadiusSqr = outerRadius * outerRadius;
@@ -425,7 +452,7 @@ public class MainView : ViewBase
 	}
 
 	Action prepareJoyStickStartValue;
-	public void PrepareValue()
+	void PrepareValue()
 	{
 		prepareJoyStickStartValue?.Invoke();
 		joyStickCenterPosition = new Vector2(joyStickOuter.worldBound.position.x + outerRadius, joyStickOuter.worldBound.position.y + outerRadius);
@@ -436,7 +463,7 @@ public class MainView : ViewBase
 	/// </summary>
 	/// <param name="touch"></param>
 	/// <returns></returns>
-	public IEnumerator HandleJoyStick(Touch touch)
+	IEnumerator HandleJoyStick(Touch touch)
 	{
 		while (touch.phase != UnityEngine.InputSystem.TouchPhase.Ended)
 		{
@@ -459,36 +486,35 @@ public class MainView : ViewBase
 		joyStickInner.transform.position = joyStickInnerDefaultPosition;
 		joyStickMoveEvent?.Invoke(Vector2.zero);
 	}
-}
-
-
-public class SkillScrollViewUIInfo
-{
-	private ScrollView scrollView;
-	private VisualElement scrollViewLock;
-	private ScrollViewLockState scrollViewLockState;
-	private int scrollViewListIndex;
-	private Coroutine scrollSnapCoroutine;
-	private int skillScrollViewPreviousIndex = 0;
-	private int skillScrollViewNewIndex = 0;
-	private float scrollViewHeight = 0f;
-	private float distanceToSnap = 0f;
-
-	public SkillScrollViewUIInfo(ScrollView scrollView, int scrollViewListIndex, Coroutine scrollSnapCoroutine)
+	
+	/// <summary>
+	/// Handle clicking/holding attack button
+	/// </summary>
+	void HandleAttackButton()
 	{
-		this.scrollView = scrollView;
-		this.scrollViewListIndex = scrollViewListIndex;
-		this.scrollSnapCoroutine = scrollSnapCoroutine;
+		/* Access attack button from predefined index */
+		SkillHolderView t_skillHolderView = skillScrollViewUIInfos[GameManager.Instance.attackButtonScrollViewIndex]
+		.skillHolderViews[GameManager.Instance.attackButtonIndex];
+		
+		t_skillHolderView.root.RegisterCallback<PointerDownEvent>((evt) => 
+		{
+			clickAttackButtonEvent();
+			Touch touch = TouchExtension.GetTouchOverlapVisualElement(t_skillHolderView.root, root.panel);
+			StartCoroutine(AttackButtonHoldingCoroutine(touch, t_skillHolderView));
+		});
 	}
-
-	public ScrollView ScrollView { get => scrollView; set => scrollView = value; }
-	public Coroutine ScrollSnapCoroutine { get => scrollSnapCoroutine; set => scrollSnapCoroutine = value; }
-	public int SkillScrollViewPreviousIndex { get => skillScrollViewPreviousIndex; set => skillScrollViewPreviousIndex = value; }
-	public int SkillScrollViewNewIndex { get => skillScrollViewNewIndex; set => skillScrollViewNewIndex = value; }
-	public float ScrollViewHeight { get => scrollViewHeight; set => scrollViewHeight = value; }
-	public float DistanceToSnap { get => distanceToSnap; set => distanceToSnap = value; }
-	public int ScrollViewListIndex { get => scrollViewListIndex; set => scrollViewListIndex = value; }
-	public VisualElement ScrollViewLock { get => scrollViewLock; set => scrollViewLock = value; }
-	public ScrollViewLockState ScrollViewLockState { get => scrollViewLockState; set => scrollViewLockState = value; }
+	
+	IEnumerator AttackButtonHoldingCoroutine(Touch touch, SkillHolderView skillHolderView)
+	{
+		Vector2 touchPos;
+		while (touch.phase != UnityEngine.InputSystem.TouchPhase.Ended)
+		{
+			touchPos = RuntimePanelUtils.ScreenToPanel(root.panel, new Vector2(touch.screenPosition.x, Screen.height - touch.screenPosition.y));
+			/* Direction of holding will be a vector from button middle point to our current touch */
+			attackDirection = touchPos - skillHolderView.midPos;
+			attackDirection.Scale(inverseY);
+			holdAttackButtonEvent(attackDirection);
+			yield return new WaitForSeconds(Time.fixedDeltaTime);
+		}
+	}
 }
-

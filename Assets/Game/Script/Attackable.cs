@@ -8,23 +8,19 @@ public class Attackable : BaseAction
 	protected static ObjectPool attackColliderPool;
 	private int attackBoolHash = Animator.StringToHash("Attack");
 	private AnimationClip attackClip;
-	private bool canAttack = true;
+	protected bool canAttack = true;
 	[SerializeField] private float attackCooldown = 1f;
-	private float moveSpeedReduceRate = 0.9f;
-	private float moveSpeedReduced;
-	public Action changeMoveSpeedReduceRate;
-	public AnimationClip AttackClip { get => attackClip; set => attackClip = value; }
-	public bool CanAttack { get => canAttack; set => canAttack = value; }
-	public float AttackCooldown { get => attackCooldown; set => attackCooldown = value; }
-	public float MoveSpeedReduced { get => moveSpeedReduced; set => moveSpeedReduced = value;}
-	public float MoveSpeedReduceRate { get => moveSpeedReduceRate; set 
+	protected float moveSpeedReduceRate = 0.1f;
+	protected float moveSpeedReduced;
+	public float colliderForce = 1f;
+	public bool CanAttack
 	{
-		moveSpeedReduceRate = value;
-		moveSpeedReduced = customMono.BotMovable.DefaultMoveSpeed * moveSpeedReduceRate;
-		#if UNITY_EDITOR
-		changeMoveSpeedReduceRate?.Invoke();
-		#endif
-	} }
+		get {return canAttack;}
+	}
+	
+	public AnimationClip AttackClip { get => attackClip; set => attackClip = value; }
+	public float AttackCooldown { get => attackCooldown; set => attackCooldown = value; }
+	public float MoveSpeedReduced { get => moveSpeedReduced;}
 
 	public override void Awake() 
 	{
@@ -37,7 +33,6 @@ public class Attackable : BaseAction
 	{
 		base.Start();
 		attackClip = customMono.AnimatorWrapper.GetAnimationClip("Attack");	
-		moveSpeedReduced = customMono.BotMovable.DefaultMoveSpeed * moveSpeedReduceRate;
 		#if UNITY_EDITOR
 		onExitPlayModeEvent += () => attackColliderPool = null;
 		#endif

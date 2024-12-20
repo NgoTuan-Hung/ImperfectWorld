@@ -6,8 +6,10 @@ public class BotMovable : Movable
 	public enum MoveMode {Walk}
 	private MoveMode moveMode = MoveMode.Walk;
 	
-	private void Start() 
+	
+	public override void Start() 
 	{
+		base.Start();
 		ChangeMode(MoveMode.Walk);	
 	}
 	
@@ -34,7 +36,9 @@ public class BotMovable : Movable
 	{
 		while (true)
 		{
-			Move(customMono.Target.transform.position - transform.position);
+			moveVector = customMono.Target.transform.position - transform.position;
+			UpdateDirectionIndicator(moveVector);
+			Move(moveVector);
 			yield return new WaitForSeconds(Time.fixedDeltaTime);
 		}
 	}

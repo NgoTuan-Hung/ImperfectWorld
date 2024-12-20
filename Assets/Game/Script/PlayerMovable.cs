@@ -3,9 +3,10 @@ using UnityEngine;
 
 public class PlayerMovable : Movable
 {
-	Vector2 moveVector, inverseY = new Vector2(1, -1);
-	private void Start() 
+	Vector2 inverseY = new Vector2(1, -1);
+	public override void Start() 
 	{
+		base.Start();
 		GameUIManager.Instance.MainView.joyStickMoveEvent += (vector) => moveVector = vector;
 	}
 	private void FixedUpdate() 
@@ -19,6 +20,7 @@ public class PlayerMovable : Movable
 		{
 			ToggleMoveAnim(true);
 			moveVector.Scale(inverseY);
+			UpdateDirectionIndicator(moveVector);
 			Move(moveVector);
 		}
 		else ToggleMoveAnim(false);
