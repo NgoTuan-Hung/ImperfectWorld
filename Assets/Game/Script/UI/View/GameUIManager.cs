@@ -13,22 +13,22 @@ public class GameUIManager : MonoSingleton<GameUIManager>
 		Config = 1,
 		DynamicUI = 2
 	}
-	public static Dictionary<string, VisualElement> helpers = new Dictionary<string, VisualElement>();
+	public static Dictionary<int, VisualElement> helpers = new Dictionary<int, VisualElement>();
 
-	[RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
-	static void Init()
+	// [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
+	// static void Init()
+	// {
+	// 	helpers = new Dictionary<string, VisualElement>();    
+	// }
+
+	public static void AddHelper(int key, VisualElement helper)
 	{
-		helpers = new Dictionary<string, VisualElement>();    
+		helpers.Add(key, helper);
 	}
 
-	public static void AddHelper(string name, VisualElement helper)
+	public static VisualElement GetHelper(int key)
 	{
-		helpers.Add(name, helper);
-	}
-
-	public static VisualElement GetHelper(string name)
-	{
-		return helpers[name];
+		return helpers[key];
 	}
 
 	public static void ChangeAllHelperOpacity(float opacity)
@@ -190,8 +190,8 @@ public class GameUIManager : MonoSingleton<GameUIManager>
 	public RadialProgress CreateAndHandleRadialProgressFollowing(Transform transform)
 	{
 		PoolObject radialProgressPoolObject = radialProgressPool.PickOne();
-		RadialProgress radialProgress = radialProgressPoolObject.RadialProgress;
-		StartCoroutine(HandleRadialProgressFollowing(transform, radialProgressPoolObject.GameObject));
+		RadialProgress radialProgress = radialProgressPoolObject.radialProgress;
+		StartCoroutine(HandleRadialProgressFollowing(transform, radialProgressPoolObject.gameObject));
 		return radialProgress;
 	}
 	

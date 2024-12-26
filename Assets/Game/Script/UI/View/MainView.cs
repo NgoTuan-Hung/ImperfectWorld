@@ -28,6 +28,7 @@ public class MainView : ViewBase
 		FindAllVisualElements();
 		snapInterval = snapTime * snapIntervalPortion;
 		audioSource.clip = scrollSound;
+		skillTooltipSS = Resources.Load<StyleSheet>("SkillTooltipSS");
 
 		HelperLensDragAndDropManipulator dragAndDropManipulator = new HelperLensDragAndDropManipulator(helperLensRoot, skillTooltipTemplate);
 
@@ -182,6 +183,47 @@ public class MainView : ViewBase
 		}
 	}
 	
+	public void AddSkillToScrollView(SkillDataSo skillDataSO, Action<Touch> trigger)
+	{
+		var newSkillHolder = skillHolderTemplate.Instantiate();
+		skillScrollViews[skillDataSO.skillButtonIndex].contentContainer.Add(newSkillHolder);
+		HandleSkillHolderView(newSkillHolder, skillDataSO.skillButtonIndex);
+		
+		/* Add image for skill holder */
+		newSkillHolder.Q<VisualElement>("skill-holder-in").style.backgroundImage = new StyleBackground(skillDataSO.skillImage);
+		
+		var skillTooltip = new SkillTooltipView(skillTooltipTemplate.Instantiate(), skillDataSO.skillName, skillDataSO.skillHelperImage, skillDataSO.skillHelperDescription, skillTooltipSS).visualElement;
+		newSkillHolder.GetLayer().Add(skillTooltip);
+		skillTooltip.style.position = new StyleEnum<Position>(Position.Absolute);
+		skillTooltip.style.visibility = Visibility.Hidden;
+		GameUIManager.AddHelper(newSkillHolder.GetHashCode(), skillTooltip);
+
+		newSkillHolder.AddToClassList("has-helper");
+		newSkillHolder.AddToClassList("helper-type-skill-info");
+		
+		
+		/* Only allow tooltip for current visible element in scroll view */
+		if (skillScrollViews[skillDataSO.skillButtonIndex].contentContainer.IndexOf(newSkillHolder)
+		!= skillScrollViewUIInfos[skillDataSO.skillButtonIndex].SkillScrollViewNewIndex)
+			newSkillHolder.AddToClassList("helper-invisible");
+		
+		/* Handle event here */
+		switch (skillDataSO.inputType)
+		{
+			case SkillDataSo.InputType.Click:
+				newSkillHolder.RegisterCallback<PointerDownEvent>((evt) => 
+				{
+					var touch = TouchExtension.GetTouchOverlapVisualElement(newSkillHolder, root.panel);
+					trigger(touch);
+				});
+				break;
+			case SkillDataSo.InputType.Hold:
+				break;
+			default:
+				break;
+		}
+	}
+	
 	/// <summary>
 	/// Populate the skill slots info
 	/// </summary>
@@ -190,36 +232,20 @@ public class MainView : ViewBase
 		/* Load datas from scriptable object and create skill ui.
 		Also handle tooltip of each skill*/
 		List<SkillData> skillDatas = Resources.LoadAll<SkillData>("SkillData").ToList();
-		skillTooltipSS = Resources.Load<StyleSheet>("SkillTooltipSS");
 		
 		skillDatas.ForEach(skillData => 
 		{
+			// Handle add skill to scroll view here
 			var newSkillHolder = skillHolderTemplate.Instantiate();
 			skillScrollViews[skillData.skillButtonIndex].contentContainer.Add(newSkillHolder);
-			
-			/* Add image for skill holder */
-			newSkillHolder.Q<VisualElement>("skill-holder-in").style.backgroundImage = new StyleBackground(skillData.skillImage);
-			
-			var skillTooltip = new SkillTooltipView(skillTooltipTemplate.Instantiate(), skillData.skillName, skillData.skillHelperImage, skillData.skillHelperDescription, skillTooltipSS).VisualElement();
-			newSkillHolder.GetLayer().Add(skillTooltip);
-			skillTooltip.style.position = new StyleEnum<Position>(Position.Absolute);
-			skillTooltip.style.left = new StyleLength(99999f);
-			string tooltipId = "helper__skill-info__" + skillData.name;
-			GameUIManager.AddHelper(tooltipId, skillTooltip);
-
-			newSkillHolder.AddToClassList(tooltipId);
-			newSkillHolder.AddToClassList("has-helper");
-			newSkillHolder.AddToClassList("helper-type-skill-info");
-			newSkillHolder.AddToClassList("helper-invisible");
 		});
 
 		/* Handle scroll logic, scrolling, snapping */
 		for (int i=0;i<skillScrollViews.Count;i++)
 		{	
-			/* Allow tooltip for the first skill holder */
-			if (skillScrollViews[i].contentContainer.childCount != 0) skillScrollViews[i].contentContainer.ElementAt(0).RemoveFromClassList("helper-invisible");
-
 			SkillScrollViewUIInfo skillScrollViewUIInfo = new SkillScrollViewUIInfo(skillScrollViews[i], i, null);
+			skillScrollViewUIInfos.Add(skillScrollViewUIInfo);
+			
 			/* For each scroll view, we assign a lock to it */
 			skillScrollViewUIInfo.ScrollViewLock = scrollViewLockVTA.Instantiate().ElementAt(0);
 			skillScrollViewUIInfo.ScrollViewLockState = ScrollViewLockState.Locked;
@@ -229,21 +255,10 @@ public class MainView : ViewBase
 				evt.StopPropagation();
 				HandleScrollLock(skillScrollViewUIInfo);
 			});
+			
 			/* Add reference for all skill holders in this scroll view */
 			var t_children = skillScrollViews[i].contentContainer.Children();
-			foreach (VisualElement skillHolder in t_children)
-			{
-				/* hmm */
-				SkillHolderView skillHolderView = new SkillHolderView(skillHolder, skillScrollViews[i]);
-				skillHolder.RegisterCallback<PointerMoveEvent>((evt) => 
-				{
-					/* Check When locked is set to true, lock the scroll view. Also scroll happen at 
-					scrollview.contentContainer.PointerMoveEvent(Bubble Up phase) so we can block it here */
-					if (skillScrollViewUIInfo.ScrollViewLockState == ScrollViewLockState.Locked) evt.StopPropagation();
-				});
-				
-				skillScrollViewUIInfo.skillHolderViews.Add(skillHolderView);
-			}
+			foreach (VisualElement skillHolder in t_children) HandleSkillHolderView(skillHolder, i);
 			
 			scrollLockParent.Insert(i, skillScrollViewUIInfo.ScrollViewLock.parent);
 
@@ -265,9 +280,29 @@ public class MainView : ViewBase
 			(
 				(evt) => SkillScrollViewGeometryChanged(skillScrollViewUIInfo)
 			);
-			
-			skillScrollViewUIInfos.Add(skillScrollViewUIInfo);
 		}
+	}
+	
+	/// <summary>
+	/// Mainly handle blocking scroll event and cache reference to skill holder with some
+	/// additional infos
+	/// </summary>
+	/// <param name="skillHolder"></param>
+	/// <param name="scrollViewIndex"></param>
+	void HandleSkillHolderView(VisualElement skillHolder, int scrollViewIndex)
+	{
+		/* We will mainly use this for referencing the middle point of the scroll view, which is
+		very important for dealing with event like touching, holding a skill, middle point will
+		be updated at ScrollView GeometryChanged event */
+		SkillHolderView skillHolderView = new SkillHolderView(skillHolder, skillScrollViews[scrollViewIndex]);
+		skillHolder.RegisterCallback<PointerMoveEvent>((evt) => 
+		{
+			/* Check When locked is set to true, lock the scroll view. Also scroll happen at 
+			scrollview.contentContainer.PointerMoveEvent(Bubble Up phase) so we can block it here */
+			if (skillScrollViewUIInfos[scrollViewIndex].ScrollViewLockState == ScrollViewLockState.Locked) evt.StopPropagation();
+		});
+		
+		skillScrollViewUIInfos[scrollViewIndex].skillHolderViews.Add(skillHolderView);
 	}
 
 	/// <summary>

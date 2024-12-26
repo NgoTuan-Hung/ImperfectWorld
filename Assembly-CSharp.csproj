@@ -65,40 +65,41 @@
     <Analyzer Include="D:\Program\unity\Editor\6000.0.30f1\Editor\Data\Tools\Unity.SourceGenerators\Unity.UIToolkit.SourceGenerator.dll" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\Game\Script\PlayerAttack.cs" />
+    <Compile Include="Assets\Game\Script\Game\CustomMono.cs" />
+    <Compile Include="Assets\Game\Script\Game\Skill.cs" />
     <Compile Include="Assets\Game\Script\UI\UIRenderer\TestVisualElement.cs" />
+    <Compile Include="Assets\Game\Script\Game\PlayerAttack.cs" />
     <Compile Include="Assets\Game\Script\UI\Extension\TouchExtension.cs" />
     <Compile Include="Assets\Game\Script\Other\PoolArgument.cs" />
+    <Compile Include="Assets\Game\Script\Game\BotAttack.cs" />
+    <Compile Include="Assets\Game\Script\Game\Testing.cs" />
     <Compile Include="Assets\Game\Script\Other\BinarySearchTree.cs" />
     <Compile Include="Assets\Cainos\Pixel Art Top Down - Basic\Script\SpriteColorAnimation.cs" />
-    <Compile Include="Assets\Game\Script\PlayerMovable.cs" />
-    <Compile Include="Assets\Game\Script\Attackable.cs" />
     <Compile Include="Assets\Game\Script\Other\CollideAndDamage.cs" />
     <Compile Include="Assets\Game\Script\UI\Other\VisualElementExtension.cs" />
     <Compile Include="Assets\Game\Script\UI\Model\RadialProgress.cs" />
+    <Compile Include="Assets\Game\Script\Game\GameEffect.cs" />
+    <Compile Include="Assets\Game\Script\ScriptableObject\SkillDataSO.cs" />
     <Compile Include="Assets\Game\Script\UI\MonoSingleton.cs" />
-    <Compile Include="Assets\Game\Script\CustomMono.cs" />
     <Compile Include="Assets\Game\Script\UI\View\ViewBase.cs" />
-    <Compile Include="Assets\Game\Script\AnimationEventFunctionCaller.cs" />
-    <Compile Include="Assets\Aseprite2Unity\Examples\MegaDad\MegaDadScript.cs" />
     <Compile Include="Assets\Game\Script\UI\UIRenderer\TestVisualElementVectorApi.cs" />
     <Compile Include="Assets\Game\Script\Other\PoolObject.cs" />
     <Compile Include="Assets\Game\Script\UI\UIRenderer\HealthUI.cs" />
-    <Compile Include="Assets\Game\Script\AnimatorWrapper.cs" />
-    <Compile Include="Assets\Game\Script\BotMovable.cs" />
     <Compile Include="Assets\Cainos\Pixel Art Top Down - Basic\Script\CameraFollow.cs" />
-    <Compile Include="Assets\Game\Script\Movable.cs" />
     <Compile Include="Assets\Cainos\Pixel Art Top Down - Basic\Script\TopDownCharacterController.cs" />
-    <Compile Include="Assets\Game\Script\BaseAction.cs" />
+    <Compile Include="Assets\Game\Script\Game\SkillBase.cs" />
     <Compile Include="Assets\Game\Script\UI\Other\SceneTool.cs" />
-    <Compile Include="Assets\Game\Script\BotAttack.cs" />
     <Compile Include="Assets\Game\Script\Other\ObjectPool.cs" />
     <Compile Include="Assets\Game\Script\UI\View\SkillTooltipView.cs" />
+    <Compile Include="Assets\Game\Script\Game\AnimatorWrapper.cs" />
     <Compile Include="Assets\Game\Script\UI\Other\SkillScrollViewUIInfo.cs" />
-    <Compile Include="Assets\Game\Script\Stat.cs" />
     <Compile Include="Assets\TutorialInfo\Scripts\Readme.cs" />
     <Compile Include="Assets\Cainos\Pixel Art Top Down - Basic\Script\PropsAltar.cs" />
+    <Compile Include="Assets\Game\Script\Game\PlayerMovable.cs" />
     <Compile Include="Assets\Game\Script\UI\View\GameUIManager.cs" />
+    <Compile Include="Assets\Game\Script\Game\Movable.cs" />
+    <Compile Include="Assets\Game\Script\Game\Attackable.cs" />
+    <Compile Include="Assets\Game\Script\Game\AnimationEventFunctionCaller.cs" />
     <Compile Include="Assets\Game\Script\UI\View\HelperLensDragAndDropManipulator.cs" />
     <Compile Include="Assets\Game\Script\UI\UIRenderer\HealthInnerUI.cs" />
     <Compile Include="Assets\Game\Script\UI\View\ConfigView.cs" />
@@ -106,11 +107,14 @@
     <Compile Include="Assets\Cainos\Pixel Art Top Down - Basic\Script\LayerTrigger.cs" />
     <Compile Include="Assets\Game\Script\UI\Model\ConfigContentItem.cs" />
     <Compile Include="Assets\Game\Script\UI\UIRenderer\TestVisualElementArc.cs" />
-    <Compile Include="Assets\Game\Script\GameManager.cs" />
+    <Compile Include="Assets\Game\Script\Game\Stat.cs" />
     <Compile Include="Assets\Game\Script\UI\View\MainView.cs" />
-    <Compile Include="Assets\Game\Script\Testing.cs" />
+    <Compile Include="Assets\Game\Script\Game\BaseAction.cs" />
     <Compile Include="Assets\Game\Script\UI\UIRenderer\RadialProgressUI.cs" />
+    <Compile Include="Assets\Game\Script\Ability\DashSkill.cs" />
     <Compile Include="Assets\Game\Script\Other\TestEvent.cs" />
+    <Compile Include="Assets\Game\Script\Game\BotMovable.cs" />
+    <Compile Include="Assets\Game\Script\Game\GameManager.cs" />
     <Compile Include="Assets\Game\Script\UI\Model\MainViewOptionData.cs" />
     <Compile Include="Assets\Game\Script\UI\Model\ConfigMenuItem.cs" />
     <Compile Include="Assets\Game\Script\UI\Model\SkillData.cs" />
@@ -122,7 +126,6 @@
     <None Include="Assets\Game\Graphics\UIToolkit\Uxml\TestEvent.uxml" />
     <None Include="Assets\Cainos\Pixel Art Top Down - Basic\Changelog.txt" />
     <None Include="Assets\Game\Graphics\UIToolkit\Uxml\StatInspector.uxml" />
-    <None Include="Assets\Aseprite2Unity\Examples\MegaDad\readme.txt" />
     <None Include="Assets\Cainos\Pixel Art Top Down - Basic\Shader\SH Sprite Shadow.shader" />
     <None Include="Assets\Game\Graphics\Aseprite\Char\StrongDude\file_rename.bat.txt" />
     <None Include="Assets\Cainos\Pixel Art Top Down - Basic\Shader\SH Sprite Shadow Mask.shader" />
@@ -1118,6 +1121,14 @@
       <HintPath>Library\ScriptAssemblies\Unity.AI.Navigation.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="Unity.2D.Common.Editor">
+      <HintPath>Library\ScriptAssemblies\Unity.2D.Common.Editor.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Unity.2D.Common.Path.Editor">
+      <HintPath>Library\ScriptAssemblies\Unity.2D.Common.Path.Editor.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="Unity.RenderPipeline.Universal.ShaderLibrary">
       <HintPath>Library\ScriptAssemblies\Unity.RenderPipeline.Universal.ShaderLibrary.dll</HintPath>
       <Private>False</Private>
@@ -1162,6 +1173,10 @@
       <HintPath>Library\ScriptAssemblies\Unity.PlasticSCM.Editor.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="Unity.2D.Aseprite.Editor">
+      <HintPath>Library\ScriptAssemblies\Unity.2D.Aseprite.Editor.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="Unity.Multiplayer.Center.Editor">
       <HintPath>Library\ScriptAssemblies\Unity.Multiplayer.Center.Editor.dll</HintPath>
       <Private>False</Private>
@@ -1182,6 +1197,10 @@
       <HintPath>Library\ScriptAssemblies\Unity.Cinemachine.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="Unity.InternalAPIEditorBridge.001">
+      <HintPath>Library\ScriptAssemblies\Unity.InternalAPIEditorBridge.001.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="Unity.Collections">
       <HintPath>Library\ScriptAssemblies\Unity.Collections.dll</HintPath>
       <Private>False</Private>
@@ -1198,6 +1217,10 @@
       <HintPath>Library\ScriptAssemblies\Unity.VisualScripting.Core.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="Unity.InternalAPIEngineBridge.001">
+      <HintPath>Library\ScriptAssemblies\Unity.InternalAPIEngineBridge.001.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="Unity.2D.Tilemap.Editor">
       <HintPath>Library\ScriptAssemblies\Unity.2D.Tilemap.Editor.dll</HintPath>
       <Private>False</Private>
@@ -1208,6 +1231,10 @@
     </Reference>
     <Reference Include="Unity.Splines.Editor">
       <HintPath>Library\ScriptAssemblies\Unity.Splines.Editor.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Unity.2D.Aseprite.Common">
+      <HintPath>Library\ScriptAssemblies\Unity.2D.Aseprite.Common.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Unity.RenderPipelines.Universal.Editor">
@@ -1252,6 +1279,10 @@
     </Reference>
     <Reference Include="Unity.2D.Tilemap.Extras">
       <HintPath>Library\ScriptAssemblies\Unity.2D.Tilemap.Extras.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Unity.2D.Common.Runtime">
+      <HintPath>Library\ScriptAssemblies\Unity.2D.Common.Runtime.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Unity.VisualScripting.SettingsProvider.Editor">
