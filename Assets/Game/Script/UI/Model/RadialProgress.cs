@@ -7,7 +7,6 @@ public class RadialProgress : MonoBehaviour
 	UIDocument uIDocument;
 	RadialProgressUI radialProgressUIInner;
 	RenderTexture renderTexture;
-	[SerializeField] private float progress = 0.1f;
 	Material material;
 	private void OnEnable() 
 	{
@@ -26,16 +25,6 @@ public class RadialProgress : MonoBehaviour
 		/*  */
 		
 		radialProgressUIInner = uIDocument.rootVisualElement.Q<RadialProgressUI>(name: "radial-progress-inner");	
-	}
-	
-	[SerializeField] private bool change = false;
-	private void Update() 
-	{
-		if (change)
-		{
-			change = false;
-			SetProgress(progress);
-		}
 	}
 	
 	public void SetProgress(float progress)

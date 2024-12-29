@@ -81,6 +81,7 @@
     <Compile Include="Assets\Game\Script\Game\GameEffect.cs" />
     <Compile Include="Assets\Game\Script\ScriptableObject\SkillDataSO.cs" />
     <Compile Include="Assets\Game\Script\UI\MonoSingleton.cs" />
+    <Compile Include="Assets\Game\Script\Other\KeepDistanceActionBound.cs" />
     <Compile Include="Assets\Game\Script\UI\View\ViewBase.cs" />
     <Compile Include="Assets\Game\Script\UI\UIRenderer\TestVisualElementVectorApi.cs" />
     <Compile Include="Assets\Game\Script\Other\PoolObject.cs" />
@@ -121,8 +122,10 @@
     <Compile Include="Assets\Game\Script\UI\Player\PlayerScript.cs" />
     <Compile Include="Assets\Game\Script\UI\Model\ConfigData.cs" />
     <Compile Include="Assets\Game\Script\UI\View\SkillHolderView.cs" />
+    <Compile Include="Assets\Game\Script\Other\ActionWrapper.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Assets\Game\Graphics\UIToolkit\USS\StatInspector.uss" />
     <None Include="Assets\Game\Graphics\UIToolkit\Uxml\TestEvent.uxml" />
     <None Include="Assets\Cainos\Pixel Art Top Down - Basic\Changelog.txt" />
     <None Include="Assets\Game\Graphics\UIToolkit\Uxml\StatInspector.uxml" />

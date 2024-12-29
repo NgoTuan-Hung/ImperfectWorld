@@ -1,11 +1,11 @@
 using System.Linq;
 using UnityEngine;
 
+[RequireComponent(typeof(CustomMono))]
 public class AnimatorWrapper : MonoBehaviour 
 {
-	private Animator animator;
+	public Animator animator;
 	public enum AddAnimationEventMode {Start, End, Any}
-	public Animator Animator { get => animator; set => animator = value; }
 
 	private void Awake() 
 	{

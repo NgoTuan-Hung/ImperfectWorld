@@ -27,8 +27,10 @@ public class BaseAction : MonoBehaviour
 	
 	public virtual void ToggleAnim(int boolHash, bool value)
 	{
-		customMono.AnimatorWrapper.Animator.SetBool(boolHash, value);
+		customMono.AnimatorWrapper.animator.SetBool(boolHash, value);
 	}
+	
+	public virtual bool GetBool(int boolHash) => customMono.AnimatorWrapper.animator.GetBool(boolHash);
 	
 	#if UNITY_EDITOR
 	public static Action onExitPlayModeEvent;

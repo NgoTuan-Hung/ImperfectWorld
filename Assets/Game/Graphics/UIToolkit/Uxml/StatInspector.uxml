@@ -1,6 +1,24 @@
-<engine:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:engine="UnityEngine.UIElements" xmlns:editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
-    <engine:VisualElement style="flex-grow: 1;">
-        <engine:ProgressBar value="0" title="Health" name="inspector__health-progress-bar" />
+<engine:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:engine="UnityEngine.UIElements" xmlns:editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="True">
+    <Style src="project://database/Assets/Game/Graphics/UIToolkit/USS/StatInspector.uss?fileID=7433441132597879392&amp;guid=e01248bc8a377b84091ef06c7797646d&amp;type=3#StatInspector" />
+    <engine:VisualElement style="flex-grow: 0;">
+        <engine:ProgressBar value="0" title="♥" name="inspector__health-progress-bar" />
         <engine:Slider label="Health" value="0" high-value="100" name="inspector__health-slider" />
+    </engine:VisualElement>
+    <engine:VisualElement style="flex-grow: 0; flex-direction: row;">
+        <engine:Slider label="Attack Speed" value="42.3" high-value="100" name="inspector__attack-speed-slider" style="width: 80%;" />
+        <engine:Label text="1 ⚔" name="inspector__attack-speed-label" style="flex-grow: 1; -unity-text-align: middle-center; width: 20%;" />
+    </engine:VisualElement>
+    <engine:VisualElement style="flex-grow: 0; border-left-color: rgb(0, 0, 0); border-right-color: rgb(0, 0, 0); border-top-color: rgb(0, 0, 0); border-bottom-color: rgb(0, 0, 0); border-top-width: 2px; border-right-width: 2px; border-bottom-width: 2px; border-left-width: 2px; background-color: rgba(0, 0, 0, 0.25); border-top-left-radius: 6px; border-top-right-radius: 6px; border-bottom-right-radius: 6px; border-bottom-left-radius: 6px;">
+        <engine:VisualElement style="flex-grow: 0; flex-direction: row;">
+            <engine:Label text="Move Speed 1 👟" name="inspector__move-speed-label" style="flex-grow: 1; -unity-text-align: middle-center; width: 20%;" />
+        </engine:VisualElement>
+        <engine:VisualElement style="flex-grow: 0; flex-direction: row;">
+            <engine:Slider label="Default Move Speed" value="42.3" high-value="100" name="inspector__default-move-speed-slider" style="width: 80%;" />
+            <engine:Label text="1 👢" name="inspector__default-move-speed-label" style="flex-grow: 1; -unity-text-align: middle-center; width: 20%;" />
+        </engine:VisualElement>
+        <engine:VisualElement style="flex-grow: 0; flex-direction: row;">
+            <engine:Slider label="Attack Move Speed Reduce Rate" value="42.3" high-value="100" name="inspector__attack-move-speed-reduce-rate-slider" tooltip="Move speed is multiplied by this ammount when attacking" style="width: 80%;" />
+            <engine:Label text="1 👠" name="inspector__attack-move-speed-reduce-rate-label" style="flex-grow: 1; -unity-text-align: middle-center; width: 20%;" />
+        </engine:VisualElement>
     </engine:VisualElement>
 </engine:UXML>

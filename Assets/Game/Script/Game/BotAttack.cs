@@ -6,16 +6,8 @@ public class BotAttack : Attackable
 {
 	
 	[SerializeField] private float attackRange = 0.5f;
-	public enum AttackMode {AttackWhenNear};
-	private AttackMode attackMode = AttackMode.AttackWhenNear;
-	public float MoveSpeedReduceRate { get => moveSpeedReduceRate; set 
-	{
-		moveSpeedReduceRate = value;
-		moveSpeedReduced = customMono.BotMovable.DefaultMoveSpeed * moveSpeedReduceRate;
-		// #if UNITY_EDITOR
-		// changeMoveSpeedReduceRate?.Invoke();
-		// #endif
-	} }
+	public enum AttackMode {AttackWhenNear, LongRangeAttack};
+	public AttackMode attackMode = AttackMode.AttackWhenNear;
 
 	public void ChangeMode(AttackMode mode)
 	{
@@ -24,6 +16,10 @@ public class BotAttack : Attackable
 			case AttackMode.AttackWhenNear:
 				attackMode = AttackMode.AttackWhenNear;
 				HandleAttackWhenNear();
+				break;
+			case AttackMode.LongRangeAttack:
+				attackMode = AttackMode.LongRangeAttack;
+				HandleLongRangeAttack();
 				break;
 			default:
 				break;
@@ -43,7 +39,7 @@ public class BotAttack : Attackable
 			targetVector = customMono.Target.transform.position - transform.position;
 			if (CanAttack && targetVector.magnitude < attackRange)
 			{
-				customMono.BotMovable.MoveSpeed = MoveSpeedReduced;
+				customMono.stat.MoveSpeed = customMono.stat.attackMoveSpeedReduced;
 				ToggleAttackAnim(true);
 				canAttack = false;
 				CollideAndDamage attackCollider = attackColliderPool.PickOne().collideAndDamage;
@@ -60,6 +56,45 @@ public class BotAttack : Attackable
 		}
 	}
 	
+	void HandleLongRangeAttack()
+	{
+		StartCoroutine(LongRangeAttackCoroutine());
+	}
+	
+	IEnumerator LongRangeAttackCoroutine()
+	{
+		Vector3 targetVector, projectileVector;
+		while (true)
+		{
+			targetVector = customMono.Target.transform.position - transform.position;
+			if (canAttack && targetVector.magnitude < attackRange)
+			{
+				customMono.stat.MoveSpeed = customMono.stat.attackMoveSpeedReduced;
+				ToggleAttackAnim(true);
+				canAttack = false;
+				GameEffect projectileEffect = longRangeProjectilePool.PickOne().gameEffect;
+				projectileEffect.collideAndDamage.AlliesTag = customMono.AlliesTag;
+				projectileEffect.transform.position = longRangeFirePoint.transform.position;
+				projectileEffect.transform.rotation = Quaternion.Euler(0, 0, Vector2.SignedAngle
+				(
+					Vector2.right,
+					projectileVector = customMono.Target.transform.position - projectileEffect.transform.position
+				));
+				
+				projectileEffect.KeepFlyingAt(projectileVector);
+			}
+
+			while (GetAttackBool())
+			{
+				customMono.SetUpdateDirectionIndicator(targetVector, UpdateDirectionIndicatorPriority.Low);
+				yield return new WaitForSeconds(Time.fixedDeltaTime);
+				targetVector = customMono.Target.transform.position - transform.position;
+			}
+			
+			yield return new WaitForSeconds(Time.fixedDeltaTime);
+		}
+	}
+	
 	public override void Awake() 
 	{
 		base.Awake();
@@ -68,7 +103,6 @@ public class BotAttack : Attackable
 	public override void Start() 
 	{
 		base.Start();
-		moveSpeedReduced = customMono.BotMovable.DefaultMoveSpeed * moveSpeedReduceRate;
 		customMono.AnimationEventFunctionCaller.resetAttackAction += ResetAttack;
 		customMono.AnimatorWrapper.AddAnimationEvent(AttackClip, "ResetAttack", AnimatorWrapper.AddAnimationEventMode.End);
 		ChangeMode(attackMode);	
@@ -77,13 +111,13 @@ public class BotAttack : Attackable
 	public void ResetAttack()
 	{
 		ToggleAttackAnim(false);
-		customMono.BotMovable.SetDefaultMoveSpeed();
+		customMono.stat.SetDefaultMoveSpeed();
 		StartCoroutine(ResetAttackCoroutine());
 	}
 	
 	public IEnumerator ResetAttackCoroutine()
 	{
-		yield return new WaitForSeconds(AttackCooldown);
+		yield return new WaitForSeconds(attackCooldown);
 		canAttack = true;
 	}
 }

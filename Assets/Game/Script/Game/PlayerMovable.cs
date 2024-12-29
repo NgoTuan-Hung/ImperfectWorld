@@ -20,7 +20,6 @@ public class PlayerMovable : Movable
 		{
 			ToggleMoveAnim(true);
 			moveVector.Scale(inverseY);
-			UpdateDirectionIndicator(moveVector);
 			Move(moveVector);
 		}
 		else ToggleMoveAnim(false);

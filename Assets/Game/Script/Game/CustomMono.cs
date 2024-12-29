@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+public enum UpdateDirectionIndicatorPriority {VeryLow = 4, Low = 3, Medium = 2, High = 1, VeryHigh = 0}
 public class CustomMono : MonoBehaviour, IComparable<CustomMono>
 {
 	public bool isBot = true;
@@ -17,15 +18,16 @@ public class CustomMono : MonoBehaviour, IComparable<CustomMono>
 	{
 		get {return playerMovable;}
 	}
-	private Stat stat;
+	public Stat stat;
 	GameObject directionIndicator;
+	float directionIndicatorAngle;
+	Vector2[] updateDirectionIndicatorQueue = new Vector2[5];
 	public AnimatorWrapper AnimatorWrapper { get => animatorWrapper; set => animatorWrapper = value; }
 	public GameObject Target { get => target; set => target = value; }
 	public GameObject MainComponent { get => mainComponent; set => mainComponent = value; }
 	public AnimationEventFunctionCaller AnimationEventFunctionCaller { get => animationEventFunctionCaller; set => animationEventFunctionCaller = value; }
 	public BotMovable BotMovable { get => botMovable; set => botMovable = value; }
 	public BotAttack BotAttack { get => botAttack; set => botAttack = value; }
-	public Stat Stat { get => stat; set => stat = value; }
 	public Dictionary<string, bool> AlliesTag { get => alliesTag; set => alliesTag = value; }
 	public GameObject DirectionIndicator { get => directionIndicator; set => directionIndicator = value; }
 	public SpriteRenderer SpriteRenderer { get => spriteRenderer; set => spriteRenderer = value; }
@@ -66,6 +68,11 @@ public class CustomMono : MonoBehaviour, IComparable<CustomMono>
 		
 	}
 	
+	private void LateUpdate() 
+	{
+		UpdateDirectionIndicator();	
+	}
+	
 	void GetBotBaseAction()
 	{
 		botMovable = GetComponent<BotMovable>();
@@ -80,5 +87,31 @@ public class CustomMono : MonoBehaviour, IComparable<CustomMono>
 	public int CompareTo(CustomMono other)
 	{
 		return gameObject.GetHashCode().CompareTo(other.gameObject.GetHashCode());
+	}
+	
+	/// <summary>
+	/// Higher priority will be updated 
+	/// </summary>
+	/// <param name="direction"></param>
+	/// <param name="priority"></param>
+	public void SetUpdateDirectionIndicator(Vector2 direction, UpdateDirectionIndicatorPriority priority)
+	{
+		updateDirectionIndicatorQueue[(int)priority] = direction;
+	}
+	
+	void UpdateDirectionIndicator()
+	{
+		for (int i=0;i<updateDirectionIndicatorQueue.Length;i++)
+		{
+			if (updateDirectionIndicatorQueue[i] != Vector2.zero)
+			{
+				SpriteRenderer.transform.localScale = new Vector3(updateDirectionIndicatorQueue[i].x > 0 ? 1 : -1, 1, 1);
+				directionIndicatorAngle = Vector2.SignedAngle(Vector2.right, updateDirectionIndicatorQueue[i]);
+				DirectionIndicator.transform.rotation = Quaternion.Euler(0, 0, directionIndicatorAngle);
+				break;
+			}
+		}
+		
+		for (int i=0;i<updateDirectionIndicatorQueue.Length;i++) updateDirectionIndicatorQueue[i] = Vector2.zero;
 	}
 }

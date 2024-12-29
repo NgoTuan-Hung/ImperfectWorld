@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 8191004188431286078}
   - component: {fileID: 5561530595569507496}
   - component: {fileID: 6272368383618330399}
+  - component: {fileID: 501464346794039041}
   m_Layer: 6
   m_Name: AttackCollider
   m_TagString: Untagged
@@ -119,6 +120,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 154a6a151704bea43b23fe6d54e16d48, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  collideDamage: 15
+--- !u!114 &501464346794039041
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2838700495496133991}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 168cfb170d8d5ef49a8d48318a9a5709, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  animator: {fileID: 0}
+  spriteRenderer: {fileID: 0}
   isDeactivatedAfterTime: 1
   deactivateTime: 1
-  collideDamage: 15
