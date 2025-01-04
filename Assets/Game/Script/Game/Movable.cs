@@ -1,6 +1,6 @@
 using UnityEngine;
 using UnityEngine.UIElements.Experimental;
-public class Movable : BaseAction 
+public class Movable : BaseAction
 {
 	protected Vector2 moveVector;
 	private bool canMove = true;
@@ -12,14 +12,15 @@ public class Movable : BaseAction
 		base.Awake();
 	}
 
-    public override void Start()
-    {
-        
-    }
+	public override void Start()
+	{
+		
+	}
 
-    
+	
 	public void Move(Vector2 direction)
 	{
+		if (!GetMoveBool()) ToggleMoveAnim(true);
 		customMono.SetUpdateDirectionIndicator(direction, UpdateDirectionIndicatorPriority.VeryLow);
 		transform.position += (Vector3)direction.normalized * customMono.stat.moveSpeedPerFrame;
 	}
@@ -28,4 +29,6 @@ public class Movable : BaseAction
 	{
 		customMono.AnimatorWrapper.animator.SetBool(walkBoolHash, value);
 	}
+	
+	public bool GetMoveBool() => GetBool(walkBoolHash);
 }

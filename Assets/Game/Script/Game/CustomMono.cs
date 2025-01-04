@@ -11,8 +11,10 @@ public class CustomMono : MonoBehaviour, IComparable<CustomMono>
 	private SpriteRenderer spriteRenderer;
 	private AnimatorWrapper animatorWrapper;
 	private AnimationEventFunctionCaller animationEventFunctionCaller;
-	private BotMovable botMovable;
-	private BotAttack botAttack;
+	public Movable movable;
+	public Attackable attackable;
+	public MovementIntelligence movementIntelligence;
+	public ActionIntelligence actionIntelligence;
 	private PlayerMovable playerMovable;
 	public PlayerMovable PlayerMovable
 	{
@@ -22,12 +24,14 @@ public class CustomMono : MonoBehaviour, IComparable<CustomMono>
 	GameObject directionIndicator;
 	float directionIndicatorAngle;
 	Vector2[] updateDirectionIndicatorQueue = new Vector2[5];
+	/// <summary>
+	/// Just caching time for CollideAndDamage multiple collision handler
+	/// </summary>
+	public float multipleCollideCurrentTime = 0f;
 	public AnimatorWrapper AnimatorWrapper { get => animatorWrapper; set => animatorWrapper = value; }
 	public GameObject Target { get => target; set => target = value; }
 	public GameObject MainComponent { get => mainComponent; set => mainComponent = value; }
 	public AnimationEventFunctionCaller AnimationEventFunctionCaller { get => animationEventFunctionCaller; set => animationEventFunctionCaller = value; }
-	public BotMovable BotMovable { get => botMovable; set => botMovable = value; }
-	public BotAttack BotAttack { get => botAttack; set => botAttack = value; }
 	public Dictionary<string, bool> AlliesTag { get => alliesTag; set => alliesTag = value; }
 	public GameObject DirectionIndicator { get => directionIndicator; set => directionIndicator = value; }
 	public SpriteRenderer SpriteRenderer { get => spriteRenderer; set => spriteRenderer = value; }
@@ -41,7 +45,6 @@ public class CustomMono : MonoBehaviour, IComparable<CustomMono>
 		if (isBot)
 		{
 			target = GameObject.Find("Player");
-			GetBotBaseAction();
 		}
 		else
 		{
@@ -56,6 +59,10 @@ public class CustomMono : MonoBehaviour, IComparable<CustomMono>
 		spriteRenderer = GetComponentInChildren<SpriteRenderer>();
 		animatorWrapper = GetComponent<AnimatorWrapper>();
 		stat = GetComponent<Stat>();
+		movable = GetComponent<Movable>();
+		attackable = GetComponent<Attackable>();
+		movementIntelligence = GetComponent<MovementIntelligence>();
+		actionIntelligence = GetComponent<ActionIntelligence>();
 	}
 	
 	void GetAllChildObject()
@@ -65,18 +72,13 @@ public class CustomMono : MonoBehaviour, IComparable<CustomMono>
 	
 	private void Start() 
 	{
-		
+		//
 	}
 	
-	private void LateUpdate() 
+	private void FixedUpdate() 
 	{
+		if (multipleCollideCurrentTime > 0) multipleCollideCurrentTime -= Time.fixedDeltaTime;
 		UpdateDirectionIndicator();	
-	}
-	
-	void GetBotBaseAction()
-	{
-		botMovable = GetComponent<BotMovable>();
-		botAttack = GetComponent<BotAttack>();
 	}
 	
 	void GetBaseAction()

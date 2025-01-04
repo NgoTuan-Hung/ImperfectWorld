@@ -66,12 +66,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\Game\Script\Game\CustomMono.cs" />
+    <Compile Include="Assets\Game\Script\Game\ActionIntelligence.cs" />
     <Compile Include="Assets\Game\Script\Game\Skill.cs" />
     <Compile Include="Assets\Game\Script\UI\UIRenderer\TestVisualElement.cs" />
     <Compile Include="Assets\Game\Script\Game\PlayerAttack.cs" />
     <Compile Include="Assets\Game\Script\UI\Extension\TouchExtension.cs" />
     <Compile Include="Assets\Game\Script\Other\PoolArgument.cs" />
-    <Compile Include="Assets\Game\Script\Game\BotAttack.cs" />
     <Compile Include="Assets\Game\Script\Game\Testing.cs" />
     <Compile Include="Assets\Game\Script\Other\BinarySearchTree.cs" />
     <Compile Include="Assets\Cainos\Pixel Art Top Down - Basic\Script\SpriteColorAnimation.cs" />
@@ -81,13 +81,16 @@
     <Compile Include="Assets\Game\Script\Game\GameEffect.cs" />
     <Compile Include="Assets\Game\Script\ScriptableObject\SkillDataSO.cs" />
     <Compile Include="Assets\Game\Script\UI\MonoSingleton.cs" />
-    <Compile Include="Assets\Game\Script\Other\KeepDistanceActionBound.cs" />
+    <Compile Include="Assets\Game\Script\Game\BaseIntelligence.cs" />
     <Compile Include="Assets\Game\Script\UI\View\ViewBase.cs" />
+    <Compile Include="Assets\Game\Script\Other\ArrayExtension.cs" />
     <Compile Include="Assets\Game\Script\UI\UIRenderer\TestVisualElementVectorApi.cs" />
     <Compile Include="Assets\Game\Script\Other\PoolObject.cs" />
     <Compile Include="Assets\Game\Script\UI\UIRenderer\HealthUI.cs" />
     <Compile Include="Assets\Cainos\Pixel Art Top Down - Basic\Script\CameraFollow.cs" />
+    <Compile Include="Assets\Game\Script\Game\MyBotPersonality.cs" />
     <Compile Include="Assets\Cainos\Pixel Art Top Down - Basic\Script\TopDownCharacterController.cs" />
+    <Compile Include="Assets\Game\Script\Game\MovementIntelligence.cs" />
     <Compile Include="Assets\Game\Script\Game\SkillBase.cs" />
     <Compile Include="Assets\Game\Script\UI\Other\SceneTool.cs" />
     <Compile Include="Assets\Game\Script\Other\ObjectPool.cs" />
@@ -114,7 +117,7 @@
     <Compile Include="Assets\Game\Script\UI\UIRenderer\RadialProgressUI.cs" />
     <Compile Include="Assets\Game\Script\Ability\DashSkill.cs" />
     <Compile Include="Assets\Game\Script\Other\TestEvent.cs" />
-    <Compile Include="Assets\Game\Script\Game\BotMovable.cs" />
+    <Compile Include="Assets\Game\Script\Ability\MagicLaserSkill.cs" />
     <Compile Include="Assets\Game\Script\Game\GameManager.cs" />
     <Compile Include="Assets\Game\Script\UI\Model\MainViewOptionData.cs" />
     <Compile Include="Assets\Game\Script\UI\Model\ConfigMenuItem.cs" />

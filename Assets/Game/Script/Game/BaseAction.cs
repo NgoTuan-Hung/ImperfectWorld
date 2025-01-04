@@ -1,5 +1,7 @@
 using UnityEngine;
 using System;
+using System.Linq;
+using Random = UnityEngine.Random;
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -21,7 +23,11 @@ public class BaseAction : MonoBehaviour
 	public virtual void Start()
 	{
 		#if UNITY_EDITOR
-		EditorApplication.playModeStateChanged += OnExitPlayMode;
+		if (!onExitPlayModeAdded)
+		{
+			EditorApplication.playModeStateChanged += OnExitPlayMode;
+			onExitPlayModeAdded = true;
+		}
 		#endif
 	}
 	
@@ -34,6 +40,7 @@ public class BaseAction : MonoBehaviour
 	
 	#if UNITY_EDITOR
 	public static Action onExitPlayModeEvent;
+	public static bool onExitPlayModeAdded = false;
 	static void OnExitPlayMode(PlayModeStateChange playModeStateChange)
 	{
 		if (onExitPlayModeEvent == null) return;
@@ -43,6 +50,7 @@ public class BaseAction : MonoBehaviour
 			onExitPlayModeEvent();
 			onExitPlayModeEvent = null;	
 			EditorApplication.playModeStateChanged -= OnExitPlayMode;
+			onExitPlayModeAdded = false;
 		}
 	}
 	#endif

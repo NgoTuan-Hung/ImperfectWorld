@@ -18,7 +18,6 @@ public class PlayerMovable : Movable
 	{
 		if (moveVector != Vector2.zero)
 		{
-			ToggleMoveAnim(true);
 			moveVector.Scale(inverseY);
 			Move(moveVector);
 		}

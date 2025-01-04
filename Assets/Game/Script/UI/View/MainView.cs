@@ -22,6 +22,7 @@ public class MainView : ViewBase
 	public Action clickAttackButtonEvent = () => { };
 	public Action<Vector2> holdAttackButtonEvent = (vector2) => { };
 	Vector2 attackDirection, inverseY = new Vector2(1, -1);
+	public delegate void AddSkillToScrollViewDelegate(Touch touch, Vector2 direction);
 
 	public void Init() 
 	{
@@ -183,11 +184,11 @@ public class MainView : ViewBase
 		}
 	}
 	
-	public void AddSkillToScrollView(SkillDataSo skillDataSO, Action<Touch> trigger)
+	public void AddSkillToScrollView(SkillDataSo skillDataSO, AddSkillToScrollViewDelegate trigger)
 	{
 		var newSkillHolder = skillHolderTemplate.Instantiate();
 		skillScrollViews[skillDataSO.skillButtonIndex].contentContainer.Add(newSkillHolder);
-		HandleSkillHolderView(newSkillHolder, skillDataSO.skillButtonIndex);
+		SkillHolderView t_skillHolderView = HandleSkillHolderView(newSkillHolder, skillDataSO.skillButtonIndex);
 		
 		/* Add image for skill holder */
 		newSkillHolder.Q<VisualElement>("skill-holder-in").style.backgroundImage = new StyleBackground(skillDataSO.skillImage);
@@ -214,14 +215,39 @@ public class MainView : ViewBase
 				newSkillHolder.RegisterCallback<PointerDownEvent>((evt) => 
 				{
 					var touch = TouchExtension.GetTouchOverlapVisualElement(newSkillHolder, root.panel);
-					trigger(touch);
+					trigger(touch, default);
 				});
 				break;
 			case SkillDataSo.InputType.Hold:
 				break;
+			case SkillDataSo.InputType.HoldAndRelease:
+				newSkillHolder.RegisterCallback<PointerDownEvent>((evt) => 
+				{
+					var touch = TouchExtension.GetTouchOverlapVisualElement(newSkillHolder, root.panel);
+					StartCoroutine(SkillHolderHoldAndReleaseCoroutine(touch, t_skillHolderView, trigger));
+				});
+				break;
 			default:
 				break;
 		}
+	}
+	
+	/// <summary>
+	/// Handle holding the skill holder button and trigger action at releasing.
+	/// </summary>
+	/// <param name="touch"></param>
+	/// <param name="skillHolderView"></param>
+	/// <param name="trigger"></param>
+	/// <returns></returns>
+	IEnumerator SkillHolderHoldAndReleaseCoroutine(Touch touch, SkillHolderView skillHolderView, AddSkillToScrollViewDelegate trigger)
+	{
+		while (touch.phase != UnityEngine.InputSystem.TouchPhase.Ended) yield return new WaitForSeconds(Time.fixedDeltaTime);
+		
+		/* Direction will be a vector from button middle point to our current touch */
+		Vector2 t_touchPos = RuntimePanelUtils.ScreenToPanel(root.panel, new Vector2(touch.screenPosition.x, Screen.height - touch.screenPosition.y)),
+		t_direction = t_touchPos - skillHolderView.midPos;
+		t_direction.Scale(inverseY);
+		trigger(touch, t_direction);
 	}
 	
 	/// <summary>
@@ -289,7 +315,7 @@ public class MainView : ViewBase
 	/// </summary>
 	/// <param name="skillHolder"></param>
 	/// <param name="scrollViewIndex"></param>
-	void HandleSkillHolderView(VisualElement skillHolder, int scrollViewIndex)
+	SkillHolderView HandleSkillHolderView(VisualElement skillHolder, int scrollViewIndex)
 	{
 		/* We will mainly use this for referencing the middle point of the scroll view, which is
 		very important for dealing with event like touching, holding a skill, middle point will
@@ -303,6 +329,7 @@ public class MainView : ViewBase
 		});
 		
 		skillScrollViewUIInfos[scrollViewIndex].skillHolderViews.Add(skillHolderView);
+		return skillHolderView;
 	}
 
 	/// <summary>

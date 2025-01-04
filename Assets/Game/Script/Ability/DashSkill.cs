@@ -8,19 +8,19 @@ public class DashSkill : SkillBase
 	static ObjectPool dashEffectPool;
 	GameObject dashEffectPrefab;
 	public int totalEffect = 10;
-	public float dashTime = 1f;
-	public float dashCooldown = 2f;
-	bool canDash = true;
 	public float dashAmmountPerFrame = 0.5f;
 	public float effectLifeTime = 0.5f;
 	public float spawnEffectInterval;
-	public Vector3 effectActiveLocation = new Vector3(0, 999, 0);
 	public override void Awake()
 	{
 		base.Awake();
+		duration = 1f;
+		cooldown = 2f;
+		skillUses.Add(SkillUse.Dodge); skillUses.Add(SkillUse.MoveAway); skillUses.Add(SkillUse.GetCloser);
+		
 		dashEffectPrefab = Resources.Load("DashEffect") as GameObject;
 		dashEffectPool ??= new ObjectPool(dashEffectPrefab, 100, new PoolArgument(typeof(GameEffect), PoolArgument.WhereComponent.Self));
-		spawnEffectInterval = dashTime / totalEffect;
+		spawnEffectInterval = duration / totalEffect;
 	}
 
 	public override void Start()
@@ -30,24 +30,23 @@ public class DashSkill : SkillBase
 		onExitPlayModeEvent += () => dashEffectPool = null;
 		#endif
 	}
-	
-	public override void Trigger(Touch touch)
+
+	public override void Trigger(Touch touch = default, Vector2 location = default, Vector2 direction = default)
 	{
-		if (canDash)
+		if (canUse)
 		{
-			canDash = false;
+			canUse = false;
 			List<PoolObject> poolObjects = dashEffectPool.PickAndPlace(totalEffect, effectActiveLocation);
-			StartCoroutine(Dashing(poolObjects));
+			StartCoroutine(Dashing(poolObjects, direction));
 			StartCoroutine(DashCooldownCoroutine());
 		}
 	}
 	
-	public IEnumerator Dashing(List<PoolObject> poolObjects)
+	public IEnumerator Dashing(List<PoolObject> poolObjects, Vector3 direction)
 	{
 		GameEffect gameEffect;
-		Vector3 direction = customMono.DirectionIndicator.transform.TransformDirection(Vector3.right).normalized;
-		direction.z = 0;
-		direction *= dashAmmountPerFrame;
+		direction = direction.normalized * dashAmmountPerFrame;
+		customMono.SetUpdateDirectionIndicator(direction, UpdateDirectionIndicatorPriority.Low);
 		for (int i = 0; i < poolObjects.Count; i++)
 		{
 			gameEffect = poolObjects[i].gameEffect;
@@ -77,7 +76,7 @@ public class DashSkill : SkillBase
 	
 	public IEnumerator DashCooldownCoroutine()
 	{
-		yield return new WaitForSeconds(dashCooldown);
-		canDash = true;
+		yield return new WaitForSeconds(cooldown);
+		canUse = true;
 	}
 }

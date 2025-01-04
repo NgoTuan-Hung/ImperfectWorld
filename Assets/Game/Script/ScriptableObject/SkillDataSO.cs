@@ -3,7 +3,7 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "SkillDataSO", menuName = "ScriptableObjects/SkillDataSO")]
 public class SkillDataSo : ScriptableObject
 {
-	public enum InputType {Click, Hold}
+	public enum InputType {Click, Hold, HoldAndRelease}
 	public InputType inputType;
 	public string skillName;
 	public Texture2D skillImage;

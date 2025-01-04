@@ -11,17 +11,18 @@ public class Skill : BaseAction
 		base.Awake();
 	}
 
-    public override void Start()
-    {
-        if (!customMono.isBot) InitSkill();
-    }
-    
+	public override void Start()
+	{
+		if (!customMono.isBot) InitSkill();
+	}
+	
 	void InitSkill()
 	{
 		skillDatas.ForEach(skillData => 
 		{
 			SkillBase skill = gameObject.AddComponent(Type.GetType(skillData.skillName)) as SkillBase;
-			GameUIManager.Instance.MainView.AddSkillToScrollView(skillData, skill.Trigger);
+			GameUIManager.Instance.MainView.AddSkillToScrollView(skillData,
+			(touch, direction) => skill.Trigger(touch, direction: direction));
 		});
 	}		
 }

@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.Playables;
 
 public class GameEffect : MonoBehaviour 
 {
@@ -10,7 +11,10 @@ public class GameEffect : MonoBehaviour
 	Action deactiveAfterTime = () => {};
 	[SerializeField] private float deactivateTime = 1f;
 	public CollideAndDamage collideAndDamage;
+	PlayableDirector playableDirector;
+	public bool isTimeline = false;
 	public float flyAtSpeed = 0.03f;
+	Action onEnable = () => {};
 	
 	private void Awake() 
 	{
@@ -18,10 +22,16 @@ public class GameEffect : MonoBehaviour
 		{
 			StartCoroutine(DeactivateAfterTimeCoroutine());
 		};
+		
+		collideAndDamage = GetComponent<CollideAndDamage>();
+		playableDirector = GetComponent<PlayableDirector>();
+		
+		if (isTimeline) onEnable += () => playableDirector.Play();
 	}
-	
+
 	private void OnEnable() {
 		deactiveAfterTime();	
+		onEnable();
 	}
 	
 	IEnumerator DeactivateAfterTimeCoroutine()
