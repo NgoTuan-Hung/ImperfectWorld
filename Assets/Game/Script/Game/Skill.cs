@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using UnityEngine;
 
 public class Skill : BaseAction
 {
@@ -13,7 +12,7 @@ public class Skill : BaseAction
 
 	public override void Start()
 	{
-		if (!customMono.isBot) InitSkill();
+		InitSkill();
 	}
 	
 	void InitSkill()
@@ -21,8 +20,13 @@ public class Skill : BaseAction
 		skillDatas.ForEach(skillData => 
 		{
 			SkillBase skill = gameObject.AddComponent(Type.GetType(skillData.skillName)) as SkillBase;
-			GameUIManager.Instance.MainView.AddSkillToScrollView(skillData,
-			(touch, direction) => skill.Trigger(touch, direction: direction));
+			customMono.actionIntelligence.AddManuals(skill.botActionManuals);
+
+			if (!customMono.isBot)
+			{
+				GameUIManager.Instance.MainView.AddSkillToScrollView(skillData,
+				(touch, direction) => skill.Trigger(touch, direction: direction));
+			}
 		});
 	}		
 }

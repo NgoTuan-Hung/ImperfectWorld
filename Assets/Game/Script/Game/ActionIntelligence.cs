@@ -3,7 +3,6 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.Events;
 
-public enum MyAction {MeleeAttack, RangedAttack, NoAttack}
 public class ActionIntelligence : BaseIntelligence
 {	
 	[SerializeField] private float attackRange = 0.5f;
@@ -21,13 +20,7 @@ public class ActionIntelligence : BaseIntelligence
 
 	public override void InitAction()
 	{
-		actionChances = new int[3];
-		actionCumulativeDistribution = new float[actionChances.Length];
-		actions = new ActionDelegate[actionChances.Length];
-		
-		actions[0] = customMono.attackable.MeleeAttack;
-		actions[1] = customMono.attackable.RangedAttack;
-		actions[2] = (vector) => {return;};
+		AddManuals(customMono.attackable.botActionManuals);
 	}
 	
 	public override void Awake() 

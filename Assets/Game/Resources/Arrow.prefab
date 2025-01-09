@@ -158,7 +158,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 154a6a151704bea43b23fe6d54e16d48, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  collideType: 0
   collideDamage: 10
+  multipleCollideInterval: 0.05
 --- !u!114 &6101583677916030580
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -176,6 +178,7 @@ MonoBehaviour:
   isDeactivatedAfterTime: 1
   deactivateTime: 5
   collideAndDamage: {fileID: 3938034275475882467}
+  isTimeline: 0
   flyAtSpeed: 0.2
 --- !u!61 &760658389573827821
 BoxCollider2D:
@@ -193,7 +196,7 @@ BoxCollider2D:
     m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 119
+    m_Bits: 247
   m_LayerOverridePriority: 0
   m_ForceSendLayers:
     serializedVersion: 2

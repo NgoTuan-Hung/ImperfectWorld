@@ -1,13 +1,20 @@
+using System;
 using UnityEngine;
 
+public enum MyBotCombatBehaviour {Melee, Ranged}
 public class MyBotPersonality : BaseIntelligence
 {
 	Vector2 moveVector;
 	float distanceToTarget;
-	public float meleeRange = 1f;
+	public float logicalAttackRange = 1f;
+	public float targetTooCloseRange = 1f;
+	public MyBotCombatBehaviour myBotCombatBehaviour;
+	Action Think;
 	public override void Awake()
 	{
 		base.Awake();
+		if (myBotCombatBehaviour == MyBotCombatBehaviour.Melee) Think = MeleeThinking;
+		else Think = RangedThinking;
 	}
 
 	public override void Start()
@@ -17,22 +24,28 @@ public class MyBotPersonality : BaseIntelligence
 	
 	private void FixedUpdate() 
 	{
-		Think();
+		Think(); //
 		DoAction();
 	}
 	
-	void Think()
+	void MeleeThinking()
 	{
 		ThinkAboutNumbers();
 		ThinkAboutDistanceToTarget();
-		customMono.actionIntelligence.AddActionChance((int)MyAction.NoAttack, 1);
-		customMono.movementIntelligence.AddActionChance((int)MoveAction.Idle, 1);
+		if (customMono.attackable.onCooldown)
+		{
+			customMono.movementIntelligence.PreSumActionChance(ActionUse.GetAway, 15);
+			customMono.actionIntelligence.PreSumActionChance(ActionUse.GetAway, 15);
+		}
+		
+		customMono.movementIntelligence.PreSumActionChance(ActionUse.Passive, 5);
+		customMono.actionIntelligence.PreSumActionChance(ActionUse.Passive, 5);
 	}
 	
 	void DoAction()
 	{
-		customMono.movementIntelligence.ExecuteAnyActionThisFrame(moveVector);
-		customMono.actionIntelligence.ExecuteAnyActionThisFrame(moveVector);
+		customMono.movementIntelligence.ExecuteAnyActionThisFrame(customMono.movementActionInterval, moveVector, customMono.Target.transform.position);
+		customMono.actionIntelligence.ExecuteAnyActionThisFrame(customMono.actionInterval, moveVector, customMono.Target.transform.position);
 	}
 	
 	void ThinkAboutNumbers()
@@ -43,16 +56,69 @@ public class MyBotPersonality : BaseIntelligence
 	
 	void ThinkAboutDistanceToTarget()
 	{
-		if (distanceToTarget > meleeRange)
+		if (distanceToTarget > logicalAttackRange)
 		{
-			customMono.movementIntelligence.AddActionChance((int)MoveAction.MoveToTarget, 30);
-			customMono.movementIntelligence.AddActionChance((int)MoveAction.MoveRandomly, 1);
+			customMono.movementIntelligence.PreSumActionChance(ActionUse.GetCloser, 30);
+			customMono.movementIntelligence.PreSumActionChance(ActionUse.Dodge, 5);
+			customMono.actionIntelligence.PreSumActionChance(ActionUse.GetCloser, 30);
+			customMono.actionIntelligence.PreSumActionChance(ActionUse.Dodge, 5);
 		}
 		else
 		{
-			customMono.movementIntelligence.AddActionChance((int)MoveAction.MoveRandomly, 5);
-			customMono.movementIntelligence.AddActionChance((int)MoveAction.MoveToTarget, 5);
-			customMono.actionIntelligence.AddActionChance((int)MyAction.MeleeAttack, 50);
+			customMono.movementIntelligence.PreSumActionChance(ActionUse.Dodge, 5);
+			customMono.movementIntelligence.PreSumActionChance(ActionUse.GetCloser, 5);
+			customMono.movementIntelligence.PreSumActionChance(ActionUse.GetAway, 5);
+			customMono.actionIntelligence.PreSumActionChance(ActionUse.Dodge, 5);
+			customMono.actionIntelligence.PreSumActionChance(ActionUse.GetCloser, 5);
+			customMono.actionIntelligence.PreSumActionChance(ActionUse.GetAway, 5);
+			customMono.actionIntelligence.PreSumActionChance(ActionUse.MeleeDamage, 30);
+		}
+	}
+	
+	void RangedThinking()
+	{
+		ThinkAboutNumbers();
+		
+		customMono.movementIntelligence.PreSumActionChance(ActionUse.Dodge, 5);
+		customMono.movementIntelligence.PreSumActionChance(ActionUse.GetCloser, 5);
+		customMono.movementIntelligence.PreSumActionChance(ActionUse.GetAway, 5);
+		customMono.movementIntelligence.PreSumActionChance(ActionUse.Passive, 5);
+		customMono.actionIntelligence.PreSumActionChance(ActionUse.Dodge, 5);
+		customMono.actionIntelligence.PreSumActionChance(ActionUse.GetCloser, 5);
+		customMono.actionIntelligence.PreSumActionChance(ActionUse.GetAway, 5);
+		customMono.actionIntelligence.PreSumActionChance(ActionUse.Passive, 5);
+		customMono.actionIntelligence.PreSumActionChance(ActionUse.RangedDamage, 5);	
+		
+		
+		if (customMono.attackable.onCooldown)
+		{
+			customMono.movementIntelligence.PreSumActionChance(ActionUse.Dodge, 3);
+			customMono.movementIntelligence.PreSumActionChance(ActionUse.GetAway, 15);
+			customMono.actionIntelligence.PreSumActionChance(ActionUse.Dodge, 3);
+			customMono.actionIntelligence.PreSumActionChance(ActionUse.GetAway, 15);
+		}
+		
+		if (distanceToTarget > targetTooCloseRange)
+		{
+			if (distanceToTarget < logicalAttackRange)
+			{
+				customMono.actionIntelligence.PreSumActionChance(ActionUse.RangedDamage, 30);
+				customMono.movementIntelligence.PreSumActionChance(ActionUse.Passive, 5);
+				customMono.actionIntelligence.PreSumActionChance(ActionUse.Passive, 5);
+			}
+			else 
+			{
+				customMono.movementIntelligence.PreSumActionChance(ActionUse.GetCloser, 30);
+				customMono.actionIntelligence.PreSumActionChance(ActionUse.GetCloser, 30);
+			}
+		}
+		else
+		{
+			customMono.movementIntelligence.PreSumActionChance(ActionUse.Dodge, 6);
+			customMono.movementIntelligence.PreSumActionChance(ActionUse.GetAway, 30);
+			customMono.actionIntelligence.PreSumActionChance(ActionUse.Dodge, 6);
+			customMono.actionIntelligence.PreSumActionChance(ActionUse.GetAway, 30);
+			customMono.actionIntelligence.PreSumActionChance(ActionUse.RangedDamage, 5);
 		}
 	}
 }

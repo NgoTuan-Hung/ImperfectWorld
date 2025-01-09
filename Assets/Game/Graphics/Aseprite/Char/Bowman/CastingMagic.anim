@@ -6,7 +6,7 @@ AnimationClip:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: FireUp
+  m_Name: CastingMagic
   serializedVersion: 7
   m_Legacy: 0
   m_Compressed: 0
@@ -51,8 +51,27 @@ AnimationClip:
     m_Center: {x: 0, y: 0, z: 0}
     m_Extent: {x: 0, y: 0, z: 0}
   m_ClipBindingConstant:
-    genericBindings: []
-    pptrCurveMapping: []
+    genericBindings:
+    - serializedVersion: 2
+      path: 0
+      attribute: 0
+      script: {fileID: 0}
+      typeID: 212
+      customType: 23
+      isPPtrCurve: 1
+      isIntCurve: 0
+      isSerializeReferenceCurve: 0
+    pptrCurveMapping:
+    - {fileID: 8457745237918855612, guid: ea55cf49abedf3948a699eaf7ae106c1, type: 3}
+    - {fileID: 1963991895248435984, guid: ea55cf49abedf3948a699eaf7ae106c1, type: 3}
+    - {fileID: 8974311980875943679, guid: ea55cf49abedf3948a699eaf7ae106c1, type: 3}
+    - {fileID: 7821897157752793344, guid: ea55cf49abedf3948a699eaf7ae106c1, type: 3}
+    - {fileID: -8021059285150792553, guid: ea55cf49abedf3948a699eaf7ae106c1, type: 3}
+    - {fileID: -2210409207514318497, guid: ea55cf49abedf3948a699eaf7ae106c1, type: 3}
+    - {fileID: -582380040456776155, guid: ea55cf49abedf3948a699eaf7ae106c1, type: 3}
+    - {fileID: 5947761704944502311, guid: ea55cf49abedf3948a699eaf7ae106c1, type: 3}
+    - {fileID: -4371474592123476796, guid: ea55cf49abedf3948a699eaf7ae106c1, type: 3}
+    - {fileID: -4371474592123476796, guid: ea55cf49abedf3948a699eaf7ae106c1, type: 3}
   m_AnimationClipSettings:
     serializedVersion: 2
     m_AdditiveReferencePoseClip: {fileID: 0}
@@ -77,4 +96,18 @@ AnimationClip:
   m_EulerEditorCurves: []
   m_HasGenericRootTransform: 0
   m_HasMotionFloatCurves: 0
-  m_Events: []
+  m_Events:
+  - time: 0.59
+    functionName: CastingMagic
+    data: 
+    objectReferenceParameter: {fileID: 0}
+    floatParameter: 0
+    intParameter: 0
+    messageOptions: 0
+  - time: 0.89
+    functionName: EndCastingMagic
+    data: 
+    objectReferenceParameter: {fileID: 0}
+    floatParameter: 0
+    intParameter: 0
+    messageOptions: 0

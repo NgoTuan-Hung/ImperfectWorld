@@ -15,14 +15,23 @@ public class DashSkill : SkillBase
 	{
 		base.Awake();
 		duration = 1f;
-		cooldown = 2f;
-		skillUses.Add(SkillUse.Dodge); skillUses.Add(SkillUse.MoveAway); skillUses.Add(SkillUse.GetCloser);
+		cooldown = 8f;
 		
 		dashEffectPrefab = Resources.Load("DashEffect") as GameObject;
 		dashEffectPool ??= new ObjectPool(dashEffectPrefab, 100, new PoolArgument(typeof(GameEffect), PoolArgument.WhereComponent.Self));
 		spawnEffectInterval = duration / totalEffect;
+		AddActionManuals();
 	}
 
+	public override void AddActionManuals()
+	{
+		base.AddActionManuals();
+		botActionManuals.Add(new BotActionManual(ActionUse.GetCloser, (direction, location) => DashTo(direction, 0.5f), true, 1));
+		botActionManuals.Add(new BotActionManual(ActionUse.GetAway, (direction, location) => DashTo(direction, 0.5f), true, -1));
+		botActionManuals.Add(new BotActionManual(ActionUse.Dodge, (direction, location) => DashTo(new Vector2(Random.Range(-1f, 1f), Random.Range(-1f, 1f)), 0.5f)));
+	}
+
+	
 	public override void Start()
 	{
 		base.Start();
@@ -38,7 +47,7 @@ public class DashSkill : SkillBase
 			canUse = false;
 			List<PoolObject> poolObjects = dashEffectPool.PickAndPlace(totalEffect, effectActiveLocation);
 			StartCoroutine(Dashing(poolObjects, direction));
-			StartCoroutine(DashCooldownCoroutine());
+			StartCoroutine(CooldownCoroutine());
 		}
 	}
 	
@@ -74,9 +83,17 @@ public class DashSkill : SkillBase
 		gameEffect.gameObject.SetActive(false);
 	}
 	
-	public IEnumerator DashCooldownCoroutine()
+	public void DashTo(Vector2 direction, float duration)
 	{
-		yield return new WaitForSeconds(cooldown);
-		canUse = true;
+		StartCoroutine(DashToCoroutine(direction, duration));
+	}
+	
+	IEnumerator DashToCoroutine(Vector2 direction, float duration)
+	{
+		customMono.actionInterval = true;
+		Trigger(direction: direction);
+		yield return new WaitForSeconds(duration);
+		
+		customMono.actionInterval = false;
 	}
 }

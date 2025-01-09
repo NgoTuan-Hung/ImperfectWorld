@@ -10,7 +10,7 @@ public class CustomMono : MonoBehaviour, IComparable<CustomMono>
 	private GameObject mainComponent;
 	private SpriteRenderer spriteRenderer;
 	private AnimatorWrapper animatorWrapper;
-	private AnimationEventFunctionCaller animationEventFunctionCaller;
+	public AnimationEventFunctionCaller animationEventFunctionCaller;
 	public Movable movable;
 	public Attackable attackable;
 	public MovementIntelligence movementIntelligence;
@@ -28,10 +28,19 @@ public class CustomMono : MonoBehaviour, IComparable<CustomMono>
 	/// Just caching time for CollideAndDamage multiple collision handler
 	/// </summary>
 	public float multipleCollideCurrentTime = 0f;
+	public bool actionInterval = false;
+	public bool movementActionInterval = false;
+	/// <summary>
+	/// You don't want other action to be executed while an animation of 
+	/// an action is playing, like you can't cast spell while your 
+	/// attack animation is playing. Well, you can still move while attacking
+	/// or casting spell though, that's why we divide things into action or
+	/// movement action.
+	/// </summary>
+	public bool actionBlocking = false;
 	public AnimatorWrapper AnimatorWrapper { get => animatorWrapper; set => animatorWrapper = value; }
 	public GameObject Target { get => target; set => target = value; }
 	public GameObject MainComponent { get => mainComponent; set => mainComponent = value; }
-	public AnimationEventFunctionCaller AnimationEventFunctionCaller { get => animationEventFunctionCaller; set => animationEventFunctionCaller = value; }
 	public Dictionary<string, bool> AlliesTag { get => alliesTag; set => alliesTag = value; }
 	public GameObject DirectionIndicator { get => directionIndicator; set => directionIndicator = value; }
 	public SpriteRenderer SpriteRenderer { get => spriteRenderer; set => spriteRenderer = value; }
