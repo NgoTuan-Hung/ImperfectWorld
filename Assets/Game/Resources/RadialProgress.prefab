@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8611528423469345525}
   - component: {fileID: 1369103223793500525}
+  - component: {fileID: 5294485498101552461}
   m_Layer: 0
   m_Name: RadialProgress
   m_TagString: Untagged
@@ -45,6 +46,27 @@ SortingGroup:
   m_SortingLayer: 2
   m_SortingOrder: 0
   m_SortAtRoot: 0
+--- !u!114 &5294485498101552461
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 897970373884927531}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 168cfb170d8d5ef49a8d48318a9a5709, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  animator: {fileID: 0}
+  spriteRenderer: {fileID: 0}
+  isDeactivatedAfterTime: 0
+  deactivateTime: 1
+  collideAndDamage: {fileID: 0}
+  isTimeline: 0
+  flyAtSpeed: 0.03
+  followSlowlyOffset: {x: -0.8, y: 1.5, z: 0}
+  followSlowlyPositionLerpTime: 0.04
 --- !u!1 &3905045245860414343
 GameObject:
   m_ObjectHideFlags: 0
@@ -111,9 +133,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 70276079b9d0f3342b8dc29fc0e97dfa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  renderTexture: {fileID: 8400000, guid: 89ec801cb3dabd345a32b530f374392a, type: 2}
-  progress: 0.1
-  change: 0
 --- !u!33 &2758346395075428703
 MeshFilter:
   m_ObjectHideFlags: 0

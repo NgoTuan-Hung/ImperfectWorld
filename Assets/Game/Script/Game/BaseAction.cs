@@ -3,19 +3,13 @@ using System;
 using System.Collections.Generic;
 using System.Collections;
 
-
-
-#if UNITY_EDITOR
-using UnityEditor;
-#endif
-
-public enum ActionUse {GetCloser, GetAway, Dodge, Passive, MeleeDamage, RangedDamage}
+public enum ActionUse {GetCloser, GetAway, Dodge, Passive, MeleeDamage, RangedDamage, Roam, AirRoll, SummonShortRange}
 [RequireComponent(typeof(CustomMono))]
-public class BaseAction : MonoBehaviour 
+public class BaseAction : MonoEditor
 {
 	protected CustomMono customMono;
 	public float cooldown;
-	public bool onCooldown = false;
+	public bool onCooldown;
 	public float defaultCooldown;
 	public float defaultStateSpeed;
 	/// <summary>
@@ -23,32 +17,37 @@ public class BaseAction : MonoBehaviour
 	/// we can use it, and we can use it again
 	/// after some cooldown.
 	/// </summary>
-	public bool canUse = true;
+	public bool canUse;
 	public List<BotActionManual> botActionManuals = new();
-	public int boolHash;
+	public int boolHash = 0;
 	/// <summary>
 	/// Executing custom callback when animation end.
 	/// </summary>
 	public Action endAnimCallback = () => { };
 	public AnimationClip actionClip;
+	public AudioClip audioClip;
+	public float damage = 0;
+	public float defaultDamage = 0;
 	
 	public virtual void Awake() 
 	{
 		customMono = GetComponent<CustomMono>();
 	}
 	
+	public virtual void OnEnable()
+	{
+		onCooldown = false;
+		canUse = true;
+	}
+	
 	/// <summary>
 	/// Only one child should call this
 	/// </summary>
-	public virtual void Start()
-	{
-		#if UNITY_EDITOR
-		if (!onExitPlayModeAdded)
-		{
-			EditorApplication.playModeStateChanged += OnExitPlayMode;
-			onExitPlayModeAdded = true;
-		}
-		#endif
+	public override void Start()
+	{	
+		base.Start();
+		/* Stop action when we die */
+		customMono.stat.healthReachZeroEvent.action += () => StopAndDisable();
 	}
 	
 	public virtual void ToggleAnim(int boolHash, bool value)
@@ -88,20 +87,15 @@ public class BaseAction : MonoBehaviour
 		onCooldown = false;
 	}
 	
-	#if UNITY_EDITOR
-	public static Action onExitPlayModeEvent;
-	public static bool onExitPlayModeAdded = false;
-	static void OnExitPlayMode(PlayModeStateChange playModeStateChange)
+	public virtual void StatChangeRegister()
 	{
-		if (onExitPlayModeEvent == null) return;
-		if(playModeStateChange == PlayModeStateChange.ExitingPlayMode)
-		{
-			Debug.Log("Exiting Play Mode");
-			onExitPlayModeEvent();
-			onExitPlayModeEvent = null;	
-			EditorApplication.playModeStateChanged -= OnExitPlayMode;
-			onExitPlayModeAdded = false;
-		}
+		
 	}
-	#endif
+	
+	public virtual void StopAndDisable()
+	{
+		StopAllCoroutines();
+		canUse = false;
+		if (boolHash != 0) ToggleAnim(boolHash, false);
+	}
 }

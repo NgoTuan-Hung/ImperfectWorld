@@ -36,4 +36,6 @@ public class AnimatorWrapper : MonoBehaviour
 		}
 		animationClip.AddEvent(animationEvent);
 	}
+	
+	public void SetBool(int boolHash, bool value) => animator.SetBool(boolHash, value);
 }

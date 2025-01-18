@@ -3,9 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem.EnhancedTouch;
 using UnityEngine.UIElements;
-using Touch = UnityEngine.InputSystem.EnhancedTouch.Touch;
 
-public class GameUIManager : MonoSingleton<GameUIManager>
+public class GameUIManager : MonoEditorSingleton<GameUIManager>
 {
 	public enum LayerUse
 	{
@@ -13,7 +12,7 @@ public class GameUIManager : MonoSingleton<GameUIManager>
 		Config = 1,
 		DynamicUI = 2
 	}
-	public static Dictionary<int, VisualElement> helpers = new Dictionary<int, VisualElement>();
+	public static Dictionary<int, VisualElement> helpers;
 
 	// [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
 	// static void Init()
@@ -49,15 +48,13 @@ public class GameUIManager : MonoSingleton<GameUIManager>
 	VisualElement configMenu;
 	GameObject radialProgressPrefab;
 	ObjectPool radialProgressPool;
-	[SerializeField] private Vector3 radialProgressOffset = new Vector3(-0.5f, 1.5f, 0);
-	[SerializeField] private float radialProgressPositionLerpTime = 0.5f;
 	public MainView MainView { get => mainView; set => mainView = value; }
 	public ConfigView ConfigView { get => configView; set => configView = value; }
 	public List<VisualElement> Layers { get => layers; set => layers = value; }
 
 	private void Awake() 
 	{
-		LoadAssets();
+		helpers = new();
 		InitPools();
 		EnhancedTouchSupport.Enable();
 		mainUIDocument = GetComponent<UIDocument>();
@@ -74,15 +71,22 @@ public class GameUIManager : MonoSingleton<GameUIManager>
 		
 		HandleSafeArea();
 	}
+
+	public override void Start()
+	{
+		base.Start();
+		#if UNITY_EDITOR
+		onExitPlayModeEvent += () => 
+		{
+			helpers = null;
+		};
+		#endif
+	}
 	
 	void InitPools()
 	{
-		radialProgressPool = new ObjectPool(radialProgressPrefab, 100, new PoolArgument(typeof(RadialProgress), PoolArgument.WhereComponent.Child));
-	}
-	
-	void LoadAssets()
-	{
 		radialProgressPrefab = Resources.Load<GameObject>("RadialProgress");
+		radialProgressPool = new ObjectPool(radialProgressPrefab, 100, new PoolArgument(typeof(RadialProgress), PoolArgument.WhereComponent.Child), new PoolArgument(typeof(GameEffect), PoolArgument.WhereComponent.Self));
 	}
 
 	private void GetViewComponents()
@@ -191,37 +195,8 @@ public class GameUIManager : MonoSingleton<GameUIManager>
 	{
 		PoolObject radialProgressPoolObject = radialProgressPool.PickOne();
 		RadialProgress radialProgress = radialProgressPoolObject.radialProgress;
-		StartCoroutine(HandleRadialProgressFollowing(transform, radialProgressPoolObject.gameObject));
+		GameEffect radialProgressGE = radialProgressPoolObject.gameEffect;
+		radialProgressGE.FollowSlowly(transform);
 		return radialProgress;
-	}
-	
-	public IEnumerator HandleRadialProgressFollowing(Transform transform, GameObject radialProgress)
-	{
-		Vector2 newVector2Position = transform.position + radialProgressOffset, prevVector2Position, expectedVector2Position;
-		float currentTime;
-		
-		while (true)
-		{
-			prevVector2Position = newVector2Position;
-			/* Check current health bar position */
-			newVector2Position = transform.position + radialProgressOffset;
-			
-			/* Start lerping position for specified duration if position change detected.*/
-			if (prevVector2Position != newVector2Position)
-			{
-				currentTime = 0;
-				while (currentTime < radialProgressPositionLerpTime + Time.fixedDeltaTime)
-				{
-					expectedVector2Position = Vector2.Lerp(prevVector2Position, newVector2Position, currentTime / radialProgressPositionLerpTime);
-					radialProgress.transform.position = new Vector2(expectedVector2Position.x, expectedVector2Position.y);
-					
-					yield return new WaitForSeconds(currentTime += Time.fixedDeltaTime);
-				}
-			}
-			
-			radialProgress.transform.position = new Vector2(newVector2Position.x, newVector2Position.y);
-
-			yield return new WaitForSeconds(Time.fixedDeltaTime);
-		}
 	}
 }

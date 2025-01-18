@@ -1,44 +1,40 @@
-
+using System;
 using UnityEngine;
-using UnityEngine.UIElements;
 
+class TestObject
+{
+	public int i;
+}
 public class TestEvent : MonoBehaviour {
-	UIDocument uIDocument;
-	VisualElement root, grand_parent, parent, child;
-	ScrollView scrollView;
-	[SerializeField] private bool blockScrollView = false;
+	TestObject testObject = new();
+	new Action print;
+	
 	private void Awake() {
-		uIDocument = GetComponent<UIDocument>();
-		root = uIDocument.rootVisualElement;
-		
-		grand_parent = root.Q<VisualElement>(name: "grand-parent");
-		parent = grand_parent.Q<VisualElement>(name: "parent");
-		child = parent.ElementAt(0);
-		scrollView = root.Q<ScrollView>();
-		
-		grand_parent.RegisterCallback<PointerDownEvent>((evt) => 
+		testObject.i = 1;
+		print = () => {Debug.Log(testObject.i);};
+	}
+	
+	public bool called = false;
+	private void Update() {
+		if (called) 
 		{
-			evt.StopPropagation();
-		}, TrickleDown.TrickleDown);
+			called = false;
+			print();
+		}
 		
-		parent.RegisterCallback<PointerDownEvent>((evt) => 
+		Change();
+	}
+	
+	public bool changed = false;
+	public void Change()
+	{
+		if (changed)
 		{
-			print("parent");
-		}, TrickleDown.TrickleDown);
-		
-		child.RegisterCallback<PointerDownEvent>((evt) => 
-		{
-			print("child");
-		}, TrickleDown.TrickleDown);
-		
-		child.RegisterCallback<PointerDownEvent>((evt) => print("also child"), TrickleDown.TrickleDown);
-		
-		foreach (VisualElement visualElement in scrollView.contentContainer.Children())
-		{
-			visualElement.RegisterCallback<PointerMoveEvent>((evt) => 
+			changed = false;
+			testObject = new TestObject()
 			{
-				if (blockScrollView) evt.StopPropagation();
-			});
+				i = testObject.i + 1
+			};
 		}
 	}
 }

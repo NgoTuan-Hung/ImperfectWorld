@@ -1,4 +1,3 @@
-
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -11,20 +10,26 @@ using UnityEngine.UIElements;
 /// Anything you want to change in the inspector, or to be 
 /// affected by other fields, should be placed here. for
 /// convinience sake.
+/// DON'T REMOVE SERIALIZEFIELD, THEY ARE MEAN TO BE PERSISTED.
 /// </summary>
 public class Stat : MonoBehaviour, INotifyBindablePropertyChanged
 {
-	[SerializeField, HideInInspector] float health = 100f;
-	[SerializeField, HideInInspector] private float maxHealth = 100f;
+	CustomMono customMono;
+	[SerializeField] float health = 100f;
+	[SerializeField] float defaultHealth = 100f;
 	private RadialProgress healthRadialProgress;
-	public float MaxHealth { get => maxHealth; set => maxHealth = value; }
-	[SerializeField, HideInInspector] float attackSpeed = 1;
-	[SerializeField, HideInInspector] float moveSpeed = 1f;
-	[SerializeField, HideInInspector] private float defaultMoveSpeed;
-	[SerializeField, HideInInspector] float attackMoveSpeedReduceRate = 0.1f;
-	public float attackMoveSpeedReduced;
+	[SerializeField] float attackSpeed = 1;
+	[SerializeField] float moveSpeed = 1f;
+	[SerializeField] private float defaultMoveSpeed;
+	[SerializeField] float actionMoveSpeedReduceRate = 0.1f;
+	public float actionMoveSpeedReduced;
 	public float moveSpeedPerFrame;
+	[SerializeField] float magicka = 1f;
+	[SerializeField] float defaultMagicka = 1f;
+	[SerializeField] float size = 1f;
+	int dieBoolHash = Animator.StringToHash("Die");
 	public event EventHandler<BindablePropertyChangedEventArgs> propertyChanged;
+	Action onEnable = () => { };
 
 	[CreateProperty]
 	public float AttackSpeed 
@@ -46,9 +51,22 @@ public class Stat : MonoBehaviour, INotifyBindablePropertyChanged
 		if (value == health) return;
 		
 		health = value;
+		if (health <= 0) healthReachZeroEvent.action();
 		Notify();
 	} }
 	public ActionWrapper healthChangeEvent = new();
+	public ActionWrapper healthReachZeroEvent = new();
+	
+	[CreateProperty]
+	public float DefaultHealth { get => defaultHealth; set 
+	{
+		if (value == defaultHealth) return;
+		
+		defaultHealth = value;
+		Health = defaultHealth;
+		Notify();
+	} }
+	public ActionWrapper defaultHealthChangeEvent = new();
 	
 	[CreateProperty]
 	public float MoveSpeed { get => moveSpeed; set 
@@ -73,20 +91,79 @@ public class Stat : MonoBehaviour, INotifyBindablePropertyChanged
 	public ActionWrapper defaultMoveSpeedChangeEvent = new();
 	
 	[CreateProperty]
-	public float AttackMoveSpeedReduceRate { get => attackMoveSpeedReduceRate; set 
+	public float ActionMoveSpeedReduceRate { get => actionMoveSpeedReduceRate; set 
 	{
-		if (value == attackMoveSpeedReduceRate) return;
+		if (value == actionMoveSpeedReduceRate) return;
 		
-		attackMoveSpeedReduceRate = value;
+		actionMoveSpeedReduceRate = value;
 		Notify();
 	} }
-	public ActionWrapper attackMoveSpeedReduceRateChangeEvent = new();
+	public ActionWrapper actionMoveSpeedReduceRateChangeEvent = new();
+	
+	[CreateProperty]
+	public float Magicka { get => magicka; set 
+	{
+		if (value == magicka) return;
+		
+		magicka = value;
+		Notify();
+	} }
+	public ActionWrapper magickaChangeEvent = new();
+	
+	[CreateProperty]
+	public float DefaultMagicka { get => defaultMagicka; set 
+	{
+		if (value == defaultMagicka) return;
+		
+		defaultMagicka = value;
+		Magicka = defaultMagicka;
+		Notify();
+	} }
+	public ActionWrapper defaultMagickaChangeEvent = new();
+	
+	[CreateProperty]
+	public float Size { get => size; set 
+	{
+		if (value == size) return;
+		
+		size = value;
+		Notify();
+	} }
+	public ActionWrapper sizeChangeEvent = new();
 	public Dictionary<string, ActionWrapper> propertyChangeEventDictionary = new();
+	
+	private void Awake() 
+	{
+		customMono = GetComponent<CustomMono>();
+		AddPropertyChangeEvent();
+	}
+	
+	private void OnEnable() 
+	{
+		MoveSpeed = DefaultMoveSpeed;
+		Health = DefaultHealth;
+		onEnable();
+	}
+	
+	private void OnDisable() 
+	{
+		if (healthRadialProgress != null) healthRadialProgress.transform.parent.gameObject.SetActive(false);
+	}
 	
 	private void Start() 
 	{
-		AddPropertyChangeEvent();	
-		InitUI();	
+		InitUI();
+		StartCoroutine(LateStart());
+		onEnable += () => 
+		{
+			InitUI();
+			InitProperty();
+		};
+	}
+	IEnumerator LateStart()
+	{
+		yield return new WaitForEndOfFrame();
+		InitProperty();
 	}
 	
 	void InitUI()
@@ -94,22 +171,39 @@ public class Stat : MonoBehaviour, INotifyBindablePropertyChanged
 		healthRadialProgress = GameUIManager.Instance.CreateAndHandleRadialProgressFollowing(transform);
 	}
 	
-	public IEnumerator InitProperty()
+	public void InitProperty()
 	{
-		yield return new WaitForEndOfFrame();
-		
+		Notify("AttackSpeed");
+		Notify("Health");
+		Notify("DefaultHealth");
+		Notify("MoveSpeed");
+		Notify("DefaultMoveSpeed");
+		Notify("ActionMoveSpeedReduceRate");
+		Notify("Magicka");
+		Notify("DefaultMagicka");
+		Notify("Size");
 	}
 	
 	void AddPropertyChangeEvent()
 	{
-		healthChangeEvent.action += () => healthRadialProgress.SetProgress(health / maxHealth);
-		attackMoveSpeedReduceRateChangeEvent.action += () => attackMoveSpeedReduced = defaultMoveSpeed * attackMoveSpeedReduceRate;
+		healthChangeEvent.action += () => healthRadialProgress.SetProgress(health / defaultHealth);
+		actionMoveSpeedReduceRateChangeEvent.action += () => actionMoveSpeedReduced = defaultMoveSpeed * actionMoveSpeedReduceRate;
+		healthReachZeroEvent.action += () => 
+		{
+			customMono.AnimatorWrapper.SetBool(dieBoolHash, true);
+			customMono.combatCollision.SetActive(false);
+			healthRadialProgress.transform.parent.gameObject.SetActive(false);
+		};
 		
 		propertyChangeEventDictionary.Add("AttackSpeed", attackSpeedChangeEvent);
 		propertyChangeEventDictionary.Add("Health", healthChangeEvent);
+		propertyChangeEventDictionary.Add("DefaultHealth", defaultHealthChangeEvent);
 		propertyChangeEventDictionary.Add("MoveSpeed", moveSpeedChangeEvent);
 		propertyChangeEventDictionary.Add("DefaultMoveSpeed", defaultMoveSpeedChangeEvent);
-		propertyChangeEventDictionary.Add("AttackMoveSpeedReduceRate", attackMoveSpeedReduceRateChangeEvent);
+		propertyChangeEventDictionary.Add("ActionMoveSpeedReduceRate", actionMoveSpeedReduceRateChangeEvent);
+		propertyChangeEventDictionary.Add("Magicka", magickaChangeEvent);
+		propertyChangeEventDictionary.Add("DefaultMagicka", defaultMagickaChangeEvent);
+		propertyChangeEventDictionary.Add("Size", sizeChangeEvent);
 	}
 	
 	void Notify([CallerMemberName] string property = "")

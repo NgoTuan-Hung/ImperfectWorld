@@ -23,12 +23,17 @@ public class DashSkill : SkillBase
 		AddActionManuals();
 	}
 
+	public override void OnEnable()
+	{
+		base.OnEnable();
+	}
+	
 	public override void AddActionManuals()
 	{
 		base.AddActionManuals();
-		botActionManuals.Add(new BotActionManual(ActionUse.GetCloser, (direction, location) => DashTo(direction, 0.5f), true, 1));
-		botActionManuals.Add(new BotActionManual(ActionUse.GetAway, (direction, location) => DashTo(direction, 0.5f), true, -1));
-		botActionManuals.Add(new BotActionManual(ActionUse.Dodge, (direction, location) => DashTo(new Vector2(Random.Range(-1f, 1f), Random.Range(-1f, 1f)), 0.5f)));
+		botActionManuals.Add(new BotActionManual(ActionUse.GetCloser, (direction, location, nextActionChoosingIntervalProposal) => DashTo(direction, nextActionChoosingIntervalProposal), 0.5f, true, 1));
+		botActionManuals.Add(new BotActionManual(ActionUse.GetAway, (direction, location, nextActionChoosingIntervalProposal) => DashTo(direction, nextActionChoosingIntervalProposal), 0.5f, true, -1));
+		botActionManuals.Add(new BotActionManual(ActionUse.Dodge, (direction, location, nextActionChoosingIntervalProposal) => DashTo(new Vector2(Random.Range(-1f, 1f), Random.Range(-1f, 1f)), nextActionChoosingIntervalProposal), 0.5f));
 	}
 
 	
@@ -42,7 +47,7 @@ public class DashSkill : SkillBase
 
 	public override void Trigger(Touch touch = default, Vector2 location = default, Vector2 direction = default)
 	{
-		if (canUse)
+		if (canUse && !customMono.movementActionBlocking)
 		{
 			canUse = false;
 			List<PoolObject> poolObjects = dashEffectPool.PickAndPlace(totalEffect, effectActiveLocation);
@@ -62,6 +67,7 @@ public class DashSkill : SkillBase
 			gameEffect.spriteRenderer.sprite = customMono.SpriteRenderer.sprite;
 			gameEffect.spriteRenderer.transform.localScale = customMono.SpriteRenderer.transform.localScale;
 			gameEffect.transform.position = customMono.transform.position;
+			gameEffect.DeactivateAfterTime(effectLifeTime);
 			
 			transform.position += direction;
 			StartCoroutine(DashEffectFadeout(gameEffect));
@@ -80,7 +86,6 @@ public class DashSkill : SkillBase
 			currentTime -= Time.fixedDeltaTime;
 		}
 		while (currentTime >= 0);
-		gameEffect.gameObject.SetActive(false);
 	}
 	
 	public void DashTo(Vector2 direction, float duration)

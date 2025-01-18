@@ -7,7 +7,11 @@ public class PlayerMovable : Movable
 	public override void Start() 
 	{
 		base.Start();
-		GameUIManager.Instance.MainView.joyStickMoveEvent += (vector) => moveVector = vector;
+		GameUIManager.Instance.MainView.joyStickMoveEvent += (vector) => 
+		{
+			vector.Scale(inverseY);
+			moveVector = vector;
+		};
 	}
 	private void FixedUpdate() 
 	{
@@ -16,11 +20,7 @@ public class PlayerMovable : Movable
 	
 	public void HandlePlayerMove()
 	{
-		if (moveVector != Vector2.zero)
-		{
-			moveVector.Scale(inverseY);
-			Move(moveVector);
-		}
+		if (moveVector != Vector2.zero) Move(moveVector);
 		else ToggleMoveAnim(false);
 	}
 }

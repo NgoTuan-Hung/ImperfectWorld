@@ -6,4 +6,5 @@ public class PoolObject
 	public RadialProgress radialProgress;
 	public CollideAndDamage collideAndDamage;
 	public GameEffect gameEffect;
+	public CustomMono customMono;
 }

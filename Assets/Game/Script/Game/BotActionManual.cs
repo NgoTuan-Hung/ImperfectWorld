@@ -9,17 +9,19 @@ using UnityEngine;
 public class BotActionManual
 {
 	public ActionUse actionUse;
-	public bool direction;
-	public float directionMultiplier;
-	public delegate void DoAction(Vector2 direction, Vector2 location);
+	public bool targetDirection;
+	public float targetDirectionMultiplier;
+	public delegate void DoAction(Vector2 targetDirection, Vector2 targetLocation, float nextActionChoosingIntervalProposal);
 	public DoAction doAction;
 	public int botActionManualIndex;
+	public float nextActionChoosingIntervalProposal;
 
-	public BotActionManual(ActionUse actionUse, DoAction doAction, bool direction = false, float directionMultiplier = 1)
+	public BotActionManual(ActionUse actionUse, DoAction doAction, float nextActionChoosingIntervalProposal = 0, bool targetDirection = false, float targetDirectionMultiplier = 1)
 	{
 		this.actionUse = actionUse;
-		this.direction = direction;
-		this.directionMultiplier = directionMultiplier;
+		this.targetDirection = targetDirection;
+		this.targetDirectionMultiplier = targetDirectionMultiplier;
 		this.doAction = doAction;
+		this.nextActionChoosingIntervalProposal = nextActionChoosingIntervalProposal;
 	}
 }

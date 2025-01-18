@@ -9,8 +9,9 @@ public class StatInspector : Editor
 	[SerializeField] private VisualTreeAsset statInspectorAsset;
 	VisualElement root;
 	ProgressBar healthProgress;
-	Slider healthSlider, attackSpeedSlider, defaultMoveSpeedSlider, attackMoveSpeedReduceRateSlider;
-	Label attackSpeedLabel, moveSpeedLabel, defaultMoveSpeedLabel, attackMoveSpeedReduceRateLabel;
+	Slider healthSlider, attackSpeedSlider, defaultMoveSpeedSlider, actionMoveSpeedReduceRateSlider, defaultMagickaSlider, sizeSlider;
+	Label healthLabel, attackSpeedLabel, moveSpeedLabel, defaultMoveSpeedLabel, actionMoveSpeedReduceRateLabel, magickaLabel, defaultMagickaLabel, sizeLabel;
+	FloatField defaultHealthFloatField;
 	
 	private void OnEnable() 
 	{
@@ -18,19 +19,27 @@ public class StatInspector : Editor
 		root = statInspectorAsset.Instantiate();
 		healthProgress = root.Q<ProgressBar>("inspector__health-progress-bar");
 		healthSlider = root.Q<Slider>("inspector__health-slider");
+		healthLabel = root.Q<Label>("inspector__health-label");
+		defaultHealthFloatField = root.Q<FloatField>("inspector__default-health-float-field");
 		attackSpeedSlider = root.Q<Slider>(name: "inspector__attack-speed-slider");
 		attackSpeedLabel = root.Q<Label>(name: "inspector__attack-speed-label");
 		moveSpeedLabel = root.Q<Label>(name: "inspector__move-speed-label");
 		defaultMoveSpeedSlider = root.Q<Slider>(name: "inspector__default-move-speed-slider");
 		defaultMoveSpeedLabel = root.Q<Label>(name: "inspector__default-move-speed-label");
-		attackMoveSpeedReduceRateSlider = root.Q<Slider>(name: "inspector__attack-move-speed-reduce-rate-slider");
-		attackMoveSpeedReduceRateLabel = root.Q<Label>(name: "inspector__attack-move-speed-reduce-rate-label");
+		actionMoveSpeedReduceRateSlider = root.Q<Slider>(name: "inspector__action-move-speed-reduce-rate-slider");
+		actionMoveSpeedReduceRateLabel = root.Q<Label>(name: "inspector__action-move-speed-reduce-rate-label");
+		magickaLabel = root.Q<Label>(name: "inspector__magicka-label");
+		defaultMagickaSlider = root.Q<Slider>(name: "inspector__default-magicka-slider");
+		defaultMagickaLabel = root.Q<Label>(name: "inspector__default-magicka-label");
+		sizeSlider = root.Q<Slider>(name: "inspector__size-slider");
+		sizeLabel = root.Q<Label>(name: "inspector__size-label");
 		
-		healthProgress.lowValue = healthSlider.lowValue = defaultMoveSpeedSlider.lowValue = attackMoveSpeedReduceRateSlider.lowValue = 0;
+		healthProgress.lowValue = healthSlider.lowValue = defaultMoveSpeedSlider.lowValue = actionMoveSpeedReduceRateSlider.lowValue
+		= defaultMagickaSlider.lowValue = sizeSlider.lowValue = 0;
 		attackSpeedSlider.lowValue = 0.01f;
-		healthProgress.highValue = healthSlider.highValue = attackSpeedSlider.highValue
-		= defaultMoveSpeedSlider.highValue = stat.MaxHealth;
-		attackMoveSpeedReduceRateSlider.highValue = 10f;
+		sizeSlider.highValue = 5f;
+		healthSlider.highValue =attackSpeedSlider.highValue = defaultMoveSpeedSlider.highValue = defaultMagickaSlider.highValue = 100;
+		actionMoveSpeedReduceRateSlider.highValue = 10f;
 		
 		root.dataSource = stat;
 		healthProgress.SetBinding("value", new DataBinding()
@@ -39,9 +48,35 @@ public class StatInspector : Editor
 			bindingMode = BindingMode.ToTarget
 		});
 		
+		healthProgress.SetBinding("highValue", new DataBinding()
+		{
+			dataSourcePath = new Unity.Properties.PropertyPath(nameof(Stat.DefaultHealth)),
+			bindingMode = BindingMode.ToTarget
+		});
+		
 		healthSlider.SetBinding("value", new DataBinding()
 		{
 			dataSourcePath = new Unity.Properties.PropertyPath(nameof(Stat.Health)),
+			bindingMode = BindingMode.TwoWay
+		});
+		
+		healthSlider.SetBinding("highValue", new DataBinding()
+		{
+			dataSourcePath = new Unity.Properties.PropertyPath(nameof(Stat.DefaultHealth)),
+			bindingMode = BindingMode.ToTarget
+		});
+		
+		healthLabel.dataSourcePath = new Unity.Properties.PropertyPath(nameof(Stat.Health));
+		var healthBinding = new DataBinding() {bindingMode = BindingMode.ToTarget};
+		healthBinding.sourceToUiConverters.AddConverter((ref float value) => 
+		{
+			return value + " 💖";
+		});
+		healthLabel.SetBinding("text", healthBinding);
+		
+		defaultHealthFloatField.SetBinding("value", new DataBinding()
+		{
+			dataSourcePath = new Unity.Properties.PropertyPath(nameof(Stat.DefaultHealth)),
 			bindingMode = BindingMode.TwoWay
 		});
 		
@@ -83,19 +118,55 @@ public class StatInspector : Editor
 		});
 		defaultMoveSpeedLabel.SetBinding("text", defaultMoveSpeedBinding);
 		
-		attackMoveSpeedReduceRateSlider.SetBinding("value", new DataBinding()
+		actionMoveSpeedReduceRateSlider.SetBinding("value", new DataBinding()
 		{
-			dataSourcePath = new Unity.Properties.PropertyPath(nameof(Stat.AttackMoveSpeedReduceRate)),
+			dataSourcePath = new Unity.Properties.PropertyPath(nameof(Stat.ActionMoveSpeedReduceRate)),
 			bindingMode = BindingMode.TwoWay
 		});
 		
-		attackMoveSpeedReduceRateLabel.dataSourcePath = new Unity.Properties.PropertyPath(nameof(Stat.AttackMoveSpeedReduceRate));
-		var attackMoveSpeedReduceRateBinding = new DataBinding() {bindingMode = BindingMode.ToTarget};
-		attackMoveSpeedReduceRateBinding.sourceToUiConverters.AddConverter((ref float value) => 
+		actionMoveSpeedReduceRateLabel.dataSourcePath = new Unity.Properties.PropertyPath(nameof(Stat.ActionMoveSpeedReduceRate));
+		var actionMoveSpeedReduceRateBinding = new DataBinding() {bindingMode = BindingMode.ToTarget};
+		actionMoveSpeedReduceRateBinding.sourceToUiConverters.AddConverter((ref float value) => 
 		{
 			return value + " 👠";
 		});
-		attackMoveSpeedReduceRateLabel.SetBinding("text", attackMoveSpeedReduceRateBinding);
+		actionMoveSpeedReduceRateLabel.SetBinding("text", actionMoveSpeedReduceRateBinding);
+		
+		magickaLabel.dataSourcePath = new Unity.Properties.PropertyPath(nameof(Stat.Magicka));
+		var magickaBinding = new DataBinding() {bindingMode = BindingMode.ToTarget};
+		magickaBinding.sourceToUiConverters.AddConverter((ref float value) => 
+		{
+			return "Magicka " + value + " 🪄";
+		});
+		magickaLabel.SetBinding("text", magickaBinding);
+		
+		defaultMagickaSlider.SetBinding("value", new DataBinding()
+		{
+			dataSourcePath = new Unity.Properties.PropertyPath(nameof(Stat.DefaultMagicka)),
+			bindingMode = BindingMode.TwoWay
+		});
+		
+		defaultMagickaLabel.dataSourcePath = new Unity.Properties.PropertyPath(nameof(Stat.DefaultMagicka));
+		var defaultMagickaBinding = new DataBinding() {bindingMode = BindingMode.ToTarget};
+		defaultMagickaBinding.sourceToUiConverters.AddConverter((ref float value) => 
+		{
+			return value + " 🧙";
+		});
+		defaultMagickaLabel.SetBinding("text", defaultMagickaBinding);
+		
+		sizeSlider.SetBinding("value", new DataBinding()
+		{
+			dataSourcePath = new Unity.Properties.PropertyPath(nameof(Stat.Size)),
+			bindingMode = BindingMode.TwoWay
+		});
+		
+		sizeLabel.dataSourcePath = new Unity.Properties.PropertyPath(nameof(Stat.Size));
+		var sizeBinding = new DataBinding() {bindingMode = BindingMode.ToTarget};
+		sizeBinding.sourceToUiConverters.AddConverter((ref float value) => 
+		{
+			return value + " ☩";
+		});
+		sizeLabel.SetBinding("text", sizeBinding);
 	}
 
 	public override VisualElement CreateInspectorGUI()

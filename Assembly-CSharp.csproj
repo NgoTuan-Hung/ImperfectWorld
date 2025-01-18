@@ -68,6 +68,7 @@
     <Compile Include="Assets\Game\Script\Game\CustomMono.cs" />
     <Compile Include="Assets\Game\Script\Game\ActionIntelligence.cs" />
     <Compile Include="Assets\Game\Script\Game\Skill.cs" />
+    <Compile Include="Assets\Game\Script\Ability\AirRollSkill.cs" />
     <Compile Include="Assets\Game\Script\UI\UIRenderer\TestVisualElement.cs" />
     <Compile Include="Assets\Game\Script\Game\PlayerAttack.cs" />
     <Compile Include="Assets\Game\Script\UI\Extension\TouchExtension.cs" />
@@ -81,12 +82,13 @@
     <Compile Include="Assets\Game\Script\Game\BotActionManual.cs" />
     <Compile Include="Assets\Game\Script\Game\GameEffect.cs" />
     <Compile Include="Assets\Game\Script\ScriptableObject\SkillDataSO.cs" />
-    <Compile Include="Assets\Game\Script\UI\MonoSingleton.cs" />
     <Compile Include="Assets\Game\Script\Other\ListExtension.cs" />
     <Compile Include="Assets\Game\Script\Game\BaseIntelligence.cs" />
     <Compile Include="Assets\Game\Script\UI\View\ViewBase.cs" />
+    <Compile Include="Assets\Game\Script\Other\MonoEditorSingleton.cs" />
     <Compile Include="Assets\Game\Script\UI\UIRenderer\TestVisualElementVectorApi.cs" />
     <Compile Include="Assets\Game\Script\Other\PoolObject.cs" />
+    <Compile Include="Assets\Game\Script\Other\MultipleCollideTimer.cs" />
     <Compile Include="Assets\Game\Script\UI\UIRenderer\HealthUI.cs" />
     <Compile Include="Assets\Cainos\Pixel Art Top Down - Basic\Script\CameraFollow.cs" />
     <Compile Include="Assets\Game\Script\Game\MyBotPersonality.cs" />
@@ -94,10 +96,12 @@
     <Compile Include="Assets\Game\Script\Game\MovementIntelligence.cs" />
     <Compile Include="Assets\Game\Script\Game\SkillBase.cs" />
     <Compile Include="Assets\Game\Script\UI\Other\SceneTool.cs" />
+    <Compile Include="Assets\Game\Script\Ability\TheCallOfThePack.cs" />
     <Compile Include="Assets\Game\Script\Other\ObjectPool.cs" />
     <Compile Include="Assets\Game\Script\UI\View\SkillTooltipView.cs" />
     <Compile Include="Assets\Game\Script\Game\AnimatorWrapper.cs" />
     <Compile Include="Assets\Game\Script\UI\Other\SkillScrollViewUIInfo.cs" />
+    <Compile Include="Assets\Game\Script\Other\MonoSingleton.cs" />
     <Compile Include="Assets\TutorialInfo\Scripts\Readme.cs" />
     <Compile Include="Assets\Cainos\Pixel Art Top Down - Basic\Script\PropsAltar.cs" />
     <Compile Include="Assets\Game\Script\Game\PlayerMovable.cs" />
@@ -123,6 +127,7 @@
     <Compile Include="Assets\Game\Script\UI\Model\MainViewOptionData.cs" />
     <Compile Include="Assets\Game\Script\UI\Model\ConfigMenuItem.cs" />
     <Compile Include="Assets\Game\Script\UI\Model\SkillData.cs" />
+    <Compile Include="Assets\Game\Script\Other\MonoEditor.cs" />
     <Compile Include="Assets\Game\Script\UI\Player\PlayerScript.cs" />
     <Compile Include="Assets\Game\Script\UI\Model\ConfigData.cs" />
     <Compile Include="Assets\Game\Script\UI\View\SkillHolderView.cs" />

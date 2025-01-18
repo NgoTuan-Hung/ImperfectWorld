@@ -483,7 +483,7 @@ public class MainView : ViewBase
 	/// <summary>
 	/// You can add your custom event here whenever joystick is moved, function will be populated with a vector2
 	/// </summary>
-	public JoyStickMoveEvent joyStickMoveEvent;
+	public JoyStickMoveEvent joyStickMoveEvent = (value) => {};
 	void HandleJoyStickView()
 	{	
 		prepareJoyStickStartValue += PrepareJoyStickStartValue;
@@ -532,7 +532,7 @@ public class MainView : ViewBase
 			/* Ensure touch is inside the circle */
 			centerToTouch *= Math.Min(1f, outerRadius / centerToTouch.magnitude);
 			/* Custom event will be executed here*/
-			joyStickMoveEvent?.Invoke(centerToTouch);
+			joyStickMoveEvent(centerToTouch);
 
 			/* Make inner circle follow touch position within circle bound */
 			joyStickInner.transform.position = joyStickOuter.WorldToLocal
@@ -540,13 +540,13 @@ public class MainView : ViewBase
 				joyStickCenterPosition + centerToTouch - new Vector2(innerRadius, innerRadius)
 			);
  
-			yield return new WaitForSeconds(Time.deltaTime);
+			yield return new WaitForSeconds(Time.fixedDeltaTime);
 			touchPos = RuntimePanelUtils.ScreenToPanel(root.panel, new Vector2(touch.screenPosition.x, Screen.height - touch.screenPosition.y));
 			centerToTouch = touchPos - joyStickCenterPosition;
 		}
 
 		joyStickInner.transform.position = joyStickInnerDefaultPosition;
-		joyStickMoveEvent?.Invoke(Vector2.zero);
+		joyStickMoveEvent(Vector2.zero);
 	}
 	
 	/// <summary>

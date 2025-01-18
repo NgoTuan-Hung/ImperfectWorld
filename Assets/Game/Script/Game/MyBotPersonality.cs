@@ -1,20 +1,23 @@
 using System;
+using System.Collections;
 using UnityEngine;
 
 public enum MyBotCombatBehaviour {Melee, Ranged}
 public class MyBotPersonality : BaseIntelligence
 {
-	Vector2 moveVector;
+	Vector2 targetDirection;
 	float distanceToTarget;
+	Vector3 targetPosition;
 	public float logicalAttackRange = 1f;
 	public float targetTooCloseRange = 1f;
 	public MyBotCombatBehaviour myBotCombatBehaviour;
-	Action Think;
+	Action combatThinking;
+	bool canSetTargetPos = true;
 	public override void Awake()
 	{
 		base.Awake();
-		if (myBotCombatBehaviour == MyBotCombatBehaviour.Melee) Think = MeleeThinking;
-		else Think = RangedThinking;
+		if (myBotCombatBehaviour == MyBotCombatBehaviour.Melee) combatThinking = MeleeThinking;
+		else combatThinking = RangedThinking;
 	}
 
 	public override void Start()
@@ -26,6 +29,20 @@ public class MyBotPersonality : BaseIntelligence
 	{
 		Think(); //
 		DoAction();
+	}
+	
+	void Think()
+	{
+		if (customMono.target == null)
+		{
+			customMono.TryPickRandomTarget();
+			customMono.movementIntelligence.PreSumActionChance(ActionUse.Roam, 1);
+			customMono.actionIntelligence.PreSumActionChance(ActionUse.Roam, 1);
+		}
+		else
+		{
+			combatThinking();
+		}
 	}
 	
 	void MeleeThinking()
@@ -44,14 +61,26 @@ public class MyBotPersonality : BaseIntelligence
 	
 	void DoAction()
 	{
-		customMono.movementIntelligence.ExecuteAnyActionThisFrame(customMono.movementActionInterval, moveVector, customMono.Target.transform.position);
-		customMono.actionIntelligence.ExecuteAnyActionThisFrame(customMono.actionInterval, moveVector, customMono.Target.transform.position);
+		customMono.movementIntelligence.ExecuteAnyActionThisFrame(customMono.movementActionInterval, targetDirection, targetPosition);
+		customMono.actionIntelligence.ExecuteAnyActionThisFrame(customMono.actionInterval, targetDirection, targetPosition);
 	}
 	
 	void ThinkAboutNumbers()
 	{
-		moveVector = customMono.Target.transform.position - transform.position;
-		distanceToTarget = moveVector.magnitude;
+		if (customMono.target == null)
+		{
+			targetDirection = default;
+			if (canSetTargetPos) targetPosition = default;
+		}
+		else
+		{
+			if (canSetTargetPos) 
+			{
+				targetPosition = customMono.target.transform.position;
+				targetDirection = targetPosition - transform.position;
+			}
+			distanceToTarget = targetDirection.magnitude;	
+		}
 	}
 	
 	void ThinkAboutDistanceToTarget()
@@ -72,6 +101,7 @@ public class MyBotPersonality : BaseIntelligence
 			customMono.actionIntelligence.PreSumActionChance(ActionUse.GetCloser, 5);
 			customMono.actionIntelligence.PreSumActionChance(ActionUse.GetAway, 5);
 			customMono.actionIntelligence.PreSumActionChance(ActionUse.MeleeDamage, 30);
+			customMono.actionIntelligence.PreSumActionChance(ActionUse.SummonShortRange, 15);
 		}
 	}
 	
@@ -120,5 +150,31 @@ public class MyBotPersonality : BaseIntelligence
 			customMono.actionIntelligence.PreSumActionChance(ActionUse.GetAway, 30);
 			customMono.actionIntelligence.PreSumActionChance(ActionUse.RangedDamage, 5);
 		}
+	}
+	
+	public void ForceUsingAction(ActionUse actionUse, bool targetPositionBool, Vector3 targetPositionParam, float duration)
+	{
+		StartCoroutine(ForceUsingActionCoroutine(actionUse, targetPositionBool, targetPositionParam, duration));
+	}
+	
+	IEnumerator ForceUsingActionCoroutine(ActionUse actionUse, bool targetPositionBool, Vector3 targetPositionParam, float duration)
+	{
+		float currentTime = 0;
+		if (targetPositionBool)
+		{
+			canSetTargetPos = false;
+			targetPosition = targetPositionParam;
+			targetDirection = targetPosition - transform.position;
+		}
+		
+		while (currentTime < duration)
+		{
+			customMono.actionIntelligence.PreSumActionChance(actionUse, 9999);
+			
+			yield return new WaitForSeconds(Time.fixedDeltaTime);
+			currentTime += Time.fixedDeltaTime;
+		}
+		
+		canSetTargetPos = true;
 	}
 }

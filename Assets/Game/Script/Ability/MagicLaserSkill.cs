@@ -11,6 +11,7 @@ public class MagicLaserSkill : SkillBase
 	{
 		base.Awake();
 		cooldown = 10f;
+		damage = defaultDamage = 1f;
 		boolHash = Animator.StringToHash("CastingMagic");
 		
 		magicLaserPrefab = Resources.Load("MagicLaser") as GameObject;
@@ -18,6 +19,12 @@ public class MagicLaserSkill : SkillBase
 		AddActionManuals();
 	}
 
+	public override void OnEnable()
+	{
+		base.OnEnable();
+	}
+
+	
 	public override void Start()
 	{
 		base.Start();
@@ -26,6 +33,7 @@ public class MagicLaserSkill : SkillBase
 		onExitPlayModeEvent += () => magicLaserPool = null;
 		#endif
 		
+		StatChangeRegister();
 		endAnimCallback += () => 
 		{
 			customMono.actionBlocking = false;
@@ -33,10 +41,21 @@ public class MagicLaserSkill : SkillBase
 		};
 	}
 
+	public override void StatChangeRegister()
+	{
+		base.StatChangeRegister();
+		customMono.stat.magickaChangeEvent.action += () => 
+		{
+			// magicka 0 -> 100
+			damage = defaultDamage + customMono.stat.Magicka * 0.1f;
+		};
+	}
+
+	
 	public override void AddActionManuals()
 	{
 		base.AddActionManuals();
-		botActionManuals.Add(new BotActionManual(ActionUse.RangedDamage, (direction, location) => FireAt(location, 0.5f)));
+		botActionManuals.Add(new BotActionManual(ActionUse.RangedDamage, (direction, location, nextActionChoosingIntervalProposal) => FireAt(location, nextActionChoosingIntervalProposal), 0.5f));
 	}
 	
 	public override void Trigger(Touch touch = default, Vector2 location = default, Vector2 direction = default)
@@ -59,6 +78,8 @@ public class MagicLaserSkill : SkillBase
 		bool t_animatorLocalScale = customMono.AnimatorWrapper.animator.transform.localScale.x > 0;
 		
 		GameEffect gameEffect = magicLaserPool.PickOne().gameEffect;
+		gameEffect.collideAndDamage.allyTags = customMono.allyTags;
+		gameEffect.collideAndDamage.collideDamage = damage;
 			
 		if (t_animatorLocalScale) gameEffect.transform.SetPositionAndRotation(location - new Vector2(6, 0), Quaternion.Euler(0, 0, 0));
 		else gameEffect.transform.SetPositionAndRotation(location + new Vector2(6, 0), Quaternion.Euler(0, 180, 0));

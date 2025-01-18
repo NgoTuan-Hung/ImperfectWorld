@@ -9,9 +9,8 @@ public class Attackable : BaseAction
 	protected static ObjectPool attackColliderPool;
 	public GameObject longRangeProjectilePrefab;
 	protected static ObjectPool longRangeProjectilePool;
-	public GameObject longRangeFirePoint;
 	Vector3 projectileVector;
-	public float colliderForce = 1f;
+	public float colliderForce = 5f;
 	public Action<Vector2> Attack;
 	public AttackType attackType;
 
@@ -19,24 +18,37 @@ public class Attackable : BaseAction
 	{
 		base.Awake();
 		boolHash = Animator.StringToHash("Attack");
+		cooldown = defaultCooldown = defaultStateSpeed = 1f;
+		if (attackType == AttackType.Melee) 
+		{
+			Attack = MeleeAttack;
+			damage = defaultDamage = 15f;
+		}
+		else 
+		{
+			Attack = RangedAttack;
+			damage = defaultDamage = 10f;
+		}
 		attackColliderPrefab = Resources.Load("AttackCollider") as GameObject;
 		attackColliderPool ??= new ObjectPool(attackColliderPrefab, 100, new PoolArgument(typeof(CollideAndDamage), PoolArgument.WhereComponent.Self));
 		if (longRangeProjectilePrefab  != null)
 			longRangeProjectilePool ??= new ObjectPool(longRangeProjectilePrefab, 100, new PoolArgument(typeof(GameEffect), PoolArgument.WhereComponent.Self));
 		
-		cooldown = defaultCooldown = defaultStateSpeed = 1f;
-		if (attackType == AttackType.Melee) Attack = MeleeAttack;
-		else Attack = RangedAttack;
-		
 		AddActionManuals();
 	}
 
+	public override void OnEnable()
+	{
+		base.OnEnable();
+	}
+	
 	public override void AddActionManuals()
 	{
 		base.AddActionManuals();
-		botActionManuals.Add(new BotActionManual(ActionUse.MeleeDamage, (direction, location) => AttackTo(direction, 0.5f), true, 1));
-		botActionManuals.Add(new BotActionManual(ActionUse.RangedDamage, (direction, location) => AttackTo(direction, 0.5f), true, 1));
-		botActionManuals.Add(new BotActionManual(ActionUse.Passive, (direction, location) => Idle(direction, 0.5f)));
+		botActionManuals.Add(new BotActionManual(ActionUse.MeleeDamage, (direction, location, nextActionChoosingIntervalProposal) => AttackTo(direction, nextActionChoosingIntervalProposal), 0.5f, true, 1));
+		botActionManuals.Add(new BotActionManual(ActionUse.RangedDamage, (direction, location, nextActionChoosingIntervalProposal) => AttackTo(direction, nextActionChoosingIntervalProposal), 0.5f, true, 1));
+		botActionManuals.Add(new BotActionManual(ActionUse.Passive, (direction, location, nextActionChoosingIntervalProposal) => Idle(direction, nextActionChoosingIntervalProposal), 0.5f));
+		botActionManuals.Add(new(ActionUse.Roam, (direction, location, nextActionChoosingIntervalProposal) => Idle(direction, nextActionChoosingIntervalProposal), 1f));
 	}
 	
 	public override void Start()
@@ -51,14 +63,7 @@ public class Attackable : BaseAction
 		};
 		#endif
 		
-		/* Attack speed change => animator_state_speed *= attack_speed
-							   => attack_cooldown /= attack_speed */
-		customMono.stat.attackSpeedChangeEvent.action += () => 
-		{
-			customMono.AnimatorWrapper.animator.SetFloat("AttackAnimSpeed", defaultStateSpeed * customMono.stat.AttackSpeed);
-			cooldown = defaultCooldown / customMono.stat.AttackSpeed;
-		};
-		
+		StatChangeRegister();
 		endAnimCallback += () => 
 		{
 			customMono.stat.SetDefaultMoveSpeed();
@@ -66,6 +71,21 @@ public class Attackable : BaseAction
 			customMono.animationEventFunctionCaller.endAttack = false;
 		};
 	}
+
+	public override void StatChangeRegister()
+	{
+		base.StatChangeRegister();
+		/* Attack speed change => animator_state_speed *= attack_speed
+							   => attack_cooldown /= attack_speed */
+		customMono.stat.attackSpeedChangeEvent.action += () => 
+		{
+			customMono.AnimatorWrapper.animator.SetFloat("AttackAnimSpeed", defaultStateSpeed * customMono.stat.AttackSpeed);
+			cooldown = defaultCooldown / customMono.stat.AttackSpeed;
+			botActionManuals[0].nextActionChoosingIntervalProposal = 0.5f / customMono.stat.AttackSpeed;
+			botActionManuals[1].nextActionChoosingIntervalProposal = 0.5f / customMono.stat.AttackSpeed;
+		};
+	}
+
 	
 	public void MeleeAttack(Vector2 attackDirection)
 	{
@@ -84,11 +104,13 @@ public class Attackable : BaseAction
 		while (!customMono.animationEventFunctionCaller.attack) yield return new WaitForSeconds(Time.fixedDeltaTime);
 
 		customMono.animationEventFunctionCaller.attack = false;
-		customMono.stat.MoveSpeed = customMono.stat.attackMoveSpeedReduced;
+		customMono.stat.MoveSpeed = customMono.stat.actionMoveSpeedReduced;
+		customMono.audioSource.PlayOneShot(audioClip);
 		customMono.SetUpdateDirectionIndicator(attackDirection, UpdateDirectionIndicatorPriority.Low);
 		CollideAndDamage attackCollider = attackColliderPool.PickOne().collideAndDamage;
-		attackCollider.AlliesTag = customMono.AlliesTag;
-		attackCollider.transform.position = transform.position;
+		attackCollider.allyTags = customMono.allyTags;
+		attackCollider.transform.position = customMono.firePoint.transform.position;
+		attackCollider.collideDamage = damage;
 		attackCollider.Rigidbody2D.AddForce
 		(
 			attackDirection.normalized * colliderForce,
@@ -106,13 +128,6 @@ public class Attackable : BaseAction
 			StartCoroutine(RangedAttackCoroutine(attackDirection));
 			EndAnimWait(() => customMono.animationEventFunctionCaller.endAttack);
 		}
-		
-		// while (GetAttackBool())
-		// {
-		// 	customMono.SetUpdateDirectionIndicator(targetVector, UpdateDirectionIndicatorPriority.Low);
-		// 	yield return new WaitForSeconds(Time.fixedDeltaTime);
-		// 	targetVector = customMono.Target.transform.position - transform.position;
-		// }
 	}
 	
 	IEnumerator RangedAttackCoroutine(Vector2 attackDirection)
@@ -120,11 +135,13 @@ public class Attackable : BaseAction
 		while (!customMono.animationEventFunctionCaller.attack) yield return new WaitForSeconds(Time.fixedDeltaTime);
 		
 		customMono.animationEventFunctionCaller.attack = false;
-		customMono.stat.MoveSpeed = customMono.stat.attackMoveSpeedReduced;
+		customMono.stat.MoveSpeed = customMono.stat.actionMoveSpeedReduced;
+		customMono.audioSource.PlayOneShot(audioClip);
 		customMono.SetUpdateDirectionIndicator(attackDirection, UpdateDirectionIndicatorPriority.Low);
 		GameEffect projectileEffect = longRangeProjectilePool.PickOne().gameEffect;
-		projectileEffect.collideAndDamage.AlliesTag = customMono.AlliesTag;
-		projectileEffect.transform.position = longRangeFirePoint.transform.position;
+		projectileEffect.collideAndDamage.allyTags = customMono.allyTags;
+		projectileEffect.collideAndDamage.collideDamage = damage;
+		projectileEffect.transform.position = customMono.firePoint.transform.position;
 		projectileEffect.transform.rotation = Quaternion.Euler(0, 0, Vector2.SignedAngle
 		(
 			Vector2.right,

@@ -4,13 +4,8 @@ using System.Linq;
 using Random = UnityEngine.Random;
 using System.Collections.Generic;
 
-
-#if UNITY_EDITOR
-using UnityEditor;
-#endif
-
 [RequireComponent(typeof(CustomMono))]
-public class BaseIntelligence : MonoBehaviour 
+public class BaseIntelligence : MonoEditor
 {
 	protected CustomMono customMono;
 	public List<int> actionChances = new();
@@ -59,7 +54,7 @@ public class BaseIntelligence : MonoBehaviour
 	/// cumulative distribution while we iterate from left to right, or we can do a binary search.
 	/// </summary>
 	/// <returns></returns>
-	public void ExecuteAnyActionThisFrame(bool actionInterval, Vector2 directionToTarget = default, Vector2 targetPosition = default)
+	public void ExecuteAnyActionThisFrame(bool actionInterval, Vector2 targetDirection = default, Vector2 targetPosition = default)
 	{
 		if (actionInterval) 
 		{
@@ -75,8 +70,8 @@ public class BaseIntelligence : MonoBehaviour
 			0, actionCumulativeDistribution.Count-1, rand
 		)];
 		
-		if (t_actionManual.direction) directionToTarget *= t_actionManual.directionMultiplier;
-		t_actionManual.doAction(directionToTarget, targetPosition);
+		if (t_actionManual.targetDirection) targetDirection *= t_actionManual.targetDirectionMultiplier;
+		t_actionManual.doAction(targetDirection, targetPosition, t_actionManual.nextActionChoosingIntervalProposal);
 		
 		RefreshActionChances();
 	}
@@ -128,42 +123,9 @@ public class BaseIntelligence : MonoBehaviour
 			actionCumulativeDistribution.Add(0);
 		}
 	}
-	
-	/// <summary>
-	/// Only one child should call this
-	/// </summary>
-	public virtual void Start()
-	{
-		#if UNITY_EDITOR
-		if (!onExitPlayModeAdded)
-		{
-			EditorApplication.playModeStateChanged += OnExitPlayMode;
-			onExitPlayModeAdded = true;
-		}
-		#endif
-	}
-	
-	public virtual void ToggleAnim(int boolHash, bool value)
-	{
-		customMono.AnimatorWrapper.animator.SetBool(boolHash, value);
-	}
-	
-	public virtual bool GetBool(int boolHash) => customMono.AnimatorWrapper.animator.GetBool(boolHash);
-	
-	#if UNITY_EDITOR
-	public static Action onExitPlayModeEvent;
-	public static bool onExitPlayModeAdded = false;
-	static void OnExitPlayMode(PlayModeStateChange playModeStateChange)
-	{
-		if (onExitPlayModeEvent == null) return;
-		if(playModeStateChange == PlayModeStateChange.ExitingPlayMode)
-		{
-			Debug.Log("Exiting Play Mode");
-			onExitPlayModeEvent();
-			onExitPlayModeEvent = null;	
-			EditorApplication.playModeStateChanged -= OnExitPlayMode;
-			onExitPlayModeAdded = false;
-		}
-	}
-	#endif
+
+    public override void Start()
+    {
+        base.Start();
+    }
 }

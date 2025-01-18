@@ -8,12 +8,26 @@ using UnityEngine;
 /// </summary>
 public class AnimationEventFunctionCaller : MonoBehaviour 
 {
-	public bool attack = false;
-	public bool endAttack = false;
-	public bool castingMagic = false;
-	public bool endCastingMagic = false;
+	public bool attack;
+	public bool endAttack;
+	public bool castingMagic;
+	public bool endCastingMagic;
+	public bool summon;
+	public bool endSummon;
 	public void Attack() => attack = true;
 	public void EndAttack() => endAttack = true;
 	public void CastingMagic() => castingMagic = true;
 	public void EndCastingMagic() => endCastingMagic = true;
+	public void Summon() => summon = true;
+	public void EndSummon() => endSummon = true;
+	
+	private void OnEnable() 
+	{
+		attack = false;
+		endAttack = false;
+		castingMagic = false;
+		endCastingMagic = false;
+		summon = false;
+		endSummon = false;
+	}
 }

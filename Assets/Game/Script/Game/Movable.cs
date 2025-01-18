@@ -3,44 +3,52 @@ using UnityEngine;
 public class Movable : BaseAction
 {
 	protected Vector2 moveVector;
-	private bool canMove = true;
-	private int walkBoolHash = Animator.StringToHash("Walk");
-	public bool CanMove { get => canMove; set => canMove = value; }
 
 	public override void Awake() 
 	{
 		base.Awake();
+		boolHash = Animator.StringToHash("Walk");
 		AddActionManuals();
 	}
 
+	public override void OnEnable()
+	{
+		base.OnEnable();
+	}
+	
 	public override void AddActionManuals()
 	{
 		base.AddActionManuals();
-		botActionManuals.Add(new BotActionManual(ActionUse.GetCloser, (direction, location) => MoveTo(direction, 0.5f), true, 1));
-		botActionManuals.Add(new BotActionManual(ActionUse.GetAway, (direction, location) => MoveTo(direction, 0.5f), true, -1));
-		botActionManuals.Add(new BotActionManual(ActionUse.Dodge, (direction, location) => MoveTo(new Vector2(Random.Range(-1f, 1f), Random.Range(-1f, 1f)), 0.5f)));
-		botActionManuals.Add(new BotActionManual(ActionUse.Passive, (direction, location) => Idle(direction, 0.5f)));
+		botActionManuals.Add(new BotActionManual(ActionUse.GetCloser, (direction, location, nextActionChoosingIntervalProposal) => MoveTo(direction, nextActionChoosingIntervalProposal), 0.5f, true, 1));
+		botActionManuals.Add(new BotActionManual(ActionUse.GetAway, (direction, location, nextActionChoosingIntervalProposal) => MoveTo(direction, nextActionChoosingIntervalProposal), 0.5f, true, -1));
+		botActionManuals.Add(new BotActionManual(ActionUse.Dodge, (direction, location, nextActionChoosingIntervalProposal) => MoveTo(new Vector2(Random.Range(-1f, 1f), Random.Range(-1f, 1f)), nextActionChoosingIntervalProposal), 0.5f));
+		botActionManuals.Add(new BotActionManual(ActionUse.Passive, (direction, location, nextActionChoosingIntervalProposal) => Idle(direction, nextActionChoosingIntervalProposal), 0.5f));
+		botActionManuals.Add(new BotActionManual(ActionUse.Roam, (direction, location, nextActionChoosingIntervalProposal) => MoveTo(new Vector2(Random.Range(-1f, 1f), Random.Range(-1f, 1f)), nextActionChoosingIntervalProposal), 1f));
+		botActionManuals.Add(new BotActionManual(ActionUse.Roam, (direction, location, nextActionChoosingIntervalProposal) => Idle(direction, nextActionChoosingIntervalProposal), 1f));
 	}
 
 	public override void Start()
 	{
-		
+		base.Start();
 	}
 
 	
 	public void Move(Vector2 direction)
 	{
-		if (!GetMoveBool()) ToggleMoveAnim(true);
-		customMono.SetUpdateDirectionIndicator(direction, UpdateDirectionIndicatorPriority.VeryLow);
-		transform.position += (Vector3)direction.normalized * customMono.stat.moveSpeedPerFrame;
+		if (canUse && !customMono.movementActionBlocking)
+		{
+			if (!GetMoveBool()) ToggleMoveAnim(true);
+			customMono.SetUpdateDirectionIndicator(direction, UpdateDirectionIndicatorPriority.VeryLow);
+			transform.position += (Vector3)direction.normalized * customMono.stat.moveSpeedPerFrame;
+		}
 	}
 	
 	public void ToggleMoveAnim(bool value)
 	{
-		customMono.AnimatorWrapper.animator.SetBool(walkBoolHash, value);
+		customMono.AnimatorWrapper.animator.SetBool(boolHash, value);
 	}
 	
-	public bool GetMoveBool() => GetBool(walkBoolHash);
+	public bool GetMoveBool() => GetBool(boolHash);
 	
 	public void MoveTo(Vector2 direction, float duration)
 	{
