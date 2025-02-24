@@ -23,7 +23,7 @@ GameObject:
   - component: {fileID: 6848865928279838711}
   m_Layer: 0
   m_Name: SmallWereWolf
-  m_TagString: Untagged
+  m_TagString: Werewolf
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -107,7 +107,7 @@ Rigidbody2D:
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
   m_Mass: 1
-  m_LinearDamping: 0
+  m_LinearDamping: 1
   m_AngularDamping: 0.05
   m_GravityScale: 0
   m_Material: {fileID: 0}
@@ -254,7 +254,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isBot: 1
-  target: {fileID: 0}
   animationEventFunctionCaller: {fileID: 0}
   movable: {fileID: 0}
   attackable: {fileID: 0}
@@ -269,8 +268,10 @@ MonoBehaviour:
   fieldOfView: {fileID: 0}
   combatCollision: {fileID: 0}
   firePoint: {fileID: 0}
-  allPeopleWeSee: []
+  enemiesWeSee: []
   audioSource: {fileID: 0}
+  currentNearestEnemy: {fileID: 0}
+  rigidbody2D: {fileID: 0}
 --- !u!114 &7087241945076126526
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -306,6 +307,7 @@ MonoBehaviour:
   audioClip: {fileID: 8300000, guid: 6eb5c4290eb5f1e45a1f6b9581ca1351, type: 3}
   damage: 0
   defaultDamage: 0
+  finalDirection: {x: 0, y: 0}
   longRangeProjectilePrefab: {fileID: 0}
   colliderForce: 5
   attackType: 0
@@ -331,6 +333,7 @@ MonoBehaviour:
   audioClip: {fileID: 0}
   damage: 0
   defaultDamage: 0
+  finalDirection: {x: 0, y: 0}
 --- !u!114 &3207908059648686886
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -346,8 +349,6 @@ MonoBehaviour:
   actionChances: 
   actionCumulativeDistribution: []
   presummedActionChances: 
-  attackRange: 0.5
-  attackMode: 0
 --- !u!114 &6850801859896376396
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -385,6 +386,7 @@ MonoBehaviour:
   audioClip: {fileID: 0}
   damage: 0
   defaultDamage: 0
+  finalDirection: {x: 0, y: 0}
   skillDatas:
   - {fileID: 11400000, guid: 82d2c7ea92e38b3479667afeae22f750, type: 2}
 --- !u!114 &6848865928279838711
@@ -402,6 +404,9 @@ MonoBehaviour:
   actionChances: 
   actionCumulativeDistribution: []
   presummedActionChances: 
+  targetDirection: {x: 0, y: 0}
+  distanceToTarget: 0
+  targetPosition: {x: 0, y: 0, z: 0}
   logicalAttackRange: 1
   targetTooCloseRange: 1
   myBotCombatBehaviour: 0
@@ -534,6 +539,8 @@ MonoBehaviour:
   endCastingMagic: 0
   summon: 0
   endSummon: 0
+  endSlaughter: 0
+  endRelease: 0
 --- !u!1001 &2336400165070275671
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -548,7 +555,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7957823160304584893, guid: 85f0845151e1f8f4bbd1a0b18ba9eadb, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.28
+      value: 0.8
       objectReference: {fileID: 0}
     - target: {fileID: 7957823160304584893, guid: 85f0845151e1f8f4bbd1a0b18ba9eadb, type: 3}
       propertyPath: m_LocalPosition.z

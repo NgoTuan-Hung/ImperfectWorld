@@ -53,9 +53,9 @@ def process_file(input_file, output_file, some_value):
 
 # Main function
 if __name__ == '__main__':
-    input_file = 'final_goku.aseprite.meta'  # Path to your input file
-    output_file = 'final_goku.aseprite.meta1'  # Path to the output file
-    some_value = 72  # Define the value you want to use for the update (this is the "some_value_i_define")
+    input_file = 'small-explosion.aseprite.meta'  # Path to your input file
+    output_file = 'small-explosion.aseprite.meta1'  # Path to the output file
+    some_value = 300  # Define the value you want to use for the update (this is the "some_value_i_define")
     
     # Process the file
     process_file(input_file, output_file, some_value)

@@ -86,7 +86,13 @@ public class GameUIManager : MonoEditorSingleton<GameUIManager>
 	void InitPools()
 	{
 		radialProgressPrefab = Resources.Load<GameObject>("RadialProgress");
-		radialProgressPool = new ObjectPool(radialProgressPrefab, 100, new PoolArgument(typeof(RadialProgress), PoolArgument.WhereComponent.Child), new PoolArgument(typeof(GameEffect), PoolArgument.WhereComponent.Self));
+		radialProgressPool = new ObjectPool
+		(
+			radialProgressPrefab
+			, 100
+			, new PoolArgument(ComponentType.RadialProgress, PoolArgument.WhereComponent.Child)
+			, new PoolArgument(ComponentType.GameEffect, PoolArgument.WhereComponent.Self)
+		);
 	}
 
 	private void GetViewComponents()
@@ -191,12 +197,10 @@ public class GameUIManager : MonoEditorSingleton<GameUIManager>
 		return layers[layerIndex];
 	}
 	
-	public RadialProgress CreateAndHandleRadialProgressFollowing(Transform transform)
+	public PoolObject CreateAndHandleRadialProgressFollowing(Transform transform)
 	{
 		PoolObject radialProgressPoolObject = radialProgressPool.PickOne();
-		RadialProgress radialProgress = radialProgressPoolObject.radialProgress;
-		GameEffect radialProgressGE = radialProgressPoolObject.gameEffect;
-		radialProgressGE.FollowSlowly(transform);
-		return radialProgress;
+		radialProgressPoolObject.gameEffect.FollowSlowly(transform);
+		return radialProgressPoolObject;
 	}
 }

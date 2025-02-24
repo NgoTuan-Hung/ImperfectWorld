@@ -1,16 +1,15 @@
 using System;
 
+public enum ComponentType {RadialProgress, CollideAndDamage, GameEffect, CustomMono};
 public class PoolArgument
 {
-    private Type type;
-    public enum WhereComponent {Child, Self}
-    public WhereComponent whereComponent;
+	public ComponentType componentType;
+	public enum WhereComponent {Child, Self}
+	public WhereComponent whereComponent;
 
-    public Type Type { get => type; set => type = value; }
-
-    public PoolArgument(Type type, WhereComponent whereComponent)
-    {
-        this.type = type;
-        this.whereComponent = whereComponent;
-    }
+	public PoolArgument(ComponentType componentType, WhereComponent whereComponent)
+	{
+		this.componentType = componentType;
+		this.whereComponent = whereComponent;
+	}
 }

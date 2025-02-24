@@ -1,31 +1,99 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
-public class CollideAndDamage : MonoBehaviour
+public class CollideAndDamage : MonoEditorSelfAware
 {
 	public HashSet<string> allyTags = new();
-	new Rigidbody2D rigidbody2D;
+	public new Rigidbody2D rigidbody2D;
 	public enum CollideType {Single, Multiple}
 	public CollideType collideType = CollideType.Single;
 	public float collideDamage = 1f;
 	public float multipleCollideInterval = 0.05f;
-	public Rigidbody2D Rigidbody2D { get => rigidbody2D; set => rigidbody2D = value; }
 	Action<Collider2D> onTriggerEnter2D = (other) => { };
 	Action<Collider2D> onTriggerStay2D = (other) => { };
-	private void Awake() 
+	Action<Collider2D> onCollideWithEnemy = (other) => {};
+	Action<CustomMono> onCollideWithCustomMono = (customMono) => {};
+	public bool pushEnemyOnCollide = false;
+	public enum PushEnemyOnCollideType {Random, BothSide};
+	public PushEnemyOnCollideType pushEnemyOnCollideType = PushEnemyOnCollideType.Random;
+	public float pushEnemyOnCollideForce = 1f;
+	public bool deactivateOnCollide = false;
+	public bool spawnEffectOnCollide = false;
+	public GameObject collisionEffectPrefab;
+	static ObjectPool collisionEffectPool;
+	public override void Awake() 
 	{
+		base.Awake();
 		if (collideType == CollideType.Single)
 		{
+			if (pushEnemyOnCollide)
+			{
+				switch (pushEnemyOnCollideType)
+				{
+					case PushEnemyOnCollideType.Random:
+					{
+					onCollideWithCustomMono += (customMono) => 
+					{
+						customMono.rigidbody2D.AddForce
+						(
+							pushEnemyOnCollideForce * new Vector2(Random.Range(-1, 1), Random.Range(-1, 1)).normalized
+							, ForceMode2D.Impulse
+						);
+					};
+					break;
+					}
+					case PushEnemyOnCollideType.BothSide:
+					{
+						onCollideWithCustomMono += (customMono) => 
+						{
+							customMono.rigidbody2D.AddForce
+							(
+								pushEnemyOnCollideForce * (Random.Range(-1, 1) == 0 ? 1 : -1)
+								* transform.TransformDirection(Vector3.up).normalized
+								, ForceMode2D.Impulse
+							);
+						};
+						break;
+					}
+					default:
+					{
+						break;
+					}
+				}
+			}
+			
+			onCollideWithEnemy += (other) => 
+			{
+				/* Since parent will have customMono, not this */
+				CustomMono customMono = GameManager.Instance.GetCustomMono(other.transform.parent.gameObject);
+				if (customMono != null) 
+				{
+					customMono.stat.Health -= collideDamage;
+					onCollideWithCustomMono(customMono);
+				}
+			};
+			
 			onTriggerEnter2D = (Collider2D other) => 
 			{
 				if (!allyTags.Contains(other.transform.parent.tag))
 				{
-					/* Since parent will have customMono, not this */
-					CustomMono customMono = GameManager.Instance.GetCustomMono(other.transform.parent.gameObject);
-					if (customMono != null) customMono.stat.Health -= collideDamage;
+					onCollideWithEnemy(other);
 				}
 			};
+			
+			if (spawnEffectOnCollide)
+			{
+				collisionEffectPool ??= new ObjectPool(collisionEffectPrefab, 100, new PoolArgument(ComponentType.GameEffect, PoolArgument.WhereComponent.Self));
+				onCollideWithEnemy += (other) => 
+				{
+					GameEffect collisionEffect = collisionEffectPool.PickOne().gameEffect;
+					collisionEffect.transform.position = transform.position;
+				};
+			}
+			
+			if (deactivateOnCollide) onCollideWithEnemy += (other) => deactivate();
 		}
 		else
 		{
@@ -63,6 +131,18 @@ public class CollideAndDamage : MonoBehaviour
 	{
 		rigidbody2D = GetComponent<Rigidbody2D>();
 	}
+
+	public override void Start()
+	{
+		base.Start();
+		#if UNITY_EDITOR
+		onExitPlayModeEvent += () => 
+		{
+			collisionEffectPool = null;
+		};
+		#endif
+	}
+
 	
 	private void OnTriggerEnter2D(Collider2D other) 
 	{

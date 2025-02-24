@@ -14,12 +14,16 @@ public class AnimationEventFunctionCaller : MonoBehaviour
 	public bool endCastingMagic;
 	public bool summon;
 	public bool endSummon;
+	public bool endSlaughter;
+	public bool endRelease;
 	public void Attack() => attack = true;
 	public void EndAttack() => endAttack = true;
 	public void CastingMagic() => castingMagic = true;
 	public void EndCastingMagic() => endCastingMagic = true;
 	public void Summon() => summon = true;
 	public void EndSummon() => endSummon = true;
+	public void EndSlaughter() => endSlaughter = true;
+	public void EndRelease() => endRelease = true;
 	
 	private void OnEnable() 
 	{
@@ -29,5 +33,7 @@ public class AnimationEventFunctionCaller : MonoBehaviour
 		endCastingMagic = false;
 		summon = false;
 		endSummon = false;
+		endSlaughter = false;
+		endRelease = false;
 	}
 }

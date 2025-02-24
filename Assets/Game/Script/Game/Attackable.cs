@@ -9,7 +9,6 @@ public class Attackable : BaseAction
 	protected static ObjectPool attackColliderPool;
 	public GameObject longRangeProjectilePrefab;
 	protected static ObjectPool longRangeProjectilePool;
-	Vector3 projectileVector;
 	public float colliderForce = 5f;
 	public Action<Vector2> Attack;
 	public AttackType attackType;
@@ -23,16 +22,15 @@ public class Attackable : BaseAction
 		{
 			Attack = MeleeAttack;
 			damage = defaultDamage = 15f;
+			attackColliderPrefab = Resources.Load("AttackCollider") as GameObject;
+			attackColliderPool ??= new ObjectPool(attackColliderPrefab, 100, new PoolArgument(ComponentType.CollideAndDamage, PoolArgument.WhereComponent.Self));
 		}
 		else 
 		{
 			Attack = RangedAttack;
 			damage = defaultDamage = 10f;
+			longRangeProjectilePool ??= new ObjectPool(longRangeProjectilePrefab, 100, new PoolArgument(ComponentType.GameEffect, PoolArgument.WhereComponent.Self));
 		}
-		attackColliderPrefab = Resources.Load("AttackCollider") as GameObject;
-		attackColliderPool ??= new ObjectPool(attackColliderPrefab, 100, new PoolArgument(typeof(CollideAndDamage), PoolArgument.WhereComponent.Self));
-		if (longRangeProjectilePrefab  != null)
-			longRangeProjectilePool ??= new ObjectPool(longRangeProjectilePrefab, 100, new PoolArgument(typeof(GameEffect), PoolArgument.WhereComponent.Self));
 		
 		AddActionManuals();
 	}
@@ -54,7 +52,6 @@ public class Attackable : BaseAction
 	public override void Start()
 	{
 		base.Start();
-		actionClip = customMono.AnimatorWrapper.GetAnimationClip("Attack");
 		#if UNITY_EDITOR
 		onExitPlayModeEvent += () => 
 		{
@@ -83,6 +80,7 @@ public class Attackable : BaseAction
 			cooldown = defaultCooldown / customMono.stat.AttackSpeed;
 			botActionManuals[0].nextActionChoosingIntervalProposal = 0.5f / customMono.stat.AttackSpeed;
 			botActionManuals[1].nextActionChoosingIntervalProposal = 0.5f / customMono.stat.AttackSpeed;
+			botActionManuals[2].nextActionChoosingIntervalProposal = 0.5f / customMono.stat.AttackSpeed;
 		};
 	}
 
@@ -111,7 +109,7 @@ public class Attackable : BaseAction
 		attackCollider.allyTags = customMono.allyTags;
 		attackCollider.transform.position = customMono.firePoint.transform.position;
 		attackCollider.collideDamage = damage;
-		attackCollider.Rigidbody2D.AddForce
+		attackCollider.rigidbody2D.AddForce
 		(
 			attackDirection.normalized * colliderForce,
 			ForceMode2D.Impulse

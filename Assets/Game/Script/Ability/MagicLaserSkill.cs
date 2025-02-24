@@ -15,7 +15,7 @@ public class MagicLaserSkill : SkillBase
 		boolHash = Animator.StringToHash("CastingMagic");
 		
 		magicLaserPrefab = Resources.Load("MagicLaser") as GameObject;
-		magicLaserPool ??= new ObjectPool(magicLaserPrefab, 100, new PoolArgument(typeof(GameEffect), PoolArgument.WhereComponent.Self));
+		magicLaserPool ??= new ObjectPool(magicLaserPrefab, 100, new PoolArgument(ComponentType.GameEffect, PoolArgument.WhereComponent.Self));
 		AddActionManuals();
 	}
 

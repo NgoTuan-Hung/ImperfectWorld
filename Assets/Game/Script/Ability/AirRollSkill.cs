@@ -8,6 +8,7 @@ public class AirRollSkill : SkillBase
 	Vector2 p1, p2, p3, mid;
 	float t, oneMinusT, moveLength, landDelay = 0.5f;
 	int landBoolHash;
+	float angle = 90f.DegToRad(); /* -90 is ok too */
 	public override void Awake()
 	{
 		base.Awake();
@@ -57,11 +58,15 @@ public class AirRollSkill : SkillBase
 	
 	IEnumerator TriggerCoroutine(Touch touch, Vector2 location, Vector2 direction)
 	{
+		/* The idea is jumping in a bezier curve, with p1 is our location, p2 is the control point
+		, p3 is the destination. mid is the mid point between p1 and p3, and p2-mid is basically
+		a perpendicular bisector of p1 and p3, with the same length as p1-p3, which ensures
+		the curve is smooth.*/
 		p1 = transform.position;
 		p3 = location;
 		mid = (p1 + p3) / 2;
 		p2 = p3 - p1;
-		p2 = Rotate(p2, 90) + mid;
+		p2 = p2.RotateZ(angle) + mid;
 		
 		customMono.SetUpdateDirectionIndicator(direction, UpdateDirectionIndicatorPriority.Low);
 		
@@ -69,12 +74,14 @@ public class AirRollSkill : SkillBase
 		while (t < duration)
 		{
 			oneMinusT = 1 - t;
+			/* quadratic bezier formula */
 			transform.position = oneMinusT * oneMinusT * p1 + 2 * t * oneMinusT * p2 + t * t * p3;
 			
 			yield return new WaitForSeconds(Time.fixedDeltaTime);
 			t += moveLength;
 		}
 		
+		/* After we finish jumping, we can delay to land for a short time. */
 		ToggleAnim(boolHash, false);
 		ToggleAnim(landBoolHash, true);
 		customMono.audioSource.PlayOneShot(audioClip);
@@ -96,10 +103,5 @@ public class AirRollSkill : SkillBase
 		Trigger(location: location, direction: direction);
 		yield return new WaitForSeconds(duration);
 		customMono.actionInterval = false;
-	}
-	
-	public Vector2 Rotate(Vector2 v, float degrees)
-	{
-		return new Vector2((float)(Math.Cos(degrees) * v.x - Math.Sin(degrees) * v.y), (float)(Math.Sin(degrees) * v.x + Math.Cos(degrees) * v.y));
 	}
 }

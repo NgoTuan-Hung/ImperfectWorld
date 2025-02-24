@@ -1,12 +1,12 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 public enum UpdateDirectionIndicatorPriority {VeryLow = 4, Low = 3, Medium = 2, High = 1, VeryHigh = 0}
-public class CustomMono : MonoBehaviour, IComparable<CustomMono>
+public class CustomMono : MonoSelfAware, IComparable<CustomMono>
 {
 	public bool isBot = true;
 	public HashSet<string> allyTags = new();
-	public GameObject target = null;
 	private GameObject mainComponent;
 	private SpriteRenderer spriteRenderer;
 	private AnimatorWrapper animatorWrapper;
@@ -52,21 +52,27 @@ public class CustomMono : MonoBehaviour, IComparable<CustomMono>
 	public bool actionBlocking;
 	public bool movementActionBlocking;
 	public GameObject fieldOfView, combatCollision, firePoint;
-	public List<GameObject> allPeopleWeSee = new();
+	public List<CustomMono> enemiesWeSee = new();
 	Vector3 baseRendererLocalScale;
 	BoxCollider2D boxCollider2D, combatCollider2D;
-	float boxColliderDefaultXSize, directionIndicationDefaultScale;
+	float boxColliderDefaultXSize, directionIndicationDefaultScale, firePointDefaultYPos;
 	Vector2 combatCollisionDefaultSize, combatCollisionDefaultOffset;
 	public AudioSource audioSource;
+	public Action<GameObject> someOneExitView = (person) => {};
+	float currentNearestEnemySqrDistance = Mathf.Infinity;
+	public CustomMono currentNearestEnemy = null;
+	public new Rigidbody2D rigidbody2D;
+	public Action<CustomMono> nearestEnemyChanged = (person) => {};
 	public AnimatorWrapper AnimatorWrapper { get => animatorWrapper; set => animatorWrapper = value; }
 	public GameObject MainComponent { get => mainComponent; set => mainComponent = value; }
 	public GameObject DirectionIndicator { get => directionIndicator; set => directionIndicator = value; }
 	public SpriteRenderer SpriteRenderer { get => spriteRenderer; set => spriteRenderer = value; }
 
-	private void Awake() 
+	public override void Awake() 
 	{
-		GameManager.Instance.AddCustomMono(this);
+		base.Awake();
 		allyTags.Add(gameObject.tag);
+		GameManager.Instance.AddCustomMono(this);
 		GetAllChildObject();
 		GetAllComponents();
 		PrepareValues();
@@ -93,6 +99,7 @@ public class CustomMono : MonoBehaviour, IComparable<CustomMono>
 		boxCollider2D = GetComponent<BoxCollider2D>();
 		combatCollider2D = combatCollision.GetComponent<BoxCollider2D>();
 		audioSource = GetComponent<AudioSource>();
+		rigidbody2D = GetComponent<Rigidbody2D>();
 		
 		/* Bot components */
 		movementIntelligence = GetComponent<MovementIntelligence>();
@@ -117,6 +124,7 @@ public class CustomMono : MonoBehaviour, IComparable<CustomMono>
 		combatCollisionDefaultSize = combatCollider2D.size;
 		combatCollisionDefaultOffset = combatCollider2D.offset;
 		directionIndicationDefaultScale = directionIndicator.transform.localScale.x;
+		firePointDefaultYPos = firePoint.transform.localPosition.y;
 	}
 	
 	void StatChangeRegister()
@@ -132,6 +140,12 @@ public class CustomMono : MonoBehaviour, IComparable<CustomMono>
 				0, (combatCollisionDefaultSize - combatCollider2D.size).y / 2
 			);
 			directionIndicator.transform.localScale = new Vector3(directionIndicationDefaultScale * stat.Size, directionIndicationDefaultScale * stat.Size, 1);
+			firePoint.transform.localPosition = new Vector3
+			(
+				firePoint.transform.localPosition.x,
+				firePointDefaultYPos * stat.Size,
+				firePoint.transform.localPosition.z
+			);
 		};
 	}
 	
@@ -193,27 +207,56 @@ public class CustomMono : MonoBehaviour, IComparable<CustomMono>
 	
 	private void OnTriggerEnter2D(Collider2D other) 
 	{
-		allPeopleWeSee.Add(other.transform.parent.gameObject);
+		/* if we see a new enemy, remember him. */
+		if (!allyTags.Contains(other.transform.parent.tag)) enemiesWeSee.Add
+		(
+			GameManager.Instance.GetCustomMono(other.transform.parent.gameObject)
+		);
 	}
 	
 	private void OnTriggerExit2D(Collider2D other) 
 	{
-		if (target != null)
+		someOneExitView(other.transform.parent.gameObject);
+		
+		/* Check if we saw this enemy before. */
+		CustomMono t_customMono = enemiesWeSee.FirstOrDefault(customMono => 
+			customMono.gameObject.Equals(other.transform.parent.gameObject)	
+		);
+		
+		/* If we saw this enemy before, erase him. */
+		if (t_customMono != null)
 		{
-			if (target.Equals(other.transform.parent.gameObject)) target = null;
+			enemiesWeSee.Remove(t_customMono);
+			
+			/* If the current nearest enemy is this one, erase it as well. */
+			if (t_customMono.Equals(currentNearestEnemy))
+			{
+				currentNearestEnemy = null;
+				currentNearestEnemySqrDistance = float.MaxValue;
+			}	
 		}
-		allPeopleWeSee.Remove(other.transform.parent.gameObject);
 	}
 	
-	public void TryPickRandomTarget()
+	private void OnTriggerStay2D(Collider2D other) 
 	{
-		allPeopleWeSee.ForEach(p => 
+		if (!allyTags.Contains(other.transform.parent.tag))
 		{
-			if (!allyTags.Contains(p.tag)) 
+			/* We can compare squared distance instead of distance because it's faster yet
+			still gives the same result. */
+			float t_enemySqrDistance = (transform.position - other.transform.parent.position).sqrMagnitude;
+			
+			/* if we see a closer enemy, put him as the nearest. Else, update the distance of
+			the nearest enemy instead. */
+			if (t_enemySqrDistance < currentNearestEnemySqrDistance)
 			{
-				target = p;
-				return;
-			}
-		});
+				currentNearestEnemySqrDistance = t_enemySqrDistance;
+				currentNearestEnemy = GameManager.Instance.GetCustomMono
+				(
+					other.transform.parent.gameObject
+				);
+				nearestEnemyChanged(currentNearestEnemy);
+			} 
+			else if (other.transform.parent.gameObject.Equals(currentNearestEnemy.gameObject)) currentNearestEnemySqrDistance = t_enemySqrDistance;
+		}
 	}
 }

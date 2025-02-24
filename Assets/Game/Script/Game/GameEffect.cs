@@ -3,7 +3,7 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.Playables;
 
-public class GameEffect : MonoBehaviour 
+public class GameEffect : MonoSelfAware
 {
 	public Animator animator;
 	public SpriteRenderer spriteRenderer;
@@ -15,11 +15,15 @@ public class GameEffect : MonoBehaviour
 	public bool isTimeline = false;
 	public float flyAtSpeed = 0.03f;
 	Action onEnable = () => {};
-	public Vector3 followSlowlyOffset = new(-0.8f, 1.5f, 0);
+	public Vector3 followOffset = new(-0.8f, 1.5f, 0);
 	public float followSlowlyPositionLerpTime = 0.04f;
+	AudioSource audioSource;
+	public bool playSoundOnEnable = false;
+	public Material material;
 	
-	private void Awake() 
+	public override void Awake() 
 	{
+		base.Awake();
 		if (isDeactivatedAfterTime) deactiveAfterTime += () => 
 		{
 			StartCoroutine(DeactivateAfterTimeCoroutine(deactivateTime));
@@ -27,8 +31,10 @@ public class GameEffect : MonoBehaviour
 		
 		collideAndDamage = GetComponent<CollideAndDamage>();
 		playableDirector = GetComponent<PlayableDirector>();
+		audioSource = GetComponent<AudioSource>();
 		
 		if (isTimeline) onEnable += () => playableDirector.Play();
+		if (playSoundOnEnable) onEnable += () => audioSource.Play();
 	}
 
 	private void OnEnable() {
@@ -40,7 +46,7 @@ public class GameEffect : MonoBehaviour
 	IEnumerator DeactivateAfterTimeCoroutine(float deactivateTime)
 	{
 		yield return new WaitForSeconds(deactivateTime);
-		gameObject.SetActive(false);
+		deactivate();
 	}
 	
 	public void KeepFlyingAt(Vector3 direction)
@@ -65,14 +71,14 @@ public class GameEffect : MonoBehaviour
 	
 	IEnumerator FollowSlowlyCoroutine(Transform master)
 	{
-		Vector2 newVector2Position = master.position + followSlowlyOffset, prevVector2Position, expectedVector2Position;
+		Vector2 newVector2Position = master.position + followOffset, prevVector2Position, expectedVector2Position;
 		float currentTime;
 		
 		while (true)
 		{
 			prevVector2Position = newVector2Position;
 			/* Check current position */
-			newVector2Position = master.position + followSlowlyOffset;
+			newVector2Position = master.position + followOffset;
 			
 			/* Start lerping position for specified duration if position change detected.*/
 			if (prevVector2Position != newVector2Position)
@@ -89,6 +95,16 @@ public class GameEffect : MonoBehaviour
 			
 			transform.position = new Vector2(newVector2Position.x, newVector2Position.y);
 
+			yield return new WaitForSeconds(Time.fixedDeltaTime);
+		}
+	}
+	
+	public void Follow(Transform master) => StartCoroutine(FollowCoroutine(master));
+	IEnumerator FollowCoroutine(Transform master)
+	{
+		while (true)
+		{
+			transform.position = master.position + followOffset;
 			yield return new WaitForSeconds(Time.fixedDeltaTime);
 		}
 	}

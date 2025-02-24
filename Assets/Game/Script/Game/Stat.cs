@@ -12,12 +12,12 @@ using UnityEngine.UIElements;
 /// convinience sake.
 /// DON'T REMOVE SERIALIZEFIELD, THEY ARE MEAN TO BE PERSISTED.
 /// </summary>
-public class Stat : MonoBehaviour, INotifyBindablePropertyChanged
+public class Stat : MonoEditor, INotifyBindablePropertyChanged
 {
 	CustomMono customMono;
 	[SerializeField] float health = 100f;
 	[SerializeField] float defaultHealth = 100f;
-	private RadialProgress healthRadialProgress;
+	private PoolObject healthRadialProgress;
 	[SerializeField] float attackSpeed = 1;
 	[SerializeField] float moveSpeed = 1f;
 	[SerializeField] private float defaultMoveSpeed;
@@ -27,6 +27,8 @@ public class Stat : MonoBehaviour, INotifyBindablePropertyChanged
 	[SerializeField] float magicka = 1f;
 	[SerializeField] float defaultMagicka = 1f;
 	[SerializeField] float size = 1f;
+	float dissolveTime = 5f;
+	static ObjectPool dieDissolveEffectPool;
 	int dieBoolHash = Animator.StringToHash("Die");
 	public event EventHandler<BindablePropertyChangedEventArgs> propertyChanged;
 	Action onEnable = () => { };
@@ -51,8 +53,8 @@ public class Stat : MonoBehaviour, INotifyBindablePropertyChanged
 		if (value == health) return;
 		
 		health = value;
-		if (health <= 0) healthReachZeroEvent.action();
 		Notify();
+		if (health <= 0) healthReachZeroEvent.action();
 	} }
 	public ActionWrapper healthChangeEvent = new();
 	public ActionWrapper healthReachZeroEvent = new();
@@ -136,21 +138,32 @@ public class Stat : MonoBehaviour, INotifyBindablePropertyChanged
 	{
 		customMono = GetComponent<CustomMono>();
 		AddPropertyChangeEvent();
+		
+		var dieDissolveEffectPrefab = Resources.Load("DieDissolve") as GameObject;
+		dieDissolveEffectPool ??= new ObjectPool
+		(
+			dieDissolveEffectPrefab,
+			100,
+			new PoolArgument(ComponentType.GameEffect, PoolArgument.WhereComponent.Self)
+		);
 	}
 	
 	private void OnEnable() 
 	{
+		onEnable();
 		MoveSpeed = DefaultMoveSpeed;
 		Health = DefaultHealth;
-		onEnable();
 	}
 	
 	private void OnDisable() 
 	{
-		if (healthRadialProgress != null) healthRadialProgress.transform.parent.gameObject.SetActive(false);
+		if (healthRadialProgress != null)
+		{
+			if (healthRadialProgress.gameEffect != null) healthRadialProgress.gameEffect.deactivate();
+		}
 	}
 	
-	private void Start() 
+	public override void Start() 
 	{
 		InitUI();
 		StartCoroutine(LateStart());
@@ -159,6 +172,13 @@ public class Stat : MonoBehaviour, INotifyBindablePropertyChanged
 			InitUI();
 			InitProperty();
 		};
+		
+		#if UNITY_EDITOR
+		onExitPlayModeEvent += () => 
+		{
+			dieDissolveEffectPool = null;
+		};
+		#endif
 	}
 	IEnumerator LateStart()
 	{
@@ -186,13 +206,16 @@ public class Stat : MonoBehaviour, INotifyBindablePropertyChanged
 	
 	void AddPropertyChangeEvent()
 	{
-		healthChangeEvent.action += () => healthRadialProgress.SetProgress(health / defaultHealth);
+		healthChangeEvent.action += () => healthRadialProgress.radialProgress.SetProgress(health / defaultHealth);;
+		
 		actionMoveSpeedReduceRateChangeEvent.action += () => actionMoveSpeedReduced = defaultMoveSpeed * actionMoveSpeedReduceRate;
 		healthReachZeroEvent.action += () => 
 		{
 			customMono.AnimatorWrapper.SetBool(dieBoolHash, true);
 			customMono.combatCollision.SetActive(false);
-			healthRadialProgress.transform.parent.gameObject.SetActive(false);
+			healthRadialProgress.gameEffect.deactivate();
+			healthRadialProgress = null;
+			StartCoroutine(DissolveCoroutine());
 		};
 		
 		propertyChangeEventDictionary.Add("AttackSpeed", attackSpeedChangeEvent);
@@ -213,4 +236,14 @@ public class Stat : MonoBehaviour, INotifyBindablePropertyChanged
 	}
 	
 	public void SetDefaultMoveSpeed() => MoveSpeed = DefaultMoveSpeed;
+	IEnumerator DissolveCoroutine()
+	{
+		yield return new WaitForSeconds(dissolveTime);
+		
+		GameEffect dieDissolveEffect = dieDissolveEffectPool.PickOne().gameEffect;
+		dieDissolveEffect.spriteRenderer.transform.localScale = customMono.SpriteRenderer.transform.localScale;
+		dieDissolveEffect.spriteRenderer.sprite = customMono.SpriteRenderer.sprite;
+		dieDissolveEffect.spriteRenderer.transform.position = transform.position;
+		customMono.deactivate();
+	}
 }

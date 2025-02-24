@@ -16,10 +16,10 @@ public class TheCallOfThePack : SkillBase
 		boolHash = Animator.StringToHash("Summon");
 		cooldown = defaultCooldown = 60f;
 		audioClip = Resources.Load<AudioClip>("AudioClip/the-call-of-the-pack");
-		maxRange = 10f;
+		maxRange = 20f;
 		
 		smallWereWolfPrefab = Resources.Load("SmallWereWolf") as GameObject;
-		smallWereWolfPool ??= new ObjectPool(smallWereWolfPrefab, 10, new PoolArgument(typeof(CustomMono), PoolArgument.WhereComponent.Self));
+		smallWereWolfPool ??= new ObjectPool(smallWereWolfPrefab, 10, new PoolArgument(ComponentType.CustomMono, PoolArgument.WhereComponent.Self));
 		
 		AddActionManuals();
 	}
@@ -73,6 +73,7 @@ public class TheCallOfThePack : SkillBase
 	{
 		while(!customMono.animationEventFunctionCaller.summon) yield return new WaitForSeconds(Time.fixedDeltaTime);
 		
+		/* summon 3 were wolves */
 		customMono.animationEventFunctionCaller.summon = false;
 		customMono.stat.MoveSpeed = customMono.stat.actionMoveSpeedReduced;
 		customMono.audioSource.PlayOneShot(audioClip);
@@ -83,12 +84,15 @@ public class TheCallOfThePack : SkillBase
 	
 	IEnumerator DelayAirRoll(PoolObject poolObject)
 	{
+		/* Place the were wolf along the circle around me with the
+		radius of maxRange and make them jump to our position with
+		a slightly offset. */
 		CustomMono customMono = poolObject.customMono;
 		summonX = Random.Range(-maxRange, maxRange);
 		summonY = (float)(Math.Sqrt(maxRange * maxRange - summonX * summonX) * (Random.Range(-1f, 1f) > 0 ? 1 : -1));
 		customMono.transform.position = transform.position + new Vector3(summonX, summonY, 0);
 		yield return new WaitForSeconds(Random.Range(0, 0.3f));
-		customMono.myBotPersonality.ForceUsingAction(ActionUse.AirRoll, true, transform.position + new Vector3(Random.Range(-1,1), Random.Range(-1,1)), 2f);
+		customMono.myBotPersonality.ForceUsingAction(ActionUse.AirRoll, transform.position + new Vector3(Random.Range(-1,1), Random.Range(-1,1)), 2f);
 	}
 	
 	public void Call(float duration)

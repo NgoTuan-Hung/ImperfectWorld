@@ -18,7 +18,7 @@ public class DashSkill : SkillBase
 		cooldown = 8f;
 		
 		dashEffectPrefab = Resources.Load("DashEffect") as GameObject;
-		dashEffectPool ??= new ObjectPool(dashEffectPrefab, 100, new PoolArgument(typeof(GameEffect), PoolArgument.WhereComponent.Self));
+		dashEffectPool ??= new ObjectPool(dashEffectPrefab, 100, new PoolArgument(ComponentType.GameEffect, PoolArgument.WhereComponent.Self));
 		spawnEffectInterval = duration / totalEffect;
 		AddActionManuals();
 	}
@@ -45,6 +45,11 @@ public class DashSkill : SkillBase
 		#endif
 	}
 
+    public override void WhileWaiting(Vector2 vector2)
+    {
+        customMono.SetUpdateDirectionIndicator(vector2, UpdateDirectionIndicatorPriority.Low);
+    }
+    
 	public override void Trigger(Touch touch = default, Vector2 location = default, Vector2 direction = default)
 	{
 		if (canUse && !customMono.movementActionBlocking)
@@ -60,7 +65,6 @@ public class DashSkill : SkillBase
 	{
 		GameEffect gameEffect;
 		direction = direction.normalized * dashAmmountPerFrame;
-		customMono.SetUpdateDirectionIndicator(direction, UpdateDirectionIndicatorPriority.Low);
 		for (int i = 0; i < poolObjects.Count; i++)
 		{
 			gameEffect = poolObjects[i].gameEffect;

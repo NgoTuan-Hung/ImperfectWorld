@@ -2,8 +2,10 @@ using UnityEngine;
 using System;
 using System.Collections.Generic;
 using System.Collections;
+using Touch = UnityEngine.InputSystem.EnhancedTouch.Touch;
+using System.Diagnostics;
 
-public enum ActionUse {GetCloser, GetAway, Dodge, Passive, MeleeDamage, RangedDamage, Roam, AirRoll, SummonShortRange}
+public enum ActionUse {GetCloser, GetAway, Dodge, Passive, MeleeDamage, RangedDamage, Roam, AirRoll, SummonShortRange, PushAway}
 [RequireComponent(typeof(CustomMono))]
 public class BaseAction : MonoEditor
 {
@@ -28,6 +30,8 @@ public class BaseAction : MonoEditor
 	public AudioClip audioClip;
 	public float damage = 0;
 	public float defaultDamage = 0;
+	public Vector2 finalDirection;
+	public Stopwatch stopwatch = new();
 	
 	public virtual void Awake() 
 	{
@@ -98,4 +102,11 @@ public class BaseAction : MonoEditor
 		canUse = false;
 		if (boolHash != 0) ToggleAnim(boolHash, false);
 	}
+	
+	public virtual void Trigger(Touch touch = default, Vector2 location = default, Vector2 direction = default)
+	{
+		
+	}
+	public virtual bool StartAndWait(){return true;}
+	public virtual void WhileWaiting(Vector2 vector2){}
 }

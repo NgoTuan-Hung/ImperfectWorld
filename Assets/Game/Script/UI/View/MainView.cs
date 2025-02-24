@@ -184,7 +184,15 @@ public class MainView : ViewBase
 		}
 	}
 	
-	public void AddSkillToScrollView(SkillDataSo skillDataSO, AddSkillToScrollViewDelegate trigger)
+	/// <summary>
+	/// Add the skill to UI and handle input logic of the skill.
+	/// </summary>
+	/// <param name="skillDataSO"></param>
+	/// <param name="trigger"></param>
+	/// <param name="startHoldingCallback"></param>
+	/// <param name="stillHoldingCallback"></param>
+	public void AddSkillToScrollView(SkillDataSo skillDataSO, AddSkillToScrollViewDelegate trigger
+	, Func<bool> startHoldingCallback = null, Action<Vector2> stillHoldingCallback = null)
 	{
 		var newSkillHolder = skillHolderTemplate.Instantiate();
 		skillScrollViews[skillDataSO.skillButtonIndex].contentContainer.Add(newSkillHolder);
@@ -219,12 +227,17 @@ public class MainView : ViewBase
 				});
 				break;
 			case SkillDataSo.InputType.Hold:
+				newSkillHolder.RegisterCallback<PointerDownEvent>((evt) => 
+				{
+					var touch = TouchExtension.GetTouchOverlapVisualElement(newSkillHolder, root.panel);
+					StartCoroutine(SkillHolderHoldCoroutine(touch, t_skillHolderView, trigger));
+				});
 				break;
 			case SkillDataSo.InputType.HoldAndRelease:
 				newSkillHolder.RegisterCallback<PointerDownEvent>((evt) => 
 				{
 					var touch = TouchExtension.GetTouchOverlapVisualElement(newSkillHolder, root.panel);
-					StartCoroutine(SkillHolderHoldAndReleaseCoroutine(touch, t_skillHolderView, trigger));
+					StartCoroutine(SkillHolderHoldAndReleaseCoroutine(touch, t_skillHolderView, trigger, startHoldingCallback, stillHoldingCallback));
 				});
 				break;
 			default:
@@ -239,15 +252,46 @@ public class MainView : ViewBase
 	/// <param name="skillHolderView"></param>
 	/// <param name="trigger"></param>
 	/// <returns></returns>
-	IEnumerator SkillHolderHoldAndReleaseCoroutine(Touch touch, SkillHolderView skillHolderView, AddSkillToScrollViewDelegate trigger)
+	IEnumerator SkillHolderHoldAndReleaseCoroutine(Touch touch, SkillHolderView skillHolderView, AddSkillToScrollViewDelegate trigger,
+	Func<bool> startHoldingCallback, Action<Vector2> stillHoldingCallback)
 	{
-		while (touch.phase != UnityEngine.InputSystem.TouchPhase.Ended) yield return new WaitForSeconds(Time.fixedDeltaTime);
-		
 		/* Direction will be a vector from button middle point to our current touch */
 		Vector2 t_touchPos = RuntimePanelUtils.ScreenToPanel(root.panel, new Vector2(touch.screenPosition.x, Screen.height - touch.screenPosition.y)),
 		t_direction = t_touchPos - skillHolderView.midPos;
 		t_direction.Scale(inverseY);
+		
+		startHoldingCallback?.Invoke();
+		while (touch.phase != UnityEngine.InputSystem.TouchPhase.Ended)
+		{
+			yield return new WaitForSeconds(Time.fixedDeltaTime);
+			t_touchPos = RuntimePanelUtils.ScreenToPanel(root.panel, new Vector2(touch.screenPosition.x, Screen.height - touch.screenPosition.y));
+			t_direction = t_touchPos - skillHolderView.midPos;
+			t_direction.Scale(inverseY);
+			
+			stillHoldingCallback?.Invoke(t_direction);
+		}
+		
 		trigger(touch, t_direction);
+	}
+	
+	/// <summary>
+	/// Handle triggering action while we still holding the button.
+	/// </summary>
+	/// <param name="touch"></param>
+	/// <param name="skillHolderView"></param>
+	/// <param name="trigger"></param>
+	/// <returns></returns>
+	IEnumerator SkillHolderHoldCoroutine(Touch touch, SkillHolderView skillHolderView, AddSkillToScrollViewDelegate trigger)
+	{
+		while (touch.phase != UnityEngine.InputSystem.TouchPhase.Ended)
+		{
+			Vector2 t_touchPos = RuntimePanelUtils.ScreenToPanel(root.panel, new Vector2(touch.screenPosition.x, Screen.height - touch.screenPosition.y)),
+			t_direction = t_touchPos - skillHolderView.midPos;
+			t_direction.Scale(inverseY);
+			trigger(touch, t_direction);
+			
+			yield return new WaitForSeconds(Time.fixedDeltaTime);
+		}
 	}
 	
 	/// <summary>

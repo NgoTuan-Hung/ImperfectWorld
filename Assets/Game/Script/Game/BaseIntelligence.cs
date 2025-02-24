@@ -3,6 +3,7 @@ using System;
 using System.Linq;
 using Random = UnityEngine.Random;
 using System.Collections.Generic;
+using System.Collections;
 
 [RequireComponent(typeof(CustomMono))]
 public class BaseIntelligence : MonoEditor
@@ -18,6 +19,9 @@ public class BaseIntelligence : MonoEditor
 	public List<BotActionManual> botActionManuals = new();
 	public List<List<BotActionManual>> botActionManualCategories = new();
 	public List<int> presummedActionChances = new();
+	bool actionNeedWait = false;
+	BotActionManual waitBotActionManual;
+	ActionRequiredParameter actionRequiredParameter = new ActionRequiredParameter();
 	
 	public virtual void Awake() 
 	{
@@ -56,6 +60,13 @@ public class BaseIntelligence : MonoEditor
 	/// <returns></returns>
 	public void ExecuteAnyActionThisFrame(bool actionInterval, Vector2 targetDirection = default, Vector2 targetPosition = default)
 	{
+		if (actionNeedWait)
+		{
+			HandleActionRequiredParameter(waitBotActionManual, targetDirection, targetPosition);
+			waitBotActionManual.whileWaiting(actionRequiredParameter.targetDirection);
+			return;
+		}
+		
 		if (actionInterval) 
 		{
 			RefreshActionChances();
@@ -70,10 +81,31 @@ public class BaseIntelligence : MonoEditor
 			0, actionCumulativeDistribution.Count-1, rand
 		)];
 		
-		if (t_actionManual.targetDirection) targetDirection *= t_actionManual.targetDirectionMultiplier;
-		t_actionManual.doAction(targetDirection, targetPosition, t_actionManual.nextActionChoosingIntervalProposal);
+		if (t_actionManual.actionNeedWait)
+		{
+			HandleActionRequiredParameter(t_actionManual, targetDirection, targetPosition);
+			if (t_actionManual.startAndWait())
+			{
+				actionNeedWait = true;
+				waitBotActionManual = t_actionManual;
+				StartCoroutine(EndActionWaiting(t_actionManual.nextActionChoosingIntervalProposal));
+			}
+		}
+		else
+		{
+			HandleActionRequiredParameter(t_actionManual, targetDirection, targetPosition);
+			t_actionManual.doAction(actionRequiredParameter.targetDirection, actionRequiredParameter.targetPosition, t_actionManual.nextActionChoosingIntervalProposal);	
+		}
 		
 		RefreshActionChances();
+	}
+	
+	IEnumerator EndActionWaiting(float duration)
+	{
+		yield return new WaitForSeconds(duration);
+		actionNeedWait = false;
+		RefreshActionChances();
+		waitBotActionManual.doAction(actionRequiredParameter.targetDirection, actionRequiredParameter.targetPosition, waitBotActionManual.nextActionChoosingIntervalProposal);	
 	}
 	
 	/// <summary>
@@ -124,8 +156,21 @@ public class BaseIntelligence : MonoEditor
 		}
 	}
 
-    public override void Start()
-    {
-        base.Start();
-    }
+	public override void Start()
+	{
+		base.Start();
+	}
+	
+	/// <summary>
+	/// Prepare all the required parameters for the action
+	/// to use it properly, for example, if we need to shoot
+	/// someone we need to know where the target is, should
+	/// we headshot or not.
+	/// </summary>
+	void HandleActionRequiredParameter(BotActionManual botActionManual, Vector2 targetDirection, Vector2 targetPosition)
+	{
+		actionRequiredParameter.targetDirection = targetDirection;
+		actionRequiredParameter.targetPosition = targetPosition;
+		if (botActionManual.targetDirection) actionRequiredParameter.targetDirection *=botActionManual.targetDirectionMultiplier;
+	}
 }
