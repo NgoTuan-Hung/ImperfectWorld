@@ -1,0 +1,19 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="True">
+    <Style src="project://database/Assets/UIBeginner/ToolTipProject/SkillScrollView.uss?fileID=7433441132597879392&amp;guid=8f37d1eb70233fb41b4cb3f761b6a52a&amp;type=3#SkillScrollView" />
+    <ui:VisualElement name="main-view__usable-scroll-view-holder" class="main-view__usable-scroll-view-holder">
+        <ui:ScrollView vertical-scroller-visibility="Hidden" class="main-view__skill-scroll-view dynamic-ui__movable" style="position: absolute; right: 390px; bottom: 130px;" />
+        <ui:ScrollView vertical-scroller-visibility="Hidden" class="main-view__skill-scroll-view dynamic-ui__movable" style="position: absolute; right: 260px; bottom: 130px;" />
+        <ui:ScrollView vertical-scroller-visibility="Hidden" class="main-view__skill-scroll-view dynamic-ui__movable" style="position: absolute; right: 130px; bottom: 130px;" />
+        <ui:ScrollView vertical-scroller-visibility="Hidden" class="main-view__skill-scroll-view dynamic-ui__movable" style="position: absolute; right: 0; bottom: 130px;" />
+        <ui:ScrollView vertical-scroller-visibility="Hidden" class="main-view__skill-scroll-view dynamic-ui__movable" style="position: absolute; right: 390px; bottom: 0;" />
+        <ui:ScrollView vertical-scroller-visibility="Hidden" class="main-view__skill-scroll-view dynamic-ui__movable" style="position: absolute; right: 260px; bottom: 0;" />
+        <ui:ScrollView vertical-scroller-visibility="Hidden" class="main-view__skill-scroll-view dynamic-ui__movable" style="position: absolute; bottom: 0; right: 130px;" />
+        <ui:ScrollView vertical-scroller-visibility="Hidden" class="main-view__skill-scroll-view dynamic-ui__movable" style="position: absolute; bottom: 0; right: 0;" />
+        <ui:VisualElement name="scroll-lock-view" class="dynamic-ui__movable" style="flex-grow: 0; height: 35px; position: absolute; flex-direction: row; align-self: flex-end; bottom: 260px;">
+            <ui:VisualElement name="scroll-lock-view__lock-parent" style="flex-grow: 1; overflow: hidden; width: 650px; background-color: rgba(255, 255, 255, 0.5); border-left-color: rgb(255, 255, 255); border-right-color: rgb(255, 255, 255); border-top-color: rgb(255, 255, 255); border-bottom-color: rgb(255, 255, 255); border-top-width: 1px; border-right-width: 1px; border-bottom-width: 1px; border-left-width: 1px; border-top-left-radius: 12px; border-top-right-radius: 12px; border-bottom-right-radius: 12px; border-bottom-left-radius: 12px; flex-direction: row; transition-property: translate, opacity; transition-duration: 1s, 0.15s;">
+                <ui:VisualElement name="scroll-lock-view__lock-expand" class="scroll-lock-view__lock-expand-locked" />
+            </ui:VisualElement>
+            <ui:Label tabindex="-1" parse-escape-sequences="true" display-tooltip-when-elided="true" name="scroll-lock-view__expand-button" class="main-view__expand-button-original" style="margin-top: 0; margin-bottom: 0; margin-left: 5px; margin-right: 0; scale: -1 1;" />
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

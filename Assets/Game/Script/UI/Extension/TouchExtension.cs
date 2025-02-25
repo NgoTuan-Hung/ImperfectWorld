@@ -1,37 +1,22 @@
 using UnityEngine;
 using UnityEngine.UIElements;
-using Touch = UnityEngine.InputSystem.EnhancedTouch.Touch;
 public class TouchExtension
 {
-	public static Touch GetTouchOverlapVisualElement(VisualElement visualElement, IPanel panel)
+	public static TouchInfo GetTouchInfoAt(Vector2 screenPosition, VisualElement root)
 	{
-		foreach (var touch in Touch.activeTouches)
+		TouchInfo touchInfo = new(root.panel);
+		for (int i=0;i<Input.touchCount;i++)
 		{
-			if (touch.phase == UnityEngine.InputSystem.TouchPhase.Began)
+			touchInfo.touch = Input.GetTouch(i);
+			touchInfo.panelPosition = RuntimePanelUtils.ScreenToPanel(touchInfo.panel, new Vector2(touchInfo.touch.position.x, Screen.height - touchInfo.touch.position.y));
+			
+			if (touchInfo.panelPosition == screenPosition)
 			{
-				/* Convert from screen space to panel space */
-				var touchPosition = RuntimePanelUtils.ScreenToPanel(panel, new Vector2(touch.screenPosition.x, Screen.height - touch.screenPosition.y));
-
-				if (visualElement.worldBound.Overlaps(new Rect(touchPosition, new Vector2(1, 1)))) return touch;
+				touchInfo.fingerId = touchInfo.touch.fingerId;
+				return touchInfo;
 			}
 		}
 
-		return default;
-	}
-
-	public static Touch GetTouchOverlapRect(Rect rect, IPanel panel)
-	{
-		foreach (var touch in Touch.activeTouches)
-		{
-			if (touch.phase == UnityEngine.InputSystem.TouchPhase.Began)
-			{
-				/* Convert from screen space to panel space */
-				var touchPosition = RuntimePanelUtils.ScreenToPanel(panel, new Vector2(touch.screenPosition.x, Screen.height - touch.screenPosition.y));
-
-				if (rect.Overlaps(new Rect(touchPosition, new Vector2(1, 1)))) return touch;
-			}
-		}
-
-		return default;
+		return touchInfo;
 	}
 }

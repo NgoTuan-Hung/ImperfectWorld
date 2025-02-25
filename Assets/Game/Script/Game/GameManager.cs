@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using Unity.Cinemachine;
 using UnityEngine;
 
 public class GameManager : MonoSingleton<GameManager>
@@ -23,6 +24,24 @@ public class GameManager : MonoSingleton<GameManager>
 	public SpriteRenderer spawnRangeObject;
 	Stopwatch stopwatch = new();
 	public float waveDuration = 60f;
+	public CinemachineCamera cinemachineCamera;
+
+	public void InitializeControllableCharacterUI(CharUIData p_charUIData, CustomMono p_customMono)
+	{
+		IndividualView t_individualView = GameUIManager.Instance.AddNewIndividualView(p_charUIData, () => 
+		{
+			cinemachineCamera.Follow = p_customMono.transform;
+		});
+
+	// 		t_individualView.joyStickMoveEvent += (vector) => 
+	// 		{
+	// 		    vector.Scale(inverseY);
+	// 		    t_playerScript.Move(vector);
+	// 		};
+	// 	});
+		
+		GameUIManager.Instance.SelectFirstIndividualView();	
+	}
 	
 	private void Awake() 
 	{

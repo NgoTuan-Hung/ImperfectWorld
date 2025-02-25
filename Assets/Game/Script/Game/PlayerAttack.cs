@@ -12,6 +12,6 @@ public class PlayerAttack : Attackable
 	public override void Start()
 	{
 		base.Start();
-		GameUIManager.Instance.MainView.holdAttackButtonEvent = (vector2) => MeleeAttack(vector2);
+		// GameUIManager.Instance.MainView.holdAttackButtonEvent = (vector2) => MeleeAttack(vector2);
 	}
 }

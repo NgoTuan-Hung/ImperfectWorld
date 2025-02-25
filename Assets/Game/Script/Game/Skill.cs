@@ -24,13 +24,13 @@ public class Skill : BaseAction
 
 			if (!customMono.isBot)
 			{
-				GameUIManager.Instance.MainView.AddSkillToScrollView
-				(
-					skillData,
-					(touch, direction) => skill.Trigger(touch, direction: direction),
-					skill.StartAndWait,
-					skill.WhileWaiting
-				);
+				// GameUIManager.Instance.mainView.AddSkillToScrollView
+				// (
+				// 	skillData,
+				// 	(touch, direction) => skill.Trigger(touch, direction: direction),
+				// 	skill.StartAndWait,
+				// 	skill.WhileWaiting
+				// );
 			}
 		});
 	}		

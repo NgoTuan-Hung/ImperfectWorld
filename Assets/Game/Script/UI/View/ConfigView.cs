@@ -1,11 +1,9 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
 using UnityEngine;
 using UnityEngine.UIElements;
-using Touch = UnityEngine.InputSystem.EnhancedTouch.Touch;
 
 public class ConfigView : ViewBase
 {
@@ -14,9 +12,9 @@ public class ConfigView : ViewBase
 	VisualTreeAsset configMenuContentAsset, configCheckboxAsset, configDropdownAsset, configSliderAsset,
 	configButtonAsset;
 
-	public void Init()
+	public override void Init()
 	{
-		GetAllRequiredVisualElements();
+		base.Init();
 		configExitButton.RegisterCallback<PointerDownEvent>((evt) => 
 		{
 			gameUIManager.DeactivateLayer((int)GameUIManager.LayerUse.Config);
@@ -27,18 +25,24 @@ public class ConfigView : ViewBase
 		PopulateView();
 		HandleDynamicUI();
 	}
+
+	public override void InitIndividualView(IndividualView p_individualView, CharUIData p_charUIData)
+	{
+		CreateAndAssignDynamicUI(p_individualView.movableElements);
+	}
+
 	
 	VisualElement root, configMenu, configExitButton, currentSelectedMenuItem, currentDisplayedConfigContent,
 	configContent, configCheckbox, configDropdown, configSlider, configButton, globalRoot, dynamicUIButton, dynamicLayer;
-	void GetAllRequiredVisualElements()
+	public override void GetAllRequiredVisualElements()
 	{
 		uIDocument = GetComponent<UIDocument>();
-		root = uIDocument.rootVisualElement.Q<VisualElement>(name: "config__menu-root");
-		configMenu = root.Q<VisualElement>(name: "config__menu");
-		configExitButton = root.Q<VisualElement>(name : "config__exit-button");
+		root = uIDocument.rootVisualElement.Q( "config__menu-root");
+		configMenu = root.Q( "config__menu");
+		configExitButton = root.Q( "config__exit-button");
 		globalRoot = root.panel.visualTree;
-		dynamicUIButton = globalRoot.Q<VisualElement>(name: "dynamic-ui-button");
-		moveableElements = globalRoot.Query<VisualElement>(classes: "dynamic-ui__movable").ToList();
+		dynamicUIButton = globalRoot.Q( "dynamic-ui-button");
+		movableElements = globalRoot.Query(classes: "dynamic-ui__movable").ToList();
 	}
 
 	public void GetVisualTreeAsset()
@@ -79,7 +83,7 @@ public class ConfigView : ViewBase
 			}
 
 			/* Switch tab event */
-			menuItem.RegisterCallback<ClickEvent>(evt => MenuItemClickEvent(menuItem));
+			menuItem.RegisterCallback<PointerDownEvent>(evt => MenuItemClickEvent(menuItem));
 			configMenu.Add(menuItem);
 
 			/* Each menu item should have its own content */
@@ -166,31 +170,36 @@ public class ConfigView : ViewBase
 	List<GameUIManager.LayerUse> dynamicLayerUses = new List<GameUIManager.LayerUse>() {GameUIManager.LayerUse.MainView, GameUIManager.LayerUse.DynamicUI};
 	public void ChangeDynamicVisualElement()
 	{
-		GameUIManager.ActivateOnlyLayers(dynamicLayerUses);
+		gameUIManager.ActivateOnlyLayers(dynamicLayerUses);
 	}
 	
 	/* Dynamic UI parts */
 	Dictionary<int, VisualElement> dynamicUIDictionary = new Dictionary<int, VisualElement>();
-	List<VisualElement> moveableElements;
+	List<VisualElement> movableElements;
 	void HandleDynamicUI()
 	{
-		dynamicLayer = GameUIManager.Instance.Layers[(int)GameUIManager.LayerUse.DynamicUI];
+		dynamicLayer = gameUIManager.layers[(int)GameUIManager.LayerUse.DynamicUI];
 		
 		dynamicUIButton.RegisterCallback<PointerDownEvent>((evt) => 
 		{
 			evt.StopPropagation();
-			GameUIManager.Instance.ActivateOnlyLayer(GameUIManager.LayerUse.MainView);
+			gameUIManager.ActivateOnlyLayer(GameUIManager.LayerUse.MainView);
 		});
 		
-		for (int i=0;i<moveableElements.Count;i++)
+		CreateAndAssignDynamicUI(movableElements);
+	}
+	
+	void CreateAndAssignDynamicUI(List<VisualElement> p_movableElements)
+	{
+		for (int i=0;i<p_movableElements.Count;i++)
 		{
-			VisualElement visualElement = new VisualElement();
+			VisualElement visualElement = new();
 			visualElement.style.position = Position.Absolute;
 			visualElement.style.backgroundColor = new Color(1, 1, 0, 0.5f);
 			dynamicLayer.Add(visualElement);
 			visualElement.PlaceBehind(dynamicUIButton);
 			
-			moveableElements[i].RegisterCallback<GeometryChangedEvent>((evt) => 
+			p_movableElements[i].RegisterCallback<GeometryChangedEvent>((evt) => 
 			{
 				var element = evt.currentTarget as VisualElement;
 				visualElement.style.width = element.worldBound.width;
@@ -198,32 +207,29 @@ public class ConfigView : ViewBase
 				visualElement.transform.position = element.worldBound.position;
 			});
 			
-			dynamicUIDictionary.Add(visualElement.GetHashCode(), moveableElements[i]);
+			dynamicUIDictionary.Add(visualElement.GetHashCode(), p_movableElements[i]);
 			
 			visualElement.RegisterCallback<PointerDownEvent>((evt) => 
 			{
-				Touch touch = TouchExtension.GetTouchOverlapVisualElement(visualElement, dynamicLayer.panel);
+				TouchInfo touch = TouchExtension.GetTouchInfoAt(evt.position, uIDocument.rootVisualElement);
 				StartCoroutine(MoveDynamicUI(touch, visualElement, dynamicUIDictionary[visualElement.GetHashCode()]));
 			});
 		}
 	}
 	
-	IEnumerator MoveDynamicUI(Touch touch, VisualElement controlElement, VisualElement manipulatedElement)
+	IEnumerator MoveDynamicUI(TouchInfo p_touchInfo, VisualElement controlElement, VisualElement manipulatedElement)
 	{
 		manipulatedElement.style.right = manipulatedElement.style.left = manipulatedElement.style.top = manipulatedElement.style.bottom = 0;
-		
-		while (touch.phase != UnityEngine.InputSystem.TouchPhase.Ended)
+		while (p_touchInfo.touch.phase != TouchPhase.Ended)
 		{
-			Vector2 touchPosition = RuntimePanelUtils.ScreenToPanel(controlElement.panel, new Vector2(touch.screenPosition.x, Screen.height - touch.screenPosition.y));
-			controlElement.transform.position = controlElement.parent.WorldToLocal(touchPosition);
-			manipulatedElement.transform.position = manipulatedElement.parent.WorldToLocal(touchPosition);
-		
+			p_touchInfo.UpdateSelf();
+			controlElement.transform.position = controlElement.parent.WorldToLocal(p_touchInfo.panelPosition);
+			manipulatedElement.transform.position = manipulatedElement.parent.WorldToLocal(p_touchInfo.panelPosition);
+			
 			/* Because we are using translate when moving the dynamic UI, GeometryChangedEvent will not be called. If we want
 			some custom call back when moving the dynamic UI, we can use manually call GeometryChangedEvent. Then we can register
 			GeometryChangedEvent on manipulatedElement. */
-			using GeometryChangedEvent evt = GeometryChangedEvent.GetPooled();
-			evt.target = manipulatedElement;
-			manipulatedElement.SendEvent(evt);
+			gameUIManager.FireGeometryChangedEvent(manipulatedElement);
 		
 			yield return new WaitForSeconds(Time.fixedDeltaTime);	
 		}

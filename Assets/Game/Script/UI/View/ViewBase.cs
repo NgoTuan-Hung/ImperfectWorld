@@ -2,6 +2,19 @@ using UnityEngine;
 
 public class ViewBase : MonoBehaviour
 {
-    protected GameUIManager gameUIManager;
-    public GameUIManager GameUIManager { get => gameUIManager; set => gameUIManager = value; }
+	public GameUIManager gameUIManager;
+	
+	public virtual void Init()
+	{
+		LoadAllTemplate();
+		GetAllRequiredVisualElements();
+	}
+	
+	public virtual void GetAllRequiredVisualElements()
+	{
+		
+	}
+	
+	public virtual void LoadAllTemplate() {}
+	public virtual void InitIndividualView(IndividualView p_individualView, CharUIData p_charUIData) {}
 }

@@ -1,7 +1,6 @@
-using System.Collections;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.InputSystem.EnhancedTouch;
 using UnityEngine.UIElements;
 
 public class GameUIManager : MonoEditorSingleton<GameUIManager>
@@ -9,67 +8,65 @@ public class GameUIManager : MonoEditorSingleton<GameUIManager>
 	public enum LayerUse
 	{
 		MainView = 0,
-		Config = 1,
-		DynamicUI = 2
-	}
-	public static Dictionary<int, VisualElement> helpers;
-
-	// [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
-	// static void Init()
-	// {
-	// 	helpers = new Dictionary<string, VisualElement>();    
-	// }
-
-	public static void AddHelper(int key, VisualElement helper)
-	{
-		helpers.Add(key, helper);
+		Info = 1,
+		Config = 2,
+		DynamicUI = 3
 	}
 
-	public static VisualElement GetHelper(int key)
-	{
-		return helpers[key];
-	}
+	public Vector2 skillTreeSkillSize = new(80, 80), skillTreeSkillOffset = new(150, 150)
+	, skillTreeContainerSize = new(2912, 1632), skillSlotSize = new(100, 100);
+	/* One visual element can only be controlled by one touch at a time,
+	if an element is controlled by a touch, then its value in the dictionary
+	is true. */
+	public Dictionary<int, bool> VisualElementTouched = new();
 
-	public static void ChangeAllHelperOpacity(float opacity)
+	public void RegisterVisualElementTouchState(VisualElement visualElement)
 	{
-		foreach (var helper in helpers.Values)
+		VisualElementTouched.Add(visualElement.GetHashCode(), false);
+		visualElement.RegisterCallback<PointerDownEvent>((evt) => 
 		{
-			helper.style.opacity = opacity;
-		}
+			VisualElementTouched[visualElement.GetHashCode()] = true;
+		});
 	}
+	
+	public bool CheckVisualElementTouchState(VisualElement visualElement) => VisualElementTouched[visualElement.GetHashCode()];
+	public void StopVisualElementTouchState(VisualElement visualElement) => VisualElementTouched[visualElement.GetHashCode()] = false;
 
-	UIDocument mainUIDocument;
-	VisualElement root;
-	List<VisualElement> layers;
-
-	private MainView mainView;
-	private ConfigView configView; 
-	[SerializeField] private VisualTreeAsset configMenuVTA;
-	VisualElement configMenu;
+	public UIDocument mainUIDocument;
+	public VisualElement root;
+	public List<VisualElement> layers;
+	public MainView mainView;
+	public ConfigView configView; 
+	public CharInfoView charInfoView;
+	public VisualTreeAsset usableScrollViewHolderVTA, joystickVTA, contentSkillItemVTA, contentStatVTA, charSelectionCharVTA;
+	public IndividualView currentActiveIndividualView;
 	GameObject radialProgressPrefab;
 	ObjectPool radialProgressPool;
-	public MainView MainView { get => mainView; set => mainView = value; }
-	public ConfigView ConfigView { get => configView; set => configView = value; }
-	public List<VisualElement> Layers { get => layers; set => layers = value; }
 
 	private void Awake() 
 	{
-		helpers = new();
 		InitPools();
-		EnhancedTouchSupport.Enable();
 		mainUIDocument = GetComponent<UIDocument>();
 		root = mainUIDocument.rootVisualElement;
 
 		layers = root.Query<VisualElement>(classes: "layer").ToList();
 		layers.Sort((ve1, ve2) => ve1.name.CompareTo(ve2.name));
 		InitDefaultLayer();
-		AddLayerEvent();
 
+		LoadAllTemplate();
 		GetViewComponents();
-		InstantiateView();
 		InitViewComponents();
 		
 		HandleSafeArea();
+	}
+
+	public void LoadAllTemplate() 
+	{
+		usableScrollViewHolderVTA = Resources.Load<VisualTreeAsset>("MainView__UsableScrollViewHolder");
+		joystickVTA = Resources.Load<VisualTreeAsset>("MainView__Joystick");
+		contentSkillItemVTA = Resources.Load<VisualTreeAsset>("CharInfo__ContentSkillItem");
+		contentStatVTA = Resources.Load<VisualTreeAsset>("CharInfo__ContentStat");
+		charSelectionCharVTA = Resources.Load<VisualTreeAsset>("CharSelection__Char");
 	}
 
 	public override void Start()
@@ -78,9 +75,56 @@ public class GameUIManager : MonoEditorSingleton<GameUIManager>
 		#if UNITY_EDITOR
 		onExitPlayModeEvent += () => 
 		{
-			helpers = null;
+			radialProgressPool = null;
 		};
 		#endif
+	}
+	List<IndividualView> individualViews = new();
+	public void SelectFirstIndividualView()
+	{
+		currentActiveIndividualView = individualViews[0];
+		currentActiveIndividualView.Show();
+	}
+	
+	public IndividualView AddNewIndividualView(CharUIData p_charUIData, Action p_switchCharAction)
+	{
+		IndividualView t_individualView = new();
+		
+		p_switchCharAction += () => 
+		{
+			currentActiveIndividualView.Hide();
+			currentActiveIndividualView = t_individualView;	
+			currentActiveIndividualView.Show();
+			charInfoView.ResetCharInfoContent();
+		};
+		t_individualView.Init(p_charUIData, p_switchCharAction);
+		t_individualView.GetAllRequiredVisualElements();
+		mainView.InitIndividualView(t_individualView, p_charUIData);
+		charInfoView.InitIndividualView(t_individualView, p_charUIData);
+		configView.InitIndividualView(t_individualView, p_charUIData);
+		
+		t_individualView.Hide();
+		individualViews.Add(t_individualView);
+		
+		return t_individualView;
+	}
+	
+	public void AddTooltipHandlerForVisualElement(VisualElement p_visualElement, VisualElement p_toolTip)
+	{
+		p_visualElement.RegisterCallback<PointerDownEvent>((evt) => 
+		{	
+			if (evt.clickCount > 1)
+			{	
+				p_toolTip.transform.position = p_toolTip.parent.WorldToLocal(new Vector2
+				(
+					evt.position.x + p_toolTip.resolvedStyle.width > root.resolvedStyle.width ? evt.position.x - p_toolTip.resolvedStyle.width : evt.position.x,
+					evt.position.y + p_toolTip.resolvedStyle.height > root.resolvedStyle.height ? evt.position.y - p_toolTip.resolvedStyle.height : evt.position.y
+				));
+				
+				p_toolTip.BringToFront(); 
+				p_toolTip.AddToClassList("tooltip-showup");
+			}
+		});
 	}
 	
 	void InitPools()
@@ -99,15 +143,8 @@ public class GameUIManager : MonoEditorSingleton<GameUIManager>
 	{
 		mainView = GetComponent<MainView>();
 		configView = GetComponent<ConfigView>();
-		mainView.GameUIManager = configView.GameUIManager = this;
-	}
-
-	private void InstantiateView()
-	{
-		configMenu = configMenuVTA.Instantiate();
-		configMenu.name = "config__menu-root";
-		configMenu.style.flexGrow = 1;
-		layers[1].Q(classes:"safe-area").Add(configMenu);
+		charInfoView = GetComponent<CharInfoView>();
+		mainView.gameUIManager = configView.gameUIManager = charInfoView.gameUIManager = this;
 	}
 
 
@@ -115,6 +152,7 @@ public class GameUIManager : MonoEditorSingleton<GameUIManager>
 	{
 		mainView.Init();
 		configView.Init();
+		charInfoView.Init();
 	}
 
 	public void HandleSafeArea()
@@ -143,14 +181,6 @@ public class GameUIManager : MonoEditorSingleton<GameUIManager>
 			layers[i].style.left = 99999f;
 			layers[i].style.top = 99999f;
 		}
-	}
-
-	public void AddLayerEvent()
-	{
-		layers[(int)LayerUse.MainView].RegisterCallback<PointerDownEvent>((evt) => 
-		{
-
-		});
 	}
 
 	public void ActivateLayer(int layerIndex)
@@ -195,6 +225,13 @@ public class GameUIManager : MonoEditorSingleton<GameUIManager>
 	public VisualElement GetLayer(int layerIndex)
 	{
 		return layers[layerIndex];
+	}
+
+	public void FireGeometryChangedEvent(VisualElement p_visualElement)
+	{
+		using GeometryChangedEvent evt = GeometryChangedEvent.GetPooled();
+		evt.target = p_visualElement;
+		p_visualElement.SendEvent(evt);
 	}
 	
 	public PoolObject CreateAndHandleRadialProgressFollowing(Transform transform)

@@ -8651,12 +8651,24 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1864067328}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: bf9c5cb0e22a6654783e9e7acf07910a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  configMenuVTA: {fileID: 9197481963319205126, guid: 978a9f498dc422f4bb70f908c23bd919, type: 3}
+  skillTreeSkillSize: {x: 80, y: 80}
+  skillTreeSkillOffset: {x: 150, y: 150}
+  skillTreeContainerSize: {x: 2912, y: 1632}
+  skillSlotSize: {x: 100, y: 100}
+  mainUIDocument: {fileID: 0}
+  mainView: {fileID: 0}
+  configView: {fileID: 0}
+  charInfoView: {fileID: 0}
+  usableScrollViewHolderVTA: {fileID: 0}
+  joystickVTA: {fileID: 0}
+  contentSkillItemVTA: {fileID: 0}
+  contentStatVTA: {fileID: 0}
+  charSelectionCharVTA: {fileID: 0}
 --- !u!114 &1864067331
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8664,22 +8676,17 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1864067328}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2a85f21b83d40624a9de8076fcbaf18c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  skillHolderTemplate: {fileID: 9197481963319205126, guid: b4520969730ca9147821e3cfef5ed886, type: 3}
-  skillTooltipTemplate: {fileID: 9197481963319205126, guid: c578c08d3d8d43a45a2704bb37590449, type: 3}
-  healthBarTemplate: {fileID: 9197481963319205126, guid: 135c68ba23c990148852d029f790b26b, type: 3}
+  gameUIManager: {fileID: 0}
   scrollSound: {fileID: 8300000, guid: e326be21875f7f44a936600669bb382c, type: 3}
   audioSource: {fileID: 778829342}
-  scrollViewLockVTA: {fileID: 9197481963319205126, guid: 5539dc0ee76516a409dc72103168133f, type: 3}
   snapTime: 0.09
   snapIntervalPortion: 0.1
   distanceToSnapScale: 0.05
-  healthBarOffset: {x: -0.8, y: 1.5, z: 0}
-  healthBarPositionLerpTime: 0.05
 --- !u!114 &1864067332
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8692,7 +8699,7 @@ MonoBehaviour:
   m_Script: {fileID: 19102, guid: 0000000000000000e000000000000000, type: 0}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_PanelSettings: {fileID: 11400000, guid: f51f5abc3b2a9dd4086555e51df186de, type: 2}
+  m_PanelSettings: {fileID: 11400000, guid: 19d6a6724ad12514196daa1d9c523cd4, type: 2}
   m_ParentUI: {fileID: 0}
   sourceAsset: {fileID: 9197481963319205126, guid: 33f4f7560dc5ed443b03e80b42c8ca77, type: 3}
   m_SortingOrder: 0
@@ -8706,11 +8713,12 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1864067328}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1e76a948634e61940a482379974b5054, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  gameUIManager: {fileID: 0}
 --- !u!114 &1864067334
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -1,0 +1,115 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="True">
+    <Style src="project://database/Assets/UIBeginner/ToolTipProject/SkillScrollView.uss?fileID=7433441132597879392&amp;guid=8f37d1eb70233fb41b4cb3f761b6a52a&amp;type=3#SkillScrollView" />
+    <ui:VisualElement name="Layer1" class="layer" style="visibility: visible;">
+        <ui:VisualElement class="safe-area">
+            <ui:VisualElement name="main-view__option-container" class="dynamic-ui__movable" style="flex-direction: row; align-self: flex-end; position: absolute; width: 200px; height: 35px;">
+                <ui:Label tabindex="-1" parse-escape-sequences="true" display-tooltip-when-elided="true" name="main-view__option-expand-button" class="main-view__expand-button-original" />
+                <ui:VisualElement name="main-view__options-parent" style="flex-grow: 1; overflow: hidden;">
+                    <ui:ScrollView name="main-view__options" vertical-scroller-visibility="Hidden" mode="Horizontal" horizontal-scroller-visibility="Hidden" style="width: 165px; transition-property: translate, opacity; transition-duration: 0.5s, 0.3s; border-top-width: 1px; border-right-width: 1px; border-bottom-width: 1px; border-left-width: 1px; border-top-left-radius: 12px; border-top-right-radius: 12px; border-bottom-right-radius: 12px; border-bottom-left-radius: 12px; background-color: rgba(255, 255, 255, 0.5); border-left-color: rgb(255, 255, 255); border-right-color: rgb(255, 255, 255); border-top-color: rgb(255, 255, 255); border-bottom-color: rgb(255, 255, 255);" />
+                </ui:VisualElement>
+            </ui:VisualElement>
+            <ui:VisualElement name="main-view__char-selection-container" picking-mode="Ignore" class="dynamic-ui__movable" style="width: 285px; position: absolute; flex-direction: row; height: 215px;">
+                <ui:VisualElement name="main-view__char-selection" style="width: 250px; background-color: rgba(0, 0, 0, 0.5); border-left-color: rgb(0, 0, 0); border-right-color: rgb(0, 0, 0); border-top-color: rgb(0, 0, 0); border-bottom-color: rgb(0, 0, 0); border-top-width: 2px; border-right-width: 2px; border-bottom-width: 2px; border-left-width: 2px; border-top-left-radius: 8px; border-top-right-radius: 8px; border-bottom-right-radius: 8px; border-bottom-left-radius: 8px; flex-wrap: wrap; position: absolute; flex-direction: row;" />
+                <ui:Label tabindex="-1" parse-escape-sequences="true" display-tooltip-when-elided="true" name="main-view__char-selection-expand-button" class="main-view__expand-button-original" style="position: absolute; right: 0;" />
+            </ui:VisualElement>
+        </ui:VisualElement>
+    </ui:VisualElement>
+    <ui:VisualElement name="Layer2" class="layer" style="background-color: rgba(0, 0, 0, 0.5); flex-grow: 1;">
+        <ui:VisualElement class="safe-area" style="top: 0; left: 2px; flex-grow: 1;">
+            <ui:VisualElement name="char-info__root" class="menu-content__container">
+                <ui:VisualElement class="menu-content__menu-container">
+                    <ui:VisualElement class="menu-content__menu-container-child">
+                        <ui:ScrollView mode="Horizontal" horizontal-scroller-visibility="Hidden" vertical-scroller-visibility="Hidden" name="char-info__menu" style="flex-grow: 1;" />
+                        <ui:Label tabindex="-1" text="X" parse-escape-sequences="true" display-tooltip-when-elided="true" class="exit-button__black" />
+                    </ui:VisualElement>
+                    <ui:VisualElement class="menu-content__seperator" />
+                </ui:VisualElement>
+                <ui:VisualElement name="char-info__content-upgrade" class="menu-content__content" style="flex-direction: row;">
+                    <ui:VisualElement class="upgrade__char-upgrade">
+                        <ui:VisualElement class="upgrade__char-info">
+                            <ui:VisualElement class="upgrade__char-image-container">
+                                <ui:VisualElement class="upgrade__char-image" />
+                            </ui:VisualElement>
+                            <ui:VisualElement class="upgrade__exp-container">
+                                <ui:ProgressBar value="22" class="upgrade__exp" />
+                                <ui:Label tabindex="-1" text="VIP - LV 99" parse-escape-sequences="true" display-tooltip-when-elided="true" class="upgrade__exp-label" />
+                            </ui:VisualElement>
+                        </ui:VisualElement>
+                        <ui:VisualElement class="upgrade__option-container">
+                            <ui:Label tabindex="-1" text="Select one !" parse-escape-sequences="true" display-tooltip-when-elided="true" class="upgrade__option-label" />
+                            <ui:ScrollView vertical-scroller-visibility="Hidden" class="upgrade__option-scrollview">
+                                <ui:Label tabindex="-1" text="HP +&lt;color=green&gt;0.5&lt;/color&gt;&#10;Int -&lt;color=red&gt;0.3&lt;/color&gt;" parse-escape-sequences="true" display-tooltip-when-elided="true" class="upgrade__option" />
+                                <ui:Label tabindex="-1" text="+&lt;color=green&gt;1&lt;/color&gt; Re-roll" parse-escape-sequences="true" display-tooltip-when-elided="true" class="upgrade__option" />
+                                <ui:Label tabindex="-1" text="Strength increase &lt;color=green&gt;3%&lt;/color&gt;" parse-escape-sequences="true" display-tooltip-when-elided="true" class="upgrade__option" />
+                                <ui:Label tabindex="-1" text="Get &lt;color=green&gt;1&lt;/color&gt; random &lt;color=orange&gt;normal&lt;/color&gt; item" parse-escape-sequences="true" display-tooltip-when-elided="true" class="upgrade__option" />
+                            </ui:ScrollView>
+                        </ui:VisualElement>
+                        <ui:VisualElement class="upgrade__more-action-container">
+                            <ui:Label tabindex="-1" text="Reroll (current: 0)" parse-escape-sequences="true" display-tooltip-when-elided="true" class="upgrade__action-label" />
+                        </ui:VisualElement>
+                    </ui:VisualElement>
+                    <ui:VisualElement class="upgrade__char-upgrade">
+                        <ui:VisualElement class="upgrade__char-info">
+                            <ui:VisualElement class="upgrade__char-image-container">
+                                <ui:VisualElement class="upgrade__char-image" style="background-image: url(&quot;project://database/Assets/UIBeginner/ToolTipProject/Texture/orc.jpg?fileID=2800000&amp;guid=5b43e2c52abe47c4ea301a1e1738814f&amp;type=3#orc&quot;);" />
+                            </ui:VisualElement>
+                            <ui:VisualElement class="upgrade__exp-container">
+                                <ui:ProgressBar value="22" class="upgrade__exp" />
+                                <ui:Label tabindex="-1" text="VIP - LV 99" parse-escape-sequences="true" display-tooltip-when-elided="true" class="upgrade__exp-label" />
+                            </ui:VisualElement>
+                        </ui:VisualElement>
+                        <ui:VisualElement class="upgrade__option-container">
+                            <ui:Label tabindex="-1" text="Select one !" parse-escape-sequences="true" display-tooltip-when-elided="true" class="upgrade__option-label" />
+                            <ui:ScrollView vertical-scroller-visibility="Hidden" class="upgrade__option-scrollview">
+                                <ui:Label tabindex="-1" text="&lt;color=purple&gt;???&lt;/color&gt;" parse-escape-sequences="true" display-tooltip-when-elided="true" class="upgrade__option" />
+                                <ui:Label tabindex="-1" text="&lt;color=purple&gt;???&lt;/color&gt;" parse-escape-sequences="true" display-tooltip-when-elided="true" class="upgrade__option" />
+                                <ui:Label tabindex="-1" text="&lt;color=purple&gt;???&lt;/color&gt;" parse-escape-sequences="true" display-tooltip-when-elided="true" class="upgrade__option" />
+                                <ui:Label tabindex="-1" text="&lt;color=purple&gt;???&lt;/color&gt;" parse-escape-sequences="true" display-tooltip-when-elided="true" class="upgrade__option" />
+                            </ui:ScrollView>
+                        </ui:VisualElement>
+                        <ui:VisualElement class="upgrade__more-action-container">
+                            <ui:Label tabindex="-1" text="Reroll (current: 0)" parse-escape-sequences="true" display-tooltip-when-elided="true" class="upgrade__action-label" />
+                        </ui:VisualElement>
+                    </ui:VisualElement>
+                    <ui:VisualElement class="upgrade__char-upgrade">
+                        <ui:VisualElement class="upgrade__char-info">
+                            <ui:VisualElement class="upgrade__char-image-container">
+                                <ui:VisualElement class="upgrade__char-image" style="background-image: url(&quot;project://database/Assets/UIBeginner/ToolTipProject/Texture/mad-man.jpg?fileID=2800000&amp;guid=0e35c7d8b506d4e46a2fd841a31e4886&amp;type=3#mad-man&quot;);" />
+                            </ui:VisualElement>
+                            <ui:VisualElement class="upgrade__exp-container">
+                                <ui:ProgressBar value="22" class="upgrade__exp" />
+                                <ui:Label tabindex="-1" text="VIP - LV 99" parse-escape-sequences="true" display-tooltip-when-elided="true" class="upgrade__exp-label" />
+                            </ui:VisualElement>
+                        </ui:VisualElement>
+                        <ui:VisualElement class="upgrade__option-container">
+                            <ui:Label tabindex="-1" text="Select one !" parse-escape-sequences="true" display-tooltip-when-elided="true" class="upgrade__option-label" />
+                            <ui:ScrollView vertical-scroller-visibility="Hidden" class="upgrade__option-scrollview">
+                                <ui:Label tabindex="-1" text="&lt;color=purple&gt;???&lt;/color&gt;" parse-escape-sequences="true" display-tooltip-when-elided="true" class="upgrade__option" />
+                                <ui:Label tabindex="-1" text="&lt;color=purple&gt;???&lt;/color&gt;" parse-escape-sequences="true" display-tooltip-when-elided="true" class="upgrade__option" />
+                                <ui:Label tabindex="-1" text="&lt;color=purple&gt;???&lt;/color&gt;" parse-escape-sequences="true" display-tooltip-when-elided="true" class="upgrade__option" />
+                                <ui:Label tabindex="-1" text="&lt;color=purple&gt;???&lt;/color&gt;" parse-escape-sequences="true" display-tooltip-when-elided="true" class="upgrade__option" />
+                            </ui:ScrollView>
+                        </ui:VisualElement>
+                        <ui:VisualElement class="upgrade__more-action-container">
+                            <ui:Label tabindex="-1" text="Reroll (current: 0)" parse-escape-sequences="true" display-tooltip-when-elided="true" class="upgrade__action-label" />
+                        </ui:VisualElement>
+                    </ui:VisualElement>
+                </ui:VisualElement>
+            </ui:VisualElement>
+        </ui:VisualElement>
+    </ui:VisualElement>
+    <ui:VisualElement name="Layer3" class="layer" style="visibility: visible;">
+        <ui:VisualElement class="safe-area">
+            <ui:VisualElement name="config__menu-root" style="height: 100%;">
+                <ui:VisualElement name="config__menu-holder" style="width: 100%; flex-direction: row; height: 10%;">
+                    <ui:ScrollView mode="Horizontal" horizontal-scroller-visibility="Hidden" vertical-scroller-visibility="Hidden" name="config__menu" style="align-self: center; background-color: rgba(0, 0, 0, 0.5); width: 90%; height: 100%; flex-grow: 1; border-left-color: rgb(0, 0, 0); border-right-color: rgb(0, 0, 0); border-top-color: rgb(0, 0, 0); border-bottom-color: rgb(0, 0, 0); border-top-width: 3px; border-right-width: 3px; border-bottom-width: 3px; border-left-width: 3px; border-top-left-radius: 12px; border-top-right-radius: 12px; border-bottom-right-radius: 12px; border-bottom-left-radius: 12px;" />
+                    <ui:Label tabindex="-1" text="X" parse-escape-sequences="true" display-tooltip-when-elided="true" name="config__exit-button" style="width: 5%; -unity-text-align: middle-center; font-size: 40px; height: 100%; background-color: rgb(48, 48, 48); margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; color: rgb(255, 255, 255); border-top-width: 3px; border-right-width: 3px; border-bottom-width: 3px; border-left-width: 3px; border-left-color: rgb(0, 0, 0); border-right-color: rgb(0, 0, 0); border-top-color: rgb(0, 0, 0); border-bottom-color: rgb(0, 0, 0); border-top-left-radius: 12px; border-top-right-radius: 12px; border-bottom-right-radius: 12px; border-bottom-left-radius: 12px;" />
+                </ui:VisualElement>
+            </ui:VisualElement>
+        </ui:VisualElement>
+    </ui:VisualElement>
+    <ui:VisualElement name="Layer4" class="layer" style="visibility: visible;">
+        <ui:VisualElement class="safe-area" />
+        <ui:Label tabindex="-1" text="Save" parse-escape-sequences="true" display-tooltip-when-elided="true" name="dynamic-ui-button" style="position: absolute; width: 150px; height: 100px; -unity-text-align: middle-center; font-size: 37px; border-left-color: rgb(255, 255, 255); border-right-color: rgb(255, 255, 255); border-top-color: rgb(255, 255, 255); border-bottom-color: rgb(255, 255, 255); border-top-width: 4px; border-right-width: 4px; border-bottom-width: 4px; border-left-width: 4px; border-top-left-radius: 12px; border-top-right-radius: 12px; border-bottom-right-radius: 12px; border-bottom-left-radius: 12px; background-color: rgba(255, 255, 255, 0.5); right: 100px; top: 100px;" />
+    </ui:VisualElement>
+</ui:UXML>
