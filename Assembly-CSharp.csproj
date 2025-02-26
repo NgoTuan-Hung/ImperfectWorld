@@ -72,6 +72,7 @@
     <Compile Include="Assets\Game\Script\Ability\AirRollSkill.cs" />
     <Compile Include="Assets\Game\Script\UI\UIRenderer\TestVisualElement.cs" />
     <Compile Include="Assets\Game\Script\Game\PlayerAttack.cs" />
+    <Compile Include="Assets\Game\Script\Other\CharData.cs" />
     <Compile Include="Assets\Game\Script\UI\Extension\TouchExtension.cs" />
     <Compile Include="Assets\Game\Script\Other\PoolArgument.cs" />
     <Compile Include="Assets\Game\Script\Game\Testing.cs" />
@@ -98,7 +99,6 @@
     <Compile Include="Assets\Game\Script\UI\View\CharInfoView.cs" />
     <Compile Include="Assets\Game\Script\Other\MultipleCollideTimer.cs" />
     <Compile Include="Assets\Game\Script\UI\UIRenderer\HealthUI.cs" />
-    <Compile Include="Assets\Game\Script\UI\Model\SkillUIData.cs" />
     <Compile Include="Assets\Game\Script\UI\View\IndividualView.cs" />
     <Compile Include="Assets\Cainos\Pixel Art Top Down - Basic\Script\CameraFollow.cs" />
     <Compile Include="Assets\Game\Script\UI\Model\CharInfoMenuItem.cs" />
@@ -127,7 +127,6 @@
     <Compile Include="Assets\Game\Script\Other\MonoEditorSelfAware.cs" />
     <Compile Include="Assets\Game\Script\Game\AnimationEventFunctionCaller.cs" />
     <Compile Include="Assets\Game\Script\UI\UIRenderer\HealthInnerUI.cs" />
-    <Compile Include="Assets\Game\Script\UI\Other\SkillUIInfo.cs" />
     <Compile Include="Assets\Game\Script\UI\View\ConfigView.cs" />
     <Compile Include="Assets\Bot.cs" />
     <Compile Include="Assets\Cainos\Pixel Art Top Down - Basic\Script\LayerTrigger.cs" />
@@ -643,6 +642,14 @@
     </Reference>
     <Reference Include="Mono.Cecil">
       <HintPath>Library\PackageCache\com.unity.nuget.mono-cecil\Mono.Cecil.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Unity.Android.Types">
+      <HintPath>D:\Program\unity\Editor\6000.0.30f1\Editor\Data\PlaybackEngines\AndroidPlayer\Unity.Android.Types.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Unity.Android.Gradle">
+      <HintPath>D:\Program\unity\Editor\6000.0.30f1\Editor\Data\PlaybackEngines\AndroidPlayer\Unity.Android.Gradle.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="netstandard">

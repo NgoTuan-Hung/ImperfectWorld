@@ -194,7 +194,7 @@ public class MainView : ViewBase
 	/// <param name="trigger"></param>
 	/// <param name="startHoldingCallback"></param>
 	/// <param name="stillHoldingCallback"></param>
-	public void AddSkillToScrollView(SkillDataSo skillDataSO, AddSkillToScrollViewDelegate trigger
+	public void AddSkillToScrollView(SkillDataSO skillDataSO, AddSkillToScrollViewDelegate trigger
 	, Func<bool> startHoldingCallback = null, Action<Vector2> stillHoldingCallback = null)
 	{
 		// var newSkillHolder = skillHolderTemplate.Instantiate();

@@ -5,6 +5,7 @@ using UnityEngine;
 public enum UpdateDirectionIndicatorPriority {VeryLow = 4, Low = 3, Medium = 2, High = 1, VeryHigh = 0}
 public class CustomMono : MonoSelfAware, IComparable<CustomMono>
 {
+	public CharUIData charUIData;
 	public bool isBot = true;
 	public HashSet<string> allyTags = new();
 	private GameObject mainComponent;
@@ -63,6 +64,7 @@ public class CustomMono : MonoSelfAware, IComparable<CustomMono>
 	public CustomMono currentNearestEnemy = null;
 	public new Rigidbody2D rigidbody2D;
 	public Action<CustomMono> nearestEnemyChanged = (person) => {};
+	public Action startPhase1 = () => {};
 	public AnimatorWrapper AnimatorWrapper { get => animatorWrapper; set => animatorWrapper = value; }
 	public GameObject MainComponent { get => mainComponent; set => mainComponent = value; }
 	public GameObject DirectionIndicator { get => directionIndicator; set => directionIndicator = value; }
@@ -151,7 +153,16 @@ public class CustomMono : MonoSelfAware, IComparable<CustomMono>
 	
 	private void Start() 
 	{
-		//
+		if (isBot)
+		{
+		    
+		}
+		else
+		{
+		    GameManager.Instance.InitializeControllableCharacter(this);
+		}
+
+		startPhase1();
 	}
 	
 	private void FixedUpdate() 

@@ -147,7 +147,7 @@ public class CharInfoView : ViewBase
 	}
 	
 	
-	public void PopulateSkillTree(IndividualView p_individualView, List<SkillUIData> p_skillUIDatas, List<SkillData> p_skillDatas)
+	public void PopulateSkillTree(IndividualView p_individualView, List<SkillData> p_skillDatas)
 	{
 		/* Calculate how many skill can we put into a skill tree in a row or column taking offset into account
 		, skill tree size and skill size must be defined inside GameUIManager whenever you change its size in 
@@ -160,17 +160,17 @@ public class CharInfoView : ViewBase
 		, t_skillTreeContainer = t_skillTree.Q<VisualElement>(classes: "skill-tree__container");
 		NewSkillTreeHandler(p_individualView, t_skillTree, t_skillTreeContainer);
 		
-		for (int i=0;i<p_skillUIDatas.Count;i++)
+		for (int i=0;i<p_skillDatas.Count;i++)
 		{				
 			SkillData t_skillData = p_skillDatas[i];
 
 			VisualElement t_skill, skillTooltip = HandleTooltipView
 			(
-				p_individualView, skillTooltipVTA.Instantiate().ElementAt(0), p_skillUIDatas[i].skillName
-				, p_skillUIDatas[i].skillHelperImage, p_skillUIDatas[i].skillHelperDescription
+				p_individualView, skillTooltipVTA.Instantiate().ElementAt(0), p_skillDatas[i].skillDataSO.skillName
+				, p_skillDatas[i].skillDataSO.skillHelperImage, p_skillDatas[i].skillDataSO.skillHelperDescription
 			);
 			
-			if (p_skillUIDatas[i].skillType == SkillType.Passive)
+			if (p_skillDatas[i].skillDataSO.skillType == SkillType.Passive)
 			{
 				t_skill = passiveSkillVTA.Instantiate().ElementAt(0);
 			}
@@ -178,41 +178,39 @@ public class CharInfoView : ViewBase
 			{
 				VisualElement t_skillSlot = skillSlotVTA.Instantiate();
 				t_skillSlot = t_skillSlot.ElementAt(0);
-				t_skillSlot.Q(classes: "usable-slot-in").style.backgroundImage = p_skillUIDatas[i].skillImage;
+				t_skillSlot.Q(classes: "usable-slot-in").style.backgroundImage = p_skillDatas[i].skillDataSO.skillImage;
 				t_skillSlot.style.visibility = Visibility.Hidden;
 				gameUIManager.AddTooltipHandlerForVisualElement(t_skillSlot, skillTooltip);
 				p_individualView.charInfoSkillItem.Add(t_skillSlot);
+				t_skillData.usableSlotUIInfo = new(t_skillSlot);
 				
-				SkillUIInfo t_skillUIInfo = new() {skillUIData = p_skillUIDatas[i], usableSlotUIInfo = new(t_skillSlot)};
-				usableSlotUIInfoDict.Add(t_skillSlot.GetHashCode(), t_skillUIInfo.usableSlotUIInfo);
+				usableSlotUIInfoDict.Add(t_skillSlot.GetHashCode(), t_skillData.usableSlotUIInfo);
 				
-				if (p_skillUIDatas[i].skillType == SkillType.Special) t_skillUIInfo.usableHolderVTA = skillHolderSpecialVTA;
-				else t_skillUIInfo.usableHolderVTA = skillHolderVTA;
+				if (p_skillDatas[i].skillDataSO.skillType == SkillType.Special) t_skillData.usableHolderVTA = skillHolderSpecialVTA;
+				else t_skillData.usableHolderVTA = skillHolderVTA;
 				
 				t_skill = activeSkillVTA.Instantiate().ElementAt(0);
 				gameUIManager.mainView.InitUsableHolder
 				(
-					p_individualView, t_skillUIInfo.usableHolderVTA, t_skillUIInfo.usableSlotUIInfo
-					, t_skillUIInfo.skillUIData.skillImage
+					p_individualView, t_skillData.usableHolderVTA, t_skillData.usableSlotUIInfo
+					, t_skillData.skillDataSO.skillImage
 				);
 				
 				t_skill.RegisterCallback<PointerDownEvent>((evt) => 
 				{
 					TouchInfo touchInfo = TouchExtension.GetTouchInfoAt(evt.position, uIDocument.rootVisualElement);
-					StartCoroutine(DraggingUsableSlotCoroutine(p_individualView, touchInfo, t_skillUIInfo.usableSlotUIInfo
+					StartCoroutine(DraggingUsableSlotCoroutine(p_individualView, touchInfo, t_skillData.usableSlotUIInfo
 					, (p_scrollViewIndex, p_dropIntoScrollViewIndex) => 
 					{
 					    t_skillData.currentUsableScrollViewIndex = p_scrollViewIndex;
 						t_skillData.dropIntoScrollViewIndex = p_dropIntoScrollViewIndex;
 					}));
 				});
-
-				t_skillData.usableSlotUIInfo = t_skillUIInfo.usableSlotUIInfo;
 			}
 			
 			gameUIManager.AddTooltipHandlerForVisualElement(t_skill, skillTooltip);
 			
-			t_skill.Q(classes: "skill-tree__skill-icon").style.backgroundImage = p_skillUIDatas[i].skillTreeIcon;
+			t_skill.Q(classes: "skill-tree__skill-icon").style.backgroundImage = p_skillDatas[i].skillDataSO.skillTreeIcon;
 			t_skill.style.left = (i % maxSkillPerRow) * (gameUIManager.skillTreeSkillSize.x + gameUIManager.skillTreeSkillOffset.x) + gameUIManager.skillTreeSkillOffset.x;
 			col = (i / maxSkillPerRow) - colOffset;
 			

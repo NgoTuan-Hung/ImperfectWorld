@@ -9,6 +9,5 @@ public class CharUIData : ScriptableObject
 	public int currentLevel;
 	[Range(0, 1)] public float currentHP;
 	[Range(0, 1)] public float currentXP;
-	public List<SkillUIData> skillUIDatas;
 	public List<ItemData> itemDatas;
 }

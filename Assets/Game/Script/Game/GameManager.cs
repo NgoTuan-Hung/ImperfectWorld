@@ -25,13 +25,18 @@ public class GameManager : MonoSingleton<GameManager>
 	Stopwatch stopwatch = new();
 	public float waveDuration = 60f;
 	public CinemachineCamera cinemachineCamera;
+	Dictionary<int, CharData> charDataDict = new();
 
-	public void InitializeControllableCharacterUI(CharUIData p_charUIData, CustomMono p_customMono)
+	public void InitializeControllableCharacter(CustomMono p_customMono)
 	{
-		IndividualView t_individualView = GameUIManager.Instance.AddNewIndividualView(p_charUIData, () => 
+		CharData t_charData = new();
+
+		t_charData.individualView = GameUIManager.Instance.AddNewIndividualView(p_customMono.charUIData, () => 
 		{
 			cinemachineCamera.Follow = p_customMono.transform;
 		});
+
+		charDataDict.Add(p_customMono.GetHashCode(), t_charData);
 
 	// 		t_individualView.joyStickMoveEvent += (vector) => 
 	// 		{
@@ -40,8 +45,10 @@ public class GameManager : MonoSingleton<GameManager>
 	// 		};
 	// 	});
 		
-		GameUIManager.Instance.SelectFirstIndividualView();	
+		// GameUIManager.Instance.SelectFirstIndividualView();	
 	}
+
+	public CharData GetCharData(CustomMono p_customMono) => charDataDict[p_customMono.GetHashCode()];
 	
 	private void Awake() 
 	{
