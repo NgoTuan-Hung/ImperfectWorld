@@ -25,7 +25,7 @@ public class MainView : ViewBase
 
 	public override void InitIndividualView(IndividualView p_individualView, CharUIData p_charUIData)
 	{
-		HandleSkillView(p_individualView);
+		HandleUsableHolderScrollView(p_individualView);
 		HandleJoyStickView(p_individualView);
 		HandleScrollLockExpandLock(p_individualView);
 		HandleExpandButton(p_individualView);
@@ -157,30 +157,30 @@ public class MainView : ViewBase
 	}
 
 	/// <summary>
-	/// Handle scroll view lock (mostly skill)
+	/// Handle scroll view lock
 	/// . Lock state: Lock -> Unlocked -> AutoLocked -> Lock -> ...
 	/// </summary>
-	public void HandleScrollLock(SkillScrollViewUIInfo skillScrollViewUIInfo)
+	public void HandleScrollLock(UsableScrollViewUIInfo p_usableScrollViewUIInfo)
 	{	
-		switch (skillScrollViewUIInfo.scrollViewLockState)
+		switch (p_usableScrollViewUIInfo.scrollViewLockState)
 		{
 			case ScrollViewLockState.Locked:
 			{
-				skillScrollViewUIInfo.scrollViewLock.AddToClassList("scroll-lock-view__lock-unlocked");
-				skillScrollViewUIInfo.scrollViewLockState = ScrollViewLockState.Unlocked;
+				p_usableScrollViewUIInfo.scrollViewLock.AddToClassList("scroll-lock-view__lock-unlocked");
+				p_usableScrollViewUIInfo.scrollViewLockState = ScrollViewLockState.Unlocked;
 				break;
 			}
 			case ScrollViewLockState.Unlocked:
 			{
-				skillScrollViewUIInfo.scrollViewLock.RemoveFromClassList("scroll-lock-view__lock-unlocked");
-				skillScrollViewUIInfo.scrollViewLock.AddToClassList("scroll-lock-view__lock-auto-lock");
-				skillScrollViewUIInfo.scrollViewLockState = ScrollViewLockState.AutoLocked;
+				p_usableScrollViewUIInfo.scrollViewLock.RemoveFromClassList("scroll-lock-view__lock-unlocked");
+				p_usableScrollViewUIInfo.scrollViewLock.AddToClassList("scroll-lock-view__lock-auto-lock");
+				p_usableScrollViewUIInfo.scrollViewLockState = ScrollViewLockState.AutoLocked;
 				break;
 			}
 			case ScrollViewLockState.AutoLocked:
 			{
-				skillScrollViewUIInfo.scrollViewLock.RemoveFromClassList("scroll-lock-view__lock-auto-lock");
-				skillScrollViewUIInfo.scrollViewLockState = ScrollViewLockState.Locked;
+				p_usableScrollViewUIInfo.scrollViewLock.RemoveFromClassList("scroll-lock-view__lock-auto-lock");
+				p_usableScrollViewUIInfo.scrollViewLockState = ScrollViewLockState.Locked;
 				break;
 			}
 			default: break;
@@ -307,6 +307,14 @@ public class MainView : ViewBase
 		t_usableHolder.transform.position = VectorExtension.veryFar;
 		p_individualView.usableScrollViewHolder.Add(t_usableHolder);
 		p_usableSlotUIInfo.usableHolder = t_usableHolder;
+
+		t_usableHolder.RegisterCallback<PointerMoveEvent>((evt) => 
+		{
+		    // 		/* Check When locked is set to true, lock the scroll view. Also scroll happen at 
+			// 		scrollview.contentContainer.PointerMoveEvent(Bubble Up phase) so we can block it here */
+			if (p_individualView.usableScrollViewUIInfos[p_usableSlotUIInfo.scrollViewTouchedThisFrameIndex].scrollViewLockState == ScrollViewLockState.Locked)
+				evt.StopPropagation();
+		});
 	}
 	
 	public void AddUsableHolderToScrollView(IndividualView p_individualView, UsableSlotUIInfo p_usableSlotUIInfo, int addIndex)
@@ -316,11 +324,11 @@ public class MainView : ViewBase
 		p_usableSlotUIInfo.usableHolder.transform.position = Vector3.zero;
 		try
 		{
-			p_individualView.skillScrollViews[p_usableSlotUIInfo.scrollViewTouchedThisFrameIndex].Insert(addIndex, p_usableSlotUIInfo.usableHolder);
+			p_individualView.usableHolderScrollViews[p_usableSlotUIInfo.scrollViewTouchedThisFrameIndex].Insert(addIndex, p_usableSlotUIInfo.usableHolder);
 		}
 		catch (Exception)
 		{
-			p_individualView.skillScrollViews[p_usableSlotUIInfo.scrollViewTouchedThisFrameIndex].Add(p_usableSlotUIInfo.usableHolder);
+			p_individualView.usableHolderScrollViews[p_usableSlotUIInfo.scrollViewTouchedThisFrameIndex].Add(p_usableSlotUIInfo.usableHolder);
 		}
 	}
 	
@@ -335,46 +343,39 @@ public class MainView : ViewBase
 	/// <summary>
 	/// Populate the skill slots info
 	/// </summary>
-	public void HandleSkillView(IndividualView p_individualView)
+	public void HandleUsableHolderScrollView(IndividualView p_individualView)
 	{	
 		/* Handle scroll logic, scrolling, snapping */
-		for (int i=0;i<p_individualView.skillScrollViews.Count;i++)
+		for (int i=0;i<p_individualView.usableHolderScrollViews.Count;i++)
 		{
-			SkillScrollViewUIInfo skillScrollViewUIInfo = new(p_individualView.skillScrollViews[i], i, null)
-			{
-				/* For each scroll view, we assign a lock to it */
-				scrollViewLock = scrollViewLockVTA.Instantiate().ElementAt(0),
-				scrollViewLockState = ScrollViewLockState.Locked
-			};
-			skillScrollViewUIInfo.scrollViewLock.RegisterCallback<PointerDownEvent>((evt) => 
+			/* For each scroll view, we assign a lock to it */
+			UsableScrollViewUIInfo t_usableScrollViewUIInfo = new
+			(
+				p_individualView.usableHolderScrollViews[i], null, scrollViewLockVTA.Instantiate().ElementAt(0), ScrollViewLockState.Locked
+			);
+
+			t_usableScrollViewUIInfo.scrollViewLock.RegisterCallback<PointerDownEvent>((evt) => 
 			{
 				evt.StopPropagation();
-				HandleScrollLock(skillScrollViewUIInfo);
+				HandleScrollLock(t_usableScrollViewUIInfo);
 			});
 			
-			p_individualView.scrollLockParent.Insert(i, skillScrollViewUIInfo.scrollViewLock.parent);
+			p_individualView.scrollLockParent.Insert(i, t_usableScrollViewUIInfo.scrollViewLock.parent);
 
-			p_individualView.skillScrollViews[i].verticalScroller.valueChanged += evt => SkillScrollViewEvent(skillScrollViewUIInfo);
+			p_individualView.usableHolderScrollViews[i].verticalScroller.valueChanged += evt => UsableScrollViewValueChanged(t_usableScrollViewUIInfo);
 			
-			p_individualView.skillScrollViews[i].RegisterCallback<PointerDownEvent>((evt) => 
+			p_individualView.usableHolderScrollViews[i].RegisterCallback<PointerDownEvent>((evt) => 
 			{
-				/* Check When locked is set to true, lock the scroll view. Also scroll happen at 
-				scrollview.contentContainer.PointerDownEvent(TrickleDown) so we can block it here */
-				if (skillScrollViewUIInfo.scrollViewLockState == ScrollViewLockState.Locked) evt.StopPropagation();
-				SkillScrollViewPointerDown(evt.position, skillScrollViewUIInfo);
+				UsableScrollViewPointerDown(evt.position, t_usableScrollViewUIInfo);
 			}, TrickleDown.TrickleDown);
 			
-			p_individualView.skillScrollViews[i].RegisterCallback<PointerDownEvent>((evt) => 
-			{
-				/* Used to block touch screen event */
-				evt.StopPropagation();
-			});
-			
 			/* Used to determine some final style of scroll view (height,...)*/
-			p_individualView.skillScrollViews[i].RegisterCallback<GeometryChangedEvent>
+			p_individualView.usableHolderScrollViews[i].RegisterCallback<GeometryChangedEvent>
 			(
-				(evt) => SkillScrollViewGeometryChanged(skillScrollViewUIInfo)
+				(evt) => SkillScrollViewGeometryChanged(t_usableScrollViewUIInfo)
 			);
+
+			p_individualView.usableScrollViewUIInfos.Add(t_usableScrollViewUIInfo);
 		}
 	}
 	
@@ -405,28 +406,28 @@ public class MainView : ViewBase
 	/// Mostly used to play sound if scroll view scroll passed an element
 	/// </summary>
 	/// <param name="skillScrollViewUIInfo"></param>
-	public void SkillScrollViewEvent(SkillScrollViewUIInfo skillScrollViewUIInfo)
+	public void UsableScrollViewValueChanged(UsableScrollViewUIInfo usableScrollViewUIInfo)
 	{
-		skillScrollViewUIInfo.skillScrollViewNewIndex = (int)Math.Floor(skillScrollViewUIInfo.scrollView.verticalScroller.value / skillScrollViewUIInfo.scrollViewHeight + 0.5f);
-		if (skillScrollViewUIInfo.skillScrollViewNewIndex != skillScrollViewUIInfo.skillScrollViewPreviousIndex) audioSource.Play();
+		usableScrollViewUIInfo.newChildIndex = (int)Math.Floor(usableScrollViewUIInfo.scrollView.verticalScroller.value / usableScrollViewUIInfo.scrollViewHeight + 0.5f);
+		if (usableScrollViewUIInfo.newChildIndex != usableScrollViewUIInfo.previousChildIndex) audioSource.Play();
 
-		skillScrollViewUIInfo.skillScrollViewPreviousIndex = skillScrollViewUIInfo.skillScrollViewNewIndex;
+		usableScrollViewUIInfo.previousChildIndex = usableScrollViewUIInfo.newChildIndex;
 	}
 
-	public void SkillScrollViewPointerDown(Vector2 p_pointerPosition, SkillScrollViewUIInfo skillScrollViewUIInfo)
+	public void UsableScrollViewPointerDown(Vector2 p_pointerPosition, UsableScrollViewUIInfo p_usableScrollViewUIInfo)
 	{
-		if (skillScrollViewUIInfo.scrollViewLockState == ScrollViewLockState.Locked) return;
-		if (skillScrollViewUIInfo.scrollSnapCoroutine != null) StopCoroutine(skillScrollViewUIInfo.scrollSnapCoroutine);
-		skillScrollViewUIInfo.scrollView.scrollDecelerationRate = defaultScrollDecelerationRate;
+		if (p_usableScrollViewUIInfo.scrollViewLockState == ScrollViewLockState.Locked) return;
+		if (p_usableScrollViewUIInfo.scrollSnapCoroutine != null) StopCoroutine(p_usableScrollViewUIInfo.scrollSnapCoroutine);
+		p_usableScrollViewUIInfo.scrollView.scrollDecelerationRate = defaultScrollDecelerationRate;
 		TouchInfo t_touchInfo = TouchExtension.GetTouchInfoAt(p_pointerPosition, gameUIManager.root);
-		skillScrollViewUIInfo.scrollSnapCoroutine = StartCoroutine(HandleScrollSnap(t_touchInfo, skillScrollViewUIInfo));
+		p_usableScrollViewUIInfo.scrollSnapCoroutine = StartCoroutine(HandleScrollSnap(t_touchInfo, p_usableScrollViewUIInfo));
 	}
 	
-	void SkillScrollViewGeometryChanged(SkillScrollViewUIInfo skillScrollViewUIInfo)
+	void SkillScrollViewGeometryChanged(UsableScrollViewUIInfo p_usableScrollViewUIInfo)
 	{
-		// var t_skillScrollView = skillScrollViewUIInfo.ScrollView;
-		skillScrollViewUIInfo.scrollViewHeight = skillScrollViewUIInfo.scrollView.resolvedStyle.height;
-		skillScrollViewUIInfo.distanceToSnap = skillScrollViewUIInfo.scrollViewHeight * distanceToSnapScale;
+		// var t_skillScrollView = p_usableScrollViewUIInfo.ScrollView;
+		p_usableScrollViewUIInfo.scrollViewHeight = p_usableScrollViewUIInfo.scrollView.resolvedStyle.height;
+		p_usableScrollViewUIInfo.distanceToSnap = p_usableScrollViewUIInfo.scrollViewHeight * distanceToSnapScale;
 		
 		/* Update mid position of all skill holders in this scroll view */
 		// skillScrollViewUIInfo.skillHolderViews.ForEach(skillHolderView => 
@@ -441,7 +442,7 @@ public class MainView : ViewBase
 	[SerializeField] private float distanceToSnapScale = 0.5f;
 	private float defaultScrollDecelerationRate = 0.135f;
 
-	public IEnumerator HandleScrollSnap(TouchInfo p_touchInfo, SkillScrollViewUIInfo skillScrollViewUIInfo)
+	public IEnumerator HandleScrollSnap(TouchInfo p_touchInfo, UsableScrollViewUIInfo p_usableScrollViewUIInfo)
 	{
 		/* snap logic only happens when we release the touch */
 		while (p_touchInfo.touch.phase != TouchPhase.Ended)
@@ -456,35 +457,35 @@ public class MainView : ViewBase
 		int finalIndex;
 
 		/* snap logic only happens when the scroll speed is low enough */
-		while (Math.Abs(skillScrollViewUIInfo.scrollView.verticalScroller.value - prevPosition) > skillScrollViewUIInfo.distanceToSnap)
+		while (Math.Abs(p_usableScrollViewUIInfo.scrollView.verticalScroller.value - prevPosition) > p_usableScrollViewUIInfo.distanceToSnap)
 		{
-			prevPosition = skillScrollViewUIInfo.scrollView.verticalScroller.value;
+			prevPosition = p_usableScrollViewUIInfo.scrollView.verticalScroller.value;
 			yield return new WaitForSeconds(Time.fixedDeltaTime);
-		} skillScrollViewUIInfo.scrollView.scrollDecelerationRate = 0f;
+		} p_usableScrollViewUIInfo.scrollView.scrollDecelerationRate = 0f;
 
 		/* snap logic:
 		- Grab the element that the center of the scroll view is inside
 		- Lerp from the current scroll position to the element's position
 		- Snap to the element for more accurate snapping (Use unity internal function ScrollTo)
 		 */
-		currentPosition = skillScrollViewUIInfo.scrollView.verticalScroller.value;
-		finalIndex = (int)Math.Floor(skillScrollViewUIInfo.scrollView.verticalScroller.value/skillScrollViewUIInfo.scrollViewHeight + 0.5f);
-		finalPosition = finalIndex * skillScrollViewUIInfo.scrollViewHeight;
+		currentPosition = p_usableScrollViewUIInfo.scrollView.verticalScroller.value;
+		finalIndex = (int)Math.Floor(p_usableScrollViewUIInfo.scrollView.verticalScroller.value/p_usableScrollViewUIInfo.scrollViewHeight + 0.5f);
+		finalPosition = finalIndex * p_usableScrollViewUIInfo.scrollViewHeight;
 
 		float currentTime = 0, progress = 0;
 		while (progress < 1.0)
 		{
 			progress = currentTime / snapTime;
-			skillScrollViewUIInfo.scrollView.verticalScroller.value = Mathf.Lerp(currentPosition, finalPosition, progress);
+			p_usableScrollViewUIInfo.scrollView.verticalScroller.value = Mathf.Lerp(currentPosition, finalPosition, progress);
 			yield return new WaitForSeconds(snapInterval);
 			currentTime += snapInterval;
 		}
-		skillScrollViewUIInfo.scrollView.scrollDecelerationRate = defaultScrollDecelerationRate;
-		skillScrollViewUIInfo.scrollView.ScrollTo(skillScrollViewUIInfo.scrollView.contentContainer.ElementAt(finalIndex));
+		p_usableScrollViewUIInfo.scrollView.scrollDecelerationRate = defaultScrollDecelerationRate;
+		p_usableScrollViewUIInfo.scrollView.ScrollTo(p_usableScrollViewUIInfo.scrollView.contentContainer.ElementAt(finalIndex));
 		
 		/* If we choose auto lock scroll view, we can handle it here, right after scrolling and snapping
 		is done */
-		if (skillScrollViewUIInfo.scrollViewLockState == ScrollViewLockState.AutoLocked) HandleScrollLock(skillScrollViewUIInfo);
+		if (p_usableScrollViewUIInfo.scrollViewLockState == ScrollViewLockState.AutoLocked) HandleScrollLock(p_usableScrollViewUIInfo);
 	}
 
 	public void HandleJoyStickView(IndividualView p_individualView)

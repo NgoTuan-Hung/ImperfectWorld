@@ -24,7 +24,8 @@ public class IndividualView
 	
 	public List<VisualElement> usableSlotScrollView, skillTrees = new(), movableElements = new();
 	/* Main view */
-	public List<ScrollView> skillScrollViews;
+	public List<ScrollView> usableHolderScrollViews;
+	public List<UsableScrollViewUIInfo> usableScrollViewUIInfos = new();
 	public VisualElement usableScrollViewHolder, scrollLockParent, scrollLockExpandButton, scrollLockExpandLock, joystickHolder, joyStickOuter, joyStickInner
 	
 	/* Char info view */
@@ -35,7 +36,7 @@ public class IndividualView
 	{
 		/* Main view */
 		usableScrollViewHolder = gameUIManager.usableScrollViewHolderVTA.Instantiate().ElementAt(0);
-		skillScrollViews = usableScrollViewHolder.Query<ScrollView>(classes: "main-view__skill-scroll-view").ToList();
+		usableHolderScrollViews = usableScrollViewHolder.Query<ScrollView>(classes: "main-view__skill-scroll-view").ToList();
 		scrollLockParent = usableScrollViewHolder.Q<VisualElement>(name: "scroll-lock-view__lock-parent");
 		scrollLockExpandButton = usableScrollViewHolder.Q<VisualElement>(name: "scroll-lock-view__expand-button");
 		scrollLockExpandLock = scrollLockParent.Q<VisualElement>(name: "scroll-lock-view__lock-expand");

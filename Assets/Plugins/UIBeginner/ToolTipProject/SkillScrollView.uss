@@ -9,7 +9,7 @@
 .main-view__expand-button-original {
     width: 35px;
     height: 35px;
-    background-image: url("project://database/Assets/UIBeginner/ToolTipProject/expand-down.png?fileID=2800000&guid=e4e16c08bc2d6f343af3596d2a788b4a&type=3#expand-down");
+    background-image: url("project://database/Assets/Plugins/UIBeginner/ToolTipProject/expand-down.png?fileID=2800000&guid=e4e16c08bc2d6f343af3596d2a788b4a&type=3#expand-down");
     background-color: rgba(255, 255, 255, 0.5);
     border-left-color: rgb(255, 255, 255);
     border-right-color: rgb(255, 255, 255);
@@ -26,7 +26,7 @@
 }
 
 .main-view__expand-button-collapsed {
-    background-image: url("project://database/Assets/UIBeginner/ToolTipProject/expand.png?fileID=2800000&guid=654486a0882cd104aac8360062faa44e&type=3#expand");
+    background-image: url("project://database/Assets/Plugins/UIBeginner/ToolTipProject/expand.png?fileID=2800000&guid=654486a0882cd104aac8360062faa44e&type=3#expand");
     border-left-color: rgb(255, 255, 255);
     border-right-color: rgb(255, 255, 255);
     border-top-color: rgb(255, 255, 255);
@@ -49,7 +49,7 @@
     margin-left: 10px;
 }
 
-.main-view__skill-scroll-view {
+.main-view__usable-scroll-view {
     width: 100px;
     height: 100px;
 }
@@ -103,16 +103,16 @@
 .scroll-lock-view__lock {
     height: 100%;
     width: 35px;
-    background-image: url("project://database/Assets/UIBeginner/ToolTipProject/Icon/lock.png?fileID=2800000&guid=23640369944c8a64ca4280cf2b33857d&type=3#lock");
+    background-image: url("project://database/Assets/Plugins/UIBeginner/ToolTipProject/Icon/lock.png?fileID=2800000&guid=23640369944c8a64ca4280cf2b33857d&type=3#lock");
     margin-right: 35px;
 }
 
 .scroll-lock-view__lock-unlocked {
-    background-image: url("project://database/Assets/UIBeginner/ToolTipProject/Icon/unlock.png?fileID=2800000&guid=b2ef5b9e837a60c46a431762976fa4f1&type=3#unlock");
+    background-image: url("project://database/Assets/Plugins/UIBeginner/ToolTipProject/Icon/unlock.png?fileID=2800000&guid=b2ef5b9e837a60c46a431762976fa4f1&type=3#unlock");
 }
 
 .scroll-lock-view__lock-auto-lock {
-    background-image: url("project://database/Assets/UIBeginner/ToolTipProject/Icon/auto-lock.png?fileID=2800000&guid=e4453f8cee2cca24b947e114c7cafbe6&type=3#auto-lock");
+    background-image: url("project://database/Assets/Plugins/UIBeginner/ToolTipProject/Icon/auto-lock.png?fileID=2800000&guid=e4453f8cee2cca24b947e114c7cafbe6&type=3#auto-lock");
 }
 
 .scroll-lock-view__lock-parent-collapsed {
@@ -123,7 +123,7 @@
 .scroll-lock-view__lock-expand-locked {
     position: absolute;
     right: 0;
-    background-image: url("project://database/Assets/UIBeginner/ToolTipProject/Icon/lock_v2.png?fileID=2800000&guid=c22f4b54b20c7954c91d741d44c182f3&type=3#lock_v2");
+    background-image: url("project://database/Assets/Plugins/UIBeginner/ToolTipProject/Icon/lock_v2.png?fileID=2800000&guid=c22f4b54b20c7954c91d741d44c182f3&type=3#lock_v2");
     height: 100%;
     width: 35px;
     margin-right: 35px;
@@ -134,7 +134,7 @@
     position: absolute;
     height: 100%;
     margin-right: 35px;
-    background-image: url("project://database/Assets/UIBeginner/ToolTipProject/Icon/unlock_v2.png?fileID=2800000&guid=19d0e925db5082a40a23805e1d269849&type=3#unlock_v2");
+    background-image: url("project://database/Assets/Plugins/UIBeginner/ToolTipProject/Icon/unlock_v2.png?fileID=2800000&guid=19d0e925db5082a40a23805e1d269849&type=3#unlock_v2");
 }
 
 .dynamic-ui__movable {
@@ -169,12 +169,12 @@
     border-bottom-right-radius: 12px;
     border-bottom-left-radius: 12px;
     background-color: rgba(255, 255, 255, 0.5);
-    -unity-font-definition: url("project://database/Assets/UIBeginner/ToolTipProject/Fonts/Roboto/Roboto-Black%20SDF.asset?fileID=11400000&guid=e74ebc05ab3564fb187648ced4e2c0fa&type=2#Roboto-Black SDF");
+    -unity-font-definition: url("project://database/Assets/Plugins/UIBeginner/ToolTipProject/Fonts/Roboto/Roboto-Black%20SDF.asset?fileID=11400000&guid=e74ebc05ab3564fb187648ced4e2c0fa&type=2#Roboto-Black SDF");
 }
 
 .char-info__label {
     font-size: 37px;
-    -unity-font-definition: url("project://database/Assets/UIBeginner/ToolTipProject/Fonts/Roboto/Roboto-Black%20SDF.asset?fileID=11400000&guid=e74ebc05ab3564fb187648ced4e2c0fa&type=2#Roboto-Black SDF");
+    -unity-font-definition: url("project://database/Assets/Plugins/UIBeginner/ToolTipProject/Fonts/Roboto/Roboto-Black%20SDF.asset?fileID=11400000&guid=e74ebc05ab3564fb187648ced4e2c0fa&type=2#Roboto-Black SDF");
     color: rgb(255, 255, 255);
     -unity-text-align: middle-center;
 }
@@ -347,7 +347,7 @@
 #tooltip__exit-button {
     position: absolute;
     align-self: flex-end;
-    background-image: url("project://database/Assets/UIBeginner/ToolTipProject/x.png?fileID=2800000&guid=bcdf420c72a3c774c8d801911445f8ee&type=3#x");
+    background-image: url("project://database/Assets/Plugins/UIBeginner/ToolTipProject/x.png?fileID=2800000&guid=bcdf420c72a3c774c8d801911445f8ee&type=3#x");
     width: 54px;
     height: 54px;
     background-color: rgba(0, 0, 0, 0);
@@ -444,7 +444,7 @@
 .stat__stat-name {
     -unity-text-align: middle-center;
     font-size: 27px;
-    -unity-font: url("project://database/Assets/UIBeginner/ToolTipProject/Theme/MobileTheme.tss?fileID=2230732570650464555&guid=bb0bd47a51e142f4dacaf6d57ccc36a1&type=3#NotInter-Regular");
+    -unity-font: url('project://database/Assets/UIBeginner/ToolTipProject/Theme/MobileTheme.tss?fileID=2230732570650464555&guid=bb0bd47a51e142f4dacaf6d57ccc36a1&type=3#NotInter-Regular');
     width: 70%;
     color: rgb(255, 255, 255);
 }
@@ -453,7 +453,7 @@
     -unity-text-align: middle-left;
     font-size: 27px;
     color: rgb(255, 255, 255);
-    -unity-font: url("project://database/Assets/UIBeginner/ToolTipProject/Theme/MobileTheme.tss?fileID=2230732570650464555&guid=bb0bd47a51e142f4dacaf6d57ccc36a1&type=3#NotInter-Regular");
+    -unity-font: url('project://database/Assets/UIBeginner/ToolTipProject/Theme/MobileTheme.tss?fileID=2230732570650464555&guid=bb0bd47a51e142f4dacaf6d57ccc36a1&type=3#NotInter-Regular');
     width: 20%;
 }
 
@@ -509,7 +509,7 @@
     border-top-right-radius: 4px;
     border-bottom-right-radius: 4px;
     border-bottom-left-radius: 4px;
-    -unity-font-definition: url("project://database/Assets/UIBeginner/ToolTipProject/Fonts/Roboto/Roboto-Black%20SDF.asset?fileID=11400000&guid=e74ebc05ab3564fb187648ced4e2c0fa&type=2#Roboto-Black SDF");
+    -unity-font-definition: url("project://database/Assets/Plugins/UIBeginner/ToolTipProject/Fonts/Roboto/Roboto-Black%20SDF.asset?fileID=11400000&guid=e74ebc05ab3564fb187648ced4e2c0fa&type=2#Roboto-Black SDF");
     -unity-text-align: middle-center;
     color: rgb(255, 255, 255);
     font-size: 27px;
@@ -564,7 +564,7 @@
     width: 90%;
     left: 5%;
     top: 5%;
-    background-image: url("project://database/Assets/UIBeginner/ToolTipProject/Texture/assassin.jpg?fileID=2800000&guid=c13e2b7c05f4fa64f9d7b3a1337e3f20&type=3#assassin");
+    background-image: url("project://database/Assets/Plugins/UIBeginner/ToolTipProject/Texture/assassin.jpg?fileID=2800000&guid=c13e2b7c05f4fa64f9d7b3a1337e3f20&type=3#assassin");
 }
 
 .upgrade__exp-container {
@@ -578,7 +578,7 @@
 }
 
 .upgrade__exp-label {
-    -unity-font-definition: url("project://database/Assets/UIBeginner/ToolTipProject/Fonts/Roboto/Roboto-Black%20SDF.asset?fileID=11400000&guid=e74ebc05ab3564fb187648ced4e2c0fa&type=2#Roboto-Black SDF");
+    -unity-font-definition: url("project://database/Assets/Plugins/UIBeginner/ToolTipProject/Fonts/Roboto/Roboto-Black%20SDF.asset?fileID=11400000&guid=e74ebc05ab3564fb187648ced4e2c0fa&type=2#Roboto-Black SDF");
     color: rgb(255, 255, 255);
     font-size: 27px;
     -unity-text-align: lower-left;
@@ -591,7 +591,7 @@
 .upgrade__option-label {
     font-size: 27px;
     -unity-text-align: middle-center;
-    -unity-font-definition: url("project://database/Assets/UIBeginner/ToolTipProject/Fonts/Roboto/Roboto-Black%20SDF.asset?fileID=11400000&guid=e74ebc05ab3564fb187648ced4e2c0fa&type=2#Roboto-Black SDF");
+    -unity-font-definition: url("project://database/Assets/Plugins/UIBeginner/ToolTipProject/Fonts/Roboto/Roboto-Black%20SDF.asset?fileID=11400000&guid=e74ebc05ab3564fb187648ced4e2c0fa&type=2#Roboto-Black SDF");
     color: rgb(255, 255, 255);
 }
 
@@ -608,7 +608,7 @@
 
 .upgrade__action-label {
     color: rgb(255, 255, 255);
-    -unity-font-definition: url("project://database/Assets/UIBeginner/ToolTipProject/Fonts/Roboto/Roboto-Black%20SDF.asset?fileID=11400000&guid=e74ebc05ab3564fb187648ced4e2c0fa&type=2#Roboto-Black SDF");
+    -unity-font-definition: url("project://database/Assets/Plugins/UIBeginner/ToolTipProject/Fonts/Roboto/Roboto-Black%20SDF.asset?fileID=11400000&guid=e74ebc05ab3564fb187648ced4e2c0fa&type=2#Roboto-Black SDF");
     -unity-text-align: middle-center;
     border-left-color: rgb(255, 255, 255);
     border-right-color: rgb(255, 255, 255);
@@ -634,7 +634,7 @@
     padding-bottom: 6px;
     padding-left: 21px;
     height: 100%;
-    -unity-font-definition: url("project://database/Assets/UIBeginner/ToolTipProject/Fonts/Roboto/Roboto-Black%20SDF.asset?fileID=11400000&guid=e74ebc05ab3564fb187648ced4e2c0fa&type=2#Roboto-Black SDF");
+    -unity-font-definition: url("project://database/Assets/Plugins/UIBeginner/ToolTipProject/Fonts/Roboto/Roboto-Black%20SDF.asset?fileID=11400000&guid=e74ebc05ab3564fb187648ced4e2c0fa&type=2#Roboto-Black SDF");
     -unity-text-align: middle-center;
 }
 
@@ -649,7 +649,7 @@ SliderInt.config-content__config-item .unity-base-slider__label {
     align-self: center;
     height: 100%;
     width: 30%;
-    -unity-font-definition: url("project://database/Assets/UIBeginner/ToolTipProject/Fonts/Roboto/Roboto-Black%20SDF.asset?fileID=11400000&guid=e74ebc05ab3564fb187648ced4e2c0fa&type=2#Roboto-Black SDF");
+    -unity-font-definition: url("project://database/Assets/Plugins/UIBeginner/ToolTipProject/Fonts/Roboto/Roboto-Black%20SDF.asset?fileID=11400000&guid=e74ebc05ab3564fb187648ced4e2c0fa&type=2#Roboto-Black SDF");
     color: rgb(255, 255, 255);
 }
 
@@ -711,7 +711,7 @@ SliderInt.config-content__config-item #unity-tracker {
     color: rgb(255, 255, 255);
     font-size: 37px;
     -unity-text-align: middle-left;
-    -unity-font-definition: url("project://database/Assets/UIBeginner/ToolTipProject/Fonts/Roboto/Roboto-Black%20SDF.asset?fileID=11400000&guid=e74ebc05ab3564fb187648ced4e2c0fa&type=2#Roboto-Black SDF");
+    -unity-font-definition: url("project://database/Assets/Plugins/UIBeginner/ToolTipProject/Fonts/Roboto/Roboto-Black%20SDF.asset?fileID=11400000&guid=e74ebc05ab3564fb187648ced4e2c0fa&type=2#Roboto-Black SDF");
     margin-right: 20px;
 }
 
@@ -821,7 +821,7 @@ SliderInt.config-content__config-item #unity-tracker {
 
 .char-selection__char-image {
     width: 35px;
-    background-image: url("project://database/Assets/UIBeginner/ToolTipProject/Texture/assassin.jpg?fileID=2800000&guid=c13e2b7c05f4fa64f9d7b3a1337e3f20&type=3#assassin");
+    background-image: url("project://database/Assets/Plugins/UIBeginner/ToolTipProject/Texture/assassin.jpg?fileID=2800000&guid=c13e2b7c05f4fa64f9d7b3a1337e3f20&type=3#assassin");
 }
 
 .char-selection__char-hp {
@@ -833,7 +833,7 @@ SliderInt.config-content__config-item #unity-tracker {
 }
 
 .char-selection__char-info {
-    -unity-font: url("project://database/Assets/UIBeginner/ToolTipProject/Theme/MobileTheme.tss?fileID=2230732570650464555&guid=bb0bd47a51e142f4dacaf6d57ccc36a1&type=3#NotInter-Regular");
+    -unity-font: url('project://database/Assets/UIBeginner/ToolTipProject/Theme/MobileTheme.tss?fileID=2230732570650464555&guid=bb0bd47a51e142f4dacaf6d57ccc36a1&type=3#NotInter-Regular');
     color: rgb(255, 255, 255);
     font-size: 27px;
 }

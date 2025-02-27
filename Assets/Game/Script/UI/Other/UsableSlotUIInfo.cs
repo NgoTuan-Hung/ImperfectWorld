@@ -12,5 +12,6 @@ public class UsableSlotUIInfo
 	public bool inScrollView = false;
 	public VisualElement usableSlot;
     public VisualElement usableHolder;
+	public Vector2 usableHolderMidPos;
 	public UsableSlotUIInfo(VisualElement p_usableSlot) => usableSlot = p_usableSlot;
 }

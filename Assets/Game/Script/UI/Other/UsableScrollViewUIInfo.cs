@@ -3,24 +3,25 @@ using UnityEngine;
 using UnityEngine.UIElements;
 
 public enum ScrollViewLockState {Locked = 0, Unlocked = 1, AutoLocked = 2}
-public class SkillScrollViewUIInfo
+public class UsableScrollViewUIInfo
 {
 	public ScrollView scrollView;
 	public VisualElement scrollViewLock;
 	public ScrollViewLockState scrollViewLockState;
-	public int scrollViewListIndex;
 	public Coroutine scrollSnapCoroutine;
-	public int skillScrollViewPreviousIndex = 0;
-	public int skillScrollViewNewIndex = 0;
+	public int newChildIndex = 0;
+	public int previousChildIndex = 0;
 	public float scrollViewHeight = 0f;
 	public float distanceToSnap = 0f;
 	public List<SkillHolderView> skillHolderViews = new();
 
-	public SkillScrollViewUIInfo(ScrollView scrollView, int scrollViewListIndex, Coroutine scrollSnapCoroutine)
+	public UsableScrollViewUIInfo(ScrollView p_scrollView, Coroutine p_scrollSnapCoroutine, VisualElement p_scrollViewLock
+	, ScrollViewLockState p_scrollViewLockState)
 	{
-		this.scrollView = scrollView;
-		this.scrollViewListIndex = scrollViewListIndex;
-		this.scrollSnapCoroutine = scrollSnapCoroutine;
+		scrollView = p_scrollView;
+		scrollSnapCoroutine = p_scrollSnapCoroutine;
+		scrollViewLock = p_scrollViewLock;
+		scrollViewLockState = p_scrollViewLockState;
 	}
 }
 
