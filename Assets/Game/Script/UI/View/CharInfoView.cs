@@ -195,6 +195,34 @@ public class CharInfoView : ViewBase
 					p_individualView, t_skillData.usableHolderVTA, t_skillData.usableSlotUIInfo
 					, t_skillData.skillDataSO.skillImage
 				);
+
+				/* Handle event for skill */
+				switch (t_skillData.skillDataSO.inputType)
+				{
+					case SkillDataSO.InputType.Click:
+						gameUIManager.mainView.AddClickEventForUsableHolder
+						(
+							(touchInfo) => t_skillData.skillBase.Trigger(default, default), t_skillData.usableSlotUIInfo
+						);
+						break;
+					case SkillDataSO.InputType.Hold:
+						gameUIManager.mainView.AddHoldEventForUsableHolder
+						(
+							(touchInfo, direction) => t_skillData.skillBase.Trigger(default, direction: direction), t_skillData.usableSlotUIInfo
+						);
+						break;
+					case SkillDataSO.InputType.HoldAndRelease:
+						gameUIManager.mainView.AddHoldAndReleaseEventForUsableHolder
+						(
+							() => t_skillData.skillBase.StartAndWait()
+							, (touchInfo, direction) => t_skillData.skillBase.WhileWaiting(direction)
+							, (touchInfo, direction) => t_skillData.skillBase.Trigger(default, direction:direction)
+							, t_skillData.usableSlotUIInfo 
+						);
+						break;
+					default:
+						break;
+				}
 				
 				t_skill.RegisterCallback<PointerDownEvent>((evt) => 
 				{

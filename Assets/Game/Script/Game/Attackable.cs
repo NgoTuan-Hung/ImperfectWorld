@@ -3,7 +3,7 @@ using System.Collections;
 using UnityEngine;
 
 public enum AttackType {Melee, Ranged}
-public class Attackable : BaseAction
+public class Attackable : SkillBase
 {
 	GameObject attackColliderPrefab;
 	protected static ObjectPool attackColliderPool;
@@ -17,6 +17,7 @@ public class Attackable : BaseAction
 	{
 		base.Awake();
 		boolHash = Animator.StringToHash("Attack");
+		audioClip = customMono.attackAudioClip;
 		cooldown = defaultCooldown = defaultStateSpeed = 1f;
 		if (attackType == AttackType.Melee) 
 		{
@@ -84,7 +85,11 @@ public class Attackable : BaseAction
 		};
 	}
 
-	
+    public override void Trigger(UnityEngine.InputSystem.EnhancedTouch.Touch touch = default, Vector2 location = default, Vector2 direction = default)
+    {
+        Attack(direction);
+    }
+    
 	public void MeleeAttack(Vector2 attackDirection)
 	{
 		if (canUse && !customMono.actionBlocking) 
@@ -157,7 +162,7 @@ public class Attackable : BaseAction
 	IEnumerator AttackToCoroutine(Vector2 direction, float duration)
 	{
 		customMono.actionInterval = true;
-		Attack(direction);
+		Trigger(direction:direction);
 		yield return new WaitForSeconds(duration);
 		
 		customMono.actionInterval = false;

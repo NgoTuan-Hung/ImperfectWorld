@@ -11,9 +11,8 @@ public class MainView : ViewBase
 	[SerializeField] private AudioClip scrollSound;
 	[SerializeField] private AudioSource audioSource;
 	bool optionExpandButtonExpanded = true, charSelectionExpandButtonExpanded = true;
-	public delegate void AddSkillToScrollViewDelegate(Touch touch, Vector2 direction);
 
-	public void Init() 
+	public override void Init() 
 	{
 		base.Init();
 		snapInterval = snapTime * snapIntervalPortion;
@@ -186,115 +185,76 @@ public class MainView : ViewBase
 			default: break;
 		}
 	}
-	
-	/// <summary>
-	/// Add the skill to UI and handle input logic of the skill.
-	/// </summary>
-	/// <param name="skillDataSO"></param>
-	/// <param name="trigger"></param>
-	/// <param name="startHoldingCallback"></param>
-	/// <param name="stillHoldingCallback"></param>
-	public void AddSkillToScrollView(SkillDataSO skillDataSO, AddSkillToScrollViewDelegate trigger
-	, Func<bool> startHoldingCallback = null, Action<Vector2> stillHoldingCallback = null)
-	{
-		// var newSkillHolder = skillHolderTemplate.Instantiate();
-		// skillScrollViews[skillDataSO.skillButtonIndex].contentContainer.Add(newSkillHolder);
-		// SkillHolderView t_skillHolderView = HandleSkillHolderView(newSkillHolder, skillDataSO.skillButtonIndex);
-		
-		// /* Add image for skill holder */
-		// newSkillHolder.Q<VisualElement>("skill-holder-in").style.backgroundImage = new StyleBackground(skillDataSO.skillImage);
-		
-		// var skillTooltip = new SkillTooltipView(skillTooltipTemplate.Instantiate(), skillDataSO.skillName, skillDataSO.skillHelperImage, skillDataSO.skillHelperDescription, skillTooltipSS).visualElement;
-		// newSkillHolder.GetLayer().Add(skillTooltip);
-		// skillTooltip.style.position = new StyleEnum<Position>(Position.Absolute);
-		// skillTooltip.style.visibility = Visibility.Hidden;
-		// GameUIManager.AddHelper(newSkillHolder.GetHashCode(), skillTooltip);
 
-		// newSkillHolder.AddToClassList("has-helper");
-		// newSkillHolder.AddToClassList("helper-type-skill-info");
-		
-		
-		// /* Only allow tooltip for current visible element in scroll view */
-		// if (skillScrollViews[skillDataSO.skillButtonIndex].contentContainer.IndexOf(newSkillHolder)
-		// != skillScrollViewUIInfos[skillDataSO.skillButtonIndex].SkillScrollViewNewIndex)
-		// 	newSkillHolder.AddToClassList("helper-invisible");
-		
-		// /* Handle event here */
-		// switch (skillDataSO.inputType)
-		// {
-		// 	case SkillDataSo.InputType.Click:
-		// 		newSkillHolder.RegisterCallback<PointerDownEvent>((evt) => 
-		// 		{
-		// 			var touch = TouchExtension.GetTouchOverlapVisualElement(newSkillHolder, root.panel);
-		// 			trigger(touch, default);
-		// 		});
-		// 		break;
-		// 	case SkillDataSo.InputType.Hold:
-		// 		newSkillHolder.RegisterCallback<PointerDownEvent>((evt) => 
-		// 		{
-		// 			var touch = TouchExtension.GetTouchOverlapVisualElement(newSkillHolder, root.panel);
-		// 			StartCoroutine(SkillHolderHoldCoroutine(touch, t_skillHolderView, trigger));
-		// 		});
-		// 		break;
-		// 	case SkillDataSo.InputType.HoldAndRelease:
-		// 		newSkillHolder.RegisterCallback<PointerDownEvent>((evt) => 
-		// 		{
-		// 			var touch = TouchExtension.GetTouchOverlapVisualElement(newSkillHolder, root.panel);
-		// 			StartCoroutine(SkillHolderHoldAndReleaseCoroutine(touch, t_skillHolderView, trigger, startHoldingCallback, stillHoldingCallback));
-		// 		});
-		// 		break;
-		// 	default:
-		// 		break;
-		// }
-	}
-	
 	/// <summary>
-	/// Handle holding the skill holder button and trigger action at releasing.
+	/// Add event when clicking the UI usable holder.
 	/// </summary>
-	/// <param name="touch"></param>
-	/// <param name="skillHolderView"></param>
-	/// <param name="trigger"></param>
-	/// <returns></returns>
-	IEnumerator SkillHolderHoldAndReleaseCoroutine(TouchInfo p_touchInfo, SkillHolderView skillHolderView, AddSkillToScrollViewDelegate trigger,
-	Func<bool> startHoldingCallback, Action<Vector2> stillHoldingCallback)
+	/// <param name="p_usableHolder"></param>
+	/// <param name="p_clickEvent"></param>
+	public void AddClickEventForUsableHolder(Action<TouchInfo> p_clickEvent, UsableSlotUIInfo p_usableSlotUIInfo)
+	{
+	    p_usableSlotUIInfo.usableHolder.RegisterCallback<PointerDownEvent>((evt) => 
+	    {
+			TouchInfo t_touchInfo = TouchExtension.GetTouchInfoAt(evt.position, gameUIManager.root);
+			p_clickEvent(t_touchInfo);
+	    });
+	}
+
+	public void AddHoldEventForUsableHolder(Action<TouchInfo, Vector2> p_holdEvent
+	, UsableSlotUIInfo p_usableSlotUIInfo)
+	{
+	    p_usableSlotUIInfo.usableHolder.RegisterCallback<PointerDownEvent>((evt) => 
+	    {
+			TouchInfo t_touchInfo = TouchExtension.GetTouchInfoAt(evt.position, gameUIManager.root);
+			StartCoroutine(UsableHolderHoldCoroutine(t_touchInfo, p_holdEvent, p_usableSlotUIInfo));
+	    });
+	}
+
+	IEnumerator UsableHolderHoldCoroutine(TouchInfo p_touchInfo, Action<TouchInfo, Vector2> p_holdEvent
+	, UsableSlotUIInfo p_usableSlotUIInfo)
+	{
+		while (p_touchInfo.touch.phase != TouchPhase.Ended)
+		{
+			p_touchInfo.UpdateSelf();
+
+			Vector2 t_direction = p_touchInfo.panelPosition - p_usableSlotUIInfo.usableHolderMidPos;
+			t_direction.Scale(VectorExtension.inverseY);
+			p_holdEvent(p_touchInfo, t_direction);
+			
+			yield return new WaitForSeconds(Time.fixedDeltaTime);
+		}
+	}
+
+	public void AddHoldAndReleaseEventForUsableHolder(Func<bool> p_startHoldingEvent
+	, Action<TouchInfo, Vector2> p_holdEvent, Action<TouchInfo, Vector2> p_releaseEvent, UsableSlotUIInfo p_usableSlotUIInfo)
+	{
+	    p_usableSlotUIInfo.usableHolder.RegisterCallback<PointerDownEvent>((evt) => 
+	    {
+			TouchInfo t_touchInfo = TouchExtension.GetTouchInfoAt(evt.position, gameUIManager.root);
+			StartCoroutine(UsableHolderHoldAndReleaseCoroutine(t_touchInfo, p_startHoldingEvent, p_holdEvent, p_releaseEvent
+			, p_usableSlotUIInfo));
+	    });
+	}
+
+	IEnumerator UsableHolderHoldAndReleaseCoroutine(TouchInfo p_touchInfo, Func<bool> p_startHoldingEvent
+	, Action<TouchInfo, Vector2> p_holdEvent, Action<TouchInfo, Vector2> p_releaseEvent, UsableSlotUIInfo p_usableSlotUIInfo)
 	{
 		/* Direction will be a vector from button middle point to our current touch */
-		Vector2 t_direction = p_touchInfo.panelPosition - skillHolderView.midPos;
+		Vector2 t_direction = p_touchInfo.panelPosition - p_usableSlotUIInfo.usableHolderMidPos;
 		t_direction.Scale(VectorExtension.inverseY);
 		
-		startHoldingCallback?.Invoke();
+		p_startHoldingEvent();
 		while (p_touchInfo.touch.phase != TouchPhase.Ended)
 		{
 			p_touchInfo.UpdateSelf();
 			yield return new WaitForSeconds(Time.fixedDeltaTime);
-			t_direction = p_touchInfo.panelPosition - skillHolderView.midPos;
+			t_direction = p_touchInfo.panelPosition - p_usableSlotUIInfo.usableHolderMidPos;
 			t_direction.Scale(VectorExtension.inverseY);
 			
-			stillHoldingCallback?.Invoke(t_direction);
+			p_holdEvent(p_touchInfo, t_direction);
 		}
 		
-		trigger(p_touchInfo.touch, t_direction);
-	}
-	
-	/// <summary>
-	/// Handle triggering action while we still holding the button.
-	/// </summary>
-	/// <param name="touch"></param>
-	/// <param name="skillHolderView"></param>
-	/// <param name="trigger"></param>
-	/// <returns></returns>
-	IEnumerator SkillHolderHoldCoroutine(TouchInfo p_touchInfo, SkillHolderView skillHolderView, AddSkillToScrollViewDelegate trigger)
-	{
-		while (p_touchInfo.touch.phase != TouchPhase.Ended)
-		{
-			p_touchInfo.UpdateSelf();
-
-			Vector2 t_direction = p_touchInfo.panelPosition - skillHolderView.midPos;
-			t_direction.Scale(VectorExtension.inverseY);
-			trigger(p_touchInfo.touch, t_direction);
-			
-			yield return new WaitForSeconds(Time.fixedDeltaTime);
-		}
+		p_releaseEvent(p_touchInfo, t_direction);
 	}
 
 	public void InitUsableHolder(IndividualView p_individualView, VisualTreeAsset p_usableHolderVTA, UsableSlotUIInfo p_usableSlotUIInfo, Texture2D p_usableHolderImage)
@@ -314,6 +274,12 @@ public class MainView : ViewBase
 			// 		scrollview.contentContainer.PointerMoveEvent(Bubble Up phase) so we can block it here */
 			if (p_individualView.usableScrollViewUIInfos[p_usableSlotUIInfo.scrollViewTouchedThisFrameIndex].scrollViewLockState == ScrollViewLockState.Locked)
 				evt.StopPropagation();
+		});
+
+		t_usableHolder.RegisterCallback<GeometryChangedEvent>((evt) => 
+		{
+			VisualElement t_currentUsableHolderScrollView = p_individualView.usableHolderScrollViews[p_usableSlotUIInfo.scrollViewTouchedThisFrameIndex];
+			p_usableSlotUIInfo.usableHolderMidPos = t_currentUsableHolderScrollView.worldBound.position + (t_currentUsableHolderScrollView.worldBound.size / 2);
 		});
 	}
 	
@@ -341,7 +307,7 @@ public class MainView : ViewBase
 	}
 	
 	/// <summary>
-	/// Populate the skill slots info
+	/// Add handler for all the usable scroll-views in this individual view (locking, snapping, ...) 
 	/// </summary>
 	public void HandleUsableHolderScrollView(IndividualView p_individualView)
 	{	
@@ -362,7 +328,7 @@ public class MainView : ViewBase
 			
 			p_individualView.scrollLockParent.Insert(i, t_usableScrollViewUIInfo.scrollViewLock.parent);
 
-			p_individualView.usableHolderScrollViews[i].verticalScroller.valueChanged += evt => UsableScrollViewValueChanged(t_usableScrollViewUIInfo);
+			p_individualView.usableHolderScrollViews[i].verticalScroller.valueChanged += evt => UsableHolderScrollViewValueChanged(t_usableScrollViewUIInfo);
 			
 			p_individualView.usableHolderScrollViews[i].RegisterCallback<PointerDownEvent>((evt) => 
 			{
@@ -372,41 +338,18 @@ public class MainView : ViewBase
 			/* Used to determine some final style of scroll view (height,...)*/
 			p_individualView.usableHolderScrollViews[i].RegisterCallback<GeometryChangedEvent>
 			(
-				(evt) => SkillScrollViewGeometryChanged(t_usableScrollViewUIInfo)
+				(evt) => UsableHolderScrollViewGeometryChanged(t_usableScrollViewUIInfo)
 			);
 
 			p_individualView.usableScrollViewUIInfos.Add(t_usableScrollViewUIInfo);
 		}
 	}
-	
-	/// <summary>
-	/// Mainly handle blocking scroll event and cache reference to skill holder with some
-	/// additional infos
-	/// </summary>
-	/// <param name="skillHolder"></param>
-	/// <param name="scrollViewIndex"></param>
-	// SkillHolderView HandleSkillHolderView(VisualElement skillHolder, int scrollViewIndex)
-	// {
-	// 	/* We will mainly use this for referencing the middle point of the scroll view, which is
-	// 	very important for dealing with event like touching, holding a skill, middle point will
-	// 	be updated at ScrollView GeometryChanged event */
-	// 	SkillHolderView skillHolderView = new SkillHolderView(skillHolder, skillScrollViews[scrollViewIndex]);
-	// 	skillHolder.RegisterCallback<PointerMoveEvent>((evt) => 
-	// 	{
-	// 		/* Check When locked is set to true, lock the scroll view. Also scroll happen at 
-	// 		scrollview.contentContainer.PointerMoveEvent(Bubble Up phase) so we can block it here */
-	// 		if (skillScrollViewUIInfos[scrollViewIndex].ScrollViewLockState == ScrollViewLockState.Locked) evt.StopPropagation();
-	// 	});
-		
-	// 	skillScrollViewUIInfos[scrollViewIndex].skillHolderViews.Add(skillHolderView);
-	// 	return skillHolderView;
-	// }
 
 	/// <summary>
 	/// Mostly used to play sound if scroll view scroll passed an element
 	/// </summary>
 	/// <param name="skillScrollViewUIInfo"></param>
-	public void UsableScrollViewValueChanged(UsableScrollViewUIInfo usableScrollViewUIInfo)
+	public void UsableHolderScrollViewValueChanged(UsableScrollViewUIInfo usableScrollViewUIInfo)
 	{
 		usableScrollViewUIInfo.newChildIndex = (int)Math.Floor(usableScrollViewUIInfo.scrollView.verticalScroller.value / usableScrollViewUIInfo.scrollViewHeight + 0.5f);
 		if (usableScrollViewUIInfo.newChildIndex != usableScrollViewUIInfo.previousChildIndex) audioSource.Play();
@@ -414,6 +357,11 @@ public class MainView : ViewBase
 		usableScrollViewUIInfo.previousChildIndex = usableScrollViewUIInfo.newChildIndex;
 	}
 
+	/// <summary>
+	/// Handle scroll snap for scroll view.
+	/// </summary>
+	/// <param name="p_pointerPosition"></param>
+	/// <param name="p_usableScrollViewUIInfo"></param>
 	public void UsableScrollViewPointerDown(Vector2 p_pointerPosition, UsableScrollViewUIInfo p_usableScrollViewUIInfo)
 	{
 		if (p_usableScrollViewUIInfo.scrollViewLockState == ScrollViewLockState.Locked) return;
@@ -423,17 +371,16 @@ public class MainView : ViewBase
 		p_usableScrollViewUIInfo.scrollSnapCoroutine = StartCoroutine(HandleScrollSnap(t_touchInfo, p_usableScrollViewUIInfo));
 	}
 	
-	void SkillScrollViewGeometryChanged(UsableScrollViewUIInfo p_usableScrollViewUIInfo)
+	/// <summary>
+	/// Update child element info whenever scroll view change position.
+	/// </summary>
+	/// <param name="p_usableScrollViewUIInfo"></param>
+	void UsableHolderScrollViewGeometryChanged(UsableScrollViewUIInfo p_usableScrollViewUIInfo)
 	{
-		// var t_skillScrollView = p_usableScrollViewUIInfo.ScrollView;
 		p_usableScrollViewUIInfo.scrollViewHeight = p_usableScrollViewUIInfo.scrollView.resolvedStyle.height;
 		p_usableScrollViewUIInfo.distanceToSnap = p_usableScrollViewUIInfo.scrollViewHeight * distanceToSnapScale;
 		
-		/* Update mid position of all skill holders in this scroll view */
-		// skillScrollViewUIInfo.skillHolderViews.ForEach(skillHolderView => 
-		// {
-		// 	skillHolderView.midPos = t_skillScrollView.worldBound.position + t_skillScrollView.worldBound.size / 2;
-		// });
+		foreach (VisualElement t_child in p_usableScrollViewUIInfo.scrollView.Children()) gameUIManager.FireGeometryChangedEvent(t_child);
 	}
 
 	[SerializeField] private float snapTime = 0.3f;
@@ -545,37 +492,7 @@ public class MainView : ViewBase
 			yield return new WaitForSeconds(Time.fixedDeltaTime);
 		}
 
+		p_individualView.joyStickMoveEvent?.Invoke(Vector2.zero);
 		p_individualView.joyStickInner.transform.position = p_individualView.joyStickInnerDefaultPosition;
 	}
-	
-	/// <summary>
-	/// Handle clicking/holding attack button
-	/// </summary>
-	// void HandleAttackButton()
-	// {
-	// 	/* Access attack button from predefined index */
-	// 	SkillHolderView t_skillHolderView = skillScrollViewUIInfos[GameManager.Instance.attackButtonScrollViewIndex]
-	// 	.skillHolderViews[GameManager.Instance.attackButtonIndex];
-		
-	// 	t_skillHolderView.root.RegisterCallback<PointerDownEvent>((evt) => 
-	// 	{
-	// 		clickAttackButtonEvent();
-	// 		Touch touch = TouchExtension.GetTouchOverlapVisualElement(t_skillHolderView.root, root.panel);
-	// 		StartCoroutine(AttackButtonHoldingCoroutine(touch, t_skillHolderView));
-	// 	});
-	// }
-	
-	// IEnumerator AttackButtonHoldingCoroutine(Touch touch, SkillHolderView skillHolderView)
-	// {
-	// 	Vector2 touchPos;
-	// 	while (touch.phase != UnityEngine.InputSystem.TouchPhase.Ended)
-	// 	{
-	// 		touchPos = RuntimePanelUtils.ScreenToPanel(root.panel, new Vector2(touch.screenPosition.x, Screen.height - touch.screenPosition.y));
-	// 		/* Direction of holding will be a vector from button middle point to our current touch */
-	// 		attackDirection = touchPos - skillHolderView.midPos;
-	// 		attackDirection.Scale(inverseY);
-	// 		holdAttackButtonEvent(attackDirection);
-	// 		yield return new WaitForSeconds(Time.fixedDeltaTime);
-	// 	}
-	// }
 }

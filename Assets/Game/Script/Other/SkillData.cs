@@ -7,9 +7,11 @@ public class SkillData
     public UsableSlotUIInfo usableSlotUIInfo;
     public SkillDataSO skillDataSO;
     public VisualTreeAsset usableHolderVTA;
+    public SkillBase skillBase;
 
-    public SkillData(SkillDataSO skillDataSO)
+    public SkillData(SkillDataSO p_skillDataSO, SkillBase p_skillBase)
     {
-        this.skillDataSO = skillDataSO;
+        skillDataSO = p_skillDataSO;
+        skillBase = p_skillBase;
     }
 }

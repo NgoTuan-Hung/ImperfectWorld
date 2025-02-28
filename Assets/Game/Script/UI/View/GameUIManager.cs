@@ -80,10 +80,13 @@ public class GameUIManager : MonoEditorSingleton<GameUIManager>
 		#endif
 	}
 	List<IndividualView> individualViews = new();
-	public void SelectFirstIndividualView()
+	public void CheckFirstIndividualView()
 	{
-		currentActiveIndividualView = individualViews[0];
-		currentActiveIndividualView.Show();
+		if (individualViews.Count == 1)
+		{
+			currentActiveIndividualView = individualViews[0];
+			currentActiveIndividualView.Show();
+		}
 	}
 	
 	public IndividualView AddNewIndividualView(CharUIData p_charUIData, Action p_switchCharAction)

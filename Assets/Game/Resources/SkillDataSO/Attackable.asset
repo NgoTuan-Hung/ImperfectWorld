@@ -10,11 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5cf37983e5332b44f968e0b0b6ee07ec, type: 3}
-  m_Name: DashSkill
+  m_Name: Attackable
   m_EditorClassIdentifier: 
-  inputType: 2
-  skillName: DashSkill
-  skillImage: {fileID: 2800000, guid: 6a9d91f831b2a364099b44ed32b30319, type: 3}
-  skillHelperImage: {fileID: 2800000, guid: 313bcbadd1958a7488346e0a0b89a3f7, type: 3}
-  skillHelperDescription: Nope
-  skillButtonIndex: 0
+  inputType: 1
+  skillName: Attackable
+  skillImage: {fileID: 2800000, guid: dc49a4618c7839a4bab0f240a8d3cb8a, type: 3}
+  skillHelperImage: {fileID: 2800000, guid: 4106ae23e175eae4fbd9fff0ac577d00, type: 3}
+  skillHelperDescription: Your base attack.
+  skillTreeIcon: {fileID: 2800000, guid: 9095ee202b5e6784eafba547af5a9a30, type: 3}
+  skillType: 2

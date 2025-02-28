@@ -17,11 +17,7 @@ public class CustomMono : MonoSelfAware, IComparable<CustomMono>
 	public MovementIntelligence movementIntelligence;
 	public ActionIntelligence actionIntelligence;
 	public MyBotPersonality myBotPersonality;
-	private PlayerMovable playerMovable;
-	public PlayerMovable PlayerMovable
-	{
-		get {return playerMovable;}
-	}
+	public PlayerMovable playerMovable;
 	public Stat stat;
 	GameObject directionIndicator;
 	float directionIndicatorAngle;
@@ -65,6 +61,7 @@ public class CustomMono : MonoSelfAware, IComparable<CustomMono>
 	public new Rigidbody2D rigidbody2D;
 	public Action<CustomMono> nearestEnemyChanged = (person) => {};
 	public Action startPhase1 = () => {};
+	public AudioClip attackAudioClip;
 	public AnimatorWrapper AnimatorWrapper { get => animatorWrapper; set => animatorWrapper = value; }
 	public GameObject MainComponent { get => mainComponent; set => mainComponent = value; }
 	public GameObject DirectionIndicator { get => directionIndicator; set => directionIndicator = value; }

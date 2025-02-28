@@ -855,6 +855,7 @@ MonoBehaviour:
   movementIntelligence: {fileID: 0}
   actionIntelligence: {fileID: 0}
   myBotPersonality: {fileID: 0}
+  playerMovable: {fileID: 0}
   stat: {fileID: 0}
   actionInterval: 0
   movementActionInterval: 0
@@ -867,6 +868,7 @@ MonoBehaviour:
   audioSource: {fileID: 0}
   currentNearestEnemy: {fileID: 0}
   rigidbody2D: {fileID: 0}
+  attackAudioClip: {fileID: 0}
 --- !u!114 &581064776
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1037,6 +1039,7 @@ MonoBehaviour:
   damage: 0
   defaultDamage: 0
   finalDirection: {x: 0, y: 0}
+  moveVector: {x: 0, y: 0}
 --- !u!114 &581064783
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1060,6 +1063,11 @@ MonoBehaviour:
   damage: 0
   defaultDamage: 0
   finalDirection: {x: 0, y: 0}
+  duration: 0
+  maxRange: 0
+  maxAmmo: 0
+  currentAmmo: 0
+  effectActiveLocation: {x: 0, y: 999, z: 0}
   longRangeProjectilePrefab: {fileID: 5511748905245391040, guid: 9ce78d66033289e40a990eb757d8819c, type: 3}
   colliderForce: 1
   attackType: 1
@@ -1087,6 +1095,7 @@ MonoBehaviour:
   defaultDamage: 0
   finalDirection: {x: 0, y: 0}
   skillDataSOs: []
+  skillBases: []
 --- !u!82 &581064785
 AudioSource:
   m_ObjectHideFlags: 0
@@ -1794,7 +1803,6 @@ GameObject:
   - component: {fileID: 889364767}
   - component: {fileID: 889364763}
   - component: {fileID: 889364770}
-  - component: {fileID: 889364765}
   - component: {fileID: 889364764}
   - component: {fileID: 889364761}
   - component: {fileID: 889364759}
@@ -1852,6 +1860,7 @@ MonoBehaviour:
   damage: 0
   defaultDamage: 0
   finalDirection: {x: 0, y: 0}
+  moveVector: {x: 0, y: 0}
 --- !u!114 &889364760
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1864,7 +1873,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: af846d372d940f74a9e932aa2c82ae61, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  charUIData: {fileID: 0}
+  charUIData: {fileID: 11400000, guid: 07b70e5aaf21d684fa8359c800d72dba, type: 2}
   isBot: 0
   animationEventFunctionCaller: {fileID: 0}
   movable: {fileID: 0}
@@ -1872,6 +1881,7 @@ MonoBehaviour:
   movementIntelligence: {fileID: 0}
   actionIntelligence: {fileID: 0}
   myBotPersonality: {fileID: 0}
+  playerMovable: {fileID: 0}
   stat: {fileID: 0}
   actionInterval: 0
   movementActionInterval: 0
@@ -1884,6 +1894,7 @@ MonoBehaviour:
   audioSource: {fileID: 0}
   currentNearestEnemy: {fileID: 0}
   rigidbody2D: {fileID: 0}
+  attackAudioClip: {fileID: 8300000, guid: 1614f5e1bf42b054ca0b933399c6264e, type: 3}
 --- !u!114 &889364761
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1947,32 +1958,6 @@ MonoBehaviour:
   magicka: 1
   defaultMagicka: 1
   size: 1
---- !u!114 &889364765
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 889364757}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 279c56ffc1a95df419e877426a1ebff5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  cooldown: 0
-  onCooldown: 0
-  defaultCooldown: 0
-  defaultStateSpeed: 0
-  canUse: 1
-  boolHash: 0
-  actionClip: {fileID: 0}
-  audioClip: {fileID: 8300000, guid: 1614f5e1bf42b054ca0b933399c6264e, type: 3}
-  damage: 0
-  defaultDamage: 0
-  finalDirection: {x: 0, y: 0}
-  longRangeProjectilePrefab: {fileID: 0}
-  colliderForce: 5
-  attackType: 0
 --- !u!114 &889364766
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1996,7 +1981,11 @@ MonoBehaviour:
   damage: 0
   defaultDamage: 0
   finalDirection: {x: 0, y: 0}
-  skillDataSOs: []
+  skillDataSOs:
+  - {fileID: 11400000, guid: 1c867fbe8b471654dae0b5d9aa81b709, type: 2}
+  - {fileID: 11400000, guid: 730d79ca45b10a1469e43dab9144eb57, type: 2}
+  - {fileID: 11400000, guid: cacf79545d465a34695ad81cf358887f, type: 2}
+  skillBases: []
 --- !u!61 &889364767
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -7946,6 +7935,7 @@ MonoBehaviour:
   movementIntelligence: {fileID: 0}
   actionIntelligence: {fileID: 0}
   myBotPersonality: {fileID: 0}
+  playerMovable: {fileID: 0}
   stat: {fileID: 0}
   actionInterval: 0
   movementActionInterval: 0
@@ -7958,6 +7948,7 @@ MonoBehaviour:
   audioSource: {fileID: 0}
   currentNearestEnemy: {fileID: 0}
   rigidbody2D: {fileID: 0}
+  attackAudioClip: {fileID: 0}
 --- !u!114 &1582844846
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8126,6 +8117,7 @@ MonoBehaviour:
   damage: 0
   defaultDamage: 0
   finalDirection: {x: 0, y: 0}
+  moveVector: {x: 0, y: 0}
 --- !u!114 &1582844853
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8149,6 +8141,11 @@ MonoBehaviour:
   damage: 0
   defaultDamage: 0
   finalDirection: {x: 0, y: 0}
+  duration: 0
+  maxRange: 0
+  maxAmmo: 0
+  currentAmmo: 0
+  effectActiveLocation: {x: 0, y: 999, z: 0}
   longRangeProjectilePrefab: {fileID: 0}
   colliderForce: 5
   attackType: 0
@@ -8176,6 +8173,7 @@ MonoBehaviour:
   defaultDamage: 0
   finalDirection: {x: 0, y: 0}
   skillDataSOs: []
+  skillBases: []
 --- !u!82 &1582844855
 AudioSource:
   m_ObjectHideFlags: 0
@@ -8615,9 +8613,10 @@ GameObject:
   m_Component:
   - component: {fileID: 1864067329}
   - component: {fileID: 1864067332}
+  - component: {fileID: 1864067335}
   - component: {fileID: 1864067331}
-  - component: {fileID: 1864067330}
   - component: {fileID: 1864067333}
+  - component: {fileID: 1864067330}
   - component: {fileID: 1864067334}
   m_Layer: 0
   m_Name: Game
@@ -8648,7 +8647,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1864067328}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: bf9c5cb0e22a6654783e9e7acf07910a, type: 3}
   m_Name: 
@@ -8673,7 +8672,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1864067328}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2a85f21b83d40624a9de8076fcbaf18c, type: 3}
   m_Name: 
@@ -8710,7 +8709,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1864067328}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1e76a948634e61940a482379974b5054, type: 3}
   m_Name: 
@@ -8741,7 +8740,20 @@ MonoBehaviour:
   waveInterval: 30
   spawnRangeObject: {fileID: 1306131069}
   waveDuration: 60
-  cinemachineCamera: {fileID: 0}
+  cinemachineCamera: {fileID: 893338232}
+--- !u!114 &1864067335
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1864067328}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8e8bed5635491694cb3b4038a152eb8d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gameUIManager: {fileID: 0}
 --- !u!1001 &1866219222
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -78245,7 +78257,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &2059840846
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -78310,6 +78322,7 @@ MonoBehaviour:
   movementIntelligence: {fileID: 0}
   actionIntelligence: {fileID: 0}
   myBotPersonality: {fileID: 0}
+  playerMovable: {fileID: 0}
   stat: {fileID: 0}
   actionInterval: 0
   movementActionInterval: 0
@@ -78322,6 +78335,7 @@ MonoBehaviour:
   audioSource: {fileID: 0}
   currentNearestEnemy: {fileID: 0}
   rigidbody2D: {fileID: 0}
+  attackAudioClip: {fileID: 0}
 --- !u!114 &2059840849
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -78346,6 +78360,7 @@ MonoBehaviour:
   defaultDamage: 0
   finalDirection: {x: 0, y: 0}
   skillDataSOs: []
+  skillBases: []
 --- !u!114 &2059840850
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -78412,6 +78427,7 @@ MonoBehaviour:
   damage: 0
   defaultDamage: 0
   finalDirection: {x: 0, y: 0}
+  moveVector: {x: 0, y: 0}
 --- !u!114 &2059840854
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -78435,6 +78451,11 @@ MonoBehaviour:
   damage: 0
   defaultDamage: 0
   finalDirection: {x: 0, y: 0}
+  duration: 0
+  maxRange: 0
+  maxAmmo: 0
+  currentAmmo: 0
+  effectActiveLocation: {x: 0, y: 999, z: 0}
   longRangeProjectilePrefab: {fileID: 0}
   colliderForce: 5
   attackType: 0
@@ -79538,6 +79559,7 @@ MonoBehaviour:
   defaultDamage: 0
   finalDirection: {x: 0, y: 0}
   skillDataSOs: []
+  skillBases: []
 --- !u!114 &7285419098741409361
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -79591,6 +79613,7 @@ MonoBehaviour:
   damage: 0
   defaultDamage: 0
   finalDirection: {x: 0, y: 0}
+  moveVector: {x: 0, y: 0}
 --- !u!114 &7285419098741409364
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -79614,6 +79637,11 @@ MonoBehaviour:
   damage: 0
   defaultDamage: 0
   finalDirection: {x: 0, y: 0}
+  duration: 0
+  maxRange: 0
+  maxAmmo: 0
+  currentAmmo: 0
+  effectActiveLocation: {x: 0, y: 999, z: 0}
   longRangeProjectilePrefab: {fileID: 0}
   colliderForce: 5
   attackType: 0
@@ -79650,6 +79678,7 @@ MonoBehaviour:
   movementIntelligence: {fileID: 0}
   actionIntelligence: {fileID: 0}
   myBotPersonality: {fileID: 0}
+  playerMovable: {fileID: 0}
   stat: {fileID: 0}
   actionInterval: 0
   movementActionInterval: 0
@@ -79662,6 +79691,7 @@ MonoBehaviour:
   audioSource: {fileID: 0}
   currentNearestEnemy: {fileID: 0}
   rigidbody2D: {fileID: 0}
+  attackAudioClip: {fileID: 0}
 --- !u!82 &7285419098741409367
 AudioSource:
   m_ObjectHideFlags: 0

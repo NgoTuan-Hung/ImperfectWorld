@@ -13,7 +13,6 @@ public class UsableScrollViewUIInfo
 	public int previousChildIndex = 0;
 	public float scrollViewHeight = 0f;
 	public float distanceToSnap = 0f;
-	public List<SkillHolderView> skillHolderViews = new();
 
 	public UsableScrollViewUIInfo(ScrollView p_scrollView, Coroutine p_scrollSnapCoroutine, VisualElement p_scrollViewLock
 	, ScrollViewLockState p_scrollViewLockState)

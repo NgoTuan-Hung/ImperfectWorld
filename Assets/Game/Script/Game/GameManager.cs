@@ -38,14 +38,13 @@ public class GameManager : MonoSingleton<GameManager>
 
 		charDataDict.Add(p_customMono.GetHashCode(), t_charData);
 
-	// 		t_individualView.joyStickMoveEvent += (vector) => 
-	// 		{
-	// 		    vector.Scale(inverseY);
-	// 		    t_playerScript.Move(vector);
-	// 		};
-	// 	});
+		t_charData.individualView.joyStickMoveEvent += (vector) => 
+		{
+			vector.Scale(VectorExtension.inverseY);
+			p_customMono.playerMovable.moveVector = vector;
+		};
 		
-		// GameUIManager.Instance.SelectFirstIndividualView();	
+		GameUIManager.Instance.CheckFirstIndividualView();	
 	}
 
 	public CharData GetCharData(CustomMono p_customMono) => charDataDict[p_customMono.GetHashCode()];
@@ -78,7 +77,7 @@ public class GameManager : MonoSingleton<GameManager>
 		}
 		
 		stopwatch.Restart();
-		StartCoroutine(HandleWave());
+		// StartCoroutine(HandleWave());
 	}
 	
 	IEnumerator HandleWave()

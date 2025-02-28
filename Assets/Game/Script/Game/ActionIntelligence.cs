@@ -2,7 +2,6 @@ public class ActionIntelligence : BaseIntelligence
 {	
 	public override void InitAction()
 	{
-		AddManuals(customMono.attackable.botActionManuals);
 	}
 	
 	public override void Awake() 

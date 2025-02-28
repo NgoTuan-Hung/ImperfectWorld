@@ -2,7 +2,7 @@ using System.Collections;
 using UnityEngine;
 public class Movable : BaseAction
 {
-	protected Vector2 moveVector;
+	public Vector2 moveVector;
 
 	public override void Awake() 
 	{

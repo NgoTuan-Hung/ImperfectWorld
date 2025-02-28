@@ -4,6 +4,7 @@ using System.Collections.Generic;
 public class Skill : BaseAction
 {
 	public List<SkillDataSO> skillDataSOs = new();
+	public List<SkillBase> skillBases = new();
 	public List<SkillData> skillDatas = new();
 
 	public override void Awake()
@@ -12,7 +13,7 @@ public class Skill : BaseAction
 		skillDataSOs.ForEach(skillDataSO => 
 		{
 			SkillBase skill = gameObject.AddComponent(Type.GetType(skillDataSO.skillName)) as SkillBase;
-			customMono.actionIntelligence.AddManuals(skill.botActionManuals);
+			skillBases.Add(skill);
 		});
 
 		customMono.startPhase1 += () => InitSkill();
@@ -26,17 +27,23 @@ public class Skill : BaseAction
 	{
 		if (!customMono.isBot)
 		{
-			// GameUIManager.Instance.mainView.AddSkillToScrollView
-			// (
-			// 	skillData,
-			// 	(touch, direction) => skill.Trigger(touch, direction: direction),
-			// 	skill.StartAndWait,
-			// 	skill.WhileWaiting
-			// );
-			skillDataSOs.ForEach(skillDataSO => skillDatas.Add(new(skillDataSO)));
-			GameUIManager.Instance.charInfoView.PopulateSkillTree(GameManager.Instance.GetCharData(customMono).individualView, skillDatas);
-		}
+			for (int i=0;i<skillDataSOs.Count;i++)
+			{
+			    customMono.actionIntelligence.AddManuals(skillBases[i].botActionManuals);
+				skillDatas.Add(new(skillDataSOs[i], skillBases[i]));
+			} 
 
-		
+			GameUIManager.Instance.charInfoView.PopulateSkillTree
+			(
+				GameManager.Instance.GetCharData(customMono).individualView, skillDatas
+			);
+		}
+		else
+		{
+		    for (int i=0;i<skillDataSOs.Count;i++)
+			{
+			    customMono.actionIntelligence.AddManuals(skillBases[i].botActionManuals);
+			}
+		}
 	}		
 }

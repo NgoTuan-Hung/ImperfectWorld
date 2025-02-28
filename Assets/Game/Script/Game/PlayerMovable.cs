@@ -7,11 +7,6 @@ public class PlayerMovable : Movable
 	public override void Start() 
 	{
 		base.Start();
-		// GameUIManager.Instance.MainView.joyStickMoveEvent += (vector) => 
-		// {
-		// 	vector.Scale(inverseY);
-		// 	moveVector = vector;
-		// };
 	}
 	private void FixedUpdate() 
 	{
