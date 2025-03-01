@@ -848,14 +848,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   charUIData: {fileID: 0}
-  isBot: 1
+  isControllable: 1
   animationEventFunctionCaller: {fileID: 0}
   movable: {fileID: 0}
   attackable: {fileID: 0}
   movementIntelligence: {fileID: 0}
   actionIntelligence: {fileID: 0}
   myBotPersonality: {fileID: 0}
-  playerMovable: {fileID: 0}
   stat: {fileID: 0}
   actionInterval: 0
   movementActionInterval: 0
@@ -1007,9 +1006,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6f79454b4f09ead4aaf327a0a868de1b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  actionChances: 
-  actionCumulativeDistribution: []
-  presummedActionChances: 
+  customMono: {fileID: 0}
   targetDirection: {x: 0, y: 0}
   distanceToTarget: 0
   targetPosition: {x: 0, y: 0, z: 0}
@@ -1805,11 +1802,12 @@ GameObject:
   - component: {fileID: 889364770}
   - component: {fileID: 889364764}
   - component: {fileID: 889364761}
-  - component: {fileID: 889364759}
+  - component: {fileID: 889364771}
   - component: {fileID: 889364766}
   - component: {fileID: 889364769}
   - component: {fileID: 889364768}
   - component: {fileID: 889364760}
+  - component: {fileID: 889364772}
   m_Layer: 0
   m_Name: Player
   m_TagString: GamePlayer
@@ -1837,30 +1835,6 @@ Transform:
   - {fileID: 1914884298}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &889364759
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 889364757}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 50f154c387dc51841a91e042648bef2c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  cooldown: 0
-  onCooldown: 0
-  defaultCooldown: 0
-  defaultStateSpeed: 0
-  canUse: 1
-  boolHash: 0
-  actionClip: {fileID: 0}
-  audioClip: {fileID: 0}
-  damage: 0
-  defaultDamage: 0
-  finalDirection: {x: 0, y: 0}
-  moveVector: {x: 0, y: 0}
 --- !u!114 &889364760
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1874,14 +1848,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   charUIData: {fileID: 11400000, guid: 07b70e5aaf21d684fa8359c800d72dba, type: 2}
-  isBot: 0
+  isControllable: 1
   animationEventFunctionCaller: {fileID: 0}
   movable: {fileID: 0}
   attackable: {fileID: 0}
   movementIntelligence: {fileID: 0}
   actionIntelligence: {fileID: 0}
   myBotPersonality: {fileID: 0}
-  playerMovable: {fileID: 0}
   stat: {fileID: 0}
   actionInterval: 0
   movementActionInterval: 0
@@ -2159,6 +2132,49 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &889364771
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 889364757}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d3345c1ae0ed9ea41b86f2a3c634c06a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cooldown: 0
+  onCooldown: 0
+  defaultCooldown: 0
+  defaultStateSpeed: 0
+  canUse: 0
+  boolHash: 0
+  actionClip: {fileID: 0}
+  audioClip: {fileID: 0}
+  damage: 0
+  defaultDamage: 0
+  finalDirection: {x: 0, y: 0}
+  moveVector: {x: 0, y: 0}
+--- !u!114 &889364772
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 889364757}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6f79454b4f09ead4aaf327a0a868de1b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  customMono: {fileID: 0}
+  targetDirection: {x: 0, y: 0}
+  distanceToTarget: 0
+  targetPosition: {x: 0, y: 0, z: 0}
+  logicalAttackRange: 1
+  targetTooCloseRange: 1
+  myBotCombatBehaviour: 0
 --- !u!4 &892392505 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5794198503007716251, guid: 5050206fee006f94a9d0125e20c69398, type: 3}
@@ -7927,15 +7943,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: af846d372d940f74a9e932aa2c82ae61, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  charUIData: {fileID: 0}
-  isBot: 1
+  charUIData: {fileID: 11400000, guid: de715c44a58394c4a92a9a6a252b1782, type: 2}
+  isControllable: 1
   animationEventFunctionCaller: {fileID: 0}
   movable: {fileID: 0}
   attackable: {fileID: 0}
   movementIntelligence: {fileID: 0}
   actionIntelligence: {fileID: 0}
   myBotPersonality: {fileID: 0}
-  playerMovable: {fileID: 0}
   stat: {fileID: 0}
   actionInterval: 0
   movementActionInterval: 0
@@ -8085,9 +8100,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6f79454b4f09ead4aaf327a0a868de1b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  actionChances: 
-  actionCumulativeDistribution: []
-  presummedActionChances: 
+  customMono: {fileID: 0}
   targetDirection: {x: 0, y: 0}
   distanceToTarget: 0
   targetPosition: {x: 0, y: 0, z: 0}
@@ -78257,7 +78270,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &2059840846
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -78270,9 +78283,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6f79454b4f09ead4aaf327a0a868de1b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  actionChances: 
-  actionCumulativeDistribution: []
-  presummedActionChances: 
+  customMono: {fileID: 0}
   targetDirection: {x: 0, y: 0}
   distanceToTarget: 0
   targetPosition: {x: 0, y: 0, z: 0}
@@ -78314,15 +78325,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: af846d372d940f74a9e932aa2c82ae61, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  charUIData: {fileID: 0}
-  isBot: 1
+  charUIData: {fileID: 11400000, guid: de715c44a58394c4a92a9a6a252b1782, type: 2}
+  isControllable: 1
   animationEventFunctionCaller: {fileID: 0}
   movable: {fileID: 0}
   attackable: {fileID: 0}
   movementIntelligence: {fileID: 0}
   actionIntelligence: {fileID: 0}
   myBotPersonality: {fileID: 0}
-  playerMovable: {fileID: 0}
   stat: {fileID: 0}
   actionInterval: 0
   movementActionInterval: 0
@@ -78335,7 +78345,7 @@ MonoBehaviour:
   audioSource: {fileID: 0}
   currentNearestEnemy: {fileID: 0}
   rigidbody2D: {fileID: 0}
-  attackAudioClip: {fileID: 0}
+  attackAudioClip: {fileID: 8300000, guid: 118b9b5bd2015ec4abe7777d825907c5, type: 3}
 --- !u!114 &2059840849
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -78359,7 +78369,9 @@ MonoBehaviour:
   damage: 0
   defaultDamage: 0
   finalDirection: {x: 0, y: 0}
-  skillDataSOs: []
+  skillDataSOs:
+  - {fileID: 11400000, guid: 1c867fbe8b471654dae0b5d9aa81b709, type: 2}
+  - {fileID: 11400000, guid: cacf79545d465a34695ad81cf358887f, type: 2}
   skillBases: []
 --- !u!114 &2059840850
 MonoBehaviour:
@@ -79526,9 +79538,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6f79454b4f09ead4aaf327a0a868de1b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  actionChances: 
-  actionCumulativeDistribution: []
-  presummedActionChances: 
+  customMono: {fileID: 0}
   targetDirection: {x: 0, y: 0}
   distanceToTarget: 0
   targetPosition: {x: 0, y: 0, z: 0}
@@ -79671,14 +79681,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   charUIData: {fileID: 0}
-  isBot: 1
+  isControllable: 1
   animationEventFunctionCaller: {fileID: 0}
   movable: {fileID: 0}
   attackable: {fileID: 0}
   movementIntelligence: {fileID: 0}
   actionIntelligence: {fileID: 0}
   myBotPersonality: {fileID: 0}
-  playerMovable: {fileID: 0}
   stat: {fileID: 0}
   actionInterval: 0
   movementActionInterval: 0

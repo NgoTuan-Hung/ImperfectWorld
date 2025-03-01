@@ -1,15 +1,17 @@
 using System;
-using UnityEngine;
 
-/// <summary>
-/// A notifier class for changes in monobehaviour.
-/// </summary>
-public class MonoSelfAware : MonoBehaviour 
+public class MonoSelfAware : MonoEditor
 {
 	public Action deactivate;
 	public virtual void Awake()
 	{
 		deactivate = Deactivate;
 	}
+
+    public override void Start()
+    {
+        base.Start();
+    }
+    
 	void Deactivate() => gameObject.SetActive(false);
 }

@@ -6,7 +6,7 @@ public enum UpdateDirectionIndicatorPriority {VeryLow = 4, Low = 3, Medium = 2, 
 public class CustomMono : MonoSelfAware, IComparable<CustomMono>
 {
 	public CharUIData charUIData;
-	public bool isBot = true;
+	public bool isControllable = true;
 	public HashSet<string> allyTags = new();
 	private GameObject mainComponent;
 	private SpriteRenderer spriteRenderer;
@@ -17,7 +17,6 @@ public class CustomMono : MonoSelfAware, IComparable<CustomMono>
 	public MovementIntelligence movementIntelligence;
 	public ActionIntelligence actionIntelligence;
 	public MyBotPersonality myBotPersonality;
-	public PlayerMovable playerMovable;
 	public Stat stat;
 	GameObject directionIndicator;
 	float directionIndicatorAngle;
@@ -89,7 +88,6 @@ public class CustomMono : MonoSelfAware, IComparable<CustomMono>
 	
 	void GetAllComponents()
 	{
-		playerMovable = GetComponent<PlayerMovable>();
 		spriteRenderer = GetComponentInChildren<SpriteRenderer>();
 		animatorWrapper = GetComponent<AnimatorWrapper>();
 		stat = GetComponent<Stat>();
@@ -148,18 +146,21 @@ public class CustomMono : MonoSelfAware, IComparable<CustomMono>
 		};
 	}
 	
-	private void Start() 
+	public override void Start()
 	{
-		if (isBot)
-		{
-		    
-		}
-		else
-		{
-		    GameManager.Instance.InitializeControllableCharacter(this);
-		}
+		if (isControllable) GameManager.Instance.InitializeControllableCharacter(this);
 
 		startPhase1();
+	}
+	
+	public void PauseBot()
+	{
+	    myBotPersonality.pausableScript.pauseFixedUpdate();
+	}
+	
+	public void ResumeBot()
+	{
+	    myBotPersonality.pausableScript.resumeFixedUpdate();
 	}
 	
 	private void FixedUpdate() 
@@ -176,10 +177,6 @@ public class CustomMono : MonoSelfAware, IComparable<CustomMono>
 		multipleCollideTimersDict.Add(key, multipleCollideTimersList[^1]);
 	}
 	
-	void GetBaseAction()
-	{
-		
-	}
 
 	public int CompareTo(CustomMono other)
 	{

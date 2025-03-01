@@ -11,9 +11,6 @@ using UnityEngine;
 /// </summary>
 public class MonoEditor : MonoBehaviour
 {
-	/// <summary>
-	/// Only one child should call this
-	/// </summary>
 	public virtual void Start()
 	{
 		#if UNITY_EDITOR

@@ -191,12 +191,12 @@ public class MainView : ViewBase
 	/// </summary>
 	/// <param name="p_usableHolder"></param>
 	/// <param name="p_clickEvent"></param>
-	public void AddClickEventForUsableHolder(Action<TouchInfo> p_clickEvent, UsableSlotUIInfo p_usableSlotUIInfo)
+	public void AddClickEventForUsableHolder(Action<TouchInfo, Vector2> p_clickEvent, UsableSlotUIInfo p_usableSlotUIInfo)
 	{
 	    p_usableSlotUIInfo.usableHolder.RegisterCallback<PointerDownEvent>((evt) => 
 	    {
 			TouchInfo t_touchInfo = TouchExtension.GetTouchInfoAt(evt.position, gameUIManager.root);
-			p_clickEvent(t_touchInfo);
+			p_clickEvent(t_touchInfo, t_touchInfo.panelPosition - p_usableSlotUIInfo.usableHolderMidPos);
 	    });
 	}
 
@@ -225,7 +225,7 @@ public class MainView : ViewBase
 		}
 	}
 
-	public void AddHoldAndReleaseEventForUsableHolder(Func<bool> p_startHoldingEvent
+	public void AddHoldAndReleaseEventForUsableHolder(Action<TouchInfo, Vector2> p_startHoldingEvent
 	, Action<TouchInfo, Vector2> p_holdEvent, Action<TouchInfo, Vector2> p_releaseEvent, UsableSlotUIInfo p_usableSlotUIInfo)
 	{
 	    p_usableSlotUIInfo.usableHolder.RegisterCallback<PointerDownEvent>((evt) => 
@@ -236,14 +236,14 @@ public class MainView : ViewBase
 	    });
 	}
 
-	IEnumerator UsableHolderHoldAndReleaseCoroutine(TouchInfo p_touchInfo, Func<bool> p_startHoldingEvent
+	IEnumerator UsableHolderHoldAndReleaseCoroutine(TouchInfo p_touchInfo, Action<TouchInfo, Vector2> p_startHoldingEvent
 	, Action<TouchInfo, Vector2> p_holdEvent, Action<TouchInfo, Vector2> p_releaseEvent, UsableSlotUIInfo p_usableSlotUIInfo)
 	{
 		/* Direction will be a vector from button middle point to our current touch */
 		Vector2 t_direction = p_touchInfo.panelPosition - p_usableSlotUIInfo.usableHolderMidPos;
 		t_direction.Scale(VectorExtension.inverseY);
 		
-		p_startHoldingEvent();
+		p_startHoldingEvent(p_touchInfo, t_direction);
 		while (p_touchInfo.touch.phase != TouchPhase.Ended)
 		{
 			p_touchInfo.UpdateSelf();

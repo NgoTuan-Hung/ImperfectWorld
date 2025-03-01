@@ -361,7 +361,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: af846d372d940f74a9e932aa2c82ae61, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isBot: 1
+  charUIData: {fileID: 0}
+  isControllable: 0
   animationEventFunctionCaller: {fileID: 0}
   movable: {fileID: 0}
   attackable: {fileID: 0}
@@ -380,6 +381,7 @@ MonoBehaviour:
   audioSource: {fileID: 0}
   currentNearestEnemy: {fileID: 0}
   rigidbody2D: {fileID: 0}
+  attackAudioClip: {fileID: 8300000, guid: 4a4b48223eddcde4ca98850c4a405077, type: 3}
 --- !u!114 &8310607085108168413
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -403,6 +405,11 @@ MonoBehaviour:
   damage: 0
   defaultDamage: 0
   finalDirection: {x: 0, y: 0}
+  duration: 0
+  maxRange: 0
+  maxAmmo: 0
+  currentAmmo: 0
+  effectActiveLocation: {x: 0, y: 999, z: 0}
   longRangeProjectilePrefab: {fileID: 0}
   colliderForce: 5
   attackType: 0
@@ -429,6 +436,7 @@ MonoBehaviour:
   damage: 0
   defaultDamage: 0
   finalDirection: {x: 0, y: 0}
+  moveVector: {x: 0, y: 0}
 --- !u!114 &7023779683548498420
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -495,7 +503,9 @@ MonoBehaviour:
   damage: 0
   defaultDamage: 0
   finalDirection: {x: 0, y: 0}
-  skillDatas: []
+  skillDataSOs:
+  - {fileID: 11400000, guid: 1c867fbe8b471654dae0b5d9aa81b709, type: 2}
+  skillBases: []
 --- !u!114 &174785206889056126
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -531,9 +541,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6f79454b4f09ead4aaf327a0a868de1b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  actionChances: 
-  actionCumulativeDistribution: []
-  presummedActionChances: 
+  customMono: {fileID: 0}
   targetDirection: {x: 0, y: 0}
   distanceToTarget: 0
   targetPosition: {x: 0, y: 0, z: 0}

@@ -5,7 +5,7 @@ using UnityEngine;
 
 public enum MyBotCombatBehaviour {Melee, Ranged}
 public enum ModificationPriority {VeryLow = 4, Low = 3, Medium = 2, High = 1, VeryHigh = 0}
-public class MyBotPersonality : BaseIntelligence
+public class MyBotPersonality : CustomMonoPal
 {
 	public Vector2 targetDirection;
 	List<Vector2> targetDirections;
@@ -21,6 +21,7 @@ public class MyBotPersonality : BaseIntelligence
 	CustomMono targetEnemy, detectEnemy;
 	int priorityLength;
 	Action forceUsingAction = () => {};
+	public PausableScript pausableScript = new();
 	public override void Awake()
 	{
 		base.Awake();
@@ -51,6 +52,10 @@ public class MyBotPersonality : BaseIntelligence
 		};
 		
 		customMono.nearestEnemyChanged += (person) => targetEnemy = person;
+		
+		pausableScript.resumeFixedUpdate = () => pausableScript.fixedUpdate = DoFixedUpdate;
+		pausableScript.pauseFixedUpdate = () => pausableScript.fixedUpdate = () => {};
+		pausableScript.resumeFixedUpdate();
 	}
 	
 	private void OnEnable() 
@@ -66,7 +71,12 @@ public class MyBotPersonality : BaseIntelligence
 	
 	private void FixedUpdate() 
 	{
-		ThinkAndPrepare();
+		pausableScript.fixedUpdate();
+	}
+	
+	void DoFixedUpdate()
+	{
+	    ThinkAndPrepare();
 		DoAction();
 	}
 	

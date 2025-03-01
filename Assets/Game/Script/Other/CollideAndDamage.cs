@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
-public class CollideAndDamage : MonoEditorSelfAware
+public class CollideAndDamage : MonoSelfAware
 {
 	public HashSet<string> allyTags = new();
 	public new Rigidbody2D rigidbody2D;

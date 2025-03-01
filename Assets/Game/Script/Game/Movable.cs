@@ -32,6 +32,16 @@ public class Movable : BaseAction
 		base.Start();
 	}
 
+	private void FixedUpdate() 
+	{
+		MoveByController();
+	}
+	
+	void MoveByController()
+	{
+	    if (moveVector != Vector2.zero) Move(moveVector);
+		else ToggleMoveAnim(false);
+	}
 	
 	public void Move(Vector2 direction)
 	{

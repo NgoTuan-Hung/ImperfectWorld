@@ -25,7 +25,12 @@ public class Skill : BaseAction
 	
 	void InitSkill()
 	{
-		if (!customMono.isBot)
+		for (int i=0;i<skillDataSOs.Count;i++)
+		{
+			customMono.actionIntelligence.AddManuals(skillBases[i].botActionManuals);
+		}
+	
+		if (customMono.isControllable)
 		{
 			for (int i=0;i<skillDataSOs.Count;i++)
 			{
@@ -37,13 +42,6 @@ public class Skill : BaseAction
 			(
 				GameManager.Instance.GetCharData(customMono).individualView, skillDatas
 			);
-		}
-		else
-		{
-		    for (int i=0;i<skillDataSOs.Count;i++)
-			{
-			    customMono.actionIntelligence.AddManuals(skillBases[i].botActionManuals);
-			}
 		}
 	}		
 }

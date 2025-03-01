@@ -202,7 +202,7 @@ public class CharInfoView : ViewBase
 					case SkillDataSO.InputType.Click:
 						gameUIManager.mainView.AddClickEventForUsableHolder
 						(
-							(touchInfo) => t_skillData.skillBase.Trigger(default, default), t_skillData.usableSlotUIInfo
+							(touchInfo, direction) => t_skillData.skillBase.Trigger(default, default), t_skillData.usableSlotUIInfo
 						);
 						break;
 					case SkillDataSO.InputType.Hold:
@@ -214,7 +214,7 @@ public class CharInfoView : ViewBase
 					case SkillDataSO.InputType.HoldAndRelease:
 						gameUIManager.mainView.AddHoldAndReleaseEventForUsableHolder
 						(
-							() => t_skillData.skillBase.StartAndWait()
+							(touchinfo, direction) => t_skillData.skillBase.StartAndWait()
 							, (touchInfo, direction) => t_skillData.skillBase.WhileWaiting(direction)
 							, (touchInfo, direction) => t_skillData.skillBase.Trigger(default, direction:direction)
 							, t_skillData.usableSlotUIInfo 
