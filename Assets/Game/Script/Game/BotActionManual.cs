@@ -19,6 +19,7 @@ public class BotActionManual
 	public bool actionNeedWait;
 	public Func<bool> startAndWait = () => {return true;};
 	public Action<Vector2> whileWaiting = (targetDirection) => {};
+	public int actionChanceAjuster = 0;
 
 	public BotActionManual(ActionUse actionUse, DoAction doAction, float nextActionChoosingIntervalProposal = 0, bool targetDirection = false, float targetDirectionMultiplier = 1
 	, bool actionNeedWait = false, Func<bool> startAndWait = null, Action<Vector2> whileWaiting = null)

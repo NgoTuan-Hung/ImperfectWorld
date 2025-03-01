@@ -1,4 +1,5 @@
 using System.Collections;
+using Unity.VisualScripting;
 using UnityEngine;
 using Touch = UnityEngine.InputSystem.EnhancedTouch.Touch;
 
@@ -18,6 +19,8 @@ public class Slaughter : SkillBase
 		
 		projectilePrefab = Resources.Load("SlaughterProjectile") as GameObject;
 		projectilePool ??= new ObjectPool(projectilePrefab, 100, new PoolArgument(ComponentType.GameEffect, PoolArgument.WhereComponent.Self));
+		
+		AddActionManuals();
 	}
 	
 	IEnumerator RefillAmmo()
@@ -27,13 +30,21 @@ public class Slaughter : SkillBase
 			if (currentAmmo < maxAmmo)
 			{
 				yield return new WaitForSeconds(cooldown);
-				currentAmmo++;
+				AddAmmo(1);
 			}
 			
 			yield return new WaitForSeconds(Time.fixedDeltaTime);
 		}
 	}
 
+    public override void AddAmmo(int ammount)
+    {
+        base.AddAmmo(ammount);
+        if (currentAmmo > 0) botActionManuals[0].actionChanceAjuster = 100;
+        else botActionManuals[0].actionChanceAjuster = 0;
+    }
+
+    
 	public override void OnEnable()
 	{
 		base.OnEnable();
@@ -63,6 +74,12 @@ public class Slaughter : SkillBase
 	public override void AddActionManuals()
 	{
 		base.AddActionManuals();
+		botActionManuals.Add(new
+		(
+			ActionUse.RangedDamage
+			, DoAuto
+			, 0
+		));
 	}
 
 	/* The logic of this ability is we can fire projectile whenever we have ammo,
@@ -76,7 +93,7 @@ public class Slaughter : SkillBase
 			customMono.actionBlocking = true;
 			customMono.stat.MoveSpeed = customMono.stat.actionMoveSpeedReduced;
 			customMono.audioSource.PlayOneShot(audioClip);
-			currentAmmo--;
+			AddAmmo(-1);
 			ToggleAnim(boolHash, true);
 			StartCoroutine(EndAnimWaitCoroutine());
 			
@@ -113,4 +130,9 @@ public class Slaughter : SkillBase
 		endAnimCallback();
 		canUse = true;
 	}
+
+    public override void DoAuto(Vector2 p_targetDirection, Vector2 p_targetPosition, float p_nextActionChoosingIntervalProposal)
+    {
+        Trigger(default, default, p_targetDirection);
+    }
 }

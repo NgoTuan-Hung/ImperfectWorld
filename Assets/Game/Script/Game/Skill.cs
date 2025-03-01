@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-public class Skill : BaseAction
+public class Skill : CustomMonoPal
 {
 	public List<SkillDataSO> skillDataSOs = new();
 	public List<SkillBase> skillBases = new();

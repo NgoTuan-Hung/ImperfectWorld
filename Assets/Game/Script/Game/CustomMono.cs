@@ -13,7 +13,6 @@ public class CustomMono : MonoSelfAware, IComparable<CustomMono>
 	private AnimatorWrapper animatorWrapper;
 	public AnimationEventFunctionCaller animationEventFunctionCaller;
 	public Movable movable;
-	public Attackable attackable;
 	public MovementIntelligence movementIntelligence;
 	public ActionIntelligence actionIntelligence;
 	public MyBotPersonality myBotPersonality;
@@ -92,7 +91,6 @@ public class CustomMono : MonoSelfAware, IComparable<CustomMono>
 		animatorWrapper = GetComponent<AnimatorWrapper>();
 		stat = GetComponent<Stat>();
 		movable = GetComponent<Movable>();
-		attackable = GetComponent<Attackable>();
 		boxCollider2D = GetComponent<BoxCollider2D>();
 		combatCollider2D = combatCollision.GetComponent<BoxCollider2D>();
 		audioSource = GetComponent<AudioSource>();

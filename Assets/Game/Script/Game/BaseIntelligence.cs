@@ -124,7 +124,8 @@ public class BaseIntelligence : MonoEditor
 	void CalculatingFinalActionChances()
 	{
 		for (int i=0;i<botActionManualCategories.Count;i++)
-			for (int j=0;j<botActionManualCategories[i].Count;j++) actionChances[botActionManualCategories[i][j].botActionManualIndex] = presummedActionChances[i];
+			for (int j=0;j<botActionManualCategories[i].Count;j++)
+				actionChances[botActionManualCategories[i][j].botActionManualIndex] = presummedActionChances[i] + botActionManualCategories[i][j].actionChanceAjuster;
 	}
 	
 	/// <summary>

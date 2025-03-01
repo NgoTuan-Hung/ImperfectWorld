@@ -30,6 +30,7 @@ public class BaseAction : MonoEditor
 	public AudioClip audioClip;
 	public float damage = 0;
 	public float defaultDamage = 0;
+	public int maxAmmo, currentAmmo;
 	public Vector2 finalDirection;
 	public Stopwatch stopwatch = new();
 	
@@ -109,4 +110,6 @@ public class BaseAction : MonoEditor
 	}
 	public virtual bool StartAndWait(){return true;}
 	public virtual void WhileWaiting(Vector2 vector2){}
+	public virtual void DoAuto(Vector2 p_targetDirection, Vector2 p_targetPosition, float p_nextActionChoosingIntervalProposal){}
+	public virtual void AddAmmo(int ammount) => currentAmmo += ammount;
 }

@@ -154,6 +154,7 @@ public class MyBotPersonality : CustomMonoPal
 			customMono.movementIntelligence.PreSumActionChance(ActionUse.Dodge, 5);
 			customMono.actionIntelligence.PreSumActionChance(ActionUse.GetCloser, 30);
 			customMono.actionIntelligence.PreSumActionChance(ActionUse.Dodge, 5);
+			customMono.actionIntelligence.PreSumActionChance(ActionUse.RangedDamage, 30);
 		}
 		else
 		{
@@ -165,13 +166,14 @@ public class MyBotPersonality : CustomMonoPal
 			customMono.actionIntelligence.PreSumActionChance(ActionUse.GetAway, 5);
 			customMono.actionIntelligence.PreSumActionChance(ActionUse.MeleeDamage, 30);
 			customMono.actionIntelligence.PreSumActionChance(ActionUse.SummonShortRange, 15);
+			customMono.actionIntelligence.PreSumActionChance(ActionUse.RangedDamage, 5);
 		}
 		
-		if (customMono.attackable.onCooldown)
-		{
-			customMono.movementIntelligence.PreSumActionChance(ActionUse.GetAway, 15);
-			customMono.actionIntelligence.PreSumActionChance(ActionUse.GetAway, 15);
-		}
+		// if (customMono.attackable.onCooldown)
+		// {
+		// 	customMono.movementIntelligence.PreSumActionChance(ActionUse.GetAway, 15);
+		// 	customMono.actionIntelligence.PreSumActionChance(ActionUse.GetAway, 15);
+		// }
 		
 		customMono.movementIntelligence.PreSumActionChance(ActionUse.Passive, 5);
 		customMono.actionIntelligence.PreSumActionChance(ActionUse.Passive, 5);
@@ -204,13 +206,13 @@ public class MyBotPersonality : CustomMonoPal
 		customMono.actionIntelligence.PreSumActionChance(ActionUse.RangedDamage, 1);	
 		
 		
-		if (customMono.attackable.onCooldown)
-		{
-			customMono.movementIntelligence.PreSumActionChance(ActionUse.Dodge, 3);
-			customMono.movementIntelligence.PreSumActionChance(ActionUse.GetAway, 15);
-			customMono.actionIntelligence.PreSumActionChance(ActionUse.Dodge, 3);
-			customMono.actionIntelligence.PreSumActionChance(ActionUse.GetAway, 15);
-		}
+		// if (customMono.attackable.onCooldown)
+		// {
+		// 	customMono.movementIntelligence.PreSumActionChance(ActionUse.Dodge, 3);
+		// 	customMono.movementIntelligence.PreSumActionChance(ActionUse.GetAway, 15);
+		// 	customMono.actionIntelligence.PreSumActionChance(ActionUse.Dodge, 3);
+		// 	customMono.actionIntelligence.PreSumActionChance(ActionUse.GetAway, 15);
+		// }
 		
 		if (distanceToTarget > targetTooCloseRange)
 		{
