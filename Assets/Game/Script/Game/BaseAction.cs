@@ -31,7 +31,7 @@ public class BaseAction : MonoEditor
 	public float damage = 0;
 	public float defaultDamage = 0;
 	public int maxAmmo, currentAmmo;
-	public Vector2 finalDirection;
+	public float modifiedAngle;
 	public Stopwatch stopwatch = new();
 	
 	public virtual void Awake() 
@@ -104,7 +104,7 @@ public class BaseAction : MonoEditor
 		if (boolHash != 0) ToggleAnim(boolHash, false);
 	}
 	
-	public virtual void Trigger(Touch touch = default, Vector2 location = default, Vector2 direction = default)
+	public virtual void Trigger(Vector2 location = default, Vector2 direction = default)
 	{
 		
 	}

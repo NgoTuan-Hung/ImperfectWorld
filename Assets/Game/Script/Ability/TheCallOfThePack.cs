@@ -57,7 +57,7 @@ public class TheCallOfThePack : SkillBase
 		};
 	}
 
-	public override void Trigger(Touch touch = default, Vector2 location = default, Vector2 direction = default)
+	public override void Trigger(Vector2 location = default, Vector2 direction = default)
 	{
 		if (canUse && !customMono.actionBlocking)
 		{

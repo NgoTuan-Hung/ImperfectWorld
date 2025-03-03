@@ -10,20 +10,17 @@ public class Scatter : SkillBase
 	static ObjectPool scatterArrowPool;
 	GameObject scatterChargePrefab;
 	static ObjectPool scatterChargePool;
-	bool stillWaiting;
-	public float requiredWaitTime = 1f;
-	int releaseBoolHash;
-	float arrowAngle;
+	ActionWaitInfo actionWaitInfo = new();
 	public override void Awake()
 	{
 		base.Awake();
 		cooldown = 5f;
 		boolHash = Animator.StringToHash("Charge");
 		audioClip = Resources.Load<AudioClip>("AudioClip/scatter-release");
-		releaseBoolHash = Animator.StringToHash("Release");
+		actionWaitInfo.releaseBoolHash = Animator.StringToHash("Release");
 		damage = defaultDamage = 30f;
 		currentAmmo = 3;
-		arrowAngle = 30f.DegToRad();
+		modifiedAngle = 30f.DegToRad();
 		
 		scatterArrowPrefab = Resources.Load("ScatterArrow") as GameObject;
 		scatterArrowPool ??= new ObjectPool(scatterArrowPrefab, 100, new PoolArgument(ComponentType.GameEffect, PoolArgument.WhereComponent.Self));
@@ -37,7 +34,7 @@ public class Scatter : SkillBase
 	public override void OnEnable()
 	{
 		base.OnEnable();
-		stillWaiting = false;
+		actionWaitInfo.stillWaiting = false;
 	}
 
 	public override void Start()
@@ -66,9 +63,9 @@ public class Scatter : SkillBase
 		));
 	}
 
-	public override void Trigger(Touch touch = default, Vector2 location = default, Vector2 direction = default)
+	public override void Trigger(Vector2 location = default, Vector2 direction = default)
 	{
-		stillWaiting = false;
+		actionWaitInfo.stillWaiting = false;
 	}
 
 	public override bool StartAndWait()
@@ -79,7 +76,7 @@ public class Scatter : SkillBase
 			customMono.actionBlocking = true;
 			customMono.stat.MoveSpeed = customMono.stat.actionMoveSpeedReduced;
 			ToggleAnim(boolHash, true);
-			stillWaiting = true;
+			actionWaitInfo.stillWaiting = true;
 			StartCoroutine(WaitingCoroutine());
 			return true;
 		}
@@ -93,13 +90,13 @@ public class Scatter : SkillBase
 		scatterChargeGameEffect.Follow(transform);
 		stopwatch.Restart();
 		
-		while (stillWaiting) yield return new WaitForSeconds(Time.fixedDeltaTime);
+		while (actionWaitInfo.stillWaiting) yield return new WaitForSeconds(Time.fixedDeltaTime);
 		
 		stopwatch.Stop();
 		scatterChargeGameEffect.deactivate();
-		if (stopwatch.Elapsed.TotalSeconds >= requiredWaitTime)
+		if (stopwatch.Elapsed.TotalSeconds >= actionWaitInfo.requiredWaitTime)
 		{
-			ToggleAnim(releaseBoolHash, true);
+			ToggleAnim(actionWaitInfo.releaseBoolHash, true);
 			ToggleAnim(boolHash, false);
 			customMono.audioSource.PlayOneShot(audioClip);
 			EndAnimWait();
@@ -112,7 +109,7 @@ public class Scatter : SkillBase
 				scatterArrowGameEffect.collideAndDamage.collideDamage = damage;
 				if (i % 2 == 1)
 				{
-					arrowDirection = finalDirection.RotateZ((i+1)/2 * arrowAngle);
+					arrowDirection = actionWaitInfo.finalDirection.RotateZ((i+1)/2 * modifiedAngle);
 					scatterArrowGameEffect.transform.SetPositionAndRotation(customMono.firePoint.transform.position, Quaternion.Euler(0, 0, Vector2.SignedAngle
 					(
 						Vector2.right,
@@ -121,7 +118,7 @@ public class Scatter : SkillBase
 				}
 				else
 				{
-					arrowDirection = finalDirection.RotateZ(-i/2 * arrowAngle);
+					arrowDirection = actionWaitInfo.finalDirection.RotateZ(-i/2 * modifiedAngle);
 					scatterArrowGameEffect.transform.SetPositionAndRotation(customMono.firePoint.transform.position, Quaternion.Euler(0, 0, Vector2.SignedAngle
 					(
 						Vector2.right,
@@ -151,7 +148,7 @@ public class Scatter : SkillBase
 		while (!customMono.animationEventFunctionCaller.endRelease) yield return new WaitForSeconds(Time.fixedDeltaTime);
 		
 		onCooldown = true;
-		ToggleAnim(releaseBoolHash, false);
+		ToggleAnim(actionWaitInfo.releaseBoolHash, false);
 		customMono.animationEventFunctionCaller.endRelease = false;
 		customMono.stat.SetDefaultMoveSpeed();
 
@@ -164,19 +161,19 @@ public class Scatter : SkillBase
 	public override void WhileWaiting(Vector2 vector2)
 	{
 		customMono.SetUpdateDirectionIndicator(vector2, UpdateDirectionIndicatorPriority.Low);
-		finalDirection = vector2;
+		actionWaitInfo.finalDirection = vector2;
 	}
 	
 	public void ScatterTo(Vector2 direction, float duration)
 	{
-		StartCoroutine(ScatterToCoroutine(direction, duration));
+		StartCoroutine(ScatterToCoroutine(duration));
 	}
 	
-	IEnumerator ScatterToCoroutine(Vector2 direction, float duration)
+	IEnumerator ScatterToCoroutine(float p_duration)
 	{
 		customMono.actionInterval = true;
 		
-		yield return new WaitForSeconds(duration);
+		yield return new WaitForSeconds(p_duration);
 		customMono.actionInterval = false;
 	}
 }

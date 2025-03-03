@@ -44,7 +44,7 @@ public class AirRollSkill : SkillBase
 		base.Start();
 	}
 
-	public override void Trigger(Touch touch = default, Vector2 location = default, Vector2 direction = default)
+	public override void Trigger(Vector2 location = default, Vector2 direction = default)
 	{
 		if (canUse && !customMono.actionBlocking)
 		{
@@ -52,11 +52,11 @@ public class AirRollSkill : SkillBase
 			customMono.actionBlocking = true;
 			customMono.movementActionBlocking = true;
 			ToggleAnim(boolHash, true);
-			StartCoroutine(TriggerCoroutine(touch, location, direction));
+			StartCoroutine(TriggerCoroutine(location, direction));
 		}
 	}
 	
-	IEnumerator TriggerCoroutine(Touch touch, Vector2 location, Vector2 direction)
+	IEnumerator TriggerCoroutine(Vector2 location, Vector2 direction)
 	{
 		/* The idea is jumping in a bezier curve, with p1 is our location, p2 is the control point
 		, p3 is the destination. mid is the mid point between p1 and p3, and p2-mid is basically

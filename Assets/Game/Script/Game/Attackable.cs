@@ -85,7 +85,7 @@ public class Attackable : SkillBase
 		};
 	}
 
-    public override void Trigger(UnityEngine.InputSystem.EnhancedTouch.Touch touch = default, Vector2 location = default, Vector2 direction = default)
+    public override void Trigger(Vector2 location = default, Vector2 direction = default)
     {
         Attack(direction);
     }

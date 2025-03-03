@@ -85,7 +85,7 @@ public class Slaughter : SkillBase
 	/* The logic of this ability is we can fire projectile whenever we have ammo,
 	if there are no ammo, we can't fire, if ammo isn't full, we will reload it
 	automatically (RefillAmmo coroutine). */
-	public override void Trigger(Touch touch = default, Vector2 location = default, Vector2 direction = default)
+	public override void Trigger(Vector2 location = default, Vector2 direction = default)
 	{
 		if (canUse && !customMono.actionBlocking && currentAmmo > 0)
 		{
@@ -133,6 +133,6 @@ public class Slaughter : SkillBase
 
     public override void DoAuto(Vector2 p_targetDirection, Vector2 p_targetPosition, float p_nextActionChoosingIntervalProposal)
     {
-        Trigger(default, default, p_targetDirection);
+        Trigger(default, p_targetDirection);
     }
 }

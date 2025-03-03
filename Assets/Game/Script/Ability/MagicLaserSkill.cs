@@ -58,19 +58,19 @@ public class MagicLaserSkill : SkillBase
 		botActionManuals.Add(new BotActionManual(ActionUse.RangedDamage, (direction, location, nextActionChoosingIntervalProposal) => FireAt(location, nextActionChoosingIntervalProposal), 0.5f));
 	}
 	
-	public override void Trigger(Touch touch = default, Vector2 location = default, Vector2 direction = default)
+	public override void Trigger(Vector2 location = default, Vector2 direction = default)
 	{
 		if (canUse && !customMono.actionBlocking)
 		{
 			canUse = false;
 			customMono.actionBlocking = true;
 			ToggleAnim(boolHash, true);
-			StartCoroutine(TriggerCoroutine(touch, location, direction));
+			StartCoroutine(TriggerCoroutine(location, direction));
 			EndAnimWait(() => customMono.animationEventFunctionCaller.endCastingMagic);
 		}
 	}
 	
-	IEnumerator TriggerCoroutine(Touch touch = default, Vector2 location = default, Vector2 direction = default)
+	IEnumerator TriggerCoroutine(Vector2 location = default, Vector2 direction = default)
 	{
 		while(!customMono.animationEventFunctionCaller.castingMagic) yield return new WaitForSeconds(Time.fixedDeltaTime);
 		

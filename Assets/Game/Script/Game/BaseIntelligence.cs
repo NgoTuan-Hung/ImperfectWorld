@@ -76,25 +76,25 @@ public class BaseIntelligence : MonoEditor
 		CalculatingFinalActionChances();
 		RecalculateActionCumulativeDistribution();
 		var rand = Random.Range(0, 1f);
-		BotActionManual t_actionManual = botActionManuals[actionCumulativeDistribution.CumulativeDistributionBinarySearch
+		BotActionManual t_botActionManual = botActionManuals[actionCumulativeDistribution.CumulativeDistributionBinarySearch
 		(
 			0, actionCumulativeDistribution.Count-1, rand
 		)];
 		
-		if (t_actionManual.actionNeedWait)
+		if (t_botActionManual.actionNeedWait)
 		{
-			HandleActionRequiredParameter(t_actionManual, targetDirection, targetPosition);
-			if (t_actionManual.startAndWait())
+			HandleActionRequiredParameter(t_botActionManual, targetDirection, targetPosition);
+			if (t_botActionManual.startAndWait())
 			{
 				actionNeedWait = true;
-				waitBotActionManual = t_actionManual;
-				StartCoroutine(EndActionWaiting(t_actionManual.nextActionChoosingIntervalProposal));
+				waitBotActionManual = t_botActionManual;
+				StartCoroutine(EndActionWaiting(t_botActionManual.nextActionChoosingIntervalProposal));
 			}
 		}
 		else
 		{
-			HandleActionRequiredParameter(t_actionManual, targetDirection, targetPosition);
-			t_actionManual.doAction(actionRequiredParameter.targetDirection, actionRequiredParameter.targetPosition, t_actionManual.nextActionChoosingIntervalProposal);	
+			HandleActionRequiredParameter(t_botActionManual, targetDirection, targetPosition);
+			t_botActionManual.doAction(actionRequiredParameter.targetDirection, actionRequiredParameter.targetPosition, t_botActionManual.nextActionChoosingIntervalProposal);	
 		}
 		
 		RefreshActionChances();
