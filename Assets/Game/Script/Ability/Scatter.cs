@@ -148,13 +148,13 @@ public class Scatter : SkillBase
 		while (!customMono.animationEventFunctionCaller.endRelease) yield return new WaitForSeconds(Time.fixedDeltaTime);
 		
 		onCooldown = true;
+		customMono.actionBlocking = false;
 		ToggleAnim(actionWaitInfo.releaseBoolHash, false);
 		customMono.animationEventFunctionCaller.endRelease = false;
 		customMono.stat.SetDefaultMoveSpeed();
 
 		yield return new WaitForSeconds(cooldown);
 		canUse = true;
-		customMono.actionBlocking = false;
 		onCooldown = false;
 	}
 

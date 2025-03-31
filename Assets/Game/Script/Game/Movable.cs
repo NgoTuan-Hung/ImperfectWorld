@@ -3,12 +3,17 @@ using UnityEngine;
 public class Movable : BaseAction
 {
 	public Vector2 moveVector;
+	public PausableScript pausableScript = new();
 
 	public override void Awake() 
 	{
 		base.Awake();
 		boolHash = Animator.StringToHash("Walk");
 		AddActionManuals();
+		
+		pausableScript.resumeFixedUpdate = () => pausableScript.fixedUpdate = MoveByController;
+		pausableScript.pauseFixedUpdate = () => pausableScript.fixedUpdate = () => {};
+		pausableScript.pauseFixedUpdate();
 	}
 
 	public override void OnEnable()
@@ -34,7 +39,7 @@ public class Movable : BaseAction
 
 	private void FixedUpdate() 
 	{
-		MoveByController();
+		pausableScript.fixedUpdate();
 	}
 	
 	void MoveByController()

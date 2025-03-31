@@ -272,8 +272,10 @@ MonoBehaviour:
   collideAndDamage: {fileID: 0}
   isTimeline: 1
   flyAtSpeed: 0.03
-  followSlowlyOffset: {x: -0.8, y: 1.5, z: 0}
+  followOffset: {x: -0.8, y: 1.5, z: 0}
   followSlowlyPositionLerpTime: 0.04
+  playSoundOnEnable: 0
+  material: {fileID: 0}
 --- !u!114 &5040749699347002923
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -286,9 +288,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 154a6a151704bea43b23fe6d54e16d48, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  collideType: 1
+  rigidbody2D: {fileID: 0}
+  collideType: 0
   collideDamage: 1
   multipleCollideInterval: 0.05
+  pushEnemyOnCollide: 0
+  pushEnemyOnCollideType: 0
+  pushEnemyOnCollideForce: 1
+  deactivateOnCollide: 0
+  spawnEffectOnCollide: 0
+  collisionEffectPrefab: {fileID: 0}
 --- !u!114 &1697508604647031708
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -401,7 +410,7 @@ SpriteRenderer:
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 5.953125, y: 5.109375}
+  m_Size: {x: 5.234375, y: 5.125}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 0

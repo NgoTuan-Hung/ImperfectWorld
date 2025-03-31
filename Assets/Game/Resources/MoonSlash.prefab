@@ -129,8 +129,8 @@ MonoBehaviour:
   pushEnemyOnCollideType: 0
   pushEnemyOnCollideForce: 1
   deactivateOnCollide: 0
-  spawnEffectOnCollide: 0
-  collisionEffectPrefab: {fileID: 0}
+  spawnEffectOnCollide: 1
+  collisionEffectPrefab: {fileID: 1338611446265746720, guid: 9b0174083aa60fb4e840f15d3e5f3c22, type: 3}
 --- !u!114 &8123090653846965391
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -145,7 +145,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   animator: {fileID: 0}
   spriteRenderer: {fileID: 0}
-  isDeactivatedAfterTime: 0
+  isDeactivatedAfterTime: 1
   deactivateTime: 0.25
   collideAndDamage: {fileID: 0}
   isTimeline: 0

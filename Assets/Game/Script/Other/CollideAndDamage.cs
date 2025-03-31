@@ -13,8 +13,15 @@ public class CollideAndDamage : MonoSelfAware
 	public float multipleCollideInterval = 0.05f;
 	Action<Collider2D> onTriggerEnter2D = (other) => { };
 	Action<Collider2D> onTriggerStay2D = (other) => { };
-	Action<Collider2D> onCollideWithEnemy = (other) => {};
-	Action<CustomMono> onCollideWithCustomMono = (customMono) => {};
+	/// <summary>
+	/// Get customMono from this collision if any.
+	/// </summary>
+	Action<Collider2D> onCollideWithCustomMono = (other) => {};
+	/// <summary>
+	/// After getting customMono from collision, you can do
+	/// any thing with it (add force, etc.)
+	/// </summary>
+	Action<CustomMono, Collider2D> doSomethingWithCustomMonoAfterCollide = (customMono, collider2D) => {};
 	public bool pushEnemyOnCollide = false;
 	public enum PushEnemyOnCollideType {Random, BothSide};
 	public PushEnemyOnCollideType pushEnemyOnCollideType = PushEnemyOnCollideType.Random;
@@ -27,26 +34,40 @@ public class CollideAndDamage : MonoSelfAware
 	{
 		base.Awake();
 		if (collideType == CollideType.Single)
-		{
+		{	
+			onTriggerEnter2D = (Collider2D other) => 
+			{
+				if (!allyTags.Contains(other.transform.parent.tag))
+				{
+					/* Since parent will have customMono, not this */
+					CustomMono customMono = GameManager.Instance.GetCustomMono(other.transform.parent.gameObject);
+					if (customMono != null) 
+					{
+						customMono.stat.Health -= collideDamage;
+						doSomethingWithCustomMonoAfterCollide(customMono, other);
+					}
+				}
+			};
+			
 			if (pushEnemyOnCollide)
 			{
 				switch (pushEnemyOnCollideType)
 				{
 					case PushEnemyOnCollideType.Random:
 					{
-					onCollideWithCustomMono += (customMono) => 
-					{
-						customMono.rigidbody2D.AddForce
-						(
-							pushEnemyOnCollideForce * new Vector2(Random.Range(-1, 1), Random.Range(-1, 1)).normalized
-							, ForceMode2D.Impulse
-						);
-					};
-					break;
+						doSomethingWithCustomMonoAfterCollide += (customMono, collider2D) => 
+						{
+							customMono.rigidbody2D.AddForce
+							(
+								pushEnemyOnCollideForce * new Vector2(Random.Range(-1, 1), Random.Range(-1, 1)).normalized
+								, ForceMode2D.Impulse
+							);
+						};
+						break;
 					}
 					case PushEnemyOnCollideType.BothSide:
 					{
-						onCollideWithCustomMono += (customMono) => 
+						doSomethingWithCustomMonoAfterCollide += (customMono, collider2D) => 
 						{
 							customMono.rigidbody2D.AddForce
 							(
@@ -64,36 +85,17 @@ public class CollideAndDamage : MonoSelfAware
 				}
 			}
 			
-			onCollideWithEnemy += (other) => 
-			{
-				/* Since parent will have customMono, not this */
-				CustomMono customMono = GameManager.Instance.GetCustomMono(other.transform.parent.gameObject);
-				if (customMono != null) 
-				{
-					customMono.stat.Health -= collideDamage;
-					onCollideWithCustomMono(customMono);
-				}
-			};
-			
-			onTriggerEnter2D = (Collider2D other) => 
-			{
-				if (!allyTags.Contains(other.transform.parent.tag))
-				{
-					onCollideWithEnemy(other);
-				}
-			};
-			
 			if (spawnEffectOnCollide)
 			{
 				collisionEffectPool ??= new ObjectPool(collisionEffectPrefab, 100, new PoolArgument(ComponentType.GameEffect, PoolArgument.WhereComponent.Self));
-				onCollideWithEnemy += (other) => 
+				doSomethingWithCustomMonoAfterCollide += (customMono, collider2D) => 
 				{
 					GameEffect collisionEffect = collisionEffectPool.PickOne().gameEffect;
 					collisionEffect.transform.position = transform.position;
 				};
 			}
 			
-			if (deactivateOnCollide) onCollideWithEnemy += (other) => deactivate();
+			if (deactivateOnCollide) onTriggerEnter2D += (collider2D) => deactivate();
 		}
 		else
 		{

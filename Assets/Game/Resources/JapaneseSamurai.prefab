@@ -144,7 +144,6 @@ GameObject:
   - component: {fileID: 1626271883579540366}
   - component: {fileID: 993325512569453520}
   - component: {fileID: 7525494074642245837}
-  - component: {fileID: 8310607085108168413}
   - component: {fileID: 5776027955895354842}
   - component: {fileID: 7023779683548498420}
   - component: {fileID: 1020389073582314238}
@@ -365,7 +364,6 @@ MonoBehaviour:
   isControllable: 0
   animationEventFunctionCaller: {fileID: 0}
   movable: {fileID: 0}
-  attackable: {fileID: 0}
   movementIntelligence: {fileID: 0}
   actionIntelligence: {fileID: 0}
   myBotPersonality: {fileID: 0}
@@ -382,37 +380,6 @@ MonoBehaviour:
   currentNearestEnemy: {fileID: 0}
   rigidbody2D: {fileID: 0}
   attackAudioClip: {fileID: 8300000, guid: 4a4b48223eddcde4ca98850c4a405077, type: 3}
---- !u!114 &8310607085108168413
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6724394765168942705}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0ba1f425456de1441860bb9e90ad5230, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  cooldown: 0
-  onCooldown: 0
-  defaultCooldown: 0
-  defaultStateSpeed: 0
-  canUse: 1
-  boolHash: 0
-  actionClip: {fileID: 0}
-  audioClip: {fileID: 8300000, guid: 4a4b48223eddcde4ca98850c4a405077, type: 3}
-  damage: 0
-  defaultDamage: 0
-  finalDirection: {x: 0, y: 0}
-  duration: 0
-  maxRange: 0
-  maxAmmo: 0
-  currentAmmo: 0
-  effectActiveLocation: {x: 0, y: 999, z: 0}
-  longRangeProjectilePrefab: {fileID: 0}
-  colliderForce: 5
-  attackType: 0
 --- !u!114 &5776027955895354842
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -435,7 +402,9 @@ MonoBehaviour:
   audioClip: {fileID: 0}
   damage: 0
   defaultDamage: 0
-  finalDirection: {x: 0, y: 0}
+  maxAmmo: 0
+  currentAmmo: 0
+  modifiedAngle: 0
   moveVector: {x: 0, y: 0}
 --- !u!114 &7023779683548498420
 MonoBehaviour:
@@ -492,17 +461,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ba196c21cc7375742b27d940c5320813, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cooldown: 0
-  onCooldown: 0
-  defaultCooldown: 0
-  defaultStateSpeed: 0
-  canUse: 0
-  boolHash: 0
-  actionClip: {fileID: 0}
-  audioClip: {fileID: 0}
-  damage: 0
-  defaultDamage: 0
-  finalDirection: {x: 0, y: 0}
+  customMono: {fileID: 0}
   skillDataSOs:
   - {fileID: 11400000, guid: 1c867fbe8b471654dae0b5d9aa81b709, type: 2}
   skillBases: []

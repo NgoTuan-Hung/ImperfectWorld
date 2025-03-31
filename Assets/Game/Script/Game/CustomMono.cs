@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 public enum UpdateDirectionIndicatorPriority {VeryLow = 4, Low = 3, Medium = 2, High = 1, VeryHigh = 0}
+public enum AttackType {Melee, Ranged}
 public class CustomMono : MonoSelfAware, IComparable<CustomMono>
 {
 	public CharUIData charUIData;
@@ -60,6 +61,8 @@ public class CustomMono : MonoSelfAware, IComparable<CustomMono>
 	public Action<CustomMono> nearestEnemyChanged = (person) => {};
 	public Action startPhase1 = () => {};
 	public AudioClip attackAudioClip;
+	public GameObject longRangeProjectilePrefab;
+	public AttackType attackType;
 	public AnimatorWrapper AnimatorWrapper { get => animatorWrapper; set => animatorWrapper = value; }
 	public GameObject MainComponent { get => mainComponent; set => mainComponent = value; }
 	public GameObject DirectionIndicator { get => directionIndicator; set => directionIndicator = value; }
@@ -154,11 +157,13 @@ public class CustomMono : MonoSelfAware, IComparable<CustomMono>
 	public void PauseBot()
 	{
 	    myBotPersonality.pausableScript.pauseFixedUpdate();
+	    movable.pausableScript.resumeFixedUpdate();
 	}
 	
 	public void ResumeBot()
 	{
 	    myBotPersonality.pausableScript.resumeFixedUpdate();
+	    movable.pausableScript.pauseFixedUpdate();
 	}
 	
 	private void FixedUpdate() 

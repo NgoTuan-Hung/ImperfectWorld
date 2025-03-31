@@ -32,8 +32,7 @@ public class Slaughter : SkillBase
 				yield return new WaitForSeconds(cooldown);
 				AddAmmo(1);
 			}
-			
-			yield return new WaitForSeconds(Time.fixedDeltaTime);
+			else yield return new WaitForSeconds(Time.fixedDeltaTime);
 		}
 	}
 

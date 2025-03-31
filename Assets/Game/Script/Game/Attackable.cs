@@ -2,16 +2,13 @@ using System;
 using System.Collections;
 using UnityEngine;
 
-public enum AttackType {Melee, Ranged}
 public class Attackable : SkillBase
 {
 	GameObject attackColliderPrefab;
 	protected static ObjectPool attackColliderPool;
-	public GameObject longRangeProjectilePrefab;
 	protected static ObjectPool longRangeProjectilePool;
 	public float colliderForce = 5f;
 	public Action<Vector2> Attack;
-	public AttackType attackType;
 
 	public override void Awake() 
 	{
@@ -19,18 +16,20 @@ public class Attackable : SkillBase
 		boolHash = Animator.StringToHash("Attack");
 		audioClip = customMono.attackAudioClip;
 		cooldown = defaultCooldown = defaultStateSpeed = 1f;
-		if (attackType == AttackType.Melee) 
+		if (customMono.attackType == AttackType.Melee) 
 		{
 			Attack = MeleeAttack;
 			damage = defaultDamage = 15f;
 			attackColliderPrefab = Resources.Load("AttackCollider") as GameObject;
 			attackColliderPool ??= new ObjectPool(attackColliderPrefab, 100, new PoolArgument(ComponentType.CollideAndDamage, PoolArgument.WhereComponent.Self));
+			botActionManuals.Add(new BotActionManual(ActionUse.MeleeDamage, (direction, location, nextActionChoosingIntervalProposal) => AttackTo(direction, nextActionChoosingIntervalProposal), 0.5f, true, 1));
 		}
 		else 
 		{
 			Attack = RangedAttack;
 			damage = defaultDamage = 10f;
-			longRangeProjectilePool ??= new ObjectPool(longRangeProjectilePrefab, 100, new PoolArgument(ComponentType.GameEffect, PoolArgument.WhereComponent.Self));
+			longRangeProjectilePool ??= new ObjectPool(customMono.longRangeProjectilePrefab, 100, new PoolArgument(ComponentType.GameEffect, PoolArgument.WhereComponent.Self));
+			botActionManuals.Add(new BotActionManual(ActionUse.RangedDamage, (direction, location, nextActionChoosingIntervalProposal) => AttackTo(direction, nextActionChoosingIntervalProposal), 0.5f, true, 1));
 		}
 		
 		AddActionManuals();
@@ -44,8 +43,6 @@ public class Attackable : SkillBase
 	public override void AddActionManuals()
 	{
 		base.AddActionManuals();
-		botActionManuals.Add(new BotActionManual(ActionUse.MeleeDamage, (direction, location, nextActionChoosingIntervalProposal) => AttackTo(direction, nextActionChoosingIntervalProposal), 0.5f, true, 1));
-		botActionManuals.Add(new BotActionManual(ActionUse.RangedDamage, (direction, location, nextActionChoosingIntervalProposal) => AttackTo(direction, nextActionChoosingIntervalProposal), 0.5f, true, 1));
 		botActionManuals.Add(new BotActionManual(ActionUse.Passive, (direction, location, nextActionChoosingIntervalProposal) => Idle(direction, nextActionChoosingIntervalProposal), 0.5f));
 		botActionManuals.Add(new(ActionUse.Roam, (direction, location, nextActionChoosingIntervalProposal) => Idle(direction, nextActionChoosingIntervalProposal), 1f));
 	}
