@@ -76,7 +76,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 1774004605
   m_SortingLayer: 1
-  m_SortingOrder: 1
+  m_SortingOrder: 2
   m_Sprite: {fileID: 6286873415932897513, guid: a8e3618d6b49fbd44b09b587f6a92681, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -166,8 +166,10 @@ MonoBehaviour:
   collideAndDamage: {fileID: 0}
   isTimeline: 1
   flyAtSpeed: 0.03
-  followSlowlyOffset: {x: -0.8, y: 1.5, z: 0}
+  followOffset: {x: -0.8, y: 1.5, z: 0}
   followSlowlyPositionLerpTime: 0.04
+  playSoundOnEnable: 0
+  material: {fileID: 0}
 --- !u!82 &7930190469032888950
 AudioSource:
   m_ObjectHideFlags: 0

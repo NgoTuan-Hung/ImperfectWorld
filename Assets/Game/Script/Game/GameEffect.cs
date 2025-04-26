@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.Playables;
+using Random = UnityEngine.Random;
 
 public class GameEffect : MonoSelfAware
 {
@@ -13,6 +14,7 @@ public class GameEffect : MonoSelfAware
 	public CollideAndDamage collideAndDamage;
 	PlayableDirector playableDirector;
 	public bool isTimeline = false;
+	public bool randomRotation = false;
 	public float flyAtSpeed = 0.03f;
 	Action onEnable = () => {};
 	public Vector3 followOffset = new(-0.8f, 1.5f, 0);
@@ -35,6 +37,7 @@ public class GameEffect : MonoSelfAware
 		
 		if (isTimeline) onEnable += () => playableDirector.Play();
 		if (playSoundOnEnable) onEnable += () => audioSource.Play();
+		if (randomRotation) onEnable += () => transform.Rotate(0, 0, Random.Range(0, 360));
 	}
 
 	private void OnEnable() {

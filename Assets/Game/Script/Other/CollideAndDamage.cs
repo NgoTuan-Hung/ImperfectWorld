@@ -16,7 +16,7 @@ public class CollideAndDamage : MonoSelfAware
 	/// <summary>
 	/// Get customMono from this collision if any.
 	/// </summary>
-	Action<Collider2D> onCollideWithCustomMono = (other) => {};
+	Action<Collider2D> doSomethingIfTargetIsNotAlly = (collider2D) => {};
 	/// <summary>
 	/// After getting customMono from collision, you can do
 	/// any thing with it (add force, etc.)
@@ -28,24 +28,29 @@ public class CollideAndDamage : MonoSelfAware
 	public float pushEnemyOnCollideForce = 1f;
 	public bool deactivateOnCollide = false;
 	public bool spawnEffectOnCollide = false;
-	public GameObject collisionEffectPrefab;
-	static ObjectPool collisionEffectPool;
+	public CollisionEffectPool collisionEffectPoolType;
+	public ObjectPool collisionEffectPool;
 	public override void Awake() 
 	{
 		base.Awake();
 		if (collideType == CollideType.Single)
 		{	
+			doSomethingIfTargetIsNotAlly = (other) => 
+			{
+			    /* Since parent will have customMono, not this */
+				CustomMono customMono = GameManager.Instance.GetCustomMono(other.transform.parent.gameObject);
+				if (customMono != null) 
+				{
+					customMono.stat.Health -= collideDamage;
+					doSomethingWithCustomMonoAfterCollide(customMono, other);
+				}
+			};
+			
 			onTriggerEnter2D = (Collider2D other) => 
 			{
 				if (!allyTags.Contains(other.transform.parent.tag))
 				{
-					/* Since parent will have customMono, not this */
-					CustomMono customMono = GameManager.Instance.GetCustomMono(other.transform.parent.gameObject);
-					if (customMono != null) 
-					{
-						customMono.stat.Health -= collideDamage;
-						doSomethingWithCustomMonoAfterCollide(customMono, other);
-					}
+					doSomethingIfTargetIsNotAlly(other);
 				}
 			};
 			
@@ -85,17 +90,7 @@ public class CollideAndDamage : MonoSelfAware
 				}
 			}
 			
-			if (spawnEffectOnCollide)
-			{
-				collisionEffectPool ??= new ObjectPool(collisionEffectPrefab, 100, new PoolArgument(ComponentType.GameEffect, PoolArgument.WhereComponent.Self));
-				doSomethingWithCustomMonoAfterCollide += (customMono, collider2D) => 
-				{
-					GameEffect collisionEffect = collisionEffectPool.PickOne().gameEffect;
-					collisionEffect.transform.position = transform.position;
-				};
-			}
-			
-			if (deactivateOnCollide) onTriggerEnter2D += (collider2D) => deactivate();
+			if (deactivateOnCollide) doSomethingIfTargetIsNotAlly += (collider2D) => deactivate();
 		}
 		else
 		{
@@ -116,12 +111,14 @@ public class CollideAndDamage : MonoSelfAware
 							{
 								customMono.multipleCollideTimersDict[GetHashCode()].currentTime = multipleCollideInterval;
 								customMono.stat.Health -= collideDamage;
+								doSomethingWithCustomMonoAfterCollide(customMono, other);
 							}
 						}
 						catch (KeyNotFoundException)
 						{
 							customMono.AddMultipleCollideTimer(GetHashCode(), multipleCollideInterval);
 							customMono.stat.Health -= collideDamage;
+							doSomethingWithCustomMonoAfterCollide(customMono, other);
 						}
 					}
 				}	
@@ -143,6 +140,16 @@ public class CollideAndDamage : MonoSelfAware
 			collisionEffectPool = null;
 		};
 		#endif
+		
+		if (spawnEffectOnCollide)
+		{
+			collisionEffectPool = GameManager.Instance.GetCollisionEffectPool(collisionEffectPoolType);
+			doSomethingWithCustomMonoAfterCollide += (customMono, collider2D) => 
+			{
+				GameEffect collisionEffect = collisionEffectPool.PickOne().gameEffect;
+				collisionEffect.transform.position = customMono.firePoint.transform.position;
+			};
+		}
 	}
 
 	

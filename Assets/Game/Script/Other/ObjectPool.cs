@@ -113,6 +113,23 @@ public class ObjectPool
 
 		return null;
 	}
+	
+	public PoolObject PickOne(Action<PoolObject> initAction)
+	{
+		for (int i=0;i<pool.Count;i++)
+		{
+			if (!pool[i].gameObject.activeSelf)
+			{
+				initAction(pool[i]);
+				pool[i].gameObject.SetActive(true);
+				currentActive++;
+				GrowChecker();
+				return pool[i];
+			}
+		}
+
+		return null;
+	}
 
 	public List<PoolObject> Pick(int n)
 	{

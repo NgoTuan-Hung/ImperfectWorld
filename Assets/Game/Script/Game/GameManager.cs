@@ -5,6 +5,8 @@ using System.Linq;
 using Unity.Cinemachine;
 using UnityEngine;
 
+public enum CollisionEffectPool {MoonSlashExplode, MagicLaserImpact, SlaughterExplosion, StrongDudePunchImpact
+, SamuraiSlash, LaterDecide}
 public class GameManager : MonoSingleton<GameManager>
 {
 	public readonly int attackButtonScrollViewIndex = 7;
@@ -27,6 +29,7 @@ public class GameManager : MonoSingleton<GameManager>
 	public CinemachineCamera cinemachineCamera;
 	Dictionary<int, CharData> charDataDict = new();
 	CharData currentControlledCharData;
+	public Dictionary<CollisionEffectPool, ObjectPool> collisionEffectPoolDict = new();
 
 	public void InitializeControllableCharacter(CustomMono p_customMono)
 	{
@@ -68,6 +71,23 @@ public class GameManager : MonoSingleton<GameManager>
 			spawnChances.Add(0);
 			spawnCumulativeDistribution.Add(0);
 		}
+		
+		InitAllCollisionEffectPools();
+	}
+	
+	void InitAllCollisionEffectPools()
+	{
+		collisionEffectPoolDict.Add(CollisionEffectPool.MoonSlashExplode, new(Resources.Load("MoonSlashExplode") as GameObject, 100, new PoolArgument(ComponentType.GameEffect, PoolArgument.WhereComponent.Self)));
+		collisionEffectPoolDict.Add(CollisionEffectPool.MagicLaserImpact, new(Resources.Load("MagicLaserImpact") as GameObject, 100, new PoolArgument(ComponentType.GameEffect, PoolArgument.WhereComponent.Self)));
+		collisionEffectPoolDict.Add(CollisionEffectPool.SlaughterExplosion, new(Resources.Load("SlaughterExplosion") as GameObject, 100, new PoolArgument(ComponentType.GameEffect, PoolArgument.WhereComponent.Self)));
+		collisionEffectPoolDict.Add(CollisionEffectPool.StrongDudePunchImpact, new(Resources.Load("StrongDudePunchImpact") as GameObject, 100, new PoolArgument(ComponentType.GameEffect, PoolArgument.WhereComponent.Self)));
+		collisionEffectPoolDict.Add(CollisionEffectPool.SamuraiSlash, new(Resources.Load("SamuraiSlash") as GameObject, 100, new PoolArgument(ComponentType.GameEffect, PoolArgument.WhereComponent.Self)));
+		collisionEffectPoolDict.Add(CollisionEffectPool.LaterDecide, null);
+	}
+	
+	public ObjectPool GetCollisionEffectPool(CollisionEffectPool p_collisionEffectPool)
+	{
+		return collisionEffectPoolDict[p_collisionEffectPool];
 	}
 	
 	private void Start() 

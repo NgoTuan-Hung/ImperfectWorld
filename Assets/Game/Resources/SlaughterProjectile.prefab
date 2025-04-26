@@ -75,7 +75,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 1774004605
   m_SortingLayer: 1
-  m_SortingOrder: 1
+  m_SortingOrder: 2
   m_Sprite: {fileID: -6012591537415135409, guid: 97819266c544523448ea227c3fdd4e9b, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -332,8 +332,10 @@ MonoBehaviour:
   collideAndDamage: {fileID: 0}
   isTimeline: 0
   flyAtSpeed: 0.4
-  followSlowlyOffset: {x: -0.8, y: 1.5, z: 0}
+  followOffset: {x: -0.8, y: 1.5, z: 0}
   followSlowlyPositionLerpTime: 0.04
+  playSoundOnEnable: 0
+  material: {fileID: 0}
 --- !u!114 &7411857626235740854
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -350,6 +352,9 @@ MonoBehaviour:
   collideType: 0
   collideDamage: 1
   multipleCollideInterval: 0.05
+  pushEnemyOnCollide: 0
+  pushEnemyOnCollideType: 0
+  pushEnemyOnCollideForce: 1
   deactivateOnCollide: 1
   spawnEffectOnCollide: 1
-  collisionEffectPrefab: {fileID: 7282093002630404119, guid: a2674fdadf458044fb766b01c92c99a3, type: 3}
+  collisionEffectPoolType: 2

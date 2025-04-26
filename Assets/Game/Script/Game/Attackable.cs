@@ -107,7 +107,11 @@ public class Attackable : SkillBase
 		customMono.stat.MoveSpeed = customMono.stat.actionMoveSpeedReduced;
 		customMono.audioSource.PlayOneShot(audioClip);
 		customMono.SetUpdateDirectionIndicator(attackDirection, UpdateDirectionIndicatorPriority.Low);
-		CollideAndDamage attackCollider = attackColliderPool.PickOne().collideAndDamage;
+		CollideAndDamage attackCollider = attackColliderPool.PickOne(po => 
+		{
+			if (GameManager.Instance.GetCollisionEffectPool(customMono.meleeCollisionEP) == null) print("null in pick one action");
+		    po.collideAndDamage.collisionEffectPool = GameManager.Instance.GetCollisionEffectPool(customMono.meleeCollisionEP);
+		}).collideAndDamage;
 		attackCollider.allyTags = customMono.allyTags;
 		attackCollider.transform.position = customMono.firePoint.transform.position;
 		attackCollider.collideDamage = damage;

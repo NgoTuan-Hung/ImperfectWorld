@@ -832,7 +832,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &581064773
 Transform:
   m_ObjectHideFlags: 0
@@ -898,6 +898,7 @@ MonoBehaviour:
   currentNearestEnemy: {fileID: 0}
   rigidbody2D: {fileID: 0}
   attackAudioClip: {fileID: 8300000, guid: 1831f3e85531e554081da581aac0d078, type: 3}
+  meleeCollisionEP: 0
   longRangeProjectilePrefab: {fileID: 5511748905245391040, guid: 9ce78d66033289e40a990eb757d8819c, type: 3}
   attackType: 1
 --- !u!114 &581064776
@@ -1864,6 +1865,7 @@ MonoBehaviour:
   currentNearestEnemy: {fileID: 0}
   rigidbody2D: {fileID: 0}
   attackAudioClip: {fileID: 8300000, guid: 1614f5e1bf42b054ca0b933399c6264e, type: 3}
+  meleeCollisionEP: 3
   longRangeProjectilePrefab: {fileID: 0}
   attackType: 0
 --- !u!114 &889364761
@@ -2419,6 +2421,10 @@ PrefabInstance:
     - target: {fileID: -2253911629886400664, guid: 826642e533789a64fb7a7e04e271d1d4, type: 3}
       propertyPath: m_Name
       value: magic-laser-impact
+      objectReference: {fileID: 0}
+    - target: {fileID: -2253911629886400664, guid: 826642e533789a64fb7a7e04e271d1d4, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3626916397498700004, guid: 826642e533789a64fb7a7e04e271d1d4, type: 3}
       propertyPath: m_SortingLayer
@@ -8018,6 +8024,7 @@ MonoBehaviour:
   currentNearestEnemy: {fileID: 0}
   rigidbody2D: {fileID: 0}
   attackAudioClip: {fileID: 0}
+  meleeCollisionEP: 0
   longRangeProjectilePrefab: {fileID: 0}
   attackType: 0
 --- !u!114 &1582844846
@@ -8555,7 +8562,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1640536888
 Transform:
   m_ObjectHideFlags: 0
@@ -78371,7 +78378,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &2059840846
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -78446,6 +78453,7 @@ MonoBehaviour:
   currentNearestEnemy: {fileID: 0}
   rigidbody2D: {fileID: 0}
   attackAudioClip: {fileID: 8300000, guid: 118b9b5bd2015ec4abe7777d825907c5, type: 3}
+  meleeCollisionEP: 4
   longRangeProjectilePrefab: {fileID: 0}
   attackType: 0
 --- !u!114 &2059840849
@@ -79209,7 +79217,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &4187189810493876642
 Transform:
   m_ObjectHideFlags: 0
@@ -79285,6 +79293,71 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 1
+--- !u!1001 &4292278948507952292
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 19316051145377854, guid: 73aea90672967f4459fd7e03c6913d27, type: 3}
+      propertyPath: m_Name
+      value: MagicLaserImpact
+      objectReference: {fileID: 0}
+    - target: {fileID: 19316051145377854, guid: 73aea90672967f4459fd7e03c6913d27, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3188304014552707516, guid: 73aea90672967f4459fd7e03c6913d27, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 5.8232613
+      objectReference: {fileID: 0}
+    - target: {fileID: 3188304014552707516, guid: 73aea90672967f4459fd7e03c6913d27, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -2.855009
+      objectReference: {fileID: 0}
+    - target: {fileID: 3188304014552707516, guid: 73aea90672967f4459fd7e03c6913d27, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -0.023645189
+      objectReference: {fileID: 0}
+    - target: {fileID: 3188304014552707516, guid: 73aea90672967f4459fd7e03c6913d27, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3188304014552707516, guid: 73aea90672967f4459fd7e03c6913d27, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3188304014552707516, guid: 73aea90672967f4459fd7e03c6913d27, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3188304014552707516, guid: 73aea90672967f4459fd7e03c6913d27, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3188304014552707516, guid: 73aea90672967f4459fd7e03c6913d27, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3188304014552707516, guid: 73aea90672967f4459fd7e03c6913d27, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3188304014552707516, guid: 73aea90672967f4459fd7e03c6913d27, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7989121492639908765, guid: 73aea90672967f4459fd7e03c6913d27, type: 3}
+      propertyPath: m_Volume
+      value: 1
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 73aea90672967f4459fd7e03c6913d27, type: 3}
 --- !u!212 &4536227429245879398
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -79819,6 +79892,7 @@ MonoBehaviour:
   currentNearestEnemy: {fileID: 0}
   rigidbody2D: {fileID: 0}
   attackAudioClip: {fileID: 8300000, guid: 6eb5c4290eb5f1e45a1f6b9581ca1351, type: 3}
+  meleeCollisionEP: 0
   longRangeProjectilePrefab: {fileID: 0}
   attackType: 0
 --- !u!82 &7285419098741409367
@@ -80240,3 +80314,4 @@ SceneRoots:
   - {fileID: 69357795}
   - {fileID: 1640536888}
   - {fileID: 1020570580}
+  - {fileID: 4292278948507952292}

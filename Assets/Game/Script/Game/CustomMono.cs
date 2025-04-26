@@ -61,6 +61,7 @@ public class CustomMono : MonoSelfAware, IComparable<CustomMono>
 	public Action<CustomMono> nearestEnemyChanged = (person) => {};
 	public Action startPhase1 = () => {};
 	public AudioClip attackAudioClip;
+	public CollisionEffectPool meleeCollisionEP;
 	public GameObject longRangeProjectilePrefab;
 	public AttackType attackType;
 	public AnimatorWrapper AnimatorWrapper { get => animatorWrapper; set => animatorWrapper = value; }
