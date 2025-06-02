@@ -57,5 +57,11 @@
         "Temp/": true
     },
     "dotnet.defaultSolution": "LastDevotion.sln",
-    "dotnet.dotnetPath": ""
+    "dotnet.dotnetPath": "",
+    "editor.formatOnSave": true,
+    // Enable per-language
+    "[csharp]": {
+        "editor.formatOnSave": true
+    },
+    "csharpier.enableDiagnostics": false
 }

@@ -271,11 +271,14 @@ MonoBehaviour:
   deactivateTime: 2.5
   collideAndDamage: {fileID: 0}
   isTimeline: 1
+  randomRotation: 0
   flyAtSpeed: 0.03
   followOffset: {x: -0.8, y: 1.5, z: 0}
   followSlowlyPositionLerpTime: 0.04
   playSoundOnEnable: 0
   material: {fileID: 0}
+  effectLocalPosition: {x: 0, y: 0, z: 0}
+  effectLocalRotation: {x: 0, y: 0, z: 0}
 --- !u!114 &5040749699347002923
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -289,10 +292,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rigidbody2D: {fileID: 0}
-  collideType: 0
+  collideType: 1
   collideDamage: 1
   multipleCollideInterval: 0.05
-  pushEnemyOnCollide: 0
+  oneTimeContactInteraction: 0
   pushEnemyOnCollideType: 0
   pushEnemyOnCollideForce: 1
   deactivateOnCollide: 0

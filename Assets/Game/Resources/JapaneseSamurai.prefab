@@ -27,12 +27,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 950654642684143603}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 5657838144334427520}
+  m_Father: {fileID: 1092173532942655284}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &7290409365756244952
 SpriteRenderer:
@@ -131,6 +131,10 @@ MonoBehaviour:
   endSummon: 0
   endSlaughter: 0
   endRelease: 0
+  bladeOfMinhKhaiSpawnSlash: 0
+  endBladeOfMinhKhai: 0
+  skill2AnimSignal: 0
+  skill2AnimEnd: 0
 --- !u!1 &6724394765168942705
 GameObject:
   m_ObjectHideFlags: 0
@@ -151,6 +155,7 @@ GameObject:
   - component: {fileID: 3208730866302124916}
   - component: {fileID: 174785206889056126}
   - component: {fileID: 2960810705961976147}
+  - component: {fileID: 1319466979024103620}
   m_Layer: 0
   m_Name: JapaneseSamurai
   m_TagString: GameBot
@@ -171,11 +176,12 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 5117829310125784078}
+  - {fileID: 1092173532942655284}
   - {fileID: 5891581943596536188}
   - {fileID: 350998341640245772}
   - {fileID: 8632124364954103591}
   - {fileID: 6262962445507342458}
+  - {fileID: 7930066316891495982}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!61 &503388096382920182
@@ -362,6 +368,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   charUIData: {fileID: 0}
   isControllable: 0
+  spriteRenderer: {fileID: 0}
   animationEventFunctionCaller: {fileID: 0}
   movable: {fileID: 0}
   movementIntelligence: {fileID: 0}
@@ -383,6 +390,11 @@ MonoBehaviour:
   meleeCollisionEP: 4
   longRangeProjectilePrefab: {fileID: 0}
   attackType: 0
+  statusEffect: {fileID: 0}
+  rotationObject: {fileID: 0}
+  directionModifier: {fileID: 0}
+  currentAction: {fileID: 0}
+  currentMovementAction: {fileID: 0}
 --- !u!114 &5776027955895354842
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -408,6 +420,7 @@ MonoBehaviour:
   maxAmmo: 0
   currentAmmo: 0
   modifiedAngle: 0
+  lifeStealPercent: 0
   moveVector: {x: 0, y: 0}
 --- !u!114 &7023779683548498420
 MonoBehaviour:
@@ -467,6 +480,8 @@ MonoBehaviour:
   customMono: {fileID: 0}
   skillDataSOs:
   - {fileID: 11400000, guid: 1c867fbe8b471654dae0b5d9aa81b709, type: 2}
+  - {fileID: 11400000, guid: a6be81b4acc301b47a926883a9f47ade, type: 2}
+  - {fileID: 11400000, guid: ce0123f1849375d49a041c6c87aa546c, type: 2}
   skillBases: []
 --- !u!114 &174785206889056126
 MonoBehaviour:
@@ -510,6 +525,94 @@ MonoBehaviour:
   logicalAttackRange: 1.5
   targetTooCloseRange: 1
   myBotCombatBehaviour: 0
+--- !u!114 &1319466979024103620
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6724394765168942705}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a63a8151e01a0154ab9cdc918dc10e96, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  customMono: {fileID: 0}
+  osTime: 0
+  damp: 0.5
+  speed: 10
+  scaleRange: 0.25
+  frequency: 3
+  damageDuration: 0.25
+  elementalEffectDuration: 0.2
+  elementalEffectColor: {r: 1, g: 0, b: 0, a: 1}
+  ccImmune: 0
+  knockUpInitialVelocity: 1.5
+  knockUpVelocity: 0
+  knockUpAcceleration: -10
+--- !u!1 &6851067741467719600
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7930066316891495982}
+  m_Layer: 0
+  m_Name: RotationObject
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7930066316891495982
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6851067741467719600}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0.92, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 5657838144334427520}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &8463561500055322668
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1092173532942655284}
+  m_Layer: 0
+  m_Name: DirectionModifier
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1092173532942655284
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8463561500055322668}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 5117829310125784078}
+  m_Father: {fileID: 5657838144334427520}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &212338356949317885
 PrefabInstance:
   m_ObjectHideFlags: 0

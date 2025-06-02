@@ -125,12 +125,12 @@ MonoBehaviour:
   collideType: 0
   collideDamage: 30
   multipleCollideInterval: 0.05
-  pushEnemyOnCollide: 1
+  oneTimeContactInteraction: 1
   pushEnemyOnCollideType: 1
   pushEnemyOnCollideForce: 10
   deactivateOnCollide: 0
   spawnEffectOnCollide: 0
-  collisionEffectPrefab: {fileID: 0}
+  collisionEffectPoolType: 0
 --- !u!114 &3969138697338393212
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -149,11 +149,14 @@ MonoBehaviour:
   deactivateTime: 1
   collideAndDamage: {fileID: 0}
   isTimeline: 0
+  randomRotation: 0
   flyAtSpeed: 0.4
   followOffset: {x: -0.8, y: 1.5, z: 0}
   followSlowlyPositionLerpTime: 0.04
   playSoundOnEnable: 0
   material: {fileID: 0}
+  effectLocalPosition: {x: 0, y: 0, z: 0}
+  effectLocalRotation: {x: 0, y: 0, z: 0}
 --- !u!1 &5640792266938537379
 GameObject:
   m_ObjectHideFlags: 0

@@ -1,0 +1,21 @@
+OntriggerEnter2D
+    onTriggerEnter2D(other)
+
+onTriggerEnter2D(other)
+    if (other.transform.parent != null)
+        CustomMono customMono = GameManager.Instance.GetCustomMono(
+            other.transform.parent.gameObject
+        );
+        if (customMono != null)
+        {
+            doSomethingWithCustomMonoAfterCollide(customMono, other);
+        }
+
+
+    if (!allyTags.Contains(other.transform.parent.tag))
+    {
+        doSomethingIfTargetIsNotAlly(other);
+    }
+
+    /* Since parent will have customMono, not this */
+    

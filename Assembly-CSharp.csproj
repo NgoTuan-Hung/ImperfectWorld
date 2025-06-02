@@ -59,7 +59,7 @@
     <UnityVersion>6000.0.30f1</UnityVersion>
   </PropertyGroup>
   <ItemGroup>
-    <Analyzer Include="C:\Users\ADMIN88\.vscode\extensions\visualstudiotoolsforunity.vstuc-1.1.1\Analyzers\Microsoft.Unity.Analyzers.dll" />
+    <Analyzer Include="C:\Users\ADMIN88\.vscode\extensions\visualstudiotoolsforunity.vstuc-1.1.2\Analyzers\Microsoft.Unity.Analyzers.dll" />
     <Analyzer Include="D:\Program\unity\Editor\6000.0.30f1\Editor\Data\Tools\Unity.SourceGenerators\Unity.SourceGenerators.dll" />
     <Analyzer Include="D:\Program\unity\Editor\6000.0.30f1\Editor\Data\Tools\Unity.SourceGenerators\Unity.Properties.SourceGenerator.dll" />
     <Analyzer Include="D:\Program\unity\Editor\6000.0.30f1\Editor\Data\Tools\Unity.SourceGenerators\Unity.UIToolkit.SourceGenerator.dll" />
@@ -68,9 +68,11 @@
     <Compile Include="Assets\Game\Script\Game\CustomMono.cs" />
     <Compile Include="Assets\Game\Script\Game\ActionIntelligence.cs" />
     <Compile Include="Assets\Game\Script\UI\Other\ItemUIInfo.cs" />
+    <Compile Include="Assets\Game\Script\Ability\BladeOfPhong.cs" />
     <Compile Include="Assets\Game\Script\Game\Skill.cs" />
     <Compile Include="Assets\Game\Script\Ability\AirRollSkill.cs" />
     <Compile Include="Assets\Game\Script\UI\UIRenderer\TestVisualElement.cs" />
+    <Compile Include="Assets\Test\BladeOfPhong\Target.cs" />
     <Compile Include="Assets\Game\Script\Other\CharData.cs" />
     <Compile Include="Assets\Game\Script\UI\Extension\TouchExtension.cs" />
     <Compile Include="Assets\Game\Script\Other\PoolArgument.cs" />
@@ -84,6 +86,7 @@
     <Compile Include="Assets\Game\Script\UI\Other\VisualElementExtension.cs" />
     <Compile Include="Assets\Game\Script\UI\Model\RadialProgress.cs" />
     <Compile Include="Assets\Game\Script\Game\BotActionManual.cs" />
+    <Compile Include="Assets\Game\Script\Ability\BladeOfMinhKhai.cs" />
     <Compile Include="Assets\Game\Script\UI\UIRenderer\CustomProgressUI.cs" />
     <Compile Include="Assets\Game\Script\Ability\Slaughter.cs" />
     <Compile Include="Assets\Game\Script\Game\GameEffect.cs" />
@@ -96,15 +99,19 @@
     <Compile Include="Assets\Game\Script\Game\SpawnEnemyInfo.cs" />
     <Compile Include="Assets\Game\Script\UI\UIRenderer\TestVisualElementVectorApi.cs" />
     <Compile Include="Assets\Game\Script\Other\PoolObject.cs" />
+    <Compile Include="Assets\Test\JapaneseSamuraiDash\EffectTest.cs" />
     <Compile Include="Assets\Game\Script\UI\View\CharInfoView.cs" />
     <Compile Include="Assets\Game\Script\Other\MultipleCollideTimer.cs" />
     <Compile Include="Assets\Game\Script\UI\UIRenderer\HealthUI.cs" />
     <Compile Include="Assets\Game\Script\UI\View\IndividualView.cs" />
     <Compile Include="Assets\Cainos\Pixel Art Top Down - Basic\Script\CameraFollow.cs" />
+    <Compile Include="Assets\Test\BladeOfPhong\BladeOfPhongTest.cs" />
     <Compile Include="Assets\Game\Script\UI\Model\CharInfoMenuItem.cs" />
+    <Compile Include="Assets\Test\OrderOfExecution\OrderOfExecutionTest.cs" />
     <Compile Include="Assets\Game\Script\Game\MyBotPersonality.cs" />
     <Compile Include="Assets\Cainos\Pixel Art Top Down - Basic\Script\TopDownCharacterController.cs" />
     <Compile Include="Assets\Game\Script\UI\UIRenderer\Shadow.cs" />
+    <Compile Include="Assets\Test\BladeOfVu\SpriteList.cs" />
     <Compile Include="Assets\Game\Script\Ability\Scatter.cs" />
     <Compile Include="Assets\Game\Script\Game\MovementIntelligence.cs" />
     <Compile Include="Assets\Game\Script\UI\Extension\VectorExtension.cs" />
@@ -118,6 +125,7 @@
     <Compile Include="Assets\Game\Script\Game\AnimatorWrapper.cs" />
     <Compile Include="Assets\Game\Script\Other\MonoSingleton.cs" />
     <Compile Include="Assets\Game\Script\UI\Other\TouchInfo.cs" />
+    <Compile Include="Assets\Test\JapaneseSamuraiDash\EasingFunctions.cs" />
     <Compile Include="Assets\TutorialInfo\Scripts\Readme.cs" />
     <Compile Include="Assets\Game\Script\Other\ActionWaitInfo.cs" />
     <Compile Include="Assets\Cainos\Pixel Art Top Down - Basic\Script\PropsAltar.cs" />
@@ -127,7 +135,9 @@
     <Compile Include="Assets\Game\Script\Game\Attackable.cs" />
     <Compile Include="Assets\Game\Script\UI\Other\UsableSlotUIInfo.cs" />
     <Compile Include="Assets\Game\Script\Game\AnimationEventFunctionCaller.cs" />
+    <Compile Include="Assets\Test\BladeOfVu\BladeOfVu.cs" />
     <Compile Include="Assets\Game\Script\UI\UIRenderer\HealthInnerUI.cs" />
+    <Compile Include="Assets\Test\JapaneseSamuraiDash\JSD.cs" />
     <Compile Include="Assets\Game\Script\UI\View\ConfigView.cs" />
     <Compile Include="Assets\Bot.cs" />
     <Compile Include="Assets\Cainos\Pixel Art Top Down - Basic\Script\LayerTrigger.cs" />
@@ -147,6 +157,7 @@
     <Compile Include="Assets\Game\Script\UI\Model\ConfigMenuItem.cs" />
     <Compile Include="Assets\Game\Script\Other\MonoEditor.cs" />
     <Compile Include="Assets\Game\Script\UI\Model\ConfigData.cs" />
+    <Compile Include="Assets\Game\Script\Game\StatusEffect.cs" />
     <Compile Include="Assets\Game\Script\Other\ActionWrapper.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -157,6 +168,8 @@
     <None Include="Assets\Game\Graphics\UIToolkit\Uxml\StatInspector.uxml" />
     <None Include="Assets\Cainos\Pixel Art Top Down - Basic\Shader\SH Sprite Shadow.shader" />
     <None Include="Assets\Game\Graphics\Aseprite\Char\StrongDude\file_rename.bat.txt" />
+    <None Include="Assets\Game\Script\Note\note1.txt" />
+    <None Include="Assets\Game\Script\Note\note0.txt" />
     <None Include="Assets\Cainos\Pixel Art Top Down - Basic\Shader\SH Sprite Shadow Mask.shader" />
     <None Include="Assets\Game\Graphics\UIToolkit\Uxml\BotAttack.uxml" />
     <None Include="Assets\Game\Graphics\UIToolkit\RadialHealthBarV2.uss" />

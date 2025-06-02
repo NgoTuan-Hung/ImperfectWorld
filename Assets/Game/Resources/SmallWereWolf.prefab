@@ -1,5 +1,68 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &1943196740875977301
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6859039121549511119}
+  m_Layer: 0
+  m_Name: DirectionModifier
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6859039121549511119
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1943196740875977301}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 2129905480038813454}
+  m_Father: {fileID: 4468871745547625666}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &2061916804737152521
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6113342243077292882}
+  m_Layer: 0
+  m_Name: RotationObject
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6113342243077292882
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2061916804737152521}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 4468871745547625666}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &5580088664569178311
 GameObject:
   m_ObjectHideFlags: 0
@@ -20,6 +83,7 @@ GameObject:
   - component: {fileID: 6850801859896376396}
   - component: {fileID: 2269821151111376722}
   - component: {fileID: 6848865928279838711}
+  - component: {fileID: -3489266171053784501}
   m_Layer: 0
   m_Name: SmallWereWolf
   m_TagString: Werewolf
@@ -40,11 +104,12 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 2129905480038813454}
+  - {fileID: 6859039121549511119}
   - {fileID: 1623687010155741483}
   - {fileID: 3803223434051336569}
   - {fileID: 4114267480396528036}
   - {fileID: 5621426448393391338}
+  - {fileID: 6113342243077292882}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!61 &2464397778208983657
@@ -254,6 +319,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   charUIData: {fileID: 0}
   isControllable: 0
+  spriteRenderer: {fileID: 0}
   animationEventFunctionCaller: {fileID: 0}
   movable: {fileID: 0}
   movementIntelligence: {fileID: 0}
@@ -272,7 +338,14 @@ MonoBehaviour:
   currentNearestEnemy: {fileID: 0}
   rigidbody2D: {fileID: 0}
   attackAudioClip: {fileID: 8300000, guid: 6eb5c4290eb5f1e45a1f6b9581ca1351, type: 3}
+  meleeCollisionEP: 0
   longRangeProjectilePrefab: {fileID: 0}
+  attackType: 0
+  statusEffect: {fileID: 0}
+  rotationObject: {fileID: 0}
+  directionModifier: {fileID: 0}
+  currentAction: {fileID: 0}
+  currentMovementAction: {fileID: 0}
 --- !u!114 &7087241945076126526
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -311,6 +384,7 @@ MonoBehaviour:
   maxAmmo: 0
   currentAmmo: 0
   modifiedAngle: 0
+  lifeStealPercent: 0
   moveVector: {x: 0, y: 0}
 --- !u!114 &3207908059648686886
 MonoBehaviour:
@@ -378,6 +452,31 @@ MonoBehaviour:
   logicalAttackRange: 1
   targetTooCloseRange: 1
   myBotCombatBehaviour: 0
+--- !u!114 &-3489266171053784501
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5580088664569178311}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a63a8151e01a0154ab9cdc918dc10e96, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  customMono: {fileID: 0}
+  osTime: 0
+  damp: 0.5
+  speed: 10
+  scaleRange: 0.25
+  frequency: 3
+  damageDuration: 0.25
+  elementalEffectDuration: 0.2
+  elementalEffectColor: {r: 1, g: 0, b: 0, a: 1}
+  ccImmune: 0
+  knockUpInitialVelocity: 1.5
+  knockUpVelocity: 0
+  knockUpAcceleration: -10
 --- !u!1 &9135710082037165214
 GameObject:
   m_ObjectHideFlags: 0
@@ -410,7 +509,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 4468871745547625666}
+  m_Father: {fileID: 6859039121549511119}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &7805439507149266856
 SpriteRenderer:
@@ -509,6 +608,10 @@ MonoBehaviour:
   endSummon: 0
   endSlaughter: 0
   endRelease: 0
+  bladeOfMinhKhaiSpawnSlash: 0
+  endBladeOfMinhKhai: 0
+  skill2AnimSignal: 0
+  skill2AnimEnd: 0
 --- !u!1001 &2336400165070275671
 PrefabInstance:
   m_ObjectHideFlags: 0
