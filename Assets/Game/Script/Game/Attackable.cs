@@ -258,6 +258,7 @@ public class Attackable : SkillBase
         base.ActionInterrupt();
         customMono.stat.SetDefaultMoveSpeed();
         customMono.actionBlocking = false;
+        ToggleAnim(boolHash, false);
         StopCoroutine(actionIE);
         customMono.animationEventFunctionCaller.endAttack = false;
         customMono.animationEventFunctionCaller.attack = false;

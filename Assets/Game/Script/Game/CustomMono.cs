@@ -68,7 +68,7 @@ public class CustomMono : MonoSelfAware, IComparable<CustomMono>
         combatCollision,
         firePoint;
     public List<CustomMono> enemiesWeSee = new();
-    BoxCollider2D boxCollider2D,
+    public BoxCollider2D boxCollider2D,
         combatCollider2D;
     float boxColliderDefaultXSize,
         directionIndicationDefaultScale,

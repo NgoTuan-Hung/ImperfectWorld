@@ -1,15 +1,17 @@
 using System.Collections;
 using UnityEngine;
 
-public class BladeOfVu : MonoBehaviour
+public class BladeOfVuTest : MonoBehaviour
 {
     SpriteRenderer spriteRenderer;
     public SpriteList spriteList;
     public GameObject slash;
+    GameObject starLocalPos;
 
     private void Awake()
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
+        starLocalPos = transform.Find("StarLocalPos").gameObject;
     }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -24,9 +26,14 @@ public class BladeOfVu : MonoBehaviour
     public float changeSpriteInterval = 0.1f;
     public float blinkRange = 4f;
     public GameObject ghostPrefab;
+    public GameObject star;
 
     IEnumerator BOVIE()
     {
+        star.SetActive(true);
+        star.transform.position = transform.TransformPoint(starLocalPos.transform.localPosition);
+        yield return new WaitForSeconds(0.33f);
+
         int currentSpriteSwap = 0;
         Sprite original = spriteRenderer.sprite;
         spriteRenderer.sprite = null;

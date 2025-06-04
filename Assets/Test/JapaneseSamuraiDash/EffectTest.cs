@@ -10,6 +10,13 @@ public enum CollisionType
     Multiple,
 }
 
+public enum LifeEndAction
+{
+    Destroy,
+    Deactivate,
+    None,
+}
+
 public class EffectTest : MonoBehaviour
 {
     Animator animator;
@@ -22,8 +29,8 @@ public class EffectTest : MonoBehaviour
     public bool knockUpOnCollide = false;
     public float travelDuration = 1f,
         travelSpeed = 16f;
-    public bool isDeactivatedAfterTime = false;
-    public float deactivateAfter = 0;
+    public LifeEndAction lifeEndAction = LifeEndAction.None;
+    public float lifeDuration = 0;
     Action onEnable = () => { };
     public AnimationCurve matPropOverTime;
     public bool changeMatPropOverTime;
@@ -32,8 +39,21 @@ public class EffectTest : MonoBehaviour
 
     private void Awake()
     {
-        if (isDeactivatedAfterTime)
-            onEnable += () => StartCoroutine(DeactivateAfterTimeIE());
+        switch (lifeEndAction)
+        {
+            case LifeEndAction.Destroy:
+            {
+                onEnable += () => StartCoroutine(DestroyAfterTimeIE());
+                break;
+            }
+            case LifeEndAction.Deactivate:
+            {
+                onEnable += () => StartCoroutine(DeactivateAfterTimeIE());
+                break;
+            }
+            default:
+                break;
+        }
 
         if ((spriteRenderer = GetComponent<SpriteRenderer>()) == null)
             spriteRenderer = GetComponentInChildren<SpriteRenderer>();
@@ -46,6 +66,8 @@ public class EffectTest : MonoBehaviour
     void Start()
     {
         animator = GetComponent<Animator>();
+        if (animator == null)
+            animator = GetComponentInChildren<Animator>();
 
         if (spawnEffectOnCollide)
         {
@@ -87,8 +109,14 @@ public class EffectTest : MonoBehaviour
 
     IEnumerator DeactivateAfterTimeIE()
     {
-        yield return new WaitForSeconds(deactivateAfter);
+        yield return new WaitForSeconds(lifeDuration);
         gameObject.SetActive(false);
+    }
+
+    IEnumerator DestroyAfterTimeIE()
+    {
+        yield return new WaitForSeconds(lifeDuration);
+        Destroy(gameObject);
     }
 
     void ChangeMatPropOverTime()
@@ -103,7 +131,7 @@ public class EffectTest : MonoBehaviour
         {
             spriteRenderer.material.SetFloat(
                 matPropName,
-                matPropOverTime.Evaluate(currentTime / deactivateAfter)
+                matPropOverTime.Evaluate(currentTime / lifeDuration)
             );
             yield return new WaitForSeconds(Time.fixedDeltaTime);
             currentTime += Time.fixedDeltaTime;

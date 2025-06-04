@@ -120,9 +120,8 @@ public class BaseAction : MonoEditor
     public virtual void StopAndDisable()
     {
         StopAllCoroutines();
-        canUse = false;
-        if (boolHash != 0)
-            ToggleAnim(boolHash, false);
+        if (customMono.currentAction == this)
+            ActionInterrupt();
     }
 
     public virtual void Trigger(Vector2 location = default, Vector2 direction = default) { }

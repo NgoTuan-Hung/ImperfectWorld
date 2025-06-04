@@ -210,8 +210,6 @@ public class Stat : MonoEditor, INotifyBindablePropertyChanged
     private void OnEnable()
     {
         onEnable();
-        MoveSpeed = DefaultMoveSpeed;
-        Health = DefaultHealth;
     }
 
     private void OnDisable()
@@ -227,10 +225,14 @@ public class Stat : MonoEditor, INotifyBindablePropertyChanged
     {
         InitUI();
         StartCoroutine(LateStart());
+        Health = DefaultHealth;
+        MoveSpeed = DefaultMoveSpeed;
         onEnable += () =>
         {
             InitUI();
             InitProperty();
+            Health = DefaultHealth;
+            MoveSpeed = DefaultMoveSpeed;
         };
 
 #if UNITY_EDITOR
@@ -243,7 +245,7 @@ public class Stat : MonoEditor, INotifyBindablePropertyChanged
 
     IEnumerator LateStart()
     {
-        yield return new WaitForEndOfFrame();
+        yield return null;
         InitProperty();
     }
 
@@ -270,8 +272,15 @@ public class Stat : MonoEditor, INotifyBindablePropertyChanged
     void AddPropertyChangeEvent()
     {
         healthChangeEvent.action += () =>
+        {
+            if (healthRadialProgress == null)
+            {
+                print("H: " + Health + "-h: " + health);
+                print(customMono.gameObject.name);
+            }
+
             healthRadialProgress.radialProgress.SetProgress(health / defaultHealth);
-        ;
+        };
 
         actionMoveSpeedReduceRateChangeEvent.action += () =>
             actionMoveSpeedReduced = defaultMoveSpeed * actionMoveSpeedReduceRate;
@@ -281,6 +290,7 @@ public class Stat : MonoEditor, INotifyBindablePropertyChanged
             customMono.combatCollision.SetActive(false);
             healthRadialProgress.gameEffect.deactivate();
             healthRadialProgress = null;
+            print(healthRadialProgress);
             StartCoroutine(DissolveCoroutine());
         };
 

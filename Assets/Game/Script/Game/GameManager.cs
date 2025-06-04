@@ -13,6 +13,7 @@ public enum CollisionEffectPool
     StrongDudePunchImpact,
     SamuraiSlash,
     BladeOfPhongTornadoImpact,
+    BladeOfVuImpact,
     LaterDecide,
 }
 
@@ -41,12 +42,19 @@ public class GameManager : MonoSingleton<GameManager>
     public Dictionary<CollisionEffectPool, ObjectPool> collisionEffectPoolDict = new();
     GameObject vanishEffectPrefab,
         bladeOfMinhKhaiSlashEffectPrefab,
-        bladeOfPhongTornadoEffectPrefab;
+        bladeOfPhongTornadoEffectPrefab,
+        ghostPrefab,
+        bladeOfVuStarPrefab,
+        bladeOfVuSlashPrefab;
     public ObjectPool vanishEffectPool,
         bladeOfMinhKhaiSlashEffectPool,
-        bladeOfPhongTornadoEffectPool;
+        bladeOfPhongTornadoEffectPool,
+        ghostPool,
+        bladeOfVuStarPool,
+        bladeOfVuSlashPool;
     public int bladeOfMinhKhaiBoolHash = Animator.StringToHash("BladeOfMinhKhai"),
-        bladeOfPhongBoolHash = Animator.StringToHash("BladeOfPhong");
+        bladeOfPhongBoolHash = Animator.StringToHash("BladeOfPhong"),
+        bladeOfVuBoolHash = Animator.StringToHash("BladeOfVu");
 
     public void InitializeControllableCharacter(CustomMono p_customMono)
     {
@@ -96,6 +104,7 @@ public class GameManager : MonoSingleton<GameManager>
 
         InitAllCollisionEffectPools();
         InitAllEffectPools();
+        LoadOtherResources();
     }
 
     void InitAllCollisionEffectPools()
@@ -148,6 +157,14 @@ public class GameManager : MonoSingleton<GameManager>
                 new PoolArgument(ComponentType.GameEffect, PoolArgument.WhereComponent.Self)
             )
         );
+        collisionEffectPoolDict.Add(
+            CollisionEffectPool.BladeOfVuImpact,
+            new(
+                Resources.Load("BladeOfVuImpact") as GameObject,
+                100,
+                new PoolArgument(ComponentType.GameEffect, PoolArgument.WhereComponent.Self)
+            )
+        );
         collisionEffectPoolDict.Add(CollisionEffectPool.LaterDecide, null);
     }
 
@@ -171,7 +188,27 @@ public class GameManager : MonoSingleton<GameManager>
             100,
             new PoolArgument(ComponentType.GameEffect, PoolArgument.WhereComponent.Self)
         );
+        ghostPrefab = Resources.Load("Ghost") as GameObject;
+        ghostPool ??= new(
+            ghostPrefab,
+            100,
+            new PoolArgument(ComponentType.GameEffect, PoolArgument.WhereComponent.Self)
+        );
+        bladeOfVuStarPrefab = Resources.Load("BladeOfVuStar") as GameObject;
+        bladeOfVuStarPool ??= new(
+            bladeOfVuStarPrefab,
+            50,
+            new PoolArgument(ComponentType.GameEffect, PoolArgument.WhereComponent.Self)
+        );
+        bladeOfVuSlashPrefab = Resources.Load("BladeOfVuSlash") as GameObject;
+        bladeOfVuSlashPool ??= new(
+            bladeOfVuSlashPrefab,
+            50,
+            new PoolArgument(ComponentType.GameEffect, PoolArgument.WhereComponent.Self)
+        );
     }
+
+    void LoadOtherResources() { }
 
     public ObjectPool GetCollisionEffectPool(CollisionEffectPool p_collisionEffectPool)
     {

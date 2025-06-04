@@ -18,4 +18,16 @@ onTriggerEnter2D(other)
     }
 
     /* Since parent will have customMono, not this */
+
+public class Parent{
+    public void Refer(){
+        Refee();
+    }
+
+    public virtual void Refee(){print("Parent");}
+}
+
+public class Child : Parent{
+    public override void Refee() {print("Child");}
+}
     

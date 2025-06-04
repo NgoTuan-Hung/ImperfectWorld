@@ -1249,6 +1249,8 @@ MonoBehaviour:
   combatCollision: {fileID: 0}
   firePoint: {fileID: 0}
   enemiesWeSee: []
+  boxCollider2D: {fileID: 0}
+  combatCollider2D: {fileID: 0}
   audioSource: {fileID: 0}
   currentNearestEnemy: {fileID: 0}
   rigidbody2D: {fileID: 0}
@@ -2281,6 +2283,8 @@ MonoBehaviour:
   combatCollision: {fileID: 0}
   firePoint: {fileID: 0}
   enemiesWeSee: []
+  boxCollider2D: {fileID: 0}
+  combatCollider2D: {fileID: 0}
   audioSource: {fileID: 0}
   currentNearestEnemy: {fileID: 0}
   rigidbody2D: {fileID: 0}
@@ -8545,6 +8549,8 @@ MonoBehaviour:
   combatCollision: {fileID: 0}
   firePoint: {fileID: 0}
   enemiesWeSee: []
+  boxCollider2D: {fileID: 0}
+  combatCollider2D: {fileID: 0}
   audioSource: {fileID: 0}
   currentNearestEnemy: {fileID: 0}
   rigidbody2D: {fileID: 0}
@@ -8755,6 +8761,7 @@ MonoBehaviour:
   lifeStealPercent: 0
   duration: 0
   maxRange: 0
+  interval: 0
   effectActiveLocation: {x: 0, y: 999, z: 0}
   colliderForce: 5
 --- !u!114 &1582844854
@@ -9445,18 +9452,19 @@ MonoBehaviour:
   - prefab: {fileID: 6724394765168942705, guid: bf51713cd4fcaec49a3b1d7d97dad157, type: 3}
     spawnChance: 30
     spawnInterval: 0.5
-    maxSpawnCount: 30
+    maxSpawnCount: 5
     currentSpawn: 0
     spawnType: 0
     spawnCountIncrementalType: 0
   spawnChances: 
   spawnCumulativeDistribution: []
-  waveInterval: 30
+  waveInterval: 60
   spawnRangeObject: {fileID: 1306131069}
-  waveDuration: 60
+  waveDuration: 100
   cinemachineCamera: {fileID: 893338232}
   bladeOfMinhKhaiBoolHash: -5285944
   bladeOfPhongBoolHash: -1683079687
+  bladeOfVuBoolHash: 1039988835
 --- !u!114 &1864067335
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -79049,6 +79057,8 @@ MonoBehaviour:
   combatCollision: {fileID: 0}
   firePoint: {fileID: 0}
   enemiesWeSee: []
+  boxCollider2D: {fileID: 0}
+  combatCollider2D: {fileID: 0}
   audioSource: {fileID: 0}
   currentNearestEnemy: {fileID: 0}
   rigidbody2D: {fileID: 0}
@@ -80686,6 +80696,8 @@ MonoBehaviour:
   combatCollision: {fileID: 0}
   firePoint: {fileID: 0}
   enemiesWeSee: []
+  boxCollider2D: {fileID: 0}
+  combatCollider2D: {fileID: 0}
   audioSource: {fileID: 0}
   currentNearestEnemy: {fileID: 0}
   rigidbody2D: {fileID: 0}
