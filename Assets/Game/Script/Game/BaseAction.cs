@@ -48,6 +48,7 @@ public class BaseAction : MonoEditor
         currentAmmo;
     public float modifiedAngle;
     public float lifeStealPercent;
+    public float stunDuration;
     public Stopwatch stopwatch = new();
     public IEnumerator actionIE,
         botIE;
@@ -124,7 +125,7 @@ public class BaseAction : MonoEditor
             ActionInterrupt();
     }
 
-    public virtual void Trigger(Vector2 location = default, Vector2 direction = default) { }
+    public virtual void Trigger(Vector2 p_location = default, Vector2 p_direction = default) { }
 
     public virtual bool StartAndWait()
     {

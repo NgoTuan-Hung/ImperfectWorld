@@ -1,0 +1,113 @@
+using System.Collections;
+using UnityEngine;
+
+public class DeepBlade : SkillBase
+{
+    public override void Awake()
+    {
+        base.Awake();
+        cooldown = 5f;
+        damage = defaultDamage = 20f;
+        stunDuration = 1f;
+        AddActionManuals();
+    }
+
+    public override void OnEnable()
+    {
+        base.OnEnable();
+    }
+
+    public override void AddActionManuals()
+    {
+        base.AddActionManuals();
+        botActionManuals.Add(
+            new BotActionManual(
+                ActionUse.MeleeDamage,
+                (direction, location, nextActionChoosingIntervalProposal) =>
+                    BotTrigger(direction, nextActionChoosingIntervalProposal),
+                0.5f,
+                true,
+                1
+            )
+        );
+    }
+
+    public override void Start()
+    {
+        base.Start();
+    }
+
+    public override void Trigger(Vector2 p_location = default, Vector2 p_direction = default)
+    {
+        if (canUse && !customMono.actionBlocking)
+        {
+            canUse = false;
+            customMono.actionBlocking = true;
+            ToggleAnim(GameManager.Instance.deepBladeBoolHash, true);
+            StartCoroutine(actionIE = TriggerIE(p_location, p_direction));
+            StartCoroutine(CooldownCoroutine());
+            customMono.currentAction = this;
+        }
+    }
+
+    IEnumerator TriggerIE(Vector2 p_location = default, Vector2 p_direction = default)
+    {
+        while (!customMono.animationEventFunctionCaller.deepBladeSignal)
+            yield return new WaitForSeconds(Time.fixedDeltaTime);
+
+        customMono.animationEventFunctionCaller.deepBladeSignal = false;
+
+        GameEffect t_deepBladeSlashEffect = GameManager
+            .Instance.deepBladeSlashPool.PickOne()
+            .gameEffect;
+        t_deepBladeSlashEffect.transform.parent = customMono.rotationObject.transform;
+        t_deepBladeSlashEffect.transform.SetLocalPositionAndRotation(
+            t_deepBladeSlashEffect.effectLocalPosition,
+            Quaternion.Euler(t_deepBladeSlashEffect.effectLocalRotation)
+        );
+        /* This is needed because it will change parent eventually */
+        t_deepBladeSlashEffect.transform.localScale = Vector3.one;
+        t_deepBladeSlashEffect.collideAndDamage.allyTags = customMono.allyTags;
+        t_deepBladeSlashEffect.collideAndDamage.collideDamage = damage;
+        t_deepBladeSlashEffect.collideAndDamage.stunDuration = stunDuration;
+        customMono.rotationObject.transform.localScale = new(
+            customMono.directionModifier.transform.localScale.x > 0 ? 1 : -1,
+            1,
+            1
+        );
+        customMono.rotationObject.transform.Rotate(
+            Vector3.forward,
+            Vector2.SignedAngle(customMono.rotationObject.transform.localScale, p_direction)
+        );
+
+        while (!customMono.animationEventFunctionCaller.endDeepBlade)
+            yield return new WaitForSeconds(Time.fixedDeltaTime);
+
+        customMono.animationEventFunctionCaller.endDeepBlade = false;
+        customMono.actionBlocking = false;
+        ToggleAnim(GameManager.Instance.deepBladeBoolHash, false);
+    }
+
+    void BotTrigger(Vector2 p_direction, float p_duration)
+    {
+        StartCoroutine(botIE = BotTriggerIE(p_direction, p_duration));
+    }
+
+    IEnumerator BotTriggerIE(Vector2 p_direction, float p_duration)
+    {
+        customMono.actionInterval = true;
+        Trigger(p_direction: p_direction);
+        yield return new WaitForSeconds(p_duration);
+        customMono.actionInterval = false;
+    }
+
+    public override void ActionInterrupt()
+    {
+        base.ActionInterrupt();
+        customMono.actionBlocking = false;
+        ToggleAnim(GameManager.Instance.deepBladeBoolHash, false);
+        StopCoroutine(actionIE);
+        customMono.animationEventFunctionCaller.deepBladeSignal = false;
+        customMono.animationEventFunctionCaller.endDeepBlade = false;
+    }
+}

@@ -25,6 +25,10 @@ public class AnimationEventFunctionCaller : MonoBehaviour
     public bool endBladeOfMinhKhai;
     public bool skill2AnimSignal;
     public bool skill2AnimEnd;
+    public bool pierceStrike;
+    public bool endPierceStrike;
+    public bool deepBladeSignal;
+    public bool endDeepBlade;
 
     public void Attack() => attack = true;
 
@@ -50,6 +54,14 @@ public class AnimationEventFunctionCaller : MonoBehaviour
 
     public void Skill2AnimEnd() => skill2AnimEnd = true;
 
+    public void PierceStrike() => pierceStrike = true;
+
+    public void EndPierceStrike() => endPierceStrike = true;
+
+    public void DeepBladeSignal() => deepBladeSignal = true;
+
+    public void EndDeepBlade() => endDeepBlade = true;
+
     private void OnEnable()
     {
         attack = false;
@@ -64,5 +76,9 @@ public class AnimationEventFunctionCaller : MonoBehaviour
         endBladeOfMinhKhai = false;
         skill2AnimSignal = false;
         skill2AnimEnd = false;
+        pierceStrike = false;
+        endPierceStrike = false;
+        deepBladeSignal = false;
+        endDeepBlade = false;
     }
 }

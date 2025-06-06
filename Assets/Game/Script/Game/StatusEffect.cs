@@ -2,25 +2,33 @@ using System;
 using System.Collections;
 using UnityEngine;
 
+public enum StatusEffectState
+{
+    KnockUp = 0,
+    Stun = 1,
+}
+
 public class StatusEffect : CustomMonoPal
 {
+    public int currentStates = 0;
     public float osTime = 0,
         damp = 0.5f;
-    public float speed = 1f,
-        scaleRange = 0.5f;
-    public int frequency = 1;
+    public float speed = 10f,
+        scaleRange = 0.25f;
+    public int frequency = 3;
     float currentDamageTime = 0;
-    public float damageDuration = 0.5f;
+    public float damageDuration = 0.25f;
     bool damageInEffect = false;
     Vector3 currentSpriteLocalScale;
     public float elementalEffectDuration = 0.2f;
     public Color elementalEffectColor = Color.red;
     bool hitColorInEffect = false;
     public bool ccImmune = false;
-    bool isKnockingUp = false;
     public float knockUpInitialVelocity = 1.5f,
         knockUpVelocity,
         knockUpAcceleration = -10f;
+    public float stunTime = 0f;
+    GameObject stunIndicator;
 
     public override void Awake()
     {
@@ -30,6 +38,7 @@ public class StatusEffect : CustomMonoPal
     public override void Start()
     {
         base.Start();
+        stunIndicator = customMono.directionModifier.transform.Find("StunIndicator").gameObject;
     }
 
     public void GetHit()
@@ -83,8 +92,7 @@ public class StatusEffect : CustomMonoPal
         if (ccImmune) { }
         else
         {
-            customMono.currentAction?.ActionInterrupt();
-            if (isKnockingUp)
+            if (CheckEffect(StatusEffectState.KnockUp))
                 knockUpVelocity += knockUpInitialVelocity;
             else
                 StartCoroutine(KnockUpIE());
@@ -96,20 +104,73 @@ public class StatusEffect : CustomMonoPal
         // fallingIndicator.gameObject.SetActive(true);
         customMono.actionBlocking = true;
         customMono.movementActionBlocking = true;
-        isKnockingUp = true;
+        ToggleEffect(StatusEffectState.KnockUp);
         knockUpVelocity = knockUpInitialVelocity;
-        while (customMono.spriteRenderer.transform.localPosition.y >= 0)
+        customMono.currentAction?.ActionInterrupt();
+        while (customMono.directionModifier.transform.localPosition.y >= 0)
         {
-            customMono.spriteRenderer.transform.localPosition += Vector3.up * knockUpVelocity;
+            customMono.directionModifier.transform.localPosition += Vector3.up * knockUpVelocity;
             yield return new WaitForSeconds(Time.fixedDeltaTime);
             knockUpVelocity += knockUpAcceleration * Time.fixedDeltaTime;
         }
 
-        customMono.spriteRenderer.transform.localPosition =
-            customMono.spriteRenderer.transform.localPosition.WithY(0);
-        isKnockingUp = false;
+        customMono.directionModifier.transform.localPosition =
+            customMono.directionModifier.transform.localPosition.WithY(0);
+        RemoveEffect(StatusEffectState.KnockUp);
         // fallingIndicator.gameObject.SetActive(false);
-        customMono.actionBlocking = false;
-        customMono.movementActionBlocking = false;
+        if (!CheckEffect(StatusEffectState.Stun))
+        {
+            customMono.actionBlocking = false;
+            customMono.movementActionBlocking = false;
+        }
+    }
+
+    public void Stun(float p_duration)
+    {
+        if (ccImmune) { }
+        else
+        {
+            if (CheckEffect(StatusEffectState.Stun))
+            {
+                stunTime += p_duration;
+            }
+            else
+                StartCoroutine(StunIE(p_duration));
+        }
+    }
+
+    IEnumerator StunIE(float p_duration)
+    {
+        customMono.actionBlocking = true;
+        customMono.movementActionBlocking = true;
+        ToggleEffect(StatusEffectState.Stun);
+        customMono.currentAction?.ActionInterrupt();
+        stunTime = p_duration;
+        stunIndicator.SetActive(true);
+        while (stunTime > 0)
+        {
+            yield return new WaitForSeconds(Time.fixedDeltaTime);
+            stunTime -= Time.fixedDeltaTime;
+        }
+        RemoveEffect(StatusEffectState.Stun);
+        stunIndicator.SetActive(false);
+        if (!CheckEffect(StatusEffectState.KnockUp))
+        {
+            customMono.actionBlocking = false;
+            customMono.movementActionBlocking = false;
+        }
+    }
+
+    bool CheckEffect(StatusEffectState p_statusEffectState) =>
+        (currentStates & 0x1 << (int)p_statusEffectState) == 0x1 << (int)p_statusEffectState;
+
+    void ToggleEffect(StatusEffectState p_statusEffectState)
+    {
+        currentStates |= 0x1 << (int)p_statusEffectState;
+    }
+
+    void RemoveEffect(StatusEffectState p_statusEffectState)
+    {
+        currentStates &= ~(0x1 << (int)p_statusEffectState);
     }
 }

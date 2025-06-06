@@ -45,16 +45,24 @@ public class GameManager : MonoSingleton<GameManager>
         bladeOfPhongTornadoEffectPrefab,
         ghostPrefab,
         bladeOfVuStarPrefab,
-        bladeOfVuSlashPrefab;
+        bladeOfVuSlashPrefab,
+        pierceStrikePrefab,
+        pierceStrikeSecondPhasePrefab,
+        deepBladeSlashPrefab;
     public ObjectPool vanishEffectPool,
         bladeOfMinhKhaiSlashEffectPool,
         bladeOfPhongTornadoEffectPool,
         ghostPool,
         bladeOfVuStarPool,
-        bladeOfVuSlashPool;
+        bladeOfVuSlashPool,
+        pierceStrikePool,
+        pierceStrikeSecondPhasePool,
+        deepBladeSlashPool;
     public int bladeOfMinhKhaiBoolHash = Animator.StringToHash("BladeOfMinhKhai"),
         bladeOfPhongBoolHash = Animator.StringToHash("BladeOfPhong"),
-        bladeOfVuBoolHash = Animator.StringToHash("BladeOfVu");
+        bladeOfVuBoolHash = Animator.StringToHash("BladeOfVu"),
+        pierceStrikeBoolHash = Animator.StringToHash("PierceStrike"),
+        deepBladeBoolHash = Animator.StringToHash("DeepBlade");
 
     public void InitializeControllableCharacter(CustomMono p_customMono)
     {
@@ -206,6 +214,24 @@ public class GameManager : MonoSingleton<GameManager>
             50,
             new PoolArgument(ComponentType.GameEffect, PoolArgument.WhereComponent.Self)
         );
+        pierceStrikePrefab = Resources.Load("PierceStrike") as GameObject;
+        pierceStrikePool ??= new(
+            pierceStrikePrefab,
+            20,
+            new PoolArgument(ComponentType.GameEffect, PoolArgument.WhereComponent.Self)
+        );
+        pierceStrikeSecondPhasePrefab = Resources.Load("PierceStrikeSecondPhase") as GameObject;
+        pierceStrikeSecondPhasePool ??= new(
+            pierceStrikeSecondPhasePrefab,
+            20,
+            new PoolArgument(ComponentType.GameEffect, PoolArgument.WhereComponent.Self)
+        );
+        deepBladeSlashPrefab = Resources.Load("DeepBladeSlash") as GameObject;
+        deepBladeSlashPool ??= new(
+            deepBladeSlashPrefab,
+            20,
+            new PoolArgument(ComponentType.GameEffect, PoolArgument.WhereComponent.Self)
+        );
     }
 
     void LoadOtherResources() { }
@@ -229,6 +255,7 @@ public class GameManager : MonoSingleton<GameManager>
         }
 
         stopwatch.Restart();
+        NewWavePreparation();
         StartCoroutine(HandleWave());
     }
 

@@ -112,6 +112,7 @@ public class BladeOfMinhKhai : SkillBase
             t_slashEffect.effectLocalPosition,
             Quaternion.Euler(t_slashEffect.effectLocalRotation)
         );
+        /* This is needed because it will change parent eventually */
         t_slashEffect.transform.localScale = Vector3.one;
         t_slashEffect.collideAndDamage.allyTags = customMono.allyTags;
         t_slashEffect.collideAndDamage.collideDamage = damage;

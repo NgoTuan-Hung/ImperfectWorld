@@ -8,6 +8,7 @@ public enum OneTimeContactInteraction
     None,
     Push,
     KnockUp,
+    Stun,
 }
 
 public class CollideAndDamage : MonoSelfAware
@@ -48,6 +49,7 @@ public class CollideAndDamage : MonoSelfAware
     public bool spawnEffectOnCollide = false;
     public CollisionEffectPool collisionEffectPoolType;
     public ObjectPool collisionEffectPool;
+    public float stunDuration;
 
     public override void Awake()
     {
@@ -100,6 +102,12 @@ public class CollideAndDamage : MonoSelfAware
                 {
                     p_customMono.statusEffect.KnockUp();
                 };
+                break;
+            }
+            case OneTimeContactInteraction.Stun:
+            {
+                onTriggerEnterWithEnemyCM += (p_customMono, p_collider2D) =>
+                    p_customMono.statusEffect.Stun(stunDuration);
                 break;
             }
             default:
