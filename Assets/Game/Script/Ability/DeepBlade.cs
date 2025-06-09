@@ -43,7 +43,7 @@ public class DeepBlade : SkillBase
         {
             canUse = false;
             customMono.actionBlocking = true;
-            ToggleAnim(GameManager.Instance.deepBladeBoolHash, true);
+            ToggleAnim(GameManager.Instance.mainSkill2BoolHash, true);
             StartCoroutine(actionIE = TriggerIE(p_location, p_direction));
             StartCoroutine(CooldownCoroutine());
             customMono.currentAction = this;
@@ -52,15 +52,15 @@ public class DeepBlade : SkillBase
 
     IEnumerator TriggerIE(Vector2 p_location = default, Vector2 p_direction = default)
     {
-        while (!customMono.animationEventFunctionCaller.deepBladeSignal)
+        while (!customMono.animationEventFunctionCaller.mainSkill2Signal)
             yield return new WaitForSeconds(Time.fixedDeltaTime);
 
-        customMono.animationEventFunctionCaller.deepBladeSignal = false;
+        customMono.animationEventFunctionCaller.mainSkill2Signal = false;
 
         GameEffect t_deepBladeSlashEffect = GameManager
             .Instance.deepBladeSlashPool.PickOne()
             .gameEffect;
-        t_deepBladeSlashEffect.transform.parent = customMono.rotationObject.transform;
+        t_deepBladeSlashEffect.transform.parent = customMono.rotationAndCenterObject.transform;
         t_deepBladeSlashEffect.transform.SetLocalPositionAndRotation(
             t_deepBladeSlashEffect.effectLocalPosition,
             Quaternion.Euler(t_deepBladeSlashEffect.effectLocalRotation)
@@ -70,22 +70,25 @@ public class DeepBlade : SkillBase
         t_deepBladeSlashEffect.collideAndDamage.allyTags = customMono.allyTags;
         t_deepBladeSlashEffect.collideAndDamage.collideDamage = damage;
         t_deepBladeSlashEffect.collideAndDamage.stunDuration = stunDuration;
-        customMono.rotationObject.transform.localScale = new(
+        customMono.rotationAndCenterObject.transform.localScale = new(
             customMono.directionModifier.transform.localScale.x > 0 ? 1 : -1,
             1,
             1
         );
-        customMono.rotationObject.transform.Rotate(
+        customMono.rotationAndCenterObject.transform.Rotate(
             Vector3.forward,
-            Vector2.SignedAngle(customMono.rotationObject.transform.localScale, p_direction)
+            Vector2.SignedAngle(
+                customMono.rotationAndCenterObject.transform.localScale,
+                p_direction
+            )
         );
 
-        while (!customMono.animationEventFunctionCaller.endDeepBlade)
+        while (!customMono.animationEventFunctionCaller.endMainSkill2)
             yield return new WaitForSeconds(Time.fixedDeltaTime);
 
-        customMono.animationEventFunctionCaller.endDeepBlade = false;
+        customMono.animationEventFunctionCaller.endMainSkill2 = false;
         customMono.actionBlocking = false;
-        ToggleAnim(GameManager.Instance.deepBladeBoolHash, false);
+        ToggleAnim(GameManager.Instance.mainSkill2BoolHash, false);
     }
 
     void BotTrigger(Vector2 p_direction, float p_duration)
@@ -105,9 +108,9 @@ public class DeepBlade : SkillBase
     {
         base.ActionInterrupt();
         customMono.actionBlocking = false;
-        ToggleAnim(GameManager.Instance.deepBladeBoolHash, false);
+        ToggleAnim(GameManager.Instance.mainSkill2BoolHash, false);
         StopCoroutine(actionIE);
-        customMono.animationEventFunctionCaller.deepBladeSignal = false;
-        customMono.animationEventFunctionCaller.endDeepBlade = false;
+        customMono.animationEventFunctionCaller.mainSkill2Signal = false;
+        customMono.animationEventFunctionCaller.endMainSkill2 = false;
     }
 }

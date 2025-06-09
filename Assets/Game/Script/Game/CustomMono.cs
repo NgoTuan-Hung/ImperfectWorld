@@ -83,11 +83,11 @@ public class CustomMono : MonoSelfAware, IComparable<CustomMono>
     public Action<CustomMono> nearestEnemyChanged = (person) => { };
     public Action startPhase1 = () => { };
     public AudioClip attackAudioClip;
-    public CollisionEffectPool meleeCollisionEP;
-    public GameObject longRangeProjectilePrefab;
+    public EffectPool meleeCollisionEP,
+        longRangeProjectileEP;
     public AttackType attackType;
     public StatusEffect statusEffect;
-    public GameObject rotationObject,
+    public GameObject rotationAndCenterObject,
         directionModifier;
     public BaseAction currentAction,
         currentMovementAction;
@@ -138,13 +138,13 @@ public class CustomMono : MonoSelfAware, IComparable<CustomMono>
     void GetAllChildObject()
     {
         directionModifier = transform.Find("DirectionModifier").gameObject;
+        firePoint = directionModifier.transform.Find("FirePoint").gameObject;
         mainComponent = directionModifier.transform.Find("MainComponent").gameObject;
         animationEventFunctionCaller = mainComponent.GetComponent<AnimationEventFunctionCaller>();
         directionIndicator = transform.Find("DirectionIndicator").gameObject;
         fieldOfView = transform.Find("FieldOfView").gameObject;
         combatCollision = transform.Find("CombatCollision").gameObject;
-        firePoint = transform.Find("FirePoint").gameObject;
-        rotationObject = transform.Find("RotationObject").gameObject;
+        rotationAndCenterObject = transform.Find("RotationAndCenterObject").gameObject;
     }
 
     void PrepareValues()

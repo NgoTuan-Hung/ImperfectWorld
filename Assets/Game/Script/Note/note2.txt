@@ -1,0 +1,16 @@
+botActionManuals.Add(
+                new BotActionManual(
+                    ActionUse.MeleeDamage,
+                    (direction, location, nextActionChoosingIntervalProposal) =>
+                        AttackTo(direction, nextActionChoosingIntervalProposal),
+                    0.5f,
+                    true,
+                    1
+                )
+            );
+
+BotActionManual
+    originToTargetOriginDirection;
+    centerToTargetCenterDirection;
+    targetOriginDirection;
+    targetCenterDir;

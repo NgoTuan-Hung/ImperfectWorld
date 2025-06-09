@@ -5,7 +5,7 @@ using System.Linq;
 using Unity.Cinemachine;
 using UnityEngine;
 
-public enum CollisionEffectPool
+public enum EffectPool
 {
     MoonSlashExplode,
     MagicLaserImpact,
@@ -14,6 +14,12 @@ public enum CollisionEffectPool
     SamuraiSlash,
     BladeOfPhongTornadoImpact,
     BladeOfVuImpact,
+    Arrow,
+    ElementalLeafRangerArrow,
+
+    /// <summary>
+    /// For attack collider with different collision effect
+    /// </summary>
     LaterDecide,
 }
 
@@ -39,7 +45,7 @@ public class GameManager : MonoSingleton<GameManager>
     public CinemachineCamera cinemachineCamera;
     Dictionary<int, CharData> charDataDict = new();
     CharData currentControlledCharData;
-    public Dictionary<CollisionEffectPool, ObjectPool> collisionEffectPoolDict = new();
+    public Dictionary<EffectPool, ObjectPool> effectPoolDict = new();
     GameObject vanishEffectPrefab,
         bladeOfMinhKhaiSlashEffectPrefab,
         bladeOfPhongTornadoEffectPrefab,
@@ -58,11 +64,9 @@ public class GameManager : MonoSingleton<GameManager>
         pierceStrikePool,
         pierceStrikeSecondPhasePool,
         deepBladeSlashPool;
-    public int bladeOfMinhKhaiBoolHash = Animator.StringToHash("BladeOfMinhKhai"),
-        bladeOfPhongBoolHash = Animator.StringToHash("BladeOfPhong"),
-        bladeOfVuBoolHash = Animator.StringToHash("BladeOfVu"),
-        pierceStrikeBoolHash = Animator.StringToHash("PierceStrike"),
-        deepBladeBoolHash = Animator.StringToHash("DeepBlade");
+    public int mainSkill1BoolHash = Animator.StringToHash("MainSkill1"),
+        mainSkill2BoolHash = Animator.StringToHash("MainSkill2"),
+        mainSkill3BoolHash = Animator.StringToHash("MainSkill3");
 
     public void InitializeControllableCharacter(CustomMono p_customMono)
     {
@@ -117,63 +121,79 @@ public class GameManager : MonoSingleton<GameManager>
 
     void InitAllCollisionEffectPools()
     {
-        collisionEffectPoolDict.Add(
-            CollisionEffectPool.MoonSlashExplode,
+        effectPoolDict.Add(
+            EffectPool.MoonSlashExplode,
             new(
                 Resources.Load("MoonSlashExplode") as GameObject,
                 100,
                 new PoolArgument(ComponentType.GameEffect, PoolArgument.WhereComponent.Self)
             )
         );
-        collisionEffectPoolDict.Add(
-            CollisionEffectPool.MagicLaserImpact,
+        effectPoolDict.Add(
+            EffectPool.MagicLaserImpact,
             new(
                 Resources.Load("MagicLaserImpact") as GameObject,
                 100,
                 new PoolArgument(ComponentType.GameEffect, PoolArgument.WhereComponent.Self)
             )
         );
-        collisionEffectPoolDict.Add(
-            CollisionEffectPool.SlaughterExplosion,
+        effectPoolDict.Add(
+            EffectPool.SlaughterExplosion,
             new(
                 Resources.Load("SlaughterExplosion") as GameObject,
                 100,
                 new PoolArgument(ComponentType.GameEffect, PoolArgument.WhereComponent.Self)
             )
         );
-        collisionEffectPoolDict.Add(
-            CollisionEffectPool.StrongDudePunchImpact,
+        effectPoolDict.Add(
+            EffectPool.StrongDudePunchImpact,
             new(
                 Resources.Load("StrongDudePunchImpact") as GameObject,
                 100,
                 new PoolArgument(ComponentType.GameEffect, PoolArgument.WhereComponent.Self)
             )
         );
-        collisionEffectPoolDict.Add(
-            CollisionEffectPool.SamuraiSlash,
+        effectPoolDict.Add(
+            EffectPool.SamuraiSlash,
             new(
                 Resources.Load("SamuraiSlash") as GameObject,
                 100,
                 new PoolArgument(ComponentType.GameEffect, PoolArgument.WhereComponent.Self)
             )
         );
-        collisionEffectPoolDict.Add(
-            CollisionEffectPool.BladeOfPhongTornadoImpact,
+        effectPoolDict.Add(
+            EffectPool.BladeOfPhongTornadoImpact,
             new(
                 Resources.Load("BladeOfPhongTornadoImpact") as GameObject,
                 100,
                 new PoolArgument(ComponentType.GameEffect, PoolArgument.WhereComponent.Self)
             )
         );
-        collisionEffectPoolDict.Add(
-            CollisionEffectPool.BladeOfVuImpact,
+        effectPoolDict.Add(
+            EffectPool.BladeOfVuImpact,
             new(
                 Resources.Load("BladeOfVuImpact") as GameObject,
                 100,
                 new PoolArgument(ComponentType.GameEffect, PoolArgument.WhereComponent.Self)
             )
         );
-        collisionEffectPoolDict.Add(CollisionEffectPool.LaterDecide, null);
+        effectPoolDict.Add(
+            EffectPool.Arrow,
+            new(
+                Resources.Load("Arrow") as GameObject,
+                20,
+                new PoolArgument(ComponentType.GameEffect, PoolArgument.WhereComponent.Self)
+            )
+        );
+        effectPoolDict.Add(
+            EffectPool.ElementalLeafRangerArrow,
+            new(
+                Resources.Load("ElementalLeafRangerArrow") as GameObject,
+                20,
+                new PoolArgument(ComponentType.GameEffect, PoolArgument.WhereComponent.Self)
+            )
+        );
+        effectPoolDict.Add(EffectPool.LaterDecide, null);
     }
 
     void InitAllEffectPools()
@@ -236,9 +256,9 @@ public class GameManager : MonoSingleton<GameManager>
 
     void LoadOtherResources() { }
 
-    public ObjectPool GetCollisionEffectPool(CollisionEffectPool p_collisionEffectPool)
+    public ObjectPool GetEffectPool(EffectPool p_effectPool)
     {
-        return collisionEffectPoolDict[p_collisionEffectPool];
+        return effectPoolDict[p_effectPool];
     }
 
     private void Start()

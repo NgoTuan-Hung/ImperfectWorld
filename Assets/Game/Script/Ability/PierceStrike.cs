@@ -57,7 +57,7 @@ public class PierceStrike : SkillBase
                 customMono.movementActionBlocking = true;
                 StopCoroutine(secondPhaseHandlerIE);
                 StartCoroutine(actionIE = StartDash(direction));
-                ToggleAnim(GameManager.Instance.pierceStrikeBoolHash, true);
+                ToggleAnim(GameManager.Instance.mainSkill1BoolHash, true);
                 customMono.currentAction = this;
                 secondPhase = false;
             }
@@ -69,7 +69,7 @@ public class PierceStrike : SkillBase
                 canUse = false;
                 customMono.actionBlocking = true;
                 customMono.stat.MoveSpeed = customMono.stat.actionMoveSpeedReduced;
-                ToggleAnim(GameManager.Instance.pierceStrikeBoolHash, true);
+                ToggleAnim(GameManager.Instance.mainSkill1BoolHash, true);
                 StartCoroutine(actionIE = TriggerIE(location, direction));
                 StartCoroutine(CooldownCoroutine());
                 customMono.currentAction = this;
@@ -82,15 +82,15 @@ public class PierceStrike : SkillBase
     {
         customMono.SetUpdateDirectionIndicator(p_direction, UpdateDirectionIndicatorPriority.Low);
 
-        while (!customMono.animationEventFunctionCaller.pierceStrike)
+        while (!customMono.animationEventFunctionCaller.mainSkill1Signal)
             yield return new WaitForSeconds(Time.fixedDeltaTime);
 
-        customMono.animationEventFunctionCaller.pierceStrike = false;
-        customMono.rotationObject.transform.localRotation = Quaternion.identity;
+        customMono.animationEventFunctionCaller.mainSkill1Signal = false;
+        customMono.rotationAndCenterObject.transform.localRotation = Quaternion.identity;
         GameEffect t_pierceStrikeEffect = GameManager
             .Instance.pierceStrikePool.PickOne()
             .gameEffect;
-        t_pierceStrikeEffect.transform.parent = customMono.rotationObject.transform;
+        t_pierceStrikeEffect.transform.parent = customMono.rotationAndCenterObject.transform;
         t_pierceStrikeEffect.transform.SetLocalPositionAndRotation(
             t_pierceStrikeEffect.effectLocalPosition,
             Quaternion.Euler(t_pierceStrikeEffect.effectLocalRotation)
@@ -99,25 +99,25 @@ public class PierceStrike : SkillBase
         t_pierceStrikeEffect.collideAndDamage.allyTags = customMono.allyTags;
         t_pierceStrikeEffect.collideAndDamage.collideDamage = damage;
         t_pierceStrikeEffect.collideAndDamage.dealDamageEvent = ChangePhase;
-        customMono.rotationObject.transform.localScale = new(
+        customMono.rotationAndCenterObject.transform.localScale = new(
             customMono.directionModifier.transform.localScale.x > 0 ? 1 : -1,
             1,
             1
         );
-        customMono.rotationObject.transform.Rotate(
+        customMono.rotationAndCenterObject.transform.Rotate(
             Vector3.forward,
             Vector2.SignedAngle(
-                customMono.rotationObject.transform.localScale.WithY(0),
+                customMono.rotationAndCenterObject.transform.localScale.WithY(0),
                 p_direction
             )
         );
 
-        while (!customMono.animationEventFunctionCaller.endPierceStrike)
+        while (!customMono.animationEventFunctionCaller.endMainSkill1)
             yield return new WaitForSeconds(Time.fixedDeltaTime);
 
-        customMono.animationEventFunctionCaller.endPierceStrike = false;
+        customMono.animationEventFunctionCaller.endMainSkill1 = false;
         customMono.actionBlocking = false;
-        ToggleAnim(GameManager.Instance.pierceStrikeBoolHash, false);
+        ToggleAnim(GameManager.Instance.mainSkill1BoolHash, false);
         customMono.stat.SetDefaultMoveSpeed();
         phaseOneFinish = true;
     }
@@ -144,16 +144,16 @@ public class PierceStrike : SkillBase
 
     IEnumerator SecondPhaseTriggerIE(Vector2 p_location = default, Vector2 p_direction = default)
     {
-        while (!customMono.animationEventFunctionCaller.pierceStrike)
+        while (!customMono.animationEventFunctionCaller.mainSkill1Signal)
             yield return new WaitForSeconds(Time.fixedDeltaTime);
 
-        customMono.animationEventFunctionCaller.pierceStrike = false;
+        customMono.animationEventFunctionCaller.mainSkill1Signal = false;
 
-        customMono.rotationObject.transform.localRotation = Quaternion.identity;
+        customMono.rotationAndCenterObject.transform.localRotation = Quaternion.identity;
         GameEffect t_pierceStrikeSecondPhase = GameManager
             .Instance.pierceStrikeSecondPhasePool.PickOne()
             .gameEffect;
-        t_pierceStrikeSecondPhase.transform.parent = customMono.rotationObject.transform;
+        t_pierceStrikeSecondPhase.transform.parent = customMono.rotationAndCenterObject.transform;
         t_pierceStrikeSecondPhase.transform.SetLocalPositionAndRotation(
             t_pierceStrikeSecondPhase.effectLocalPosition,
             Quaternion.Euler(t_pierceStrikeSecondPhase.effectLocalRotation)
@@ -161,26 +161,26 @@ public class PierceStrike : SkillBase
         t_pierceStrikeSecondPhase.transform.localScale = Vector3.one;
         t_pierceStrikeSecondPhase.collideAndDamage.allyTags = customMono.allyTags;
         t_pierceStrikeSecondPhase.collideAndDamage.collideDamage = damage;
-        customMono.rotationObject.transform.localScale = new(
+        customMono.rotationAndCenterObject.transform.localScale = new(
             customMono.directionModifier.transform.localScale.x > 0 ? 1 : -1,
             1,
             1
         );
-        customMono.rotationObject.transform.Rotate(
+        customMono.rotationAndCenterObject.transform.Rotate(
             Vector3.forward,
             Vector2.SignedAngle(
-                customMono.rotationObject.transform.localScale.WithY(0),
+                customMono.rotationAndCenterObject.transform.localScale.WithY(0),
                 p_direction
             )
         );
 
-        while (!customMono.animationEventFunctionCaller.endPierceStrike)
+        while (!customMono.animationEventFunctionCaller.endMainSkill1)
             yield return new WaitForSeconds(Time.fixedDeltaTime);
 
-        customMono.animationEventFunctionCaller.endPierceStrike = false;
+        customMono.animationEventFunctionCaller.endMainSkill1 = false;
         customMono.actionBlocking = false;
         customMono.movementActionBlocking = false;
-        ToggleAnim(GameManager.Instance.pierceStrikeBoolHash, false);
+        ToggleAnim(GameManager.Instance.mainSkill1BoolHash, false);
     }
 
     void BotTrigger(Vector2 p_direction, float p_duration)
@@ -214,12 +214,12 @@ public class PierceStrike : SkillBase
         base.ActionInterrupt();
         customMono.actionBlocking = false;
         customMono.movementActionBlocking = false;
-        ToggleAnim(GameManager.Instance.pierceStrikeBoolHash, false);
+        ToggleAnim(GameManager.Instance.mainSkill1BoolHash, false);
         StopCoroutine(actionIE);
         if (actionIE1 != null)
             StopCoroutine(actionIE1);
-        customMono.animationEventFunctionCaller.pierceStrike = false;
-        customMono.animationEventFunctionCaller.endPierceStrike = false;
+        customMono.animationEventFunctionCaller.mainSkill1Signal = false;
+        customMono.animationEventFunctionCaller.endMainSkill1 = false;
         customMono.stat.SetDefaultMoveSpeed();
     }
 }

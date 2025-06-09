@@ -66,7 +66,7 @@ public class BladeOfMinhKhai : SkillBase
             canUse = false;
             customMono.actionBlocking = true;
             customMono.movementActionBlocking = true;
-            ToggleAnim(GameManager.Instance.bladeOfMinhKhaiBoolHash, true);
+            ToggleAnim(GameManager.Instance.mainSkill1BoolHash, true);
             StartCoroutine(actionIE = StartDash(direction));
             StartCoroutine(CooldownCoroutine());
             customMono.currentAction = this;
@@ -98,16 +98,16 @@ public class BladeOfMinhKhai : SkillBase
 
     IEnumerator WaitSpawnSlashSignal(Vector3 p_direction)
     {
-        while (!customMono.animationEventFunctionCaller.bladeOfMinhKhaiSpawnSlash)
+        while (!customMono.animationEventFunctionCaller.mainSkill1Signal)
             yield return new WaitForSeconds(Time.fixedDeltaTime);
 
-        customMono.animationEventFunctionCaller.bladeOfMinhKhaiSpawnSlash = false;
+        customMono.animationEventFunctionCaller.mainSkill1Signal = false;
 
-        customMono.rotationObject.transform.localRotation = Quaternion.identity;
+        customMono.rotationAndCenterObject.transform.localRotation = Quaternion.identity;
         GameEffect t_slashEffect = GameManager
             .Instance.bladeOfMinhKhaiSlashEffectPool.PickOne()
             .gameEffect;
-        t_slashEffect.transform.parent = customMono.rotationObject.transform;
+        t_slashEffect.transform.parent = customMono.rotationAndCenterObject.transform;
         t_slashEffect.transform.SetLocalPositionAndRotation(
             t_slashEffect.effectLocalPosition,
             Quaternion.Euler(t_slashEffect.effectLocalRotation)
@@ -117,23 +117,26 @@ public class BladeOfMinhKhai : SkillBase
         t_slashEffect.collideAndDamage.allyTags = customMono.allyTags;
         t_slashEffect.collideAndDamage.collideDamage = damage;
         t_slashEffect.collideAndDamage.dealDamageEvent = LifeSteal;
-        customMono.rotationObject.transform.localScale = new(
+        customMono.rotationAndCenterObject.transform.localScale = new(
             customMono.directionModifier.transform.localScale.x > 0 ? 1 : -1,
             1,
             1
         );
-        customMono.rotationObject.transform.Rotate(
+        customMono.rotationAndCenterObject.transform.Rotate(
             Vector3.forward,
-            Vector2.SignedAngle(customMono.rotationObject.transform.localScale, p_direction)
+            Vector2.SignedAngle(
+                customMono.rotationAndCenterObject.transform.localScale,
+                p_direction
+            )
         );
 
-        while (!customMono.animationEventFunctionCaller.endBladeOfMinhKhai)
+        while (!customMono.animationEventFunctionCaller.endMainSkill1)
             yield return new WaitForSeconds(Time.fixedDeltaTime);
 
-        customMono.animationEventFunctionCaller.endBladeOfMinhKhai = false;
+        customMono.animationEventFunctionCaller.endMainSkill1 = false;
         customMono.actionBlocking = false;
         customMono.movementActionBlocking = false;
-        ToggleAnim(GameManager.Instance.bladeOfMinhKhaiBoolHash, false);
+        ToggleAnim(GameManager.Instance.mainSkill1BoolHash, false);
     }
 
     void BotTrigger(Vector2 p_direction, float p_duration)
@@ -159,10 +162,10 @@ public class BladeOfMinhKhai : SkillBase
         base.ActionInterrupt();
         customMono.actionBlocking = false;
         customMono.movementActionBlocking = false;
-        ToggleAnim(GameManager.Instance.bladeOfMinhKhaiBoolHash, false);
+        ToggleAnim(GameManager.Instance.mainSkill1BoolHash, false);
         StopCoroutine(actionIE);
         StopCoroutine(actionIE1);
-        customMono.animationEventFunctionCaller.bladeOfMinhKhaiSpawnSlash = false;
-        customMono.animationEventFunctionCaller.endBladeOfMinhKhai = false;
+        customMono.animationEventFunctionCaller.mainSkill1Signal = false;
+        customMono.animationEventFunctionCaller.endMainSkill1 = false;
     }
 }

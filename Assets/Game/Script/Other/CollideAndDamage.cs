@@ -47,7 +47,7 @@ public class CollideAndDamage : MonoSelfAware
     public float pushEnemyOnCollideForce = 1f;
     public bool deactivateOnCollide = false;
     public bool spawnEffectOnCollide = false;
-    public CollisionEffectPool collisionEffectPoolType;
+    public EffectPool collisionEffectPoolType;
     public ObjectPool collisionEffectPool;
     public float stunDuration;
 
@@ -208,9 +208,8 @@ public class CollideAndDamage : MonoSelfAware
 
         if (spawnEffectOnCollide)
         {
-            collisionEffectPool = GameManager.Instance.GetCollisionEffectPool(
-                collisionEffectPoolType
-            );
+            if (!collisionEffectPoolType.Equals(EffectPool.LaterDecide))
+                collisionEffectPool = GameManager.Instance.GetEffectPool(collisionEffectPoolType);
 
             if (collideType == CollideType.Single)
             {

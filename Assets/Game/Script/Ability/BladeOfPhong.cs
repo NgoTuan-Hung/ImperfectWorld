@@ -46,7 +46,7 @@ public class BladeOfPhong : SkillBase
             canUse = false;
             customMono.actionBlocking = true;
             customMono.stat.MoveSpeed = customMono.stat.actionMoveSpeedReduced;
-            ToggleAnim(GameManager.Instance.bladeOfPhongBoolHash, true);
+            ToggleAnim(GameManager.Instance.mainSkill2BoolHash, true);
             StartCoroutine(actionIE = WaitSpawnTornadoSignal(direction));
             StartCoroutine(CooldownCoroutine());
             customMono.currentAction = this;
@@ -57,10 +57,10 @@ public class BladeOfPhong : SkillBase
     {
         customMono.SetUpdateDirectionIndicator(p_direction, UpdateDirectionIndicatorPriority.Low);
 
-        while (!customMono.animationEventFunctionCaller.skill2AnimSignal)
+        while (!customMono.animationEventFunctionCaller.mainSkill2Signal)
             yield return new WaitForSeconds(Time.fixedDeltaTime);
 
-        customMono.animationEventFunctionCaller.skill2AnimSignal = false;
+        customMono.animationEventFunctionCaller.mainSkill2Signal = false;
         GameEffect t_tornado = GameManager
             .Instance.bladeOfPhongTornadoEffectPool.PickOne()
             .gameEffect;
@@ -69,11 +69,11 @@ public class BladeOfPhong : SkillBase
         t_tornado.transform.position = transform.position;
         t_tornado.KeepFlyingAt(p_direction);
 
-        while (!customMono.animationEventFunctionCaller.skill2AnimEnd)
+        while (!customMono.animationEventFunctionCaller.endMainSkill2)
             yield return new WaitForSeconds(Time.fixedDeltaTime);
 
-        customMono.animationEventFunctionCaller.skill2AnimEnd = false;
-        ToggleAnim(GameManager.Instance.bladeOfPhongBoolHash, false);
+        customMono.animationEventFunctionCaller.endMainSkill2 = false;
+        ToggleAnim(GameManager.Instance.mainSkill2BoolHash, false);
         customMono.actionBlocking = false;
         customMono.stat.SetDefaultMoveSpeed();
     }
@@ -96,9 +96,9 @@ public class BladeOfPhong : SkillBase
         base.ActionInterrupt();
         customMono.actionBlocking = false;
         customMono.stat.SetDefaultMoveSpeed();
-        ToggleAnim(GameManager.Instance.bladeOfPhongBoolHash, false);
+        ToggleAnim(GameManager.Instance.mainSkill2BoolHash, false);
         StopCoroutine(actionIE);
-        customMono.animationEventFunctionCaller.skill2AnimSignal = false;
-        customMono.animationEventFunctionCaller.skill2AnimEnd = false;
+        customMono.animationEventFunctionCaller.mainSkill2Signal = false;
+        customMono.animationEventFunctionCaller.endMainSkill2 = false;
     }
 }

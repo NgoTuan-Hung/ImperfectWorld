@@ -6,7 +6,6 @@ public class Attackable : SkillBase
 {
     GameObject attackColliderPrefab;
     protected static ObjectPool attackColliderPool;
-    protected static ObjectPool longRangeProjectilePool;
     public float colliderForce = 5f;
     public Action<Vector2> Attack;
 
@@ -41,11 +40,6 @@ public class Attackable : SkillBase
         {
             Attack = RangedAttack;
             damage = defaultDamage = 10f;
-            longRangeProjectilePool ??= new ObjectPool(
-                customMono.longRangeProjectilePrefab,
-                100,
-                new PoolArgument(ComponentType.GameEffect, PoolArgument.WhereComponent.Self)
-            );
             botActionManuals.Add(
                 new BotActionManual(
                     ActionUse.RangedDamage,
@@ -94,7 +88,6 @@ public class Attackable : SkillBase
         onExitPlayModeEvent += () =>
         {
             attackColliderPool = null;
-            longRangeProjectilePool = null;
         };
 #endif
 
@@ -133,6 +126,7 @@ public class Attackable : SkillBase
         {
             canUse = false;
             customMono.actionBlocking = true;
+            customMono.stat.MoveSpeed = customMono.stat.actionMoveSpeedReduced;
             ToggleAnim(boolHash, true);
             StartCoroutine(actionIE = MeleeAttackCoroutine(attackDirection));
             StartCoroutine(CooldownCoroutine());
@@ -146,7 +140,6 @@ public class Attackable : SkillBase
             yield return new WaitForSeconds(Time.fixedDeltaTime);
 
         customMono.animationEventFunctionCaller.attack = false;
-        customMono.stat.MoveSpeed = customMono.stat.actionMoveSpeedReduced;
         customMono.audioSource.PlayOneShot(audioClip);
         customMono.SetUpdateDirectionIndicator(
             attackDirection,
@@ -155,12 +148,9 @@ public class Attackable : SkillBase
         CollideAndDamage attackCollider = attackColliderPool
             .PickOne(po =>
             {
-                if (
-                    GameManager.Instance.GetCollisionEffectPool(customMono.meleeCollisionEP) == null
-                )
-                    print("null in pick one action");
-                po.collideAndDamage.collisionEffectPool =
-                    GameManager.Instance.GetCollisionEffectPool(customMono.meleeCollisionEP);
+                po.collideAndDamage.collisionEffectPool = GameManager.Instance.GetEffectPool(
+                    customMono.meleeCollisionEP
+                );
             })
             .collideAndDamage;
         attackCollider.allyTags = customMono.allyTags;
@@ -186,6 +176,7 @@ public class Attackable : SkillBase
         {
             canUse = false;
             customMono.actionBlocking = true;
+            customMono.stat.MoveSpeed = customMono.stat.actionMoveSpeedReduced;
             ToggleAnim(boolHash, true);
             StartCoroutine(actionIE = RangedAttackCoroutine(attackDirection));
             StartCoroutine(CooldownCoroutine());
@@ -199,13 +190,15 @@ public class Attackable : SkillBase
             yield return new WaitForSeconds(Time.fixedDeltaTime);
 
         customMono.animationEventFunctionCaller.attack = false;
-        customMono.stat.MoveSpeed = customMono.stat.actionMoveSpeedReduced;
         customMono.audioSource.PlayOneShot(audioClip);
         customMono.SetUpdateDirectionIndicator(
             attackDirection,
             UpdateDirectionIndicatorPriority.Low
         );
-        GameEffect projectileEffect = longRangeProjectilePool.PickOne().gameEffect;
+        GameEffect projectileEffect = GameManager
+            .Instance.effectPoolDict[customMono.longRangeProjectileEP]
+            .PickOne()
+            .gameEffect;
         projectileEffect.collideAndDamage.allyTags = customMono.allyTags;
         projectileEffect.collideAndDamage.collideDamage = damage;
         projectileEffect.transform.position = customMono.firePoint.transform.position;

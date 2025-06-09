@@ -21,14 +21,10 @@ public class AnimationEventFunctionCaller : MonoBehaviour
     public bool endSummon;
     public bool endSlaughter;
     public bool endRelease;
-    public bool bladeOfMinhKhaiSpawnSlash;
-    public bool endBladeOfMinhKhai;
-    public bool skill2AnimSignal;
-    public bool skill2AnimEnd;
-    public bool pierceStrike;
-    public bool endPierceStrike;
-    public bool deepBladeSignal;
-    public bool endDeepBlade;
+    public bool mainSkill1Signal;
+    public bool endMainSkill1;
+    public bool mainSkill2Signal;
+    public bool endMainSkill2;
 
     public void Attack() => attack = true;
 
@@ -46,21 +42,13 @@ public class AnimationEventFunctionCaller : MonoBehaviour
 
     public void EndRelease() => endRelease = true;
 
-    public void BladeOfMinhKhaiSpawnSlash() => bladeOfMinhKhaiSpawnSlash = true;
+    public void MainSkill1Signal() => mainSkill1Signal = true;
 
-    public void EndBladeOfMinhKhai() => endBladeOfMinhKhai = true;
+    public void EndMainSkill1() => endMainSkill1 = true;
 
-    public void Skill2AnimSignal() => skill2AnimSignal = true;
+    public void MainSkill2Signal() => mainSkill2Signal = true;
 
-    public void Skill2AnimEnd() => skill2AnimEnd = true;
-
-    public void PierceStrike() => pierceStrike = true;
-
-    public void EndPierceStrike() => endPierceStrike = true;
-
-    public void DeepBladeSignal() => deepBladeSignal = true;
-
-    public void EndDeepBlade() => endDeepBlade = true;
+    public void EndMainSkill2() => endMainSkill2 = true;
 
     private void OnEnable()
     {
@@ -72,13 +60,9 @@ public class AnimationEventFunctionCaller : MonoBehaviour
         endSummon = false;
         endSlaughter = false;
         endRelease = false;
-        bladeOfMinhKhaiSpawnSlash = false;
-        endBladeOfMinhKhai = false;
-        skill2AnimSignal = false;
-        skill2AnimEnd = false;
-        pierceStrike = false;
-        endPierceStrike = false;
-        deepBladeSignal = false;
-        endDeepBlade = false;
+        mainSkill1Signal = false;
+        endMainSkill1 = false;
+        mainSkill2Signal = false;
+        endMainSkill2 = false;
     }
 }

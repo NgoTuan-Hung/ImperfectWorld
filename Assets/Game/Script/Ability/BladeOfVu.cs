@@ -53,7 +53,7 @@ public class BladeOfVu : SkillBase
             canUse = false;
             customMono.actionBlocking = true;
             customMono.movementActionBlocking = true;
-            ToggleAnim(GameManager.Instance.bladeOfVuBoolHash, true);
+            ToggleAnim(GameManager.Instance.mainSkill3BoolHash, true);
             StartCoroutine(actionIE = TriggerIE(location, direction));
             StartCoroutine(CooldownCoroutine());
             customMono.currentAction = this;
@@ -108,7 +108,7 @@ public class BladeOfVu : SkillBase
         customMono.boxCollider2D.enabled = true;
         customMono.combatCollider2D.enabled = true;
 
-        ToggleAnim(GameManager.Instance.bladeOfVuBoolHash, false);
+        ToggleAnim(GameManager.Instance.mainSkill3BoolHash, false);
     }
 
     void BotTrigger(Vector2 p_direction, float p_duration)
@@ -129,7 +129,7 @@ public class BladeOfVu : SkillBase
         base.ActionInterrupt();
         customMono.actionBlocking = false;
         customMono.movementActionBlocking = false;
-        ToggleAnim(GameManager.Instance.bladeOfVuBoolHash, false);
+        ToggleAnim(GameManager.Instance.mainSkill3BoolHash, false);
         StopCoroutine(actionIE);
     }
 }
