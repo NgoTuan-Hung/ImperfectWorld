@@ -18,6 +18,11 @@ public enum ModificationPriority
     VeryHigh = 0,
 }
 
+/// <summary>
+/// Basically just a sensor manager for bot, so the bot can detect enemy, see how
+/// far away is the enemy, and so on. Also it is an ai decision maker base on the
+/// environment/situtation.
+/// </summary>
 public class MyBotPersonality : CustomMonoPal
 {
     /// <summary>
@@ -25,15 +30,18 @@ public class MyBotPersonality : CustomMonoPal
     /// </summary>
     public Vector2 originToTargetOriginDirection,
         /* Center is the position of RotationAndCenterObject of a CustomMono */
-        centerToTargetCenterDirection;
+        centerToTargetCenterDirection,
+        firePointToTargetCenterDirection;
     public Vector3 targetOriginPosition,
         targetCenterPosition;
 
     /// <summary>
-    /// OTTOD = Origin To Target Origin Direction, CTTCD = Center To Target Center Direction,...
+    /// OTTOD = Origin To Target Origin Direction, CTTCD = Center To Target Center Direction,
+    /// FPTTCD = Fire Point To Target Center Direction, ...
     /// </summary>
     public int current_OTTOD_ChangePriority = (int)ModificationPriority.VeryLow,
         current_CTTCD_ChangePriority = (int)ModificationPriority.VeryLow,
+        current_FPTTCD_ChangePriority = (int)ModificationPriority.VeryLow,
         current_TOP_ChangePriority = (int)ModificationPriority.VeryLow,
         current_TCP_ChangePriority = (int)ModificationPriority.VeryLow;
     public float distanceToTarget;
@@ -135,6 +143,18 @@ public class MyBotPersonality : CustomMonoPal
         }
     }
 
+    public void SetFirePointToTargetCenterDirection(
+        Vector2 p_direction,
+        ModificationPriority p_priority
+    )
+    {
+        if ((int)p_priority <= current_FPTTCD_ChangePriority)
+        {
+            firePointToTargetCenterDirection = p_direction;
+            current_FPTTCD_ChangePriority = (int)p_priority;
+        }
+    }
+
     public void SetTargetOriginPosition(Vector3 p_position, ModificationPriority p_priority)
     {
         if ((int)p_priority <= current_TOP_ChangePriority)
@@ -227,13 +247,19 @@ public class MyBotPersonality : CustomMonoPal
         /* IMPORTANT */
         customMono.movementIntelligence.ExecuteAnyActionThisFrame(
             customMono.movementActionInterval,
-            originToTargetOriginDirection,
-            targetOriginPosition
+            p_originToTargetOriginDirection: originToTargetOriginDirection,
+            p_centerToTargetCenterDirection: centerToTargetCenterDirection,
+            p_firePointToTargetCenterDirection: firePointToTargetCenterDirection,
+            p_targetOriginPosition: targetOriginPosition,
+            p_targetCenterPosition: targetCenterPosition
         );
         customMono.actionIntelligence.ExecuteAnyActionThisFrame(
             customMono.actionInterval,
-            originToTargetOriginDirection,
-            targetOriginPosition
+            p_originToTargetOriginDirection: originToTargetOriginDirection,
+            p_centerToTargetCenterDirection: centerToTargetCenterDirection,
+            p_firePointToTargetCenterDirection: firePointToTargetCenterDirection,
+            p_targetOriginPosition: targetOriginPosition,
+            p_targetCenterPosition: targetCenterPosition
         );
     }
 
@@ -245,8 +271,13 @@ public class MyBotPersonality : CustomMonoPal
             ModificationPriority.VeryLow
         );
         SetCenterToTargetCenterDirection(
-            detectEnemy.rotationAndCenterObject.transform.position
+            targetEnemy.rotationAndCenterObject.transform.position
                 - customMono.rotationAndCenterObject.transform.position,
+            ModificationPriority.VeryLow
+        );
+        SetFirePointToTargetCenterDirection(
+            targetEnemy.rotationAndCenterObject.transform.position
+                - customMono.firePoint.transform.position,
             ModificationPriority.VeryLow
         );
         SetTargetOriginPosition(targetEnemy.transform.position, ModificationPriority.VeryLow);
@@ -309,9 +340,18 @@ public class MyBotPersonality : CustomMonoPal
     {
         Action t_forceUsingAction = () =>
         {
-            SetTargetOriginPosition(targetPositionParam, ModificationPriority.VeryHigh);
             SetOriginToTargetOriginDirection(
-                targetPositionParam - transform.position,
+                targetEnemy.transform.position - transform.position,
+                ModificationPriority.VeryHigh
+            );
+            SetCenterToTargetCenterDirection(
+                targetEnemy.rotationAndCenterObject.transform.position
+                    - customMono.rotationAndCenterObject.transform.position,
+                ModificationPriority.VeryHigh
+            );
+            SetTargetOriginPosition(targetPositionParam, ModificationPriority.VeryHigh);
+            SetTargetCenterPosition(
+                targetEnemy.rotationAndCenterObject.transform.position,
                 ModificationPriority.VeryHigh
             );
             customMono.actionIntelligence.PreSumActionChance(actionUse, 9999);

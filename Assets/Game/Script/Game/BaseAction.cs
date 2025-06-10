@@ -134,11 +134,7 @@ public class BaseAction : MonoEditor
 
     public virtual void WhileWaiting(Vector2 vector2) { }
 
-    public virtual void DoAuto(
-        Vector2 p_targetDirection,
-        Vector2 p_targetPosition,
-        float p_nextActionChoosingIntervalProposal
-    ) { }
+    public virtual void DoAuto(DoActionParamInfo p_doActionParamInfo) { }
 
     public virtual void AddAmmo(int ammount) => currentAmmo += ammount;
 

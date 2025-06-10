@@ -88,7 +88,7 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
-  m_SpriteSortPoint: 0
+  m_SpriteSortPoint: 1
 --- !u!95 &3086580546327843269
 Animator:
   serializedVersion: 7
@@ -505,6 +505,8 @@ MonoBehaviour:
   customMono: {fileID: 0}
   skillDataSOs:
   - {fileID: 11400000, guid: 1c867fbe8b471654dae0b5d9aa81b709, type: 2}
+  - {fileID: 11400000, guid: 5d2023664fb455b42875ba90da1f7790, type: 2}
+  - {fileID: 11400000, guid: 41cd28db47a010748abdf74eb1487818, type: 2}
   skillBases: []
 --- !u!114 &8041115113237304025
 MonoBehaviour:
@@ -519,9 +521,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   customMono: {fileID: 0}
-  targetDirection: {x: 0, y: 0}
+  originToTargetOriginDirection: {x: 0, y: 0}
+  centerToTargetCenterDirection: {x: 0, y: 0}
+  firePointToTargetCenterDirection: {x: 0, y: 0}
+  targetOriginPosition: {x: 0, y: 0, z: 0}
+  targetCenterPosition: {x: 0, y: 0, z: 0}
+  current_OTTOD_ChangePriority: 4
+  current_CTTCD_ChangePriority: 4
+  current_FPTTCD_ChangePriority: 4
+  current_TOP_ChangePriority: 4
+  current_TCP_ChangePriority: 4
   distanceToTarget: 0
-  targetPosition: {x: 0, y: 0, z: 0}
   logicalAttackRange: 7
   targetTooCloseRange: 3
   myBotCombatBehaviour: 1

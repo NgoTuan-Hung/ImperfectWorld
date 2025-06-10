@@ -54,7 +54,9 @@ public class GameManager : MonoSingleton<GameManager>
         bladeOfVuSlashPrefab,
         pierceStrikePrefab,
         pierceStrikeSecondPhasePrefab,
-        deepBladeSlashPrefab;
+        deepBladeSlashPrefab,
+        rayOfJungleBeamPrefab,
+        woodCryArrowPrefab;
     public ObjectPool vanishEffectPool,
         bladeOfMinhKhaiSlashEffectPool,
         bladeOfPhongTornadoEffectPool,
@@ -63,7 +65,9 @@ public class GameManager : MonoSingleton<GameManager>
         bladeOfVuSlashPool,
         pierceStrikePool,
         pierceStrikeSecondPhasePool,
-        deepBladeSlashPool;
+        deepBladeSlashPool,
+        rayOfJungleBeamPool,
+        woodCryArrowPool;
     public int mainSkill1BoolHash = Animator.StringToHash("MainSkill1"),
         mainSkill2BoolHash = Animator.StringToHash("MainSkill2"),
         mainSkill3BoolHash = Animator.StringToHash("MainSkill3");
@@ -249,6 +253,18 @@ public class GameManager : MonoSingleton<GameManager>
         deepBladeSlashPrefab = Resources.Load("DeepBladeSlash") as GameObject;
         deepBladeSlashPool ??= new(
             deepBladeSlashPrefab,
+            20,
+            new PoolArgument(ComponentType.GameEffect, PoolArgument.WhereComponent.Self)
+        );
+        rayOfJungleBeamPrefab = Resources.Load("RayOfJungleBeam") as GameObject;
+        rayOfJungleBeamPool ??= new(
+            rayOfJungleBeamPrefab,
+            20,
+            new PoolArgument(ComponentType.GameEffect, PoolArgument.WhereComponent.Self)
+        );
+        woodCryArrowPrefab = Resources.Load("WoodCryArrow") as GameObject;
+        woodCryArrowPool ??= new(
+            woodCryArrowPrefab,
             20,
             new PoolArgument(ComponentType.GameEffect, PoolArgument.WhereComponent.Self)
         );

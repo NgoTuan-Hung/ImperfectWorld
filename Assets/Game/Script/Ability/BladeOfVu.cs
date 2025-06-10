@@ -34,9 +34,12 @@ public class BladeOfVu : SkillBase
         botActionManuals.Add(
             new(
                 ActionUse.MeleeDamage,
-                (direction, location, nextActionChoosingIntervalProposal) =>
-                    BotTrigger(direction, nextActionChoosingIntervalProposal),
-                0.45f
+                (p_doActionParamInfo) =>
+                    BotTrigger(
+                        p_doActionParamInfo.centerToTargetCenterDirection,
+                        p_doActionParamInfo.nextActionChoosingIntervalProposal
+                    ),
+                new(nextActionChoosingIntervalProposal: 0.45f)
             )
         );
     }

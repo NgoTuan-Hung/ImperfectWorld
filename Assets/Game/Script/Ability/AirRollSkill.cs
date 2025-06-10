@@ -41,9 +41,13 @@ public class AirRollSkill : SkillBase
         botActionManuals.Add(
             new BotActionManual(
                 ActionUse.AirRoll,
-                (direction, location, nextActionChoosingIntervalProposal) =>
-                    AirRollTo(direction, location, nextActionChoosingIntervalProposal),
-                1f
+                (p_doActionParamInfo) =>
+                    AirRollTo(
+                        p_doActionParamInfo.originToTargetOriginDirection,
+                        p_doActionParamInfo.targetOriginPosition,
+                        p_doActionParamInfo.nextActionChoosingIntervalProposal
+                    ),
+                new(nextActionChoosingIntervalProposal: 1f)
             )
         );
     }

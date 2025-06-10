@@ -38,32 +38,38 @@ public class DashSkill : SkillBase
         botActionManuals.Add(
             new BotActionManual(
                 ActionUse.GetCloser,
-                (direction, location, nextActionChoosingIntervalProposal) =>
-                    DashTo(direction, nextActionChoosingIntervalProposal),
-                0.5f,
-                true,
-                1
+                (p_doActionParamInfo) =>
+                    DashTo(
+                        p_doActionParamInfo.centerToTargetCenterDirection,
+                        p_doActionParamInfo.nextActionChoosingIntervalProposal
+                    ),
+                new(nextActionChoosingIntervalProposal: 0.5f)
             )
         );
         botActionManuals.Add(
             new BotActionManual(
                 ActionUse.GetAway,
-                (direction, location, nextActionChoosingIntervalProposal) =>
-                    DashTo(direction, nextActionChoosingIntervalProposal),
-                0.5f,
-                true,
-                -1
+                (p_doActionParamInfo) =>
+                    DashTo(
+                        p_doActionParamInfo.centerToTargetCenterDirection,
+                        p_doActionParamInfo.nextActionChoosingIntervalProposal
+                    ),
+                new(
+                    nextActionChoosingIntervalProposal: 0.5f,
+                    isDirectionModify: true,
+                    directionModifier: -1
+                )
             )
         );
         botActionManuals.Add(
             new BotActionManual(
                 ActionUse.Dodge,
-                (direction, location, nextActionChoosingIntervalProposal) =>
+                (p_doActionParamInfo) =>
                     DashTo(
                         new Vector2(Random.Range(-1f, 1f), Random.Range(-1f, 1f)),
-                        nextActionChoosingIntervalProposal
+                        p_doActionParamInfo.nextActionChoosingIntervalProposal
                     ),
-                0.5f
+                new(nextActionChoosingIntervalProposal: 0.5f)
             )
         );
     }

@@ -34,9 +34,12 @@ public class PierceStrike : SkillBase
         botActionManuals.Add(
             new(
                 ActionUse.RangedDamage,
-                (direction, location, nextActionChoosingIntervalProposal) =>
-                    BotTrigger(direction, nextActionChoosingIntervalProposal),
-                0.4f
+                (p_doActionParamInfo) =>
+                    BotTrigger(
+                        p_doActionParamInfo.centerToTargetCenterDirection,
+                        p_doActionParamInfo.nextActionChoosingIntervalProposal
+                    ),
+                new(nextActionChoosingIntervalProposal: 0.4f)
             )
         );
     }

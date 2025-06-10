@@ -65,8 +65,8 @@ public class Scatter : SkillBase
         botActionManuals.Add(
             new BotActionManual(
                 ActionUse.PushAway,
-                (direction, location, nextActionChoosingIntervalProposal) => Trigger(),
-                1f,
+                (p_doActionParamInfo) => Trigger(),
+                new(nextActionChoosingIntervalProposal: 1f),
                 actionNeedWait: true,
                 startAndWait: StartAndWait,
                 whileWaiting: WhileWaiting

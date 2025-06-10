@@ -28,11 +28,12 @@ public class Attackable : SkillBase
             botActionManuals.Add(
                 new BotActionManual(
                     ActionUse.MeleeDamage,
-                    (direction, location, nextActionChoosingIntervalProposal) =>
-                        AttackTo(direction, nextActionChoosingIntervalProposal),
-                    0.5f,
-                    true,
-                    1
+                    (p_doActionParamInfo) =>
+                        AttackTo(
+                            p_doActionParamInfo.firePointToTargetCenterDirection,
+                            p_doActionParamInfo.nextActionChoosingIntervalProposal
+                        ),
+                    new(nextActionChoosingIntervalProposal: 0.5f)
                 )
             );
         }
@@ -43,11 +44,12 @@ public class Attackable : SkillBase
             botActionManuals.Add(
                 new BotActionManual(
                     ActionUse.RangedDamage,
-                    (direction, location, nextActionChoosingIntervalProposal) =>
-                        AttackTo(direction, nextActionChoosingIntervalProposal),
-                    0.5f,
-                    true,
-                    1
+                    (p_doActionParamInfo) =>
+                        AttackTo(
+                            p_doActionParamInfo.firePointToTargetCenterDirection,
+                            p_doActionParamInfo.nextActionChoosingIntervalProposal
+                        ),
+                    new(nextActionChoosingIntervalProposal: 0.5f)
                 )
             );
         }
@@ -66,17 +68,23 @@ public class Attackable : SkillBase
         botActionManuals.Add(
             new BotActionManual(
                 ActionUse.Passive,
-                (direction, location, nextActionChoosingIntervalProposal) =>
-                    Idle(direction, nextActionChoosingIntervalProposal),
-                0.5f
+                (p_doActionParamInfo) =>
+                    Idle(
+                        p_doActionParamInfo.centerToTargetCenterDirection,
+                        p_doActionParamInfo.nextActionChoosingIntervalProposal
+                    ),
+                new(nextActionChoosingIntervalProposal: 0.5f)
             )
         );
         botActionManuals.Add(
             new(
                 ActionUse.Roam,
-                (direction, location, nextActionChoosingIntervalProposal) =>
-                    Idle(direction, nextActionChoosingIntervalProposal),
-                1f
+                (p_doActionParamInfo) =>
+                    Idle(
+                        p_doActionParamInfo.centerToTargetCenterDirection,
+                        p_doActionParamInfo.nextActionChoosingIntervalProposal
+                    ),
+                new(nextActionChoosingIntervalProposal: 1)
             )
         );
     }
@@ -106,11 +114,11 @@ public class Attackable : SkillBase
                 defaultStateSpeed * customMono.stat.AttackSpeed
             );
             cooldown = defaultCooldown / customMono.stat.AttackSpeed;
-            botActionManuals[0].nextActionChoosingIntervalProposal =
+            botActionManuals[0].doActionParamInfo.nextActionChoosingIntervalProposal =
                 0.5f / customMono.stat.AttackSpeed;
-            botActionManuals[1].nextActionChoosingIntervalProposal =
+            botActionManuals[1].doActionParamInfo.nextActionChoosingIntervalProposal =
                 0.5f / customMono.stat.AttackSpeed;
-            botActionManuals[2].nextActionChoosingIntervalProposal =
+            botActionManuals[2].doActionParamInfo.nextActionChoosingIntervalProposal =
                 0.5f / customMono.stat.AttackSpeed;
         };
     }

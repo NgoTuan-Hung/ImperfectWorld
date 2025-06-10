@@ -54,9 +54,12 @@ public class MagicLaserSkill : SkillBase
         botActionManuals.Add(
             new BotActionManual(
                 ActionUse.RangedDamage,
-                (direction, location, nextActionChoosingIntervalProposal) =>
-                    FireAt(location, nextActionChoosingIntervalProposal),
-                0.5f
+                (p_doActionParamInfo) =>
+                    FireAt(
+                        p_doActionParamInfo.targetCenterPosition,
+                        p_doActionParamInfo.nextActionChoosingIntervalProposal
+                    ),
+                new(nextActionChoosingIntervalProposal: 0.5f)
             )
         );
     }

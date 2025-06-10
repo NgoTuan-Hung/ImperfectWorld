@@ -41,9 +41,9 @@ public class TheCallOfThePack : SkillBase
         botActionManuals.Add(
             new BotActionManual(
                 ActionUse.SummonShortRange,
-                (direction, location, nextActionChoosingIntervalProposal) =>
-                    Call(nextActionChoosingIntervalProposal),
-                0.5f
+                (p_doActionParamInfo) =>
+                    Call(p_doActionParamInfo.nextActionChoosingIntervalProposal),
+                new(nextActionChoosingIntervalProposal: 0.5f)
             )
         );
     }

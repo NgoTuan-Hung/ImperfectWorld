@@ -49,8 +49,8 @@ public class MoonSlash : SkillBase
         botActionManuals.Add(
             new(
                 ActionUse.RangedDamage,
-                (direction, location, nextActionChoosingIntervalProposal) => Trigger(),
-                0.31f,
+                (p_doActionParamInfo) => Trigger(),
+                new(nextActionChoosingIntervalProposal: 0.31f),
                 actionNeedWait: true,
                 startAndWait: StartAndWait,
                 whileWaiting: WhileWaiting
@@ -155,13 +155,9 @@ public class MoonSlash : SkillBase
         actionWaitInfo.finalDirection = vector2;
     }
 
-    public override void DoAuto(
-        Vector2 p_targetDirection,
-        Vector2 p_targetPosition,
-        float p_nextActionChoosingIntervalProposal
-    )
+    public override void DoAuto(DoActionParamInfo p_doActionParamInfo)
     {
-        StartCoroutine(DoAutoCoroutine(p_nextActionChoosingIntervalProposal));
+        StartCoroutine(DoAutoCoroutine(p_doActionParamInfo.nextActionChoosingIntervalProposal));
     }
 
     IEnumerator DoAutoCoroutine(float p_duration)

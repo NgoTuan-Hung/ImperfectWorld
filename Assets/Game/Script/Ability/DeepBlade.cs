@@ -23,11 +23,12 @@ public class DeepBlade : SkillBase
         botActionManuals.Add(
             new BotActionManual(
                 ActionUse.MeleeDamage,
-                (direction, location, nextActionChoosingIntervalProposal) =>
-                    BotTrigger(direction, nextActionChoosingIntervalProposal),
-                0.5f,
-                true,
-                1
+                (p_doActionParamInfo) =>
+                    BotTrigger(
+                        p_doActionParamInfo.centerToTargetCenterDirection,
+                        p_doActionParamInfo.nextActionChoosingIntervalProposal
+                    ),
+                new(nextActionChoosingIntervalProposal: 0.5f)
             )
         );
     }

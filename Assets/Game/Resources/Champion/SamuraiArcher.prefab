@@ -88,7 +88,7 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
-  m_SpriteSortPoint: 0
+  m_SpriteSortPoint: 1
 --- !u!95 &2996007933352103758
 Animator:
   serializedVersion: 7
@@ -521,9 +521,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   customMono: {fileID: 0}
-  targetDirection: {x: 0, y: 0}
+  originToTargetOriginDirection: {x: 0, y: 0}
+  centerToTargetCenterDirection: {x: 0, y: 0}
+  firePointToTargetCenterDirection: {x: 0, y: 0}
+  targetOriginPosition: {x: 0, y: 0, z: 0}
+  targetCenterPosition: {x: 0, y: 0, z: 0}
+  current_OTTOD_ChangePriority: 4
+  current_CTTCD_ChangePriority: 4
+  current_FPTTCD_ChangePriority: 4
+  current_TOP_ChangePriority: 4
+  current_TCP_ChangePriority: 4
   distanceToTarget: 0
-  targetPosition: {x: 0, y: 0, z: 0}
   logicalAttackRange: 1.5
   targetTooCloseRange: 1
   myBotCombatBehaviour: 0

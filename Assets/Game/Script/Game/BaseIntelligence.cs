@@ -22,7 +22,6 @@ public class BaseIntelligence : MonoEditor
     public List<int> presummedActionChances = new();
     bool actionNeedWait = false;
     BotActionManual waitBotActionManual;
-    ActionRequiredParameter actionRequiredParameter = new ActionRequiredParameter();
 
     public virtual void Awake()
     {
@@ -63,7 +62,8 @@ public class BaseIntelligence : MonoEditor
     public void ExecuteAnyActionThisFrame(
         bool actionInterval,
         Vector2 p_originToTargetOriginDirection = default,
-        Vector2 p_centerToTargetCenterPosition = default,
+        Vector2 p_centerToTargetCenterDirection = default,
+        Vector2 p_firePointToTargetCenterDirection = default,
         Vector2 p_targetOriginPosition = default,
         Vector2 p_targetCenterPosition = default
     )
@@ -73,9 +73,14 @@ public class BaseIntelligence : MonoEditor
             HandleActionRequiredParameter(
                 waitBotActionManual,
                 p_originToTargetOriginDirection,
-                p_targetOriginPosition
+                p_centerToTargetCenterDirection,
+                p_firePointToTargetCenterDirection,
+                p_targetOriginPosition,
+                p_targetCenterPosition
             );
-            waitBotActionManual.whileWaiting(actionRequiredParameter.originToTargetOriginDirection);
+            waitBotActionManual.whileWaiting(
+                waitBotActionManual.doActionParamInfo.originToTargetOriginDirection
+            );
             return;
         }
 
@@ -100,15 +105,20 @@ public class BaseIntelligence : MonoEditor
         {
             HandleActionRequiredParameter(
                 t_botActionManual,
-                p_originToTargetOriginDirection: p_originToTargetOriginDirection,
-                p_targetOriginPosition: p_targetOriginPosition
+                p_originToTargetOriginDirection,
+                p_centerToTargetCenterDirection,
+                p_firePointToTargetCenterDirection,
+                p_targetOriginPosition,
+                p_targetCenterPosition
             );
             if (t_botActionManual.startAndWait())
             {
                 actionNeedWait = true;
                 waitBotActionManual = t_botActionManual;
                 StartCoroutine(
-                    EndActionWaiting(t_botActionManual.nextActionChoosingIntervalProposal)
+                    EndActionWaiting(
+                        t_botActionManual.doActionParamInfo.nextActionChoosingIntervalProposal
+                    )
                 );
             }
         }
@@ -116,14 +126,13 @@ public class BaseIntelligence : MonoEditor
         {
             HandleActionRequiredParameter(
                 t_botActionManual,
-                p_originToTargetOriginDirection: p_originToTargetOriginDirection,
-                p_targetOriginPosition: p_targetOriginPosition
+                p_originToTargetOriginDirection,
+                p_centerToTargetCenterDirection,
+                p_firePointToTargetCenterDirection,
+                p_targetOriginPosition,
+                p_targetCenterPosition
             );
-            t_botActionManual.doAction(
-                actionRequiredParameter.originToTargetOriginDirection,
-                actionRequiredParameter.targetOriginPosition,
-                t_botActionManual.nextActionChoosingIntervalProposal
-            );
+            t_botActionManual.doAction(t_botActionManual.doActionParamInfo);
         }
 
         RefreshActionChances();
@@ -134,11 +143,7 @@ public class BaseIntelligence : MonoEditor
         yield return new WaitForSeconds(duration);
         actionNeedWait = false;
         RefreshActionChances();
-        waitBotActionManual.doAction(
-            actionRequiredParameter.originToTargetOriginDirection,
-            actionRequiredParameter.targetOriginPosition,
-            waitBotActionManual.nextActionChoosingIntervalProposal
-        );
+        waitBotActionManual.doAction(waitBotActionManual.doActionParamInfo);
     }
 
     /// <summary>
@@ -208,17 +213,31 @@ public class BaseIntelligence : MonoEditor
     void HandleActionRequiredParameter(
         BotActionManual botActionManual,
         Vector2 p_originToTargetOriginDirection = default,
-        Vector2 p_centerToTargetCenterPosition = default,
+        Vector2 p_centerToTargetCenterDirection = default,
+        Vector2 p_firePointToTargetCenterDirection = default,
         Vector2 p_targetOriginPosition = default,
         Vector2 p_targetCenterPosition = default
     )
     {
-        actionRequiredParameter.originToTargetOriginDirection = p_originToTargetOriginDirection;
-        actionRequiredParameter.centerToTargetCenterDirection = p_centerToTargetCenterPosition;
-        actionRequiredParameter.targetOriginPosition = p_targetOriginPosition;
-        actionRequiredParameter.targetCenterPosition = p_targetCenterPosition;
-        if (botActionManual.targetDirection)
-            actionRequiredParameter.originToTargetOriginDirection *=
-                botActionManual.targetDirectionMultiplier;
+        botActionManual.doActionParamInfo.originToTargetOriginDirection =
+            p_originToTargetOriginDirection;
+        botActionManual.doActionParamInfo.centerToTargetCenterDirection =
+            p_centerToTargetCenterDirection;
+        botActionManual.doActionParamInfo.firePointToTargetCenterDirection =
+            p_firePointToTargetCenterDirection;
+        botActionManual.doActionParamInfo.targetOriginPosition = p_targetOriginPosition;
+        botActionManual.doActionParamInfo.targetCenterPosition = p_targetCenterPosition;
+        if (botActionManual.doActionParamInfo.isDirectionModify)
+        {
+            botActionManual.doActionParamInfo.originToTargetOriginDirection *= botActionManual
+                .doActionParamInfo
+                .directionModifier;
+            botActionManual.doActionParamInfo.centerToTargetCenterDirection *= botActionManual
+                .doActionParamInfo
+                .directionModifier;
+            botActionManual.doActionParamInfo.firePointToTargetCenterDirection *= botActionManual
+                .doActionParamInfo
+                .directionModifier;
+        }
     }
 }

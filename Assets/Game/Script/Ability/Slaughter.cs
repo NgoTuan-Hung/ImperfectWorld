@@ -7,7 +7,6 @@ public class Slaughter : SkillBase
 {
     GameObject projectilePrefab;
     static ObjectPool projectilePool;
-    Vector3 projectileUpDir;
 
     public override void Awake()
     {
@@ -73,7 +72,9 @@ public class Slaughter : SkillBase
     public override void AddActionManuals()
     {
         base.AddActionManuals();
-        botActionManuals.Add(new(ActionUse.RangedDamage, DoAuto, 0));
+        botActionManuals.Add(
+            new(ActionUse.RangedDamage, DoAuto, new(nextActionChoosingIntervalProposal: 0))
+        );
     }
 
     /* The logic of this ability is we can fire projectile whenever we have ammo,
@@ -131,13 +132,9 @@ public class Slaughter : SkillBase
         canUse = true;
     }
 
-    public override void DoAuto(
-        Vector2 p_targetDirection,
-        Vector2 p_targetPosition,
-        float p_nextActionChoosingIntervalProposal
-    )
+    public override void DoAuto(DoActionParamInfo p_doActionParamInfo)
     {
-        Trigger(default, p_targetDirection);
+        Trigger(default, p_doActionParamInfo.centerToTargetCenterDirection);
     }
 
     public override void ActionInterrupt()
