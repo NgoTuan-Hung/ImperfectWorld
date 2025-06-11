@@ -9,6 +9,8 @@ public enum OneTimeContactInteraction
     Push,
     KnockUp,
     Stun,
+    Heal,
+    Poison,
 }
 
 public class CollideAndDamage : MonoSelfAware
@@ -34,6 +36,7 @@ public class CollideAndDamage : MonoSelfAware
     /// </summary>
     Action<CustomMono, Collider2D> onTriggerEnterWithEnemyCM = (p_customMono, collider2D) => { };
     Action<CustomMono, Collider2D> onTriggerStayWithEnemyCM = (p_customMono, collider2D) => { };
+    Action<CustomMono, Collider2D> onTriggerEnterWithAllyCM = (p_customMono, collider2D) => { };
     public Action<float> dealDamageEvent = (damageDealt) => { };
     public OneTimeContactInteraction oneTimeContactInteraction = OneTimeContactInteraction.None;
 
@@ -50,6 +53,8 @@ public class CollideAndDamage : MonoSelfAware
     public EffectPool collisionEffectPoolType;
     public ObjectPool collisionEffectPool;
     public float stunDuration;
+    public float healAmmount;
+    public PoisonInfo poisonInfo;
 
     public override void Awake()
     {
@@ -110,6 +115,22 @@ public class CollideAndDamage : MonoSelfAware
                     p_customMono.statusEffect.Stun(stunDuration);
                 break;
             }
+            case OneTimeContactInteraction.Heal:
+            {
+                onTriggerEnterWithAllyCM += (p_customMono, p_collider2D) =>
+                {
+                    p_customMono.statusEffect.Heal(healAmmount);
+                };
+                break;
+            }
+            case OneTimeContactInteraction.Poison:
+            {
+                onTriggerEnterWithEnemyCM += (p_customMono, p_collider2D) =>
+                {
+                    p_customMono.statusEffect.Poison(poisonInfo);
+                };
+                break;
+            }
             default:
                 break;
         }
@@ -118,8 +139,7 @@ public class CollideAndDamage : MonoSelfAware
         {
             onTriggerEnterWithEnemyCM += (p_customMono, other) =>
             {
-                p_customMono.stat.Health -= collideDamage;
-                p_customMono.statusEffect.GetHit();
+                p_customMono.statusEffect.GetHit(collideDamage);
                 dealDamageEvent(collideDamage);
             };
         }
@@ -137,16 +157,14 @@ public class CollideAndDamage : MonoSelfAware
                     {
                         p_customMono.multipleCollideTimersDict[GetHashCode()].currentTime =
                             multipleCollideInterval;
-                        p_customMono.stat.Health -= collideDamage;
-                        p_customMono.statusEffect.GetHit();
+                        p_customMono.statusEffect.GetHit(collideDamage);
                         dealDamageEvent(collideDamage);
                     }
                 }
                 catch (KeyNotFoundException)
                 {
                     p_customMono.AddMultipleCollideTimer(GetHashCode(), multipleCollideInterval);
-                    p_customMono.stat.Health -= collideDamage;
-                    p_customMono.statusEffect.GetHit();
+                    p_customMono.statusEffect.GetHit(collideDamage);
                     dealDamageEvent(collideDamage);
                 }
             };
@@ -166,7 +184,10 @@ public class CollideAndDamage : MonoSelfAware
                     {
                         onTriggerEnterWithEnemyCM(t_customMono, p_collider2D);
                     }
-                    else { }
+                    else
+                    {
+                        onTriggerEnterWithAllyCM(t_customMono, p_collider2D);
+                    }
                 }
             }
         };

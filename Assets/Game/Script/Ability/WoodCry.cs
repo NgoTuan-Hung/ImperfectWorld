@@ -3,6 +3,8 @@ using UnityEngine;
 
 public class WoodCry : SkillBase
 {
+    float healAmmount = 50f;
+
     public override void Awake()
     {
         base.Awake();
@@ -74,6 +76,7 @@ public class WoodCry : SkillBase
         GameEffect gameEffect = GameManager.Instance.woodCryArrowPool.PickOne().gameEffect;
         gameEffect.collideAndDamage.allyTags = customMono.allyTags;
         gameEffect.collideAndDamage.collideDamage = damage;
+        gameEffect.collideAndDamage.healAmmount = healAmmount;
         gameEffect.transform.position = location;
 
         while (!customMono.animationEventFunctionCaller.endMainSkill2)

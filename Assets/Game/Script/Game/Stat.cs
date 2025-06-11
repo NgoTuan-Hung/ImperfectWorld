@@ -75,7 +75,10 @@ public class Stat : MonoEditor, INotifyBindablePropertyChanged
             if (value == health)
                 return;
 
-            health = value;
+            if (value > defaultHealth)
+                health = defaultHealth;
+            else
+                health = value;
             Notify();
             if (health <= 0)
                 healthReachZeroEvent.action();

@@ -12,6 +12,7 @@ public class GameEffect : MonoSelfAware
     [SerializeField]
     private bool isDeactivatedAfterTime = false;
     Action deactiveAfterTime = () => { };
+    IEnumerator deActivateAfterTimeIE;
 
     [SerializeField]
     private float deactivateTime = 1f;
@@ -42,10 +43,16 @@ public class GameEffect : MonoSelfAware
         /* Don't put these on Start because Start run after OnEnable, if so the first time they
         show up, they won't handle deactivation correctly */
         if (isDeactivatedAfterTime)
+        {
             deactiveAfterTime += () =>
             {
-                StartCoroutine(DeactivateAfterTimeCoroutine(deactivateTime));
+                StartCoroutine(
+                    deActivateAfterTimeIE = DeactivateAfterTimeCoroutine(deactivateTime)
+                );
             };
+            if (collideAndDamage != null)
+                collideAndDamage.deactivate += () => StopCoroutine(deActivateAfterTimeIE);
+        }
         if (isTimeline)
             onEnable += () => playableDirector.Play();
         if (playSoundOnEnable)

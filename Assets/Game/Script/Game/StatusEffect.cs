@@ -28,7 +28,10 @@ public class StatusEffect : CustomMonoPal
         knockUpVelocity,
         knockUpAcceleration = -10f;
     public float stunTime = 0f;
-    GameObject stunIndicator;
+    GameObject statusEffectIndicator,
+        stunIndicator;
+    ParticleSystem healIndicator,
+        poisonIndicator;
 
     public override void Awake()
     {
@@ -38,11 +41,25 @@ public class StatusEffect : CustomMonoPal
     public override void Start()
     {
         base.Start();
-        stunIndicator = customMono.directionModifier.transform.Find("StunIndicator").gameObject;
+        statusEffectIndicator = customMono
+            .directionModifier.transform.Find("StatusEffectIndicator")
+            .gameObject;
+        stunIndicator = statusEffectIndicator.transform.Find("StunIndicator").gameObject;
+        healIndicator = statusEffectIndicator
+            .transform.Find("HealIndicator")
+            .GetComponent<ParticleSystem>();
+        var sh = healIndicator.shape;
+        sh.spriteRenderer = customMono.spriteRenderer;
+        poisonIndicator = statusEffectIndicator
+            .transform.Find("PoisonIndicator")
+            .GetComponent<ParticleSystem>();
+        sh = poisonIndicator.shape;
+        sh.spriteRenderer = customMono.spriteRenderer;
     }
 
-    public void GetHit()
+    public void GetHit(float p_damage)
     {
+        customMono.stat.Health -= p_damage;
         if (damageInEffect)
             currentDamageTime = 0;
         else
@@ -159,6 +176,49 @@ public class StatusEffect : CustomMonoPal
             customMono.actionBlocking = false;
             customMono.movementActionBlocking = false;
         }
+    }
+
+    public void Heal(float p_ammount)
+    {
+        customMono.stat.Health += p_ammount;
+        healIndicator.Play();
+    }
+
+    bool poisonInEffect = false;
+    int totalPoison = 0;
+    float poisonDamage;
+
+    public void Poison(PoisonInfo p_poisonInfo)
+    {
+        if (poisonInEffect)
+        {
+            if (totalPoison < p_poisonInfo.totalPoison)
+                totalPoison = p_poisonInfo.totalPoison;
+            poisonDamage += p_poisonInfo.poisonDamage;
+        }
+        else
+        {
+            StartCoroutine(PoisonIE(p_poisonInfo));
+        }
+    }
+
+    IEnumerator PoisonIE(PoisonInfo p_poisonInfo)
+    {
+        poisonInEffect = true;
+        totalPoison = p_poisonInfo.totalPoison;
+        poisonDamage = p_poisonInfo.poisonDamage;
+        while (totalPoison > 0)
+        {
+            totalPoison--;
+            GetHit(poisonDamage);
+            poisonIndicator.Play();
+
+            yield return new WaitForSeconds(0.2f);
+        }
+
+        poisonInEffect = false;
+        poisonDamage = 0;
+        totalPoison = 0;
     }
 
     bool CheckEffect(StatusEffectState p_statusEffectState) =>
