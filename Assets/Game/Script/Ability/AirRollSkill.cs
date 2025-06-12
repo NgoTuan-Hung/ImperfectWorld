@@ -108,6 +108,7 @@ public class AirRollSkill : SkillBase
         ToggleAnim(landBoolHash, false);
         customMono.actionBlocking = false;
         customMono.movementActionBlocking = false;
+        customMono.currentAction = null;
     }
 
     public void AirRollTo(Vector2 direction, Vector2 location, float duration)
@@ -131,5 +132,6 @@ public class AirRollSkill : SkillBase
         customMono.movementActionBlocking = false;
         ToggleAnim(boolHash, false);
         StopCoroutine(actionIE);
+        customMono.currentAction = null;
     }
 }

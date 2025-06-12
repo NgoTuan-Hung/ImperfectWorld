@@ -112,6 +112,7 @@ public class BladeOfVu : SkillBase
         customMono.combatCollider2D.enabled = true;
 
         ToggleAnim(GameManager.Instance.mainSkill3BoolHash, false);
+        customMono.currentAction = null;
     }
 
     void BotTrigger(Vector2 p_direction, float p_duration)
@@ -134,5 +135,6 @@ public class BladeOfVu : SkillBase
         customMono.movementActionBlocking = false;
         ToggleAnim(GameManager.Instance.mainSkill3BoolHash, false);
         StopCoroutine(actionIE);
+        customMono.currentAction = null;
     }
 }

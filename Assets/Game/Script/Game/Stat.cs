@@ -33,7 +33,7 @@ public class Stat : MonoEditor, INotifyBindablePropertyChanged
     private float defaultMoveSpeed;
 
     [SerializeField]
-    float actionMoveSpeedReduceRate = 0.1f;
+    float actionMoveSpeedReduceRate = 0.9f;
     public float actionMoveSpeedReduced;
     public float moveSpeedPerFrame;
 

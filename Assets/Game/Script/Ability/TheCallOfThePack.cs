@@ -65,7 +65,7 @@ public class TheCallOfThePack : SkillBase
         {
             canUse = false;
             customMono.actionBlocking = true;
-            customMono.stat.MoveSpeed = customMono.stat.actionMoveSpeedReduced;
+            customMono.statusEffect.Slow(customMono.stat.ActionMoveSpeedReduceRate);
             ToggleAnim(boolHash, true);
             StartCoroutine(actionIE = TriggerCoroutine());
             StartCoroutine(CooldownCoroutine());
@@ -88,9 +88,10 @@ public class TheCallOfThePack : SkillBase
 
         while (customMono.animationEventFunctionCaller.endSummon)
             yield return new WaitForSeconds(Time.fixedDeltaTime);
-        customMono.stat.SetDefaultMoveSpeed();
+        customMono.statusEffect.RemoveSlow(customMono.stat.ActionMoveSpeedReduceRate);
         customMono.actionBlocking = false;
         customMono.animationEventFunctionCaller.endSummon = false;
+        customMono.currentAction = null;
     }
 
     IEnumerator DelayAirRoll(PoolObject poolObject)
@@ -132,9 +133,10 @@ public class TheCallOfThePack : SkillBase
         base.ActionInterrupt();
         customMono.actionBlocking = false;
         ToggleAnim(boolHash, false);
-        customMono.stat.SetDefaultMoveSpeed();
+        customMono.statusEffect.RemoveSlow(customMono.stat.ActionMoveSpeedReduceRate);
         customMono.animationEventFunctionCaller.summon = false;
         customMono.animationEventFunctionCaller.endSummon = false;
         StopCoroutine(actionIE);
+        customMono.currentAction = null;
     }
 }

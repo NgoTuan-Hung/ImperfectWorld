@@ -48,7 +48,7 @@ public class BladeOfPhong : SkillBase
         {
             canUse = false;
             customMono.actionBlocking = true;
-            customMono.stat.MoveSpeed = customMono.stat.actionMoveSpeedReduced;
+            customMono.statusEffect.Slow(customMono.stat.ActionMoveSpeedReduceRate);
             ToggleAnim(GameManager.Instance.mainSkill2BoolHash, true);
             StartCoroutine(actionIE = WaitSpawnTornadoSignal(direction));
             StartCoroutine(CooldownCoroutine());
@@ -78,7 +78,8 @@ public class BladeOfPhong : SkillBase
         customMono.animationEventFunctionCaller.endMainSkill2 = false;
         ToggleAnim(GameManager.Instance.mainSkill2BoolHash, false);
         customMono.actionBlocking = false;
-        customMono.stat.SetDefaultMoveSpeed();
+        customMono.statusEffect.RemoveSlow(customMono.stat.ActionMoveSpeedReduceRate);
+        customMono.currentAction = null;
     }
 
     void BotTrigger(Vector2 p_direction, float p_duration)
@@ -98,10 +99,11 @@ public class BladeOfPhong : SkillBase
     {
         base.ActionInterrupt();
         customMono.actionBlocking = false;
-        customMono.stat.SetDefaultMoveSpeed();
+        customMono.statusEffect.RemoveSlow(customMono.stat.ActionMoveSpeedReduceRate);
         ToggleAnim(GameManager.Instance.mainSkill2BoolHash, false);
         StopCoroutine(actionIE);
         customMono.animationEventFunctionCaller.mainSkill2Signal = false;
         customMono.animationEventFunctionCaller.endMainSkill2 = false;
+        customMono.currentAction = null;
     }
 }

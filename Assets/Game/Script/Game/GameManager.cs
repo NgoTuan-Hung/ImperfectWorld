@@ -17,6 +17,8 @@ public enum EffectPool
     Arrow,
     ElementalLeafRangerArrow,
     ElementalLeafRangerPoisonArrowImpact,
+    ElementalLeafRangerVineArrowImpact,
+    WanderMagicianProjectile,
 
     /// <summary>
     /// For attack collider with different collision effect
@@ -59,7 +61,8 @@ public class GameManager : MonoSingleton<GameManager>
         rayOfJungleBeamPrefab,
         woodCryArrowPrefab,
         elementalLeafRangerPoisonArrowPrefab,
-        elementalLeafRangerVineArrowPrefab;
+        elementalLeafRangerVineArrowPrefab,
+        lightingForwardLightingPrefab;
     public ObjectPool vanishEffectPool,
         bladeOfMinhKhaiSlashEffectPool,
         bladeOfPhongTornadoEffectPool,
@@ -72,7 +75,8 @@ public class GameManager : MonoSingleton<GameManager>
         rayOfJungleBeamPool,
         woodCryArrowPool,
         elementalLeafRangerPoisonArrowPool,
-        elementalLeafRangerVineArrowPool;
+        elementalLeafRangerVineArrowPool,
+        lightingForwardLightingPool;
     public int attackBoolHash = Animator.StringToHash("Attack"),
         mainSkill1BoolHash = Animator.StringToHash("MainSkill1"),
         mainSkill2BoolHash = Animator.StringToHash("MainSkill2"),
@@ -211,6 +215,22 @@ public class GameManager : MonoSingleton<GameManager>
                 new PoolArgument(ComponentType.GameEffect, PoolArgument.WhereComponent.Self)
             )
         );
+        effectPoolDict.Add(
+            EffectPool.ElementalLeafRangerVineArrowImpact,
+            new(
+                Resources.Load("ElementalLeafRangerVineArrowImpact") as GameObject,
+                10,
+                new PoolArgument(ComponentType.GameEffect, PoolArgument.WhereComponent.Self)
+            )
+        );
+        effectPoolDict.Add(
+            EffectPool.WanderMagicianProjectile,
+            new(
+                Resources.Load("WanderMagicianProjectile") as GameObject,
+                10,
+                new PoolArgument(ComponentType.GameEffect, PoolArgument.WhereComponent.Self)
+            )
+        );
         effectPoolDict.Add(EffectPool.LaterDecide, null);
     }
 
@@ -293,6 +313,12 @@ public class GameManager : MonoSingleton<GameManager>
             Resources.Load("ElementalLeafRangerVineArrow") as GameObject;
         elementalLeafRangerVineArrowPool ??= new(
             elementalLeafRangerVineArrowPrefab,
+            10,
+            new PoolArgument(ComponentType.GameEffect, PoolArgument.WhereComponent.Self)
+        );
+        lightingForwardLightingPrefab = Resources.Load("LightingForwardLighting") as GameObject;
+        lightingForwardLightingPool ??= new(
+            lightingForwardLightingPrefab,
             10,
             new PoolArgument(ComponentType.GameEffect, PoolArgument.WhereComponent.Self)
         );

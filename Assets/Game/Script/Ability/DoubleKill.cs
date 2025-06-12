@@ -4,13 +4,15 @@ using UnityEngine;
 public class DoubleKill : SkillBase
 {
     PoisonInfo poisonInfo;
+    SlowInfo slowInfo;
 
     public override void Awake()
     {
         base.Awake();
-        cooldown = 5f;
+        cooldown = 1f;
         damage = defaultDamage = 10f;
         poisonInfo = new(5, 10);
+        slowInfo = new(0.3f, 1f);
         AddActionManuals();
     }
 
@@ -51,7 +53,7 @@ public class DoubleKill : SkillBase
         {
             canUse = false;
             customMono.actionBlocking = true;
-            customMono.stat.MoveSpeed = customMono.stat.actionMoveSpeedReduced;
+            customMono.statusEffect.Slow(customMono.stat.ActionMoveSpeedReduceRate);
             ToggleAnim(GameManager.Instance.attackBoolHash, true);
             StartCoroutine(actionIE = WaitSpawnArrow(direction));
             StartCoroutine(CooldownCoroutine());
@@ -71,14 +73,15 @@ public class DoubleKill : SkillBase
         if (Random.Range(0, 2) == 0)
         {
             t_arrow = GameManager.Instance.elementalLeafRangerPoisonArrowPool.PickOne().gameEffect;
+            t_arrow.collideAndDamage.poisonInfo = poisonInfo;
         }
         else
         {
-            t_arrow = GameManager.Instance.elementalLeafRangerPoisonArrowPool.PickOne().gameEffect;
+            t_arrow = GameManager.Instance.elementalLeafRangerVineArrowPool.PickOne().gameEffect;
+            t_arrow.collideAndDamage.slowInfo = slowInfo;
         }
         t_arrow.collideAndDamage.allyTags = customMono.allyTags;
         t_arrow.collideAndDamage.collideDamage = damage;
-        t_arrow.collideAndDamage.poisonInfo = poisonInfo;
         t_arrow.transform.position = customMono.firePoint.transform.position;
         t_arrow.transform.rotation = Quaternion.Euler(
             0,
@@ -93,7 +96,8 @@ public class DoubleKill : SkillBase
         customMono.animationEventFunctionCaller.endAttack = false;
         ToggleAnim(GameManager.Instance.attackBoolHash, false);
         customMono.actionBlocking = false;
-        customMono.stat.SetDefaultMoveSpeed();
+        customMono.statusEffect.RemoveSlow(customMono.stat.ActionMoveSpeedReduceRate);
+        customMono.currentAction = null;
     }
 
     void BotTrigger(Vector2 p_direction, float p_duration)
@@ -113,10 +117,11 @@ public class DoubleKill : SkillBase
     {
         base.ActionInterrupt();
         customMono.actionBlocking = false;
-        customMono.stat.SetDefaultMoveSpeed();
+        customMono.statusEffect.RemoveSlow(customMono.stat.ActionMoveSpeedReduceRate);
         ToggleAnim(GameManager.Instance.attackBoolHash, false);
         StopCoroutine(actionIE);
         customMono.animationEventFunctionCaller.attack = false;
         customMono.animationEventFunctionCaller.endAttack = false;
+        customMono.currentAction = null;
     }
 }

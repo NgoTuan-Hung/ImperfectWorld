@@ -32,6 +32,13 @@ public class StatusEffect : CustomMonoPal
         stunIndicator;
     ParticleSystem healIndicator,
         poisonIndicator;
+    bool poisonInEffect = false;
+    int totalPoison = 0;
+    float poisonDamage;
+    bool slowInEffect = false;
+    float totalSlow = 0;
+    float slowDuration,
+        currentSlowTime = 0;
 
     public override void Awake()
     {
@@ -184,10 +191,6 @@ public class StatusEffect : CustomMonoPal
         healIndicator.Play();
     }
 
-    bool poisonInEffect = false;
-    int totalPoison = 0;
-    float poisonDamage;
-
     public void Poison(PoisonInfo p_poisonInfo)
     {
         if (poisonInEffect)
@@ -219,6 +222,29 @@ public class StatusEffect : CustomMonoPal
         poisonInEffect = false;
         poisonDamage = 0;
         totalPoison = 0;
+    }
+
+    public void Slow(float p_slowAmmount)
+    {
+        customMono.stat.MoveSpeed -= customMono.stat.DefaultMoveSpeed * p_slowAmmount;
+    }
+
+    public void RemoveSlow(float p_slowAmmount)
+    {
+        customMono.stat.MoveSpeed += customMono.stat.DefaultMoveSpeed * p_slowAmmount;
+    }
+
+    public void Slow(SlowInfo p_slowInfo)
+    {
+        StartCoroutine(SlowIE(p_slowInfo));
+    }
+
+    IEnumerator SlowIE(SlowInfo p_slowInfo)
+    {
+        customMono.stat.MoveSpeed -= customMono.stat.DefaultMoveSpeed * p_slowInfo.totalSlow;
+        yield return new WaitForSeconds(p_slowInfo.slowDuration);
+
+        customMono.stat.MoveSpeed += customMono.stat.DefaultMoveSpeed * p_slowInfo.totalSlow;
     }
 
     bool CheckEffect(StatusEffectState p_statusEffectState) =>

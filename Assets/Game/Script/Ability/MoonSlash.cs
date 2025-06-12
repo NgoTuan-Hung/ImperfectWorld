@@ -69,7 +69,7 @@ public class MoonSlash : SkillBase
         {
             canUse = false;
             customMono.actionBlocking = true;
-            customMono.stat.MoveSpeed = customMono.stat.actionMoveSpeedReduced;
+            customMono.statusEffect.Slow(customMono.stat.ActionMoveSpeedReduceRate);
             ToggleAnim(boolHash, true);
             actionWaitInfo.stillWaiting = true;
             StartCoroutine(actionIE = WaitingCoroutine());
@@ -138,15 +138,17 @@ public class MoonSlash : SkillBase
             customMono.actionBlocking = false;
             ToggleAnim(actionWaitInfo.releaseBoolHash, false);
             customMono.animationEventFunctionCaller.endRelease = false;
-            customMono.stat.SetDefaultMoveSpeed();
+            customMono.statusEffect.RemoveSlow(customMono.stat.ActionMoveSpeedReduceRate);
         }
         else
         {
             canUse = true;
             customMono.actionBlocking = false;
             ToggleAnim(boolHash, false);
-            customMono.stat.SetDefaultMoveSpeed();
+            customMono.statusEffect.RemoveSlow(customMono.stat.ActionMoveSpeedReduceRate);
         }
+
+        customMono.currentAction = null;
     }
 
     public override void WhileWaiting(Vector2 vector2)
@@ -172,12 +174,13 @@ public class MoonSlash : SkillBase
     {
         base.ActionInterrupt();
         customMono.actionBlocking = false;
-        customMono.stat.SetDefaultMoveSpeed();
+        customMono.statusEffect.RemoveSlow(customMono.stat.ActionMoveSpeedReduceRate);
         ToggleAnim(boolHash, false);
         ToggleAnim(actionWaitInfo.releaseBoolHash, false);
         StopCoroutine(actionIE);
         actionWaitInfo.stillWaiting = false;
         stopwatch.Stop();
         customMono.animationEventFunctionCaller.endRelease = false;
+        customMono.currentAction = null;
     }
 }

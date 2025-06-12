@@ -86,7 +86,7 @@ public class Slaughter : SkillBase
         {
             canUse = false;
             customMono.actionBlocking = true;
-            customMono.stat.MoveSpeed = customMono.stat.actionMoveSpeedReduced;
+            customMono.statusEffect.Slow(customMono.stat.ActionMoveSpeedReduceRate);
             customMono.audioSource.PlayOneShot(audioClip);
             AddAmmo(-1);
             ToggleAnim(boolHash, true);
@@ -126,10 +126,11 @@ public class Slaughter : SkillBase
             yield return new WaitForSeconds(Time.fixedDeltaTime);
 
         ToggleAnim(boolHash, false);
-        customMono.stat.SetDefaultMoveSpeed();
+        customMono.statusEffect.RemoveSlow(customMono.stat.ActionMoveSpeedReduceRate);
         customMono.actionBlocking = false;
         customMono.animationEventFunctionCaller.endSlaughter = false;
         canUse = true;
+        customMono.currentAction = null;
     }
 
     public override void DoAuto(DoActionParamInfo p_doActionParamInfo)
@@ -142,9 +143,10 @@ public class Slaughter : SkillBase
         base.ActionInterrupt();
         canUse = true;
         customMono.actionBlocking = false;
-        customMono.stat.SetDefaultMoveSpeed();
+        customMono.statusEffect.RemoveSlow(customMono.stat.ActionMoveSpeedReduceRate);
         ToggleAnim(boolHash, false);
         StopCoroutine(actionIE);
         customMono.animationEventFunctionCaller.endSlaughter = false;
+        customMono.currentAction = null;
     }
 }

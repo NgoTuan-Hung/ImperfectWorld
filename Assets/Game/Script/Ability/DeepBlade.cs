@@ -90,6 +90,7 @@ public class DeepBlade : SkillBase
         customMono.animationEventFunctionCaller.endMainSkill2 = false;
         customMono.actionBlocking = false;
         ToggleAnim(GameManager.Instance.mainSkill2BoolHash, false);
+        customMono.currentAction = null;
     }
 
     void BotTrigger(Vector2 p_direction, float p_duration)
@@ -113,5 +114,6 @@ public class DeepBlade : SkillBase
         StopCoroutine(actionIE);
         customMono.animationEventFunctionCaller.mainSkill2Signal = false;
         customMono.animationEventFunctionCaller.endMainSkill2 = false;
+        customMono.currentAction = null;
     }
 }

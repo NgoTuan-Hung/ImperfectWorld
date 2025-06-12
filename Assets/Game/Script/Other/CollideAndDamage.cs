@@ -11,6 +11,7 @@ public enum OneTimeContactInteraction
     Stun,
     Heal,
     Poison,
+    Slow,
 }
 
 public class CollideAndDamage : MonoSelfAware
@@ -55,6 +56,7 @@ public class CollideAndDamage : MonoSelfAware
     public float stunDuration;
     public float healAmmount;
     public PoisonInfo poisonInfo;
+    public SlowInfo slowInfo;
 
     public override void Awake()
     {
@@ -128,6 +130,14 @@ public class CollideAndDamage : MonoSelfAware
                 onTriggerEnterWithEnemyCM += (p_customMono, p_collider2D) =>
                 {
                     p_customMono.statusEffect.Poison(poisonInfo);
+                };
+                break;
+            }
+            case OneTimeContactInteraction.Slow:
+            {
+                onTriggerEnterWithEnemyCM += (p_customMono, p_collider2D) =>
+                {
+                    p_customMono.statusEffect.Slow(slowInfo);
                 };
                 break;
             }

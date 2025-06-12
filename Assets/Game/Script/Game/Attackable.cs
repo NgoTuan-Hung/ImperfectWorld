@@ -134,7 +134,7 @@ public class Attackable : SkillBase
         {
             canUse = false;
             customMono.actionBlocking = true;
-            customMono.stat.MoveSpeed = customMono.stat.actionMoveSpeedReduced;
+            customMono.statusEffect.Slow(customMono.stat.ActionMoveSpeedReduceRate);
             ToggleAnim(boolHash, true);
             StartCoroutine(actionIE = MeleeAttackCoroutine(attackDirection));
             StartCoroutine(CooldownCoroutine());
@@ -173,9 +173,10 @@ public class Attackable : SkillBase
             yield return new WaitForSeconds(Time.fixedDeltaTime);
 
         customMono.animationEventFunctionCaller.endAttack = false;
-        customMono.stat.SetDefaultMoveSpeed();
+        customMono.statusEffect.RemoveSlow(customMono.stat.ActionMoveSpeedReduceRate);
         customMono.actionBlocking = false;
         ToggleAnim(boolHash, false);
+        customMono.currentAction = null;
     }
 
     public void RangedAttack(Vector2 attackDirection)
@@ -184,7 +185,7 @@ public class Attackable : SkillBase
         {
             canUse = false;
             customMono.actionBlocking = true;
-            customMono.stat.MoveSpeed = customMono.stat.actionMoveSpeedReduced;
+            customMono.statusEffect.Slow(customMono.stat.ActionMoveSpeedReduceRate);
             ToggleAnim(boolHash, true);
             StartCoroutine(actionIE = RangedAttackCoroutine(attackDirection));
             StartCoroutine(CooldownCoroutine());
@@ -222,9 +223,10 @@ public class Attackable : SkillBase
             yield return new WaitForSeconds(Time.fixedDeltaTime);
 
         customMono.animationEventFunctionCaller.endAttack = false;
-        customMono.stat.SetDefaultMoveSpeed();
+        customMono.statusEffect.RemoveSlow(customMono.stat.ActionMoveSpeedReduceRate);
         customMono.actionBlocking = false;
         ToggleAnim(boolHash, false);
+        customMono.currentAction = null;
     }
 
     public void AttackTo(Vector2 direction, float duration)
@@ -257,11 +259,12 @@ public class Attackable : SkillBase
     public override void ActionInterrupt()
     {
         base.ActionInterrupt();
-        customMono.stat.SetDefaultMoveSpeed();
+        customMono.statusEffect.RemoveSlow(customMono.stat.ActionMoveSpeedReduceRate);
         customMono.actionBlocking = false;
         ToggleAnim(boolHash, false);
         StopCoroutine(actionIE);
         customMono.animationEventFunctionCaller.endAttack = false;
         customMono.animationEventFunctionCaller.attack = false;
+        customMono.currentAction = null;
     }
 }

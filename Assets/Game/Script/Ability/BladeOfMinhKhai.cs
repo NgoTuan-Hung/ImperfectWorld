@@ -143,6 +143,7 @@ public class BladeOfMinhKhai : SkillBase
         customMono.actionBlocking = false;
         customMono.movementActionBlocking = false;
         ToggleAnim(GameManager.Instance.mainSkill1BoolHash, false);
+        customMono.currentAction = null;
     }
 
     void BotTrigger(Vector2 p_direction, float p_duration)
@@ -173,5 +174,6 @@ public class BladeOfMinhKhai : SkillBase
         StopCoroutine(actionIE1);
         customMono.animationEventFunctionCaller.mainSkill1Signal = false;
         customMono.animationEventFunctionCaller.endMainSkill1 = false;
+        customMono.currentAction = null;
     }
 }

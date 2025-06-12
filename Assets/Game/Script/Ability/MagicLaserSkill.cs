@@ -106,6 +106,7 @@ public class MagicLaserSkill : SkillBase
         customMono.actionBlocking = false;
         customMono.animationEventFunctionCaller.endCastingMagic = false;
         ToggleAnim(boolHash, false);
+        customMono.currentAction = null;
     }
 
     public void FireAt(Vector2 location, float duration)
@@ -130,5 +131,6 @@ public class MagicLaserSkill : SkillBase
         StopCoroutine(actionIE);
         customMono.animationEventFunctionCaller.castingMagic = false;
         customMono.animationEventFunctionCaller.endCastingMagic = false;
+        customMono.currentAction = null;
     }
 }
