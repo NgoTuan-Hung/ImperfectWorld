@@ -14,7 +14,7 @@ public enum OneTimeContactInteraction
     Slow,
 }
 
-public class CollideAndDamage : MonoSelfAware
+public class CollideAndDamage : MonoEditor, IGameEffectBehaviour
 {
     public HashSet<string> allyTags = new();
     public new Rigidbody2D rigidbody2D;
@@ -58,10 +58,8 @@ public class CollideAndDamage : MonoSelfAware
     public PoisonInfo poisonInfo;
     public SlowInfo slowInfo;
 
-    public override void Awake()
+    public void Awake()
     {
-        base.Awake();
-
         switch (oneTimeContactInteraction)
         {
             case OneTimeContactInteraction.Push:
@@ -255,7 +253,7 @@ public class CollideAndDamage : MonoSelfAware
         }
 
         if (deactivateOnCollide)
-            onTriggerEnterWithEnemyCM += (p_customMono, collider2D) => deactivate();
+            onTriggerEnterWithEnemyCM += (p_customMono, collider2D) => GameEffect.deactivate();
     }
 
     float t_randomBias;
@@ -277,5 +275,12 @@ public class CollideAndDamage : MonoSelfAware
     private void OnTriggerStay2D(Collider2D other)
     {
         onTriggerStay2D(other);
+    }
+
+    public GameEffect GameEffect { get; set; }
+
+    public void Initialize(GameEffect gameEffect)
+    {
+        GameEffect = gameEffect;
     }
 }

@@ -62,7 +62,8 @@ public class GameManager : MonoSingleton<GameManager>
         woodCryArrowPrefab,
         elementalLeafRangerPoisonArrowPrefab,
         elementalLeafRangerVineArrowPrefab,
-        lightingForwardLightingPrefab;
+        lightingForwardLightingPrefab,
+        blueHolePrefab;
     public ObjectPool vanishEffectPool,
         bladeOfMinhKhaiSlashEffectPool,
         bladeOfPhongTornadoEffectPool,
@@ -76,7 +77,8 @@ public class GameManager : MonoSingleton<GameManager>
         woodCryArrowPool,
         elementalLeafRangerPoisonArrowPool,
         elementalLeafRangerVineArrowPool,
-        lightingForwardLightingPool;
+        lightingForwardLightingPool,
+        blueHolePool;
     public int attackBoolHash = Animator.StringToHash("Attack"),
         mainSkill1BoolHash = Animator.StringToHash("MainSkill1"),
         mainSkill2BoolHash = Animator.StringToHash("MainSkill2"),
@@ -319,6 +321,12 @@ public class GameManager : MonoSingleton<GameManager>
         lightingForwardLightingPrefab = Resources.Load("LightingForwardLighting") as GameObject;
         lightingForwardLightingPool ??= new(
             lightingForwardLightingPrefab,
+            10,
+            new PoolArgument(ComponentType.GameEffect, PoolArgument.WhereComponent.Self)
+        );
+        blueHolePrefab = Resources.Load("BlueHole") as GameObject;
+        blueHolePool ??= new(
+            blueHolePrefab,
             10,
             new PoolArgument(ComponentType.GameEffect, PoolArgument.WhereComponent.Self)
         );

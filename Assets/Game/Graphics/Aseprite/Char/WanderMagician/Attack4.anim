@@ -65,8 +65,34 @@ AnimationClip:
     m_Center: {x: 0, y: 0, z: 0}
     m_Extent: {x: 0, y: 0, z: 0}
   m_ClipBindingConstant:
-    genericBindings: []
-    pptrCurveMapping: []
+    genericBindings:
+    - serializedVersion: 2
+      path: 0
+      attribute: 0
+      script: {fileID: 0}
+      typeID: 212
+      customType: 23
+      isPPtrCurve: 1
+      isIntCurve: 0
+      isSerializeReferenceCurve: 0
+    pptrCurveMapping:
+    - {fileID: -7645926817886500447, guid: d879a0f04b92aeb48bcb7336148a29f8, type: 3}
+    - {fileID: 2172018285313834729, guid: d879a0f04b92aeb48bcb7336148a29f8, type: 3}
+    - {fileID: -7080726232127318282, guid: d879a0f04b92aeb48bcb7336148a29f8, type: 3}
+    - {fileID: 7125867030492932497, guid: d879a0f04b92aeb48bcb7336148a29f8, type: 3}
+    - {fileID: 4937989186644711740, guid: d879a0f04b92aeb48bcb7336148a29f8, type: 3}
+    - {fileID: 1219625101654279833, guid: d879a0f04b92aeb48bcb7336148a29f8, type: 3}
+    - {fileID: 6953137806516703179, guid: d879a0f04b92aeb48bcb7336148a29f8, type: 3}
+    - {fileID: 1392759714960948673, guid: d879a0f04b92aeb48bcb7336148a29f8, type: 3}
+    - {fileID: 8938495832966092713, guid: d879a0f04b92aeb48bcb7336148a29f8, type: 3}
+    - {fileID: -1647496794991479092, guid: d879a0f04b92aeb48bcb7336148a29f8, type: 3}
+    - {fileID: -5271865746976130820, guid: d879a0f04b92aeb48bcb7336148a29f8, type: 3}
+    - {fileID: -8147307850580266440, guid: d879a0f04b92aeb48bcb7336148a29f8, type: 3}
+    - {fileID: -4834841078956222640, guid: d879a0f04b92aeb48bcb7336148a29f8, type: 3}
+    - {fileID: 8848522561829991852, guid: d879a0f04b92aeb48bcb7336148a29f8, type: 3}
+    - {fileID: -1970219527947333437, guid: d879a0f04b92aeb48bcb7336148a29f8, type: 3}
+    - {fileID: 3644108659696410307, guid: d879a0f04b92aeb48bcb7336148a29f8, type: 3}
+    - {fileID: 3644108659696410307, guid: d879a0f04b92aeb48bcb7336148a29f8, type: 3}
   m_AnimationClipSettings:
     serializedVersion: 2
     m_AdditiveReferencePoseClip: {fileID: 0}
@@ -91,4 +117,18 @@ AnimationClip:
   m_EulerEditorCurves: []
   m_HasGenericRootTransform: 0
   m_HasMotionFloatCurves: 0
-  m_Events: []
+  m_Events:
+  - time: 1.19
+    functionName: MainSkill2Signal
+    data: 
+    objectReferenceParameter: {fileID: 0}
+    floatParameter: 0
+    intParameter: 0
+    messageOptions: 0
+  - time: 1.59
+    functionName: EndMainSkill2
+    data: 
+    objectReferenceParameter: {fileID: 0}
+    floatParameter: 0
+    intParameter: 0
+    messageOptions: 0

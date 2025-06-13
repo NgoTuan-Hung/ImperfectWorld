@@ -50,16 +50,6 @@ public class ObjectPool
                             as RadialProgress;
                     };
                     break;
-                case ComponentType.CollideAndDamage:
-                    handleCachedComponentRefs += (poolObject) =>
-                    {
-                        poolObject.collideAndDamage =
-                            getComponentInLocation(typeof(CollideAndDamage), poolObject)
-                            as CollideAndDamage;
-
-                        poolObject.collideAndDamage.deactivate += () => currentActive--;
-                    };
-                    break;
                 case ComponentType.GameEffect:
                     handleCachedComponentRefs += (poolObject) =>
                     {

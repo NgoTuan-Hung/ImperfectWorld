@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Playables;
 using Random = UnityEngine.Random;
@@ -12,11 +13,9 @@ public class GameEffect : MonoSelfAware
     [SerializeField]
     private bool isDeactivatedAfterTime = false;
     Action deactiveAfterTime = () => { };
-    IEnumerator deActivateAfterTimeIE;
 
     [SerializeField]
     private float deactivateTime = 1f;
-    public CollideAndDamage collideAndDamage;
     PlayableDirector playableDirector;
     public bool isTimeline = false;
     public bool randomRotation = false;
@@ -31,12 +30,12 @@ public class GameEffect : MonoSelfAware
         effectLocalRotation;
     public bool isColoredOverLifetime = false;
     public Gradient colorOverLifetime;
+    Dictionary<Type, IGameEffectBehaviour> behaviours = new();
 
     public override void Awake()
     {
         base.Awake();
 
-        collideAndDamage = GetComponent<CollideAndDamage>();
         playableDirector = GetComponent<PlayableDirector>();
         audioSource = GetComponent<AudioSource>();
 
@@ -46,12 +45,8 @@ public class GameEffect : MonoSelfAware
         {
             deactiveAfterTime += () =>
             {
-                StartCoroutine(
-                    deActivateAfterTimeIE = DeactivateAfterTimeCoroutine(deactivateTime)
-                );
+                StartCoroutine(DeactivateAfterTimeCoroutine(deactivateTime));
             };
-            if (collideAndDamage != null)
-                collideAndDamage.deactivate += () => StopCoroutine(deActivateAfterTimeIE);
         }
         if (isTimeline)
             onEnable += () => playableDirector.Play();
@@ -61,6 +56,25 @@ public class GameEffect : MonoSelfAware
             onEnable += () => transform.Rotate(0, 0, Random.Range(0, 360));
         if (isColoredOverLifetime)
             onEnable += DoColorOverLifetime;
+
+        GetAllBehaviours();
+    }
+
+    void GetAllBehaviours()
+    {
+        foreach (var behaviour in GetComponents<IGameEffectBehaviour>())
+        {
+            behaviours.Add(behaviour.GetType(), behaviour);
+            behaviour.Initialize(this);
+        }
+    }
+
+    public T GetBehaviour<T>()
+        where T : class, IGameEffectBehaviour
+    {
+        if (behaviours.TryGetValue(typeof(T), out var behaviour))
+            return behaviour as T;
+        return null;
     }
 
     private void OnEnable()
