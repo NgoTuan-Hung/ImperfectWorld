@@ -73,11 +73,13 @@ public class WoodCry : SkillBase
         customMono.animationEventFunctionCaller.mainSkill2Signal = false;
         // bool t_animatorLocalScale = customMono.AnimatorWrapper.animator.transform.localScale.x > 0;
 
-        GameEffect gameEffect = GameManager.Instance.woodCryArrowPool.PickOne().gameEffect;
-        gameEffect.collideAndDamage.allyTags = customMono.allyTags;
-        gameEffect.collideAndDamage.collideDamage = damage;
-        gameEffect.collideAndDamage.healAmmount = healAmmount;
-        gameEffect.transform.position = location;
+        CollideAndDamage t_gameEffect = GameManager
+            .Instance.woodCryArrowPool.PickOne()
+            .gameEffect.GetBehaviour<CollideAndDamage>();
+        t_gameEffect.allyTags = customMono.allyTags;
+        t_gameEffect.collideDamage = damage;
+        t_gameEffect.healAmmount = healAmmount;
+        t_gameEffect.transform.position = location;
 
         while (!customMono.animationEventFunctionCaller.endMainSkill2)
             yield return new WaitForSeconds(Time.fixedDeltaTime);

@@ -61,7 +61,9 @@ public class GetOverThere : SkillBase
             yield return new WaitForSeconds(Time.fixedDeltaTime);
 
         customMono.animationEventFunctionCaller.mainSkill2Signal = false;
-        BlueHole blueHole = GameManager.Instance.blueHolePool.PickOne().gameEffect.blueHole;
+        BlueHole blueHole = GameManager
+            .Instance.blueHolePool.PickOne()
+            .gameEffect.GetBehaviour<BlueHole>();
         blueHole.allyTags = customMono.allyTags;
         blueHole.transform.position = p_location;
 

@@ -7,6 +7,7 @@ public class BlueHole : MonoBehaviour, IGameEffectBehaviour
     public HashSet<string> allyTags = new();
     public new Rigidbody2D rigidbody2D;
     float drawForce = 0.1f;
+
     public GameEffect GameEffect { get; set; }
 
     public void Initialize(GameEffect gameEffect)

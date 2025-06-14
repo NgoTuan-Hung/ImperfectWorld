@@ -67,8 +67,9 @@ public class BladeOfPhong : SkillBase
         GameEffect t_tornado = GameManager
             .Instance.bladeOfPhongTornadoEffectPool.PickOne()
             .gameEffect;
-        t_tornado.collideAndDamage.allyTags = customMono.allyTags;
-        t_tornado.collideAndDamage.collideDamage = damage;
+        var t_collideAndDamage = t_tornado.GetBehaviour<CollideAndDamage>();
+        t_collideAndDamage.allyTags = customMono.allyTags;
+        t_collideAndDamage.collideDamage = damage;
         t_tornado.transform.position = transform.position;
         t_tornado.KeepFlyingAt(p_direction);
 

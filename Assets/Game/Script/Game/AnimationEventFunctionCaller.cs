@@ -25,6 +25,8 @@ public class AnimationEventFunctionCaller : MonoBehaviour
     public bool endMainSkill1;
     public bool mainSkill2Signal;
     public bool endMainSkill2;
+    public bool mainSkill3Signal;
+    public bool endMainSkill3;
 
     public void Attack() => attack = true;
 
@@ -50,6 +52,10 @@ public class AnimationEventFunctionCaller : MonoBehaviour
 
     public void EndMainSkill2() => endMainSkill2 = true;
 
+    public void MainSkill3Signal() => mainSkill3Signal = true;
+
+    public void EndMainSkill3() => endMainSkill3 = true;
+
     private void OnEnable()
     {
         attack = false;
@@ -64,5 +70,7 @@ public class AnimationEventFunctionCaller : MonoBehaviour
         endMainSkill1 = false;
         mainSkill2Signal = false;
         endMainSkill2 = false;
+        mainSkill3Signal = false;
+        endMainSkill3 = false;
     }
 }

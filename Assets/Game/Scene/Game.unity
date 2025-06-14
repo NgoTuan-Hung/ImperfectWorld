@@ -640,6 +640,8 @@ MonoBehaviour:
   endMainSkill1: 0
   mainSkill2Signal: 0
   endMainSkill2: 0
+  mainSkill3Signal: 0
+  endMainSkill3: 0
 --- !u!1 &396692960
 GameObject:
   m_ObjectHideFlags: 0
@@ -2116,8 +2118,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9500879ad6b6755408f9c787c95fb42c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  health: 200
-  defaultHealth: 200
+  health: 5000
+  defaultHealth: 5000
   attackSpeed: 1
   moveSpeed: 3.4
   defaultMoveSpeed: 3.4
@@ -2647,6 +2649,8 @@ MonoBehaviour:
   endMainSkill1: 0
   mainSkill2Signal: 0
   endMainSkill2: 0
+  mainSkill3Signal: 0
+  endMainSkill3: 0
 --- !u!1001 &1050076189
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -8101,6 +8105,8 @@ MonoBehaviour:
   endMainSkill1: 0
   mainSkill2Signal: 0
   endMainSkill2: 0
+  mainSkill3Signal: 0
+  endMainSkill3: 0
 --- !u!95 &1530486035
 Animator:
   serializedVersion: 7
@@ -8775,6 +8781,63 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 5794198503007716251, guid: 5050206fee006f94a9d0125e20c69398, type: 3}
   m_PrefabInstance: {fileID: 1587974730}
   m_PrefabAsset: {fileID: 0}
+--- !u!1001 &1609783528
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 4586611637644722320, guid: 1dac2f8b93f9bc741a7abeba480ebb9c, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -1.2514652
+      objectReference: {fileID: 0}
+    - target: {fileID: 4586611637644722320, guid: 1dac2f8b93f9bc741a7abeba480ebb9c, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 3.573639
+      objectReference: {fileID: 0}
+    - target: {fileID: 4586611637644722320, guid: 1dac2f8b93f9bc741a7abeba480ebb9c, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -0.07024327
+      objectReference: {fileID: 0}
+    - target: {fileID: 4586611637644722320, guid: 1dac2f8b93f9bc741a7abeba480ebb9c, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4586611637644722320, guid: 1dac2f8b93f9bc741a7abeba480ebb9c, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4586611637644722320, guid: 1dac2f8b93f9bc741a7abeba480ebb9c, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4586611637644722320, guid: 1dac2f8b93f9bc741a7abeba480ebb9c, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4586611637644722320, guid: 1dac2f8b93f9bc741a7abeba480ebb9c, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4586611637644722320, guid: 1dac2f8b93f9bc741a7abeba480ebb9c, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4586611637644722320, guid: 1dac2f8b93f9bc741a7abeba480ebb9c, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7338680796603692614, guid: 1dac2f8b93f9bc741a7abeba480ebb9c, type: 3}
+      propertyPath: m_Name
+      value: SamuraiArcher
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 1dac2f8b93f9bc741a7abeba480ebb9c, type: 3}
 --- !u!1 &1631543764
 GameObject:
   m_ObjectHideFlags: 0
@@ -8833,6 +8896,8 @@ MonoBehaviour:
   endMainSkill1: 0
   mainSkill2Signal: 0
   endMainSkill2: 0
+  mainSkill3Signal: 0
+  endMainSkill3: 0
 --- !u!95 &1631543767
 Animator:
   serializedVersion: 7
@@ -9776,6 +9841,8 @@ MonoBehaviour:
   endMainSkill1: 0
   mainSkill2Signal: 0
   endMainSkill2: 0
+  mainSkill3Signal: 0
+  endMainSkill3: 0
 --- !u!1 &2001132135
 GameObject:
   m_ObjectHideFlags: 0
@@ -81145,3 +81212,4 @@ SceneRoots:
   - {fileID: 3684833190097485902}
   - {fileID: 69357795}
   - {fileID: 1640536888}
+  - {fileID: 1609783528}

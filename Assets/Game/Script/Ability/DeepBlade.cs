@@ -66,11 +66,13 @@ public class DeepBlade : SkillBase
             t_deepBladeSlashEffect.effectLocalPosition,
             Quaternion.Euler(t_deepBladeSlashEffect.effectLocalRotation)
         );
+
+        var t_collideAndDamage = t_deepBladeSlashEffect.GetBehaviour<CollideAndDamage>();
         /* This is needed because it will change parent eventually */
         t_deepBladeSlashEffect.transform.localScale = Vector3.one;
-        t_deepBladeSlashEffect.collideAndDamage.allyTags = customMono.allyTags;
-        t_deepBladeSlashEffect.collideAndDamage.collideDamage = damage;
-        t_deepBladeSlashEffect.collideAndDamage.stunDuration = stunDuration;
+        t_collideAndDamage.allyTags = customMono.allyTags;
+        t_collideAndDamage.collideDamage = damage;
+        t_collideAndDamage.stunDuration = stunDuration;
         customMono.rotationAndCenterObject.transform.localScale = new(
             customMono.directionModifier.transform.localScale.x > 0 ? 1 : -1,
             1,

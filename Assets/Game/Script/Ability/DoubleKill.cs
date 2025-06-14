@@ -70,18 +70,21 @@ public class DoubleKill : SkillBase
 
         customMono.animationEventFunctionCaller.attack = false;
         GameEffect t_arrow;
+        CollideAndDamage t_collideAndDamage;
         if (Random.Range(0, 2) == 0)
         {
             t_arrow = GameManager.Instance.elementalLeafRangerPoisonArrowPool.PickOne().gameEffect;
-            t_arrow.collideAndDamage.poisonInfo = poisonInfo;
+            t_collideAndDamage = t_arrow.GetBehaviour<CollideAndDamage>();
+            t_collideAndDamage.poisonInfo = poisonInfo;
         }
         else
         {
             t_arrow = GameManager.Instance.elementalLeafRangerVineArrowPool.PickOne().gameEffect;
-            t_arrow.collideAndDamage.slowInfo = slowInfo;
+            t_collideAndDamage = t_arrow.GetBehaviour<CollideAndDamage>();
+            t_collideAndDamage.slowInfo = slowInfo;
         }
-        t_arrow.collideAndDamage.allyTags = customMono.allyTags;
-        t_arrow.collideAndDamage.collideDamage = damage;
+        t_collideAndDamage.allyTags = customMono.allyTags;
+        t_collideAndDamage.collideDamage = damage;
         t_arrow.transform.position = customMono.firePoint.transform.position;
         t_arrow.transform.rotation = Quaternion.Euler(
             0,

@@ -85,11 +85,11 @@ public class LightingForward : SkillBase
         Vector3 t_lightingOrigin = transform.position;
         while (currentSpawn < maxAmmo)
         {
-            GameEffect t_lighting = GameManager
+            CollideAndDamage t_lighting = GameManager
                 .Instance.lightingForwardLightingPool.PickOne()
-                .gameEffect;
-            t_lighting.collideAndDamage.allyTags = customMono.allyTags;
-            t_lighting.collideAndDamage.collideDamage = damage;
+                .gameEffect.GetBehaviour<CollideAndDamage>();
+            t_lighting.allyTags = customMono.allyTags;
+            t_lighting.collideDamage = damage;
             t_lighting.transform.position =
                 t_lightingOrigin + currentSpawn * maxRange * p_direction.normalized;
 

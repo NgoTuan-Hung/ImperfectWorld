@@ -129,8 +129,9 @@ MonoBehaviour:
   pushEnemyOnCollideForce: 1
   deactivateOnCollide: 0
   spawnEffectOnCollide: 1
-  collisionEffectPoolType: 9
+  collisionEffectPoolType: 12
   stunDuration: 0
+  healAmmount: 0
 --- !u!114 &501464346794039041
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -147,7 +148,6 @@ MonoBehaviour:
   spriteRenderer: {fileID: 0}
   isDeactivatedAfterTime: 1
   deactivateTime: 0.09
-  collideAndDamage: {fileID: 0}
   isTimeline: 0
   randomRotation: 0
   flyAtSpeed: 0.03

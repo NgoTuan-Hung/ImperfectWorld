@@ -69,8 +69,9 @@ public class RayOfJungle : SkillBase
             Quaternion.Euler(t_rayOfJungleBeam.effectLocalRotation)
         );
         t_rayOfJungleBeam.transform.localScale = Vector3.one;
-        t_rayOfJungleBeam.collideAndDamage.allyTags = customMono.allyTags;
-        t_rayOfJungleBeam.collideAndDamage.collideDamage = damage;
+        var t_collideAndDamage = t_rayOfJungleBeam.GetBehaviour<CollideAndDamage>();
+        t_collideAndDamage.allyTags = customMono.allyTags;
+        t_collideAndDamage.collideDamage = damage;
         customMono.rotationAndCenterObject.transform.localScale = new(
             customMono.directionModifier.transform.localScale.x > 0 ? 1 : -1,
             1,

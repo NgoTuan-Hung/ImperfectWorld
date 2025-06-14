@@ -23,7 +23,7 @@ public class Attackable : SkillBase
             attackColliderPool ??= new ObjectPool(
                 attackColliderPrefab,
                 100,
-                new PoolArgument(ComponentType.CollideAndDamage, PoolArgument.WhereComponent.Self)
+                new PoolArgument(ComponentType.GameEffect, PoolArgument.WhereComponent.Self)
             );
             botActionManuals.Add(
                 new BotActionManual(
@@ -156,11 +156,10 @@ public class Attackable : SkillBase
         CollideAndDamage attackCollider = attackColliderPool
             .PickOne(po =>
             {
-                po.collideAndDamage.collisionEffectPool = GameManager.Instance.GetEffectPool(
-                    customMono.meleeCollisionEP
-                );
+                po.gameEffect.GetBehaviour<CollideAndDamage>().collisionEffectPool =
+                    GameManager.Instance.GetEffectPool(customMono.meleeCollisionEP);
             })
-            .collideAndDamage;
+            .gameEffect.GetBehaviour<CollideAndDamage>();
         attackCollider.allyTags = customMono.allyTags;
         attackCollider.transform.position = customMono.firePoint.transform.position;
         attackCollider.collideDamage = damage;
@@ -204,20 +203,21 @@ public class Attackable : SkillBase
             attackDirection,
             UpdateDirectionIndicatorPriority.Low
         );
-        GameEffect projectileEffect = GameManager
+        GameEffect t_projectileEffect = GameManager
             .Instance.effectPoolDict[customMono.longRangeProjectileEP]
             .PickOne()
             .gameEffect;
-        projectileEffect.collideAndDamage.allyTags = customMono.allyTags;
-        projectileEffect.collideAndDamage.collideDamage = damage;
-        projectileEffect.transform.position = customMono.firePoint.transform.position;
-        projectileEffect.transform.rotation = Quaternion.Euler(
+        var t_collideAndDamage = t_projectileEffect.GetBehaviour<CollideAndDamage>();
+        t_collideAndDamage.allyTags = customMono.allyTags;
+        t_collideAndDamage.collideDamage = damage;
+        t_projectileEffect.transform.position = customMono.firePoint.transform.position;
+        t_projectileEffect.transform.rotation = Quaternion.Euler(
             0,
             0,
             Vector2.SignedAngle(Vector2.right, attackDirection)
         );
 
-        projectileEffect.KeepFlyingAt(attackDirection);
+        t_projectileEffect.KeepFlyingAt(attackDirection);
 
         while (!customMono.animationEventFunctionCaller.endAttack)
             yield return new WaitForSeconds(Time.fixedDeltaTime);

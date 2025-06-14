@@ -98,9 +98,11 @@ public class BladeOfVu : SkillBase
         }
 
         /* Spawn slash */
-        GameEffect t_slash = GameManager.Instance.bladeOfVuSlashPool.PickOne().gameEffect;
-        t_slash.collideAndDamage.allyTags = customMono.allyTags;
-        t_slash.collideAndDamage.collideDamage = damage;
+        CollideAndDamage t_slash = GameManager
+            .Instance.bladeOfVuSlashPool.PickOne()
+            .gameEffect.GetBehaviour<CollideAndDamage>();
+        t_slash.allyTags = customMono.allyTags;
+        t_slash.collideDamage = damage;
         t_slash.transform.position = transform.position;
 
         /* Handle reappearance */

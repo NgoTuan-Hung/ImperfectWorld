@@ -97,15 +97,16 @@ public class MoonSlash : SkillBase
             Vector2 moonSlashDirection;
             for (int i = 0; i < currentAmmo; i++)
             {
-                GameEffect moonSlashGameEffect = moonSlashPool.PickOne().gameEffect;
-                moonSlashGameEffect.collideAndDamage.allyTags = customMono.allyTags;
-                moonSlashGameEffect.collideAndDamage.collideDamage = damage;
+                GameEffect t_moonSlashGameEffect = moonSlashPool.PickOne().gameEffect;
+                var t_collideAndDamage = t_moonSlashGameEffect.GetBehaviour<CollideAndDamage>();
+                t_collideAndDamage.allyTags = customMono.allyTags;
+                t_collideAndDamage.collideDamage = damage;
                 if (i % 2 == 1)
                 {
                     moonSlashDirection = actionWaitInfo.finalDirection.RotateZ(
                         (i + 1) / 2 * modifiedAngle
                     );
-                    moonSlashGameEffect.transform.SetPositionAndRotation(
+                    t_moonSlashGameEffect.transform.SetPositionAndRotation(
                         customMono.firePoint.transform.position,
                         Quaternion.Euler(
                             0,
@@ -119,7 +120,7 @@ public class MoonSlash : SkillBase
                     moonSlashDirection = actionWaitInfo.finalDirection.RotateZ(
                         -i / 2 * modifiedAngle
                     );
-                    moonSlashGameEffect.transform.SetPositionAndRotation(
+                    t_moonSlashGameEffect.transform.SetPositionAndRotation(
                         customMono.firePoint.transform.position,
                         Quaternion.Euler(
                             0,
@@ -129,7 +130,7 @@ public class MoonSlash : SkillBase
                     );
                 }
 
-                moonSlashGameEffect.KeepFlyingAt(moonSlashDirection);
+                t_moonSlashGameEffect.KeepFlyingAt(moonSlashDirection);
             }
 
             while (!customMono.animationEventFunctionCaller.endRelease)

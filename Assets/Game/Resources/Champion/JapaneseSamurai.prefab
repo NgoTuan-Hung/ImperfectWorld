@@ -179,13 +179,13 @@ GameObject:
   - component: {fileID: 503388096382920182}
   - component: {fileID: 1626271883579540366}
   - component: {fileID: 993325512569453520}
+  - component: {fileID: 2294511856684483096}
   - component: {fileID: 7525494074642245837}
   - component: {fileID: 5776027955895354842}
   - component: {fileID: 7023779683548498420}
   - component: {fileID: 1020389073582314238}
   - component: {fileID: 7859021448824365601}
   - component: {fileID: 3208730866302124916}
-  - component: {fileID: 174785206889056126}
   - component: {fileID: 2960810705961976147}
   - component: {fileID: 1319466979024103620}
   m_Layer: 0
@@ -385,6 +385,29 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &2294511856684483096
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6724394765168942705}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9500879ad6b6755408f9c787c95fb42c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  health: 40
+  defaultHealth: 40
+  attackSpeed: 1
+  moveSpeed: 2.7
+  defaultMoveSpeed: 2.7
+  actionMoveSpeedReduceRate: 0.9
+  actionMoveSpeedReduced: 0
+  moveSpeedPerFrame: 0.05399998
+  magicka: 0
+  defaultMagicka: 0
+  size: 1
 --- !u!114 &7525494074642245837
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -518,29 +541,6 @@ MonoBehaviour:
   - {fileID: 11400000, guid: ce0123f1849375d49a041c6c87aa546c, type: 2}
   - {fileID: 11400000, guid: cc7bf204cfd06a9478d863885bbb9e6c, type: 2}
   skillBases: []
---- !u!114 &174785206889056126
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6724394765168942705}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9500879ad6b6755408f9c787c95fb42c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  health: 50
-  defaultHealth: 50
-  attackSpeed: 1
-  moveSpeed: 2.3
-  defaultMoveSpeed: 2.3
-  actionMoveSpeedReduceRate: 0.1
-  actionMoveSpeedReduced: 0
-  moveSpeedPerFrame: 0.04599998
-  magicka: 1
-  defaultMagicka: 1
-  size: 1
 --- !u!114 &2960810705961976147
 MonoBehaviour:
   m_ObjectHideFlags: 0

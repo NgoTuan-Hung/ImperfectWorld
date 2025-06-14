@@ -147,7 +147,7 @@ GameObject:
   - component: {fileID: 2802167853010671944}
   - component: {fileID: 4146519086635712066}
   - component: {fileID: 7022568635270056840}
-  - component: {fileID: 1608517703169104050}
+  - component: {fileID: -6170031399777914221}
   - component: {fileID: 6956051358220845641}
   - component: {fileID: 333891873184638733}
   - component: {fileID: 1765170278504062600}
@@ -353,7 +353,7 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
---- !u!114 &1608517703169104050
+--- !u!114 &-6170031399777914221
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -365,12 +365,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9500879ad6b6755408f9c787c95fb42c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  health: 200
-  defaultHealth: 200
+  health: 40
+  defaultHealth: 40
   attackSpeed: 1
   moveSpeed: 2.7
   defaultMoveSpeed: 2.7
-  actionMoveSpeedReduceRate: 0.1
+  actionMoveSpeedReduceRate: 0.9
   actionMoveSpeedReduced: 0
   moveSpeedPerFrame: 0.05399998
   magicka: 0

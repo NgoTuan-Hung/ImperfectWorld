@@ -118,11 +118,14 @@ public class BladeOfMinhKhai : SkillBase
             t_slashEffect.effectLocalPosition,
             Quaternion.Euler(t_slashEffect.effectLocalRotation)
         );
+
+        var t_collideAndDamage = t_slashEffect.GetBehaviour<CollideAndDamage>();
+
         /* This is needed because it will change parent eventually */
         t_slashEffect.transform.localScale = Vector3.one;
-        t_slashEffect.collideAndDamage.allyTags = customMono.allyTags;
-        t_slashEffect.collideAndDamage.collideDamage = damage;
-        t_slashEffect.collideAndDamage.dealDamageEvent = LifeSteal;
+        t_collideAndDamage.allyTags = customMono.allyTags;
+        t_collideAndDamage.collideDamage = damage;
+        t_collideAndDamage.dealDamageEvent = LifeSteal;
         customMono.rotationAndCenterObject.transform.localScale = new(
             customMono.directionModifier.transform.localScale.x > 0 ? 1 : -1,
             1,

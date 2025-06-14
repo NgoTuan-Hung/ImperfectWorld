@@ -117,15 +117,16 @@ public class Scatter : SkillBase
             Vector2 arrowDirection;
             for (int i = 0; i < currentAmmo; i++)
             {
-                GameEffect scatterArrowGameEffect = scatterArrowPool.PickOne().gameEffect;
-                scatterArrowGameEffect.collideAndDamage.allyTags = customMono.allyTags;
-                scatterArrowGameEffect.collideAndDamage.collideDamage = damage;
+                GameEffect t_scatterArrowGameEffect = scatterArrowPool.PickOne().gameEffect;
+                var t_collideAndDamage = t_scatterArrowGameEffect.GetBehaviour<CollideAndDamage>();
+                t_collideAndDamage.allyTags = customMono.allyTags;
+                t_collideAndDamage.collideDamage = damage;
                 if (i % 2 == 1)
                 {
                     arrowDirection = actionWaitInfo.finalDirection.RotateZ(
                         (i + 1) / 2 * modifiedAngle
                     );
-                    scatterArrowGameEffect.transform.SetPositionAndRotation(
+                    t_scatterArrowGameEffect.transform.SetPositionAndRotation(
                         customMono.firePoint.transform.position,
                         Quaternion.Euler(0, 0, Vector2.SignedAngle(Vector2.right, arrowDirection))
                     );
@@ -133,13 +134,13 @@ public class Scatter : SkillBase
                 else
                 {
                     arrowDirection = actionWaitInfo.finalDirection.RotateZ(-i / 2 * modifiedAngle);
-                    scatterArrowGameEffect.transform.SetPositionAndRotation(
+                    t_scatterArrowGameEffect.transform.SetPositionAndRotation(
                         customMono.firePoint.transform.position,
                         Quaternion.Euler(0, 0, Vector2.SignedAngle(Vector2.right, arrowDirection))
                     );
                 }
 
-                scatterArrowGameEffect.KeepFlyingAt(arrowDirection);
+                t_scatterArrowGameEffect.KeepFlyingAt(arrowDirection);
             }
 
             while (!customMono.animationEventFunctionCaller.endRelease)

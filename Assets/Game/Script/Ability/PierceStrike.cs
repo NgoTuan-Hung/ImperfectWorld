@@ -98,10 +98,11 @@ public class PierceStrike : SkillBase
             t_pierceStrikeEffect.effectLocalPosition,
             Quaternion.Euler(t_pierceStrikeEffect.effectLocalRotation)
         );
+        var t_collideAndDamage = t_pierceStrikeEffect.GetBehaviour<CollideAndDamage>();
         t_pierceStrikeEffect.transform.localScale = Vector3.one;
-        t_pierceStrikeEffect.collideAndDamage.allyTags = customMono.allyTags;
-        t_pierceStrikeEffect.collideAndDamage.collideDamage = damage;
-        t_pierceStrikeEffect.collideAndDamage.dealDamageEvent = ChangePhase;
+        t_collideAndDamage.allyTags = customMono.allyTags;
+        t_collideAndDamage.collideDamage = damage;
+        t_collideAndDamage.dealDamageEvent = ChangePhase;
         customMono.rotationAndCenterObject.transform.localScale = new(
             customMono.directionModifier.transform.localScale.x > 0 ? 1 : -1,
             1,
@@ -162,9 +163,10 @@ public class PierceStrike : SkillBase
             t_pierceStrikeSecondPhase.effectLocalPosition,
             Quaternion.Euler(t_pierceStrikeSecondPhase.effectLocalRotation)
         );
+        var t_collideAndDamage = t_pierceStrikeSecondPhase.GetBehaviour<CollideAndDamage>();
         t_pierceStrikeSecondPhase.transform.localScale = Vector3.one;
-        t_pierceStrikeSecondPhase.collideAndDamage.allyTags = customMono.allyTags;
-        t_pierceStrikeSecondPhase.collideAndDamage.collideDamage = damage;
+        t_collideAndDamage.allyTags = customMono.allyTags;
+        t_collideAndDamage.collideDamage = damage;
         customMono.rotationAndCenterObject.transform.localScale = new(
             customMono.directionModifier.transform.localScale.x > 0 ? 1 : -1,
             1,

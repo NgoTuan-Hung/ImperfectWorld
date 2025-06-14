@@ -88,7 +88,7 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
-  m_SpriteSortPoint: 0
+  m_SpriteSortPoint: 1
 --- !u!95 &3703854146135315376
 Animator:
   serializedVersion: 7
@@ -135,6 +135,8 @@ MonoBehaviour:
   endMainSkill1: 0
   mainSkill2Signal: 0
   endMainSkill2: 0
+  mainSkill3Signal: 0
+  endMainSkill3: 0
 --- !u!1 &6363290272921356084
 GameObject:
   m_ObjectHideFlags: 0
@@ -541,6 +543,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 1c867fbe8b471654dae0b5d9aa81b709, type: 2}
   - {fileID: 11400000, guid: fc9e8fa109257c445b86f24bd35abbf8, type: 2}
   - {fileID: 11400000, guid: 435fce547d318d94f838c9c3f2cf2fa9, type: 2}
+  - {fileID: 11400000, guid: d433e8152bc56e147a7e5edd86d7fde5, type: 2}
   skillBases: []
 --- !u!114 &766510213671306658
 MonoBehaviour:

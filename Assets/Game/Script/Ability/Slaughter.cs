@@ -94,11 +94,12 @@ public class Slaughter : SkillBase
             customMono.currentAction = this;
 
             customMono.SetUpdateDirectionIndicator(direction, UpdateDirectionIndicatorPriority.Low);
-            GameEffect projectileEffect = projectilePool.PickOne().gameEffect;
-            projectileEffect.collideAndDamage.allyTags = customMono.allyTags;
-            projectileEffect.collideAndDamage.collideDamage = damage;
-            projectileEffect.transform.position = customMono.firePoint.transform.position;
-            projectileEffect.transform.rotation = Quaternion.Euler(
+            GameEffect t_projectileEffect = projectilePool.PickOne().gameEffect;
+            var t_collideAndDamage = t_projectileEffect.GetBehaviour<CollideAndDamage>();
+            t_collideAndDamage.allyTags = customMono.allyTags;
+            t_collideAndDamage.collideDamage = damage;
+            t_projectileEffect.transform.position = customMono.firePoint.transform.position;
+            t_projectileEffect.transform.rotation = Quaternion.Euler(
                 0,
                 0,
                 Vector2.SignedAngle(Vector2.right, direction)
@@ -112,11 +113,11 @@ public class Slaughter : SkillBase
             |
             |
             | (or place it here)*/
-            projectileEffect.transform.position +=
-                projectileEffect.transform.TransformDirection(Vector3.up).normalized
+            t_projectileEffect.transform.position +=
+                t_projectileEffect.transform.TransformDirection(Vector3.up).normalized
                 * Random.Range(-0.3f, 0.3f);
 
-            projectileEffect.KeepFlyingAt(direction);
+            t_projectileEffect.KeepFlyingAt(direction);
         }
     }
 

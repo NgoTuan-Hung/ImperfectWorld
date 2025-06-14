@@ -85,9 +85,11 @@ public class MagicLaserSkill : SkillBase
         customMono.animationEventFunctionCaller.castingMagic = false;
         bool t_animatorLocalScale = customMono.AnimatorWrapper.animator.transform.localScale.x > 0;
 
-        GameEffect gameEffect = magicLaserPool.PickOne().gameEffect;
-        gameEffect.collideAndDamage.allyTags = customMono.allyTags;
-        gameEffect.collideAndDamage.collideDamage = damage;
+        CollideAndDamage gameEffect = magicLaserPool
+            .PickOne()
+            .gameEffect.GetBehaviour<CollideAndDamage>();
+        gameEffect.allyTags = customMono.allyTags;
+        gameEffect.collideDamage = damage;
 
         if (t_animatorLocalScale)
             gameEffect.transform.SetPositionAndRotation(
