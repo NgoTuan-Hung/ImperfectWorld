@@ -96,6 +96,7 @@ public class CustomMono : MonoSelfAware, IComparable<CustomMono>
         get => animatorWrapper;
         set => animatorWrapper = value;
     }
+    public Skill skill;
 
     public override void Awake()
     {
@@ -128,6 +129,7 @@ public class CustomMono : MonoSelfAware, IComparable<CustomMono>
         audioSource = GetComponent<AudioSource>();
         rigidbody2D = GetComponent<Rigidbody2D>();
         statusEffect = GetComponent<StatusEffect>();
+        skill = GetComponent<Skill>();
 
         /* Bot components */
         movementIntelligence = GetComponent<MovementIntelligence>();
@@ -185,7 +187,7 @@ public class CustomMono : MonoSelfAware, IComparable<CustomMono>
     public override void Start()
     {
         if (isControllable)
-            GameManager.Instance.InitializeControllableCharacter(this);
+            GameManager.Instance.InitializeControllableCharacterRevamp(this);
 
         startPhase1();
     }

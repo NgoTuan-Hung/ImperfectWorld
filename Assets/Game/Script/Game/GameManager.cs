@@ -46,8 +46,6 @@ public class GameManager : MonoSingleton<GameManager>
     Stopwatch stopwatch = new();
     public float waveDuration = 60f;
     public CinemachineCamera cinemachineCamera;
-    Dictionary<int, CharData> charDataDict = new();
-    CharData currentControlledCharData;
     public Dictionary<EffectPool, ObjectPool> effectPoolDict = new();
     GameObject vanishEffectPrefab,
         bladeOfMinhKhaiSlashEffectPrefab,
@@ -88,33 +86,35 @@ public class GameManager : MonoSingleton<GameManager>
 
     public void InitializeControllableCharacter(CustomMono p_customMono)
     {
-        CharData t_charData = new(p_customMono);
-        currentControlledCharData ??= t_charData;
+        // CharData t_charData = new(p_customMono);
+        // currentControlledCharData ??= t_charData;
 
-        t_charData.individualView = GameUIManager.Instance.AddNewIndividualView(
-            p_customMono.charUIData,
-            () =>
-            {
-                cinemachineCamera.Follow = p_customMono.transform;
-                currentControlledCharData.customMono.ResumeBot();
-                currentControlledCharData = t_charData;
-                currentControlledCharData.customMono.PauseBot();
-            }
-        );
+        // t_charData.individualView = GameUIManager.Instance.AddNewIndividualView(
+        //     p_customMono.charUIData,
+        //     () =>
+        //     {
+        //         cinemachineCamera.Follow = p_customMono.transform;
+        //         currentControlledCharData.customMono.ResumeBot();
+        //         currentControlledCharData = t_charData;
+        //         currentControlledCharData.customMono.PauseBot();
+        //     }
+        // );
 
-        charDataDict.Add(p_customMono.GetHashCode(), t_charData);
+        // charDataDict.Add(p_customMono.GetHashCode(), t_charData);
 
-        t_charData.individualView.joyStickMoveEvent += (vector) =>
-        {
-            vector.Scale(VectorExtension.inverseY);
-            p_customMono.movable.moveVector = vector;
-        };
+        // t_charData.individualView.joyStickMoveEvent += (vector) =>
+        // {
+        //     vector.Scale(VectorExtension.inverseY);
+        //     p_customMono.movable.moveVector = vector;
+        // };
 
-        GameUIManager.Instance.CheckFirstIndividualView();
+        // GameUIManager.Instance.CheckFirstIndividualView();
     }
 
-    public CharData GetCharData(CustomMono p_customMono) =>
-        charDataDict[p_customMono.GetHashCode()];
+    public void InitializeControllableCharacterRevamp(CustomMono p_customMono)
+    {
+        GameUIManagerRevamp.Instance.InitializeCharacterUI(p_customMono);
+    }
 
     private void Awake()
     {

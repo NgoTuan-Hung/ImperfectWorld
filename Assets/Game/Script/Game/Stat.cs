@@ -217,11 +217,11 @@ public class Stat : MonoEditor, INotifyBindablePropertyChanged
 
     private void OnDisable()
     {
-        if (healthRadialProgress != null)
-        {
-            if (healthRadialProgress.gameEffect != null)
-                healthRadialProgress.gameEffect.deactivate();
-        }
+        // if (healthRadialProgress != null)
+        // {
+        //     if (healthRadialProgress.gameEffect != null)
+        //         healthRadialProgress.gameEffect.deactivate();
+        // }
     }
 
     public override void Start()
@@ -254,9 +254,9 @@ public class Stat : MonoEditor, INotifyBindablePropertyChanged
 
     void InitUI()
     {
-        healthRadialProgress = GameUIManager.Instance.CreateAndHandleRadialProgressFollowing(
-            transform
-        );
+        // healthRadialProgress = GameUIManager.Instance.CreateAndHandleRadialProgressFollowing(
+        //     transform
+        // );
     }
 
     public void InitProperty()
@@ -274,15 +274,8 @@ public class Stat : MonoEditor, INotifyBindablePropertyChanged
 
     void AddPropertyChangeEvent()
     {
-        healthChangeEvent.action += () =>
-        {
-            if (healthRadialProgress == null)
-            {
-                print("H: " + Health + "-h: " + health);
-                print(customMono.gameObject.name);
-            }
-
-            healthRadialProgress.radialProgress.SetProgress(health / defaultHealth);
+        healthChangeEvent.action += () => {
+            // healthRadialProgress.radialProgress.SetProgress(health / defaultHealth);
         };
 
         actionMoveSpeedReduceRateChangeEvent.action += () =>
@@ -291,9 +284,8 @@ public class Stat : MonoEditor, INotifyBindablePropertyChanged
         {
             customMono.AnimatorWrapper.SetBool(dieBoolHash, true);
             customMono.combatCollision.SetActive(false);
-            healthRadialProgress.gameEffect.deactivate();
-            healthRadialProgress = null;
-            print(healthRadialProgress);
+            // healthRadialProgress.gameEffect.deactivate();
+            // healthRadialProgress = null;
             StartCoroutine(DissolveCoroutine());
         };
 
