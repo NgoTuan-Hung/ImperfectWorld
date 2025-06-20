@@ -45,6 +45,7 @@ public class GameManager : MonoSingleton<GameManager>
     public SpriteRenderer spawnRangeObject;
     Stopwatch stopwatch = new();
     public float waveDuration = 60f;
+    public new Camera camera;
     public CinemachineCamera cinemachineCamera;
     public Dictionary<EffectPool, ObjectPool> effectPoolDict = new();
     GameObject vanishEffectPrefab,
@@ -118,6 +119,7 @@ public class GameManager : MonoSingleton<GameManager>
 
     private void Awake()
     {
+        camera = Camera.main;
         foreach (SpawnEnemyInfo spawnEnemyInfo in spawnEnemyInfos)
         {
             spawnObjectPools.Add(
