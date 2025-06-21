@@ -3,7 +3,7 @@ using UnityEngine;
 public class PoolObject
 {
     public GameObject gameObject;
-    public RadialProgress radialProgress;
+    public HealthUIRevamp healthUIRevamp;
     public GameEffect gameEffect;
     public CustomMono customMono;
 }

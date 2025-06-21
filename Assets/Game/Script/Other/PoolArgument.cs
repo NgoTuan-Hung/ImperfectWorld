@@ -2,7 +2,7 @@ using System;
 
 public enum ComponentType
 {
-    RadialProgress,
+    HealthUIRevamp,
     GameEffect,
     CustomMono,
 };

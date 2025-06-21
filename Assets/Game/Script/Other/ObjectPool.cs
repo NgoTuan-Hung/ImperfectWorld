@@ -42,12 +42,12 @@ public class ObjectPool
             /* Set corresponding cached property based on what component we want to get. */
             switch (poolArgument.componentType)
             {
-                case ComponentType.RadialProgress:
+                case ComponentType.HealthUIRevamp:
                     handleCachedComponentRefs += (poolObject) =>
                     {
-                        poolObject.radialProgress =
-                            getComponentInLocation(typeof(RadialProgress), poolObject)
-                            as RadialProgress;
+                        poolObject.healthUIRevamp =
+                            getComponentInLocation(typeof(HealthUIRevamp), poolObject)
+                            as HealthUIRevamp;
                     };
                     break;
                 case ComponentType.GameEffect:

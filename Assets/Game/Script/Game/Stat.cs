@@ -21,7 +21,7 @@ public class Stat : MonoEditor, INotifyBindablePropertyChanged
 
     [SerializeField]
     float defaultHealth = 100f;
-    private PoolObject healthRadialProgress;
+    private PoolObject healthBar;
 
     [SerializeField]
     float attackSpeed = 1;
@@ -233,7 +233,7 @@ public class Stat : MonoEditor, INotifyBindablePropertyChanged
         onEnable += () =>
         {
             InitUI();
-            InitProperty();
+            StartCoroutine(LateStart());
             Health = DefaultHealth;
             MoveSpeed = DefaultMoveSpeed;
         };
@@ -254,9 +254,7 @@ public class Stat : MonoEditor, INotifyBindablePropertyChanged
 
     void InitUI()
     {
-        // healthRadialProgress = GameUIManager.Instance.CreateAndHandleRadialProgressFollowing(
-        //     transform
-        // );
+        healthBar = GameUIManagerRevamp.Instance.CreateAndHandleRadialProgressFollowing(transform);
     }
 
     public void InitProperty()
@@ -274,8 +272,9 @@ public class Stat : MonoEditor, INotifyBindablePropertyChanged
 
     void AddPropertyChangeEvent()
     {
-        healthChangeEvent.action += () => {
-            // healthRadialProgress.radialProgress.SetProgress(health / defaultHealth);
+        healthChangeEvent.action += () =>
+        {
+            healthBar.healthUIRevamp.SetHealth(health / defaultHealth);
         };
 
         actionMoveSpeedReduceRateChangeEvent.action += () =>
@@ -284,8 +283,8 @@ public class Stat : MonoEditor, INotifyBindablePropertyChanged
         {
             customMono.AnimatorWrapper.SetBool(dieBoolHash, true);
             customMono.combatCollision.SetActive(false);
-            // healthRadialProgress.gameEffect.deactivate();
-            // healthRadialProgress = null;
+            healthBar.gameEffect.deactivate();
+            healthBar = null;
             StartCoroutine(DissolveCoroutine());
         };
 

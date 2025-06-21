@@ -12,10 +12,15 @@ public class GameUIManagerRevamp : MonoEditorSingleton<GameUIManagerRevamp>
         skillNodeUI,
         characterPartyNodePrefab,
         joystickZone,
-        joystickPrefab;
+        joystickPrefab,
+        healthBarPrefab,
+        worldSpaceCanvas,
+        tooltips,
+        itemSkillTooltipPrefab;
     public RectTransform partyMenu;
     Dictionary<int, CharacterInfoUI> characterInfoUIDict = new();
     public CustomMono currentActiveCustomMono;
+    ObjectPool healthBarPool;
 
     private void Awake()
     {
@@ -25,6 +30,20 @@ public class GameUIManagerRevamp : MonoEditorSingleton<GameUIManagerRevamp>
             characterScreen.SetActive(true);
         });
         characterScreenExitButton.onClick.AddListener(() => characterScreen.SetActive(false));
+
+        healthBarPrefab = Resources.Load("HealthBar") as GameObject;
+        healthBarPool = new(
+            healthBarPrefab,
+            20,
+            new PoolArgument(ComponentType.HealthUIRevamp, PoolArgument.WhereComponent.Self),
+            new PoolArgument(ComponentType.GameEffect, PoolArgument.WhereComponent.Self)
+        );
+        healthBarPool.ForEach(
+            (p_pO) =>
+            {
+                p_pO.gameObject.transform.SetParent(worldSpaceCanvas.transform, false);
+            }
+        );
     }
 
     void GetAllUI() { }
@@ -96,6 +115,23 @@ public class GameUIManagerRevamp : MonoEditorSingleton<GameUIManagerRevamp>
 
             SkillNodeUI t_skillNodeUIComp = t_skillNodeUI.GetComponent<SkillNodeUI>();
             t_skillNodeUIComp.icon.sprite = t_skillDataSO.skillImage;
+
+            TooltipUI t_skillTooltip = Instantiate(itemSkillTooltipPrefab)
+                .GetComponent<TooltipUI>();
+            t_skillTooltip.transform.SetParent(t_characterInfoUI.tooltips.transform, false);
+            t_skillTooltip.gameObject.SetActive(false);
+            t_skillNodeUIComp.pointerDownEvent += (p_eventData) =>
+            {
+                t_skillTooltip.gameObject.SetActive(true);
+                t_skillTooltip.transform.position = p_eventData.position;
+            };
         });
+    }
+
+    public PoolObject CreateAndHandleRadialProgressFollowing(Transform transform)
+    {
+        PoolObject healthBarObject = healthBarPool.PickOne();
+        healthBarObject.gameEffect.FollowSlowly(transform);
+        return healthBarObject;
     }
 }
