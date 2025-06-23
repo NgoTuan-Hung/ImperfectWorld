@@ -1,4 +1,6 @@
 using System.Collections.Generic;
+using System.Linq;
+using DG.Tweening;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -6,6 +8,7 @@ public class GameUIManagerRevamp : MonoEditorSingleton<GameUIManagerRevamp>
 {
     Canvas canvas;
     public Button menuCharButton,
+        menuConfigButton,
         characterScreenExitButton;
     public GameObject characterScreen,
         characterInfo,
@@ -16,11 +19,14 @@ public class GameUIManagerRevamp : MonoEditorSingleton<GameUIManagerRevamp>
         healthBarPrefab,
         worldSpaceCanvas,
         tooltips,
-        itemSkillTooltipPrefab;
+        itemSkillTooltipPrefab,
+        skillAndItemUseButtonsPrefab,
+        skillAndItemUseZone;
     public RectTransform partyMenu;
     Dictionary<int, CharacterInfoUI> characterInfoUIDict = new();
     public CustomMono currentActiveCustomMono;
     ObjectPool healthBarPool;
+    Vector2 screenTooltipRectSize;
 
     private void Awake()
     {
@@ -53,6 +59,10 @@ public class GameUIManagerRevamp : MonoEditorSingleton<GameUIManagerRevamp>
         base.Start();
     }
 
+    Vector2 tooltipEndPosScaler = new Vector2(1, -1);
+    Color transparentGreen = new Vector4(0, 1, 0, 0),
+        transparentRed = new Vector4(1, 0, 0, 0);
+
     public void InitializeCharacterUI(CustomMono p_customMono)
     {
         currentActiveCustomMono ??= p_customMono;
@@ -64,6 +74,7 @@ public class GameUIManagerRevamp : MonoEditorSingleton<GameUIManagerRevamp>
         characterInfoUIDict.Add(p_customMono.GetHashCode(), t_characterInfoUI);
         t_characterInfo.SetActive(false);
 
+        /* Joystick per character */
         t_characterInfoUI.enhancedOnScreenStick = Instantiate(joystickPrefab)
             .GetComponent<EnhancedOnScreenStick>();
         t_characterInfoUI.enhancedOnScreenStick.transform.SetParent(joystickZone.transform, false);
@@ -71,6 +82,7 @@ public class GameUIManagerRevamp : MonoEditorSingleton<GameUIManagerRevamp>
         t_characterInfoUI.enhancedOnScreenStick.OnMove = (vector2) =>
             p_customMono.movable.moveVector = vector2;
 
+        /* Character avatar on main screen */
         t_characterInfoUI.characterPartyNode = Instantiate(characterPartyNodePrefab)
             .GetComponent<CharacterPartyNode>();
         t_characterInfoUI.characterPartyNode.transform.SetParent(partyMenu.transform, false);
@@ -92,6 +104,7 @@ public class GameUIManagerRevamp : MonoEditorSingleton<GameUIManagerRevamp>
                     new Vector3(0.5f, 0.5f, 1);
                 t_previousActiveCharInfoUI.gameObject.SetActive(false);
                 t_previousActiveCharInfoUI.enhancedOnScreenStick.gameObject.SetActive(false);
+                t_previousActiveCharInfoUI.skillAndItemUseButtons.gameObject.SetActive(false);
                 currentActiveCustomMono.ResumeBot();
                 currentActiveCustomMono = p_customMono;
                 CharacterInfoUI t_currentActiveCharacterInfoUI = characterInfoUIDict[
@@ -101,11 +114,54 @@ public class GameUIManagerRevamp : MonoEditorSingleton<GameUIManagerRevamp>
                     new Vector3(1f, 1f, 1);
                 t_currentActiveCharacterInfoUI.gameObject.SetActive(true);
                 t_currentActiveCharacterInfoUI.enhancedOnScreenStick.gameObject.SetActive(true);
+                t_currentActiveCharacterInfoUI.skillAndItemUseButtons.gameObject.SetActive(true);
                 currentActiveCustomMono.PauseBot();
                 GameManager.Instance.cinemachineCamera.Follow = p_customMono.transform;
                 LayoutRebuilder.ForceRebuildLayoutImmediate(partyMenu);
             }
         };
+
+        /* Item and skill use buttons on main screen*/
+        GameObject t_skillAndItemUseButtons = Instantiate(skillAndItemUseButtonsPrefab);
+        t_skillAndItemUseButtons.transform.SetParent(skillAndItemUseZone.transform, false);
+        t_skillAndItemUseButtons.SetActive(false);
+        t_characterInfoUI.skillAndItemUseButtons = t_skillAndItemUseButtons;
+        t_characterInfoUI.skillUseUIs = t_skillAndItemUseButtons
+            .GetComponentsInChildren<SkillUseUI>()
+            .ToList();
+        for (int i = 0; i < t_characterInfoUI.skillSlotUIs.Count; i++)
+        {
+            t_characterInfoUI.skillSlotUIs[i].skillUseUI = t_characterInfoUI.skillUseUIs[i];
+        }
+
+        /* Handle skill slot UI:
+        - When clicked, check if any skill is in queue, if so, equip that skill in
+        the slot and remove it from the queue.
+        - Also when a skill is equipped, show it in the main screen where player
+        can interact with it. */
+        t_characterInfoUI.skillSlotUIs.ForEach(t_skillSlotUI =>
+        {
+            t_skillSlotUI.pointerDownEvent += (p_eventData) =>
+            {
+                if (t_characterInfoUI.queueSkillNodeUI != null)
+                {
+                    /* If the skill is already equipped, remove it from current slot */
+                    if (t_characterInfoUI.queueSkillNodeUI.equippedSlot != null)
+                    {
+                        t_characterInfoUI.queueSkillNodeUI.equippedSlot.icon.gameObject.SetActive(
+                            false
+                        );
+                    }
+                    t_skillSlotUI.border.color = Color.green;
+                    t_skillSlotUI.border.DOColor(transparentGreen, 1).SetEase(Ease.OutQuart);
+                    t_skillSlotUI.icon.gameObject.SetActive(true);
+                    t_skillSlotUI.icon.sprite = t_characterInfoUI.queueSkillNodeUI.icon.sprite;
+
+                    t_characterInfoUI.queueSkillNodeUI.equippedSlot = t_skillSlotUI;
+                    t_characterInfoUI.queueSkillNodeUI = null;
+                }
+            };
+        });
 
         /* Load Skill UI */
         p_customMono.skill.skillDataSOs.ForEach(t_skillDataSO =>
@@ -115,15 +171,54 @@ public class GameUIManagerRevamp : MonoEditorSingleton<GameUIManagerRevamp>
 
             SkillNodeUI t_skillNodeUIComp = t_skillNodeUI.GetComponent<SkillNodeUI>();
             t_skillNodeUIComp.icon.sprite = t_skillDataSO.skillImage;
+            t_skillNodeUIComp.skillDataSO = t_skillDataSO;
 
             TooltipUI t_skillTooltip = Instantiate(itemSkillTooltipPrefab)
                 .GetComponent<TooltipUI>();
+            if (screenTooltipRectSize == Vector2.zero)
+                screenTooltipRectSize = t_skillTooltip.rectTransform.rect.size * canvas.scaleFactor;
+
             t_skillTooltip.transform.SetParent(t_characterInfoUI.tooltips.transform, false);
             t_skillTooltip.gameObject.SetActive(false);
+            t_skillTooltip.equipButton.pointerDownEvent += (p_eventData) =>
+            {
+                t_characterInfoUI.skillSlotUIs.ForEach(t_skillSlotUI =>
+                {
+                    t_skillSlotUI.border.color = Color.green;
+                    t_skillSlotUI.border.DOColor(transparentGreen, 1).SetEase(Ease.OutQuart);
+                    t_skillTooltip.gameObject.SetActive(false);
+                    t_characterInfoUI.queueSkillNodeUI = t_skillNodeUIComp;
+                });
+            };
+
+            t_skillTooltip.unequipButton.pointerDownEvent += (p_eventData) =>
+            {
+                if (t_skillNodeUIComp.equippedSlot != null)
+                {
+                    t_skillNodeUIComp.equippedSlot.border.color = Color.red;
+                    t_skillNodeUIComp
+                        .equippedSlot.border.DOColor(transparentRed, 1)
+                        .SetEase(Ease.OutQuart);
+                    t_skillTooltip.gameObject.SetActive(false);
+                    t_skillNodeUIComp.equippedSlot.icon.gameObject.SetActive(false);
+                    t_skillNodeUIComp.equippedSlot = null;
+                }
+            };
+
             t_skillNodeUIComp.pointerDownEvent += (p_eventData) =>
             {
                 t_skillTooltip.gameObject.SetActive(true);
-                t_skillTooltip.transform.position = p_eventData.position;
+                t_skillTooltip.gameObject.transform.SetAsLastSibling();
+                Vector2 t_endPosition =
+                        p_eventData.position + tooltipEndPosScaler * screenTooltipRectSize,
+                    t_tooltipPosition;
+
+                t_tooltipPosition = p_eventData.position;
+                if (t_endPosition.x > Screen.width)
+                    t_tooltipPosition.x -= t_endPosition.x - Screen.width;
+                if (t_endPosition.y < 0)
+                    t_tooltipPosition.y += -t_endPosition.y;
+                t_skillTooltip.transform.position = t_tooltipPosition;
             };
         });
     }

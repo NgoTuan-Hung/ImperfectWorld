@@ -7,6 +7,8 @@ public class SkillNodeUI : MonoBehaviour, IPointerDownHandler
 {
     public Image icon;
     public Action<PointerEventData> pointerDownEvent = (eventData) => { };
+    public SkillDataSO skillDataSO;
+    public SkillSlotUI equippedSlot;
 
     public void OnPointerDown(PointerEventData eventData)
     {
