@@ -60,8 +60,6 @@
   </PropertyGroup>
   <ItemGroup>
     <Analyzer Include="C:\Users\ADMIN88\.vscode\extensions\visualstudiotoolsforunity.vstuc-1.1.2\Analyzers\Microsoft.Unity.Analyzers.dll" />
-    <Analyzer Include="D:\Program\unity\Project\LastDevotion\Assets\CustomPackage\Dotween\Editor\DOTweenEditor.dll" />
-    <Analyzer Include="D:\Program\unity\Project\LastDevotion\Assets\CustomPackage\Dotween\DOTween.dll" />
     <Analyzer Include="D:\Program\unity\Editor\6000.0.30f1\Editor\Data\Tools\Unity.SourceGenerators\Unity.SourceGenerators.dll" />
     <Analyzer Include="D:\Program\unity\Editor\6000.0.30f1\Editor\Data\Tools\Unity.SourceGenerators\Unity.Properties.SourceGenerator.dll" />
     <Analyzer Include="D:\Program\unity\Editor\6000.0.30f1\Editor\Data\Tools\Unity.SourceGenerators\Unity.UIToolkit.SourceGenerator.dll" />
@@ -105,8 +103,8 @@
     <Compile Include="Assets\Game\Script\UI\Revamp\EnhancedOnScreenStickEditor.cs" />
     <Compile Include="Assets\Game\Script\Other\CollideAndDamage.cs" />
     <Compile Include="Assets\CustomPackage\Dotween\Modules\DOTweenModuleSprite.cs" />
-    <Compile Include="Assets\Game\Script\UI\Other\VisualElementExtension.cs" />
     <Compile Include="Assets\Game\Script\UI\Revamp\Test\MenuConfigButton.cs" />
+    <Compile Include="Assets\Game\Script\UI\Other\VisualElementExtension.cs" />
     <Compile Include="Assets\Test\ActionTester1\ClassTest1.cs" />
     <Compile Include="Assets\Game\Script\UI\Model\RadialProgress.cs" />
     <Compile Include="Assets\Game\Script\Game\BotActionManual.cs" />
@@ -751,6 +749,10 @@
       <HintPath>D:\Program\unity\Editor\6000.0.30f1\Editor\Data\Managed\UnityEngine\UnityEditor.XRModule.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="DOTween">
+      <HintPath>Assets\CustomPackage\Dotween\DOTween.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="Unity.Collections.LowLevel.ILSupport">
       <HintPath>Library\PackageCache\com.unity.collections\Unity.Collections.LowLevel.ILSupport\Unity.Collections.LowLevel.ILSupport.dll</HintPath>
       <Private>False</Private>
@@ -765,10 +767,6 @@
     </Reference>
     <Reference Include="Mono.Cecil">
       <HintPath>Library\PackageCache\com.unity.nuget.mono-cecil\Mono.Cecil.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="DOTween">
-      <HintPath>Assets\CustomPackage\Dotween\DOTween.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Unity.Android.Types">

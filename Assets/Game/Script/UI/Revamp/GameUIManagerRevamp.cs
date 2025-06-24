@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using DG.Tweening;
@@ -127,13 +128,14 @@ public class GameUIManagerRevamp : MonoEditorSingleton<GameUIManagerRevamp>
         t_skillAndItemUseButtons.SetActive(false);
         t_characterInfoUI.skillAndItemUseButtons = t_skillAndItemUseButtons;
         t_characterInfoUI.skillUseUIs = t_skillAndItemUseButtons
-            .GetComponentsInChildren<SkillUseUI>()
+            .GetComponentsInChildren<SkillUseUI>(true)
             .ToList();
         for (int i = 0; i < t_characterInfoUI.skillSlotUIs.Count; i++)
         {
             t_characterInfoUI.skillSlotUIs[i].skillUseUI = t_characterInfoUI.skillUseUIs[i];
         }
 
+        #region Skill Slot
         /* Handle skill slot UI:
         - When clicked, check if any skill is in queue, if so, equip that skill in
         the slot and remove it from the queue.
@@ -145,24 +147,85 @@ public class GameUIManagerRevamp : MonoEditorSingleton<GameUIManagerRevamp>
             {
                 if (t_characterInfoUI.queueSkillNodeUI != null)
                 {
-                    /* If the skill is already equipped, remove it from current slot */
+                    /* If the node is already equipped, remove it from equipped slot first */
                     if (t_characterInfoUI.queueSkillNodeUI.equippedSlot != null)
                     {
                         t_characterInfoUI.queueSkillNodeUI.equippedSlot.icon.gameObject.SetActive(
                             false
                         );
+                        /* Remove use from main screen */
+                        /* Reset skill use ui event */
+                        t_characterInfoUI.queueSkillNodeUI.equippedSlot.skillUseUI.ResetEvent();
+                        t_characterInfoUI.queueSkillNodeUI.equippedSlot.skillUseUI.gameObject.SetActive(
+                            false
+                        );
+                        t_characterInfoUI.queueSkillNodeUI.equippedSlot.skillNodeUI = null;
+                        t_characterInfoUI.queueSkillNodeUI.equippedSlot = null;
                     }
+
+                    /* If the the slot is already occupied, remove the current skill in the current slot first */
+                    if (t_skillSlotUI.skillNodeUI != null)
+                    {
+                        t_skillSlotUI.skillUseUI.ResetEvent();
+                        t_skillSlotUI.skillUseUI.gameObject.SetActive(false);
+                        t_skillSlotUI.skillNodeUI.equippedSlot = null;
+                        t_skillSlotUI.skillNodeUI = null;
+                    }
+
                     t_skillSlotUI.border.color = Color.green;
                     t_skillSlotUI.border.DOColor(transparentGreen, 1).SetEase(Ease.OutQuart);
                     t_skillSlotUI.icon.gameObject.SetActive(true);
                     t_skillSlotUI.icon.sprite = t_characterInfoUI.queueSkillNodeUI.icon.sprite;
 
                     t_characterInfoUI.queueSkillNodeUI.equippedSlot = t_skillSlotUI;
+                    t_skillSlotUI.skillNodeUI = t_characterInfoUI.queueSkillNodeUI;
+                    t_skillSlotUI.skillUseUI.icon.sprite = t_skillSlotUI.icon.sprite;
+                    t_skillSlotUI.skillUseUI.gameObject.SetActive(true);
+
+                    switch (t_characterInfoUI.queueSkillNodeUI.skillDataSO.inputType)
+                    {
+                        case SkillDataSO.InputType.Hold:
+                        {
+                            t_skillSlotUI.skillUseUI.holdEvent = (
+                                p_pointerPosition,
+                                p_centerToPointerDir
+                            ) =>
+                                t_skillSlotUI.skillNodeUI.skillBase.Trigger(
+                                    p_location: p_pointerPosition,
+                                    p_direction: p_centerToPointerDir
+                                );
+                            break;
+                        }
+                        case SkillDataSO.InputType.HoldAndRelease:
+                        {
+                            t_skillSlotUI.skillUseUI.holdEvent = (
+                                p_pointerPosition,
+                                p_centerToPointerDir
+                            ) =>
+                                t_skillSlotUI.skillNodeUI.skillBase.WhileWaiting(
+                                    p_centerToPointerDir
+                                );
+                            t_skillSlotUI.skillUseUI.pointerUpEvent = (
+                                p_pointerPosition,
+                                p_centerToPointerDir
+                            ) =>
+                                t_skillSlotUI.skillNodeUI.skillBase.Trigger(
+                                    p_location: default,
+                                    p_direction: p_centerToPointerDir
+                                );
+                            break;
+                        }
+                        default:
+                            break;
+                    }
+
                     t_characterInfoUI.queueSkillNodeUI = null;
                 }
             };
         });
+        #endregion
 
+        #region Load Skill UI
         /* Load Skill UI */
         p_customMono.skill.skillDataSOs.ForEach(t_skillDataSO =>
         {
@@ -172,12 +235,15 @@ public class GameUIManagerRevamp : MonoEditorSingleton<GameUIManagerRevamp>
             SkillNodeUI t_skillNodeUIComp = t_skillNodeUI.GetComponent<SkillNodeUI>();
             t_skillNodeUIComp.icon.sprite = t_skillDataSO.skillImage;
             t_skillNodeUIComp.skillDataSO = t_skillDataSO;
+            t_skillNodeUIComp.skillBase =
+                p_customMono.GetComponent(Type.GetType(t_skillDataSO.skillName)) as SkillBase;
 
             TooltipUI t_skillTooltip = Instantiate(itemSkillTooltipPrefab)
                 .GetComponent<TooltipUI>();
             if (screenTooltipRectSize == Vector2.zero)
                 screenTooltipRectSize = t_skillTooltip.rectTransform.rect.size * canvas.scaleFactor;
-
+            t_skillTooltip.textName.text = t_skillDataSO.skillName;
+            t_skillTooltip.textDescription.text = t_skillDataSO.skillHelperDescription;
             t_skillTooltip.transform.SetParent(t_characterInfoUI.tooltips.transform, false);
             t_skillTooltip.gameObject.SetActive(false);
             t_skillTooltip.equipButton.pointerDownEvent += (p_eventData) =>
@@ -201,6 +267,9 @@ public class GameUIManagerRevamp : MonoEditorSingleton<GameUIManagerRevamp>
                         .SetEase(Ease.OutQuart);
                     t_skillTooltip.gameObject.SetActive(false);
                     t_skillNodeUIComp.equippedSlot.icon.gameObject.SetActive(false);
+                    t_skillNodeUIComp.equippedSlot.skillUseUI.ResetEvent();
+                    t_skillNodeUIComp.equippedSlot.skillUseUI.gameObject.SetActive(false);
+                    t_skillNodeUIComp.equippedSlot.skillNodeUI = null;
                     t_skillNodeUIComp.equippedSlot = null;
                 }
             };
@@ -221,6 +290,7 @@ public class GameUIManagerRevamp : MonoEditorSingleton<GameUIManagerRevamp>
                 t_skillTooltip.transform.position = t_tooltipPosition;
             };
         });
+        #endregion
     }
 
     public PoolObject CreateAndHandleRadialProgressFollowing(Transform transform)
