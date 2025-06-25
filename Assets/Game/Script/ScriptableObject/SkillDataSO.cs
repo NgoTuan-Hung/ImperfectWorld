@@ -17,13 +17,12 @@ public class SkillDataSO : ScriptableObject
         HoldAndRelease,
     }
 
+    public SkillIndicatorType skillIndicatorType = SkillIndicatorType.None;
     public InputType inputType;
     public string skillName;
     public Sprite skillImage;
-    public Sprite skillHelperImage;
 
     [TextArea]
     public string skillHelperDescription;
-    public Sprite skillTreeIcon;
     public SkillType skillType;
 }

@@ -40,9 +40,9 @@ public class LightingForward : SkillBase
         base.Start();
     }
 
-    public override void WhileWaiting(Vector2 vector2)
+    public override void WhileWaiting(Vector2 p_location = default, Vector2 p_direction = default)
     {
-        base.WhileWaiting(vector2);
+        base.WhileWaiting(p_direction);
     }
 
     public override void Trigger(Vector2 location = default, Vector2 direction = default)

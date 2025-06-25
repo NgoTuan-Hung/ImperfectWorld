@@ -1,8 +1,6 @@
 using System;
 using System.Collections;
-using System.Diagnostics;
 using UnityEngine;
-using Touch = UnityEngine.InputSystem.EnhancedTouch.Touch;
 
 public class Scatter : SkillBase
 {
@@ -162,10 +160,10 @@ public class Scatter : SkillBase
         customMono.currentAction = null;
     }
 
-    public override void WhileWaiting(Vector2 vector2)
+    public override void WhileWaiting(Vector2 p_location = default, Vector2 p_direction = default)
     {
-        customMono.SetUpdateDirectionIndicator(vector2, UpdateDirectionIndicatorPriority.Low);
-        actionWaitInfo.finalDirection = vector2;
+        customMono.SetUpdateDirectionIndicator(p_direction, UpdateDirectionIndicatorPriority.Low);
+        actionWaitInfo.finalDirection = p_direction;
     }
 
     public void ScatterTo(Vector2 direction, float duration)

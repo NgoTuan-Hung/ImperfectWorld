@@ -6,6 +6,7 @@ using UnityEngine.UI;
 
 public enum SkillIndicatorType
 {
+    None,
     Direction,
     Location,
 }
@@ -15,7 +16,11 @@ public class SkillUseUI : MonoBehaviour, IPointerDownHandler, IPointerUpHandler,
     RectTransform rectTransform;
     public Image border,
         icon;
-    public Action<Vector2, Vector2> holdEvent = (p_pointerPosition, p_centerToPointerDir) => { },
+    public Action<Vector2, Vector2> pointerDownEvent = (
+            p_pointerPosition,
+            p_centerToPointerDir
+        ) => { },
+        holdEvent = (p_pointerPosition, p_centerToPointerDir) => { },
         pointerUpEvent = (p_pointerPosition, p_centerToPointerDir) => { };
     Vector2 centerToPointerDir = Vector2.zero,
         pointerPosition = Vector2.zero;
@@ -42,6 +47,7 @@ public class SkillUseUI : MonoBehaviour, IPointerDownHandler, IPointerUpHandler,
         {
             holding = true;
             border.color = Color.red;
+            pointerDownEvent(pointerPosition, centerToPointerDir);
             StartCoroutine(OnHold());
 
             switch (skillIndicatorType)
@@ -56,6 +62,8 @@ public class SkillUseUI : MonoBehaviour, IPointerDownHandler, IPointerUpHandler,
                     skillLocationIndicator.gameObject.SetActive(true);
                     break;
                 }
+                case SkillIndicatorType.None:
+                    break;
                 default:
                     break;
             }
@@ -89,6 +97,8 @@ public class SkillUseUI : MonoBehaviour, IPointerDownHandler, IPointerUpHandler,
                     skillLocationIndicator.gameObject.SetActive(false);
                     break;
                 }
+                case SkillIndicatorType.None:
+                    break;
                 default:
                     break;
             }
@@ -125,6 +135,8 @@ public class SkillUseUI : MonoBehaviour, IPointerDownHandler, IPointerUpHandler,
                 skillLocationIndicator.position = eventData.position;
                 break;
             }
+            case SkillIndicatorType.None:
+                break;
             default:
                 break;
         }
@@ -132,6 +144,7 @@ public class SkillUseUI : MonoBehaviour, IPointerDownHandler, IPointerUpHandler,
 
     public void ResetEvent()
     {
+        pointerDownEvent = (p_pointerPosition, p_centerToPointerDir) => { };
         holdEvent = (p_pointerPosition, p_centerToPointerDir) => { };
         pointerUpEvent = (p_pointerPosition, p_centerToPointerDir) => { };
     }

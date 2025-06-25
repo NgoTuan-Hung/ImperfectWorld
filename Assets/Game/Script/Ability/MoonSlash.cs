@@ -152,10 +152,10 @@ public class MoonSlash : SkillBase
         customMono.currentAction = null;
     }
 
-    public override void WhileWaiting(Vector2 vector2)
+    public override void WhileWaiting(Vector2 p_location = default, Vector2 p_direction = default)
     {
-        customMono.SetUpdateDirectionIndicator(vector2, UpdateDirectionIndicatorPriority.Low);
-        actionWaitInfo.finalDirection = vector2;
+        customMono.SetUpdateDirectionIndicator(p_direction, UpdateDirectionIndicatorPriority.Low);
+        actionWaitInfo.finalDirection = p_direction;
     }
 
     public override void DoAuto(DoActionParamInfo p_doActionParamInfo)

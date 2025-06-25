@@ -79,6 +79,7 @@ public class BaseIntelligence : MonoEditor
                 p_targetCenterPosition
             );
             waitBotActionManual.whileWaiting(
+                waitBotActionManual.doActionParamInfo.targetOriginPosition,
                 waitBotActionManual.doActionParamInfo.originToTargetOriginDirection
             );
             return;

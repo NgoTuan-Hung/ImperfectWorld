@@ -60,9 +60,9 @@ public class BladeOfMinhKhai : SkillBase
         base.Start();
     }
 
-    public override void WhileWaiting(Vector2 vector2)
+    public override void WhileWaiting(Vector2 p_location = default, Vector2 p_direction = default)
     {
-        customMono.SetUpdateDirectionIndicator(vector2, UpdateDirectionIndicatorPriority.Low);
+        customMono.SetUpdateDirectionIndicator(p_direction, UpdateDirectionIndicatorPriority.Low);
     }
 
     public override void Trigger(Vector2 location = default, Vector2 direction = default)

@@ -19,7 +19,7 @@ public class BotActionManual
     {
         return true;
     };
-    public Action<Vector2> whileWaiting = (targetDirection) => { };
+    public Action<Vector2, Vector2> whileWaiting = (targetLocation, targetDirection) => { };
     public int actionChanceAjuster = 0;
 
     public BotActionManual(
@@ -28,7 +28,7 @@ public class BotActionManual
         DoActionParamInfo doActionParamInfo,
         bool actionNeedWait = false,
         Func<bool> startAndWait = null,
-        Action<Vector2> whileWaiting = null
+        Action<Vector2, Vector2> whileWaiting = null
     )
     {
         this.actionUse = actionUse;

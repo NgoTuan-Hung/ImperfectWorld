@@ -132,7 +132,10 @@ public class BaseAction : MonoEditor
         return true;
     }
 
-    public virtual void WhileWaiting(Vector2 vector2) { }
+    public virtual void WhileWaiting(
+        Vector2 p_location = default,
+        Vector2 p_direction = default
+    ) { }
 
     public virtual void DoAuto(DoActionParamInfo p_doActionParamInfo) { }
 

@@ -182,8 +182,24 @@ public class GameUIManagerRevamp : MonoEditorSingleton<GameUIManagerRevamp>
                     t_skillSlotUI.skillUseUI.icon.sprite = t_skillSlotUI.icon.sprite;
                     t_skillSlotUI.skillUseUI.gameObject.SetActive(true);
 
+                    t_skillSlotUI.skillUseUI.skillIndicatorType = t_characterInfoUI
+                        .queueSkillNodeUI
+                        .skillDataSO
+                        .skillIndicatorType;
                     switch (t_characterInfoUI.queueSkillNodeUI.skillDataSO.inputType)
                     {
+                        case SkillDataSO.InputType.Click:
+                        {
+                            t_skillSlotUI.skillUseUI.pointerDownEvent = (
+                                p_pointerPosition,
+                                p_centerToPointerDir
+                            ) =>
+                                t_skillSlotUI.skillNodeUI.skillBase.Trigger(
+                                    p_location: p_pointerPosition,
+                                    p_direction: p_centerToPointerDir
+                                );
+                            break;
+                        }
                         case SkillDataSO.InputType.Hold:
                         {
                             t_skillSlotUI.skillUseUI.holdEvent = (
@@ -198,19 +214,26 @@ public class GameUIManagerRevamp : MonoEditorSingleton<GameUIManagerRevamp>
                         }
                         case SkillDataSO.InputType.HoldAndRelease:
                         {
+                            t_skillSlotUI.skillUseUI.pointerDownEvent = (
+                                p_pointerPosition,
+                                p_centerToPointerDir
+                            ) => t_skillSlotUI.skillNodeUI.skillBase.StartAndWait();
+
                             t_skillSlotUI.skillUseUI.holdEvent = (
                                 p_pointerPosition,
                                 p_centerToPointerDir
                             ) =>
                                 t_skillSlotUI.skillNodeUI.skillBase.WhileWaiting(
-                                    p_centerToPointerDir
+                                    p_location: p_pointerPosition,
+                                    p_direction: p_centerToPointerDir
                                 );
+
                             t_skillSlotUI.skillUseUI.pointerUpEvent = (
                                 p_pointerPosition,
                                 p_centerToPointerDir
                             ) =>
                                 t_skillSlotUI.skillNodeUI.skillBase.Trigger(
-                                    p_location: default,
+                                    p_location: p_pointerPosition,
                                     p_direction: p_centerToPointerDir
                                 );
                             break;
