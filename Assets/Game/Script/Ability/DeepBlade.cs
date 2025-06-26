@@ -44,6 +44,7 @@ public class DeepBlade : SkillBase
         {
             canUse = false;
             customMono.actionBlocking = true;
+            customMono.statusEffect.Slow(customMono.stat.ActionMoveSpeedReduceRate);
             ToggleAnim(GameManager.Instance.mainSkill2BoolHash, true);
             StartCoroutine(actionIE = TriggerIE(p_location, p_direction));
             StartCoroutine(CooldownCoroutine());
@@ -89,6 +90,7 @@ public class DeepBlade : SkillBase
         while (!customMono.animationEventFunctionCaller.endMainSkill2)
             yield return new WaitForSeconds(Time.fixedDeltaTime);
 
+        customMono.statusEffect.RemoveSlow(customMono.stat.ActionMoveSpeedReduceRate);
         customMono.animationEventFunctionCaller.endMainSkill2 = false;
         customMono.actionBlocking = false;
         ToggleAnim(GameManager.Instance.mainSkill2BoolHash, false);
@@ -117,5 +119,6 @@ public class DeepBlade : SkillBase
         customMono.animationEventFunctionCaller.mainSkill2Signal = false;
         customMono.animationEventFunctionCaller.endMainSkill2 = false;
         customMono.currentAction = null;
+        customMono.statusEffect.RemoveSlow(customMono.stat.ActionMoveSpeedReduceRate);
     }
 }

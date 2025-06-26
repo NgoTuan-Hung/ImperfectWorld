@@ -63,7 +63,10 @@ public class GameManager : MonoSingleton<GameManager>
         elementalLeafRangerVineArrowPrefab,
         lightingForwardLightingPrefab,
         blueHolePrefab,
-        nuclearBombExplosionPrefab;
+        nuclearBombExplosionPrefab,
+        swordTempestSlash1Prefab,
+        swordTempestSlash2Prefab,
+        swordTempestSlash3Prefab;
     public ObjectPool vanishEffectPool,
         bladeOfMinhKhaiSlashEffectPool,
         bladeOfPhongTornadoEffectPool,
@@ -79,7 +82,10 @@ public class GameManager : MonoSingleton<GameManager>
         elementalLeafRangerVineArrowPool,
         lightingForwardLightingPool,
         blueHolePool,
-        nuclearBombExplosionPool;
+        nuclearBombExplosionPool,
+        swordTempestSlash1Pool,
+        swordTempestSlash2Pool,
+        swordTempestSlash3Pool;
     public int attackBoolHash = Animator.StringToHash("Attack"),
         mainSkill1BoolHash = Animator.StringToHash("MainSkill1"),
         mainSkill2BoolHash = Animator.StringToHash("MainSkill2"),
@@ -338,6 +344,24 @@ public class GameManager : MonoSingleton<GameManager>
         nuclearBombExplosionPool ??= new(
             nuclearBombExplosionPrefab,
             10,
+            new PoolArgument(ComponentType.GameEffect, PoolArgument.WhereComponent.Self)
+        );
+        swordTempestSlash1Prefab = Resources.Load("SwordTempestSlash1") as GameObject;
+        swordTempestSlash1Pool ??= new(
+            swordTempestSlash1Prefab,
+            5,
+            new PoolArgument(ComponentType.GameEffect, PoolArgument.WhereComponent.Self)
+        );
+        swordTempestSlash2Prefab = Resources.Load("SwordTempestSlash2") as GameObject;
+        swordTempestSlash2Pool ??= new(
+            swordTempestSlash2Prefab,
+            5,
+            new PoolArgument(ComponentType.GameEffect, PoolArgument.WhereComponent.Self)
+        );
+        swordTempestSlash3Prefab = Resources.Load("SwordTempestSlash3") as GameObject;
+        swordTempestSlash3Pool ??= new(
+            swordTempestSlash3Prefab,
+            5,
             new PoolArgument(ComponentType.GameEffect, PoolArgument.WhereComponent.Self)
         );
     }

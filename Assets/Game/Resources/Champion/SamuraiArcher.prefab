@@ -135,6 +135,8 @@ MonoBehaviour:
   endMainSkill1: 0
   mainSkill2Signal: 0
   endMainSkill2: 0
+  mainSkill3Signal: 0
+  endMainSkill3: 0
 --- !u!1 &7338680796603692614
 GameObject:
   m_ObjectHideFlags: 0
@@ -419,6 +421,7 @@ MonoBehaviour:
   directionModifier: {fileID: 0}
   currentAction: {fileID: 0}
   currentMovementAction: {fileID: 0}
+  skill: {fileID: 0}
 --- !u!114 &3939600642513553
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -507,6 +510,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 1c867fbe8b471654dae0b5d9aa81b709, type: 2}
   - {fileID: 11400000, guid: ac1c61a40479db34fb9b5d221fa5a90d, type: 2}
   - {fileID: 11400000, guid: 12c3bbff2d3f2e3419f4d641e25e2f4c, type: 2}
+  - {fileID: 11400000, guid: ade0fd0865441524d95440e8055cf34a, type: 2}
   skillBases: []
 --- !u!114 &855005848796693948
 MonoBehaviour:
