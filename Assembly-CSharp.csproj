@@ -109,6 +109,7 @@
     <Compile Include="Assets\Game\Script\UI\Model\RadialProgress.cs" />
     <Compile Include="Assets\Game\Script\Game\BotActionManual.cs" />
     <Compile Include="Assets\CustomPackage\Cainos\Pixel Art Top Down - Basic\Script\PropsAltar.cs" />
+    <Compile Include="Assets\Game\Script\Game\GameEffectRevamp.cs" />
     <Compile Include="Assets\Game\Script\Ability\BladeOfMinhKhai.cs" />
     <Compile Include="Assets\Game\Script\UI\UIRenderer\CustomProgressUI.cs" />
     <Compile Include="Assets\Game\Script\Ability\Slaughter.cs" />
@@ -122,6 +123,7 @@
     <Compile Include="Assets\Game\Script\Other\ListExtension.cs" />
     <Compile Include="Assets\Game\Script\Game\BaseIntelligence.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\VertexJitter.cs" />
+    <Compile Include="Assets\Test\TimelineSerializeTest\TimelineSerializeSignal.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_UiFrameRateCounter.cs" />
     <Compile Include="Assets\Game\Script\Ability\BladeOfVu.cs" />
     <Compile Include="Assets\Test\ActionTester1\ActionTester.cs" />
@@ -131,6 +133,7 @@
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_TextSelector_B.cs" />
     <Compile Include="Assets\Game\Script\Other\MonoEditorSingleton.cs" />
     <Compile Include="Assets\Game\Script\Game\SpawnEnemyInfo.cs" />
+    <Compile Include="Assets\Game\Script\Other\CollideAndDamageSO.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\SkewTextExample.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\WarpTextExample.cs" />
     <Compile Include="Assets\Game\Script\UI\UIRenderer\TestVisualElementVectorApi.cs" />
@@ -144,12 +147,14 @@
     <Compile Include="Assets\Game\Script\UI\UIRenderer\HealthUI.cs" />
     <Compile Include="Assets\Game\Script\UI\View\IndividualView.cs" />
     <Compile Include="Assets\CustomPackage\Dotween\Modules\DOTweenModuleEPOOutline.cs" />
+    <Compile Include="Assets\Test\TimelineSerializeTest\BoxCollider1.cs" />
     <Compile Include="Assets\Test\BladeOfPhong\BladeOfPhongTest.cs" />
     <Compile Include="Assets\Game\Script\UI\Model\CharInfoMenuItem.cs" />
     <Compile Include="Assets\Test\OrderOfExecution\OrderOfExecutionTest.cs" />
     <Compile Include="Assets\Game\Script\Game\MyBotPersonality.cs" />
     <Compile Include="Assets\Game\Script\UI\Revamp\CharacterInfoUI.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_TextInfoDebugTool.cs" />
+    <Compile Include="Assets\Game\Script\Other\CollideAndDamageRevamp.cs" />
     <Compile Include="Assets\Game\Script\UI\UIRenderer\Shadow.cs" />
     <Compile Include="Assets\Test\BladeOfVu\SpriteList.cs" />
     <Compile Include="Assets\Game\Script\Ability\Scatter.cs" />
@@ -165,6 +170,7 @@
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\Benchmark01_UGUI.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\SimpleScript.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\Benchmark04.cs" />
+    <Compile Include="Assets\Game\Script\Game\BlueHoleRevamp.cs" />
     <Compile Include="Assets\Game\Script\Ability\DeepBlade.cs" />
     <Compile Include="Assets\Game\Script\Ability\TheCallOfThePack.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\ChatController.cs" />
@@ -174,6 +180,7 @@
     <Compile Include="Assets\Game\Script\Other\MonoSingleton.cs" />
     <Compile Include="Assets\Game\Script\UI\Other\TouchInfo.cs" />
     <Compile Include="Assets\Test\JapaneseSamuraiDash\EasingFunctions.cs" />
+    <Compile Include="Assets\Test\TimelineSerializeTest\TimelineDeserialize.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_DigitValidator.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_FrameRateCounter.cs" />
     <Compile Include="Assets\TutorialInfo\Scripts\Readme.cs" />
@@ -199,6 +206,8 @@
     <Compile Include="Assets\Game\Script\UI\View\ConfigView.cs" />
     <Compile Include="Assets\Bot.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\Benchmark03.cs" />
+    <Compile Include="Assets\Game\Script\Game\GameEffectSO.cs" />
+    <Compile Include="Assets\Test\TimelineSerializeTest\BoxCollider2.cs" />
     <Compile Include="Assets\Game\Script\Ability\LightingForward.cs" />
     <Compile Include="Assets\CustomPackage\Cainos\Pixel Art Top Down - Basic\Script\SpriteColorAnimation.cs" />
     <Compile Include="Assets\Game\Script\UI\Model\ConfigContentItem.cs" />
@@ -209,6 +218,7 @@
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\DropdownSample.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\VertexColorCycler.cs" />
     <Compile Include="Assets\Game\Script\Game\Stat.cs" />
+    <Compile Include="Assets\Test\TimelineSerializeTest\TimelineSerializeSO.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\ObjectSpin.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_PhoneNumberValidator.cs" />
     <Compile Include="Assets\Game\Script\UI\View\MainView.cs" />
@@ -231,6 +241,7 @@
     <Compile Include="Assets\Game\Script\Other\MonoEditor.cs" />
     <Compile Include="Assets\CustomPackage\Dotween\Modules\DOTweenModuleAudio.cs" />
     <Compile Include="Assets\CustomPackage\Dotween\Modules\DOTweenModuleUI.cs" />
+    <Compile Include="Assets\Test\TimelineSerializeTest\ColliderCopier.cs" />
     <Compile Include="Assets\Game\Script\Other\PoisonInfo.cs" />
     <Compile Include="Assets\Game\Script\UI\Model\ConfigData.cs" />
     <Compile Include="Assets\Test\PierceStrike\PierceStrikeTest.cs" />

@@ -283,4 +283,14 @@ public class CollideAndDamage : MonoEditor, IGameEffectBehaviour
     {
         GameEffect = gameEffect;
     }
+
+    public void Disable()
+    {
+        throw new NotImplementedException();
+    }
+
+    public void Enable(GameEffectSO p_gameEffectSO)
+    {
+        // throw new NotImplementedException();
+    }
 }

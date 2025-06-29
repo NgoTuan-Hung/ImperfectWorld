@@ -7,7 +7,7 @@ public class NuclearBomb : SkillBase
     {
         base.Awake();
         cooldown = 5f;
-        damage = defaultDamage = 30f;
+        damage = defaultDamage = 200f;
         AddActionManuals();
     }
 

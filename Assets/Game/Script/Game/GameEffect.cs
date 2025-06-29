@@ -62,7 +62,8 @@ public class GameEffect : MonoSelfAware
 
     void GetAllBehaviours()
     {
-        foreach (var behaviour in GetComponents<IGameEffectBehaviour>())
+        var t_behaviours = GetComponents<IGameEffectBehaviour>();
+        foreach (var behaviour in t_behaviours)
         {
             behaviours.Add(behaviour.GetType(), behaviour);
             behaviour.Initialize(this);
