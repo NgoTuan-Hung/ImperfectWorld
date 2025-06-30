@@ -20,10 +20,12 @@ public class GameEffectRevamp : MonoSelfAware
     Animator animator;
     PlayableDirector playableDirector;
     AudioSource audioSource;
-    SpriteRenderer spriteRenderer;
+    public SpriteRenderer spriteRenderer,
+        secondarySpriteRenderer;
     public List<GameObject> trackReferences;
     public BoxCollider2D boxCollider2D;
     public PolygonCollider2D polygonCollider2D;
+    public CircleCollider2D circleCollider2D;
     Dictionary<EGameEffectBehaviour, IGameEffectBehaviour> behaviours = new();
 
     public override void Awake()
@@ -35,6 +37,11 @@ public class GameEffectRevamp : MonoSelfAware
         playableDirector = GetComponent<PlayableDirector>();
         audioSource = GetComponent<AudioSource>();
         spriteRenderer = GetComponentInChildren<SpriteRenderer>();
+        secondarySpriteRenderer =
+            spriteRenderer.gameObject.GetComponentInChildren<SpriteRenderer>();
+        boxCollider2D = GetComponent<BoxCollider2D>();
+        polygonCollider2D = GetComponent<PolygonCollider2D>();
+        circleCollider2D = GetComponent<CircleCollider2D>();
 
         GetAllBehaviours();
     }
@@ -60,28 +67,103 @@ public class GameEffectRevamp : MonoSelfAware
     public void Init(GameEffectSO p_gameEffectSO)
     {
         /* Turn off behaviors, rigidbody, colliders and reset to default state */
-        Reset();
+        ResetGameEffect();
 
-        animator.runtimeAnimatorController = p_gameEffectSO.animator.runtimeAnimatorController;
+        /* Set up game effect */
+        HandleGameEffect(p_gameEffectSO);
+
+        /* Turn on behavior */
+        switch (p_gameEffectSO.useBehaviour)
+        {
+            case EGameEffectBehaviour.CollideAndDamage:
+            {
+                behaviours[EGameEffectBehaviour.CollideAndDamage].Enable(p_gameEffectSO);
+                break;
+            }
+            case EGameEffectBehaviour.BlueHole:
+            {
+                behaviours[EGameEffectBehaviour.BlueHole].Enable(p_gameEffectSO);
+                break;
+            }
+            default:
+                break;
+        }
+    }
+
+    void ResetGameEffect()
+    {
+        foreach (var behaviour in behaviours.Values)
+        {
+            behaviour.Disable();
+        }
+
+        boxCollider2D.enabled = false;
+        polygonCollider2D.enabled = false;
+        secondarySpriteRenderer.sprite = null;
+    }
+
+    void HandleGameEffect(GameEffectSO p_gameEffectSO)
+    {
+        spriteRenderer.transform.SetLocalPositionAndRotation(
+            p_gameEffectSO.gameEffectPrefab.spriteRenderer.transform.localPosition,
+            p_gameEffectSO.gameEffectPrefab.spriteRenderer.transform.localRotation
+        );
+        spriteRenderer.transform.localScale = p_gameEffectSO
+            .gameEffectPrefab
+            .spriteRenderer
+            .transform
+            .localScale;
+        spriteRenderer.spriteSortPoint = p_gameEffectSO
+            .gameEffectPrefab
+            .spriteRenderer
+            .spriteSortPoint;
+        spriteRenderer.material = p_gameEffectSO.gameEffectPrefab.spriteRenderer.material;
+        spriteRenderer.sortingLayerName = p_gameEffectSO
+            .gameEffectPrefab
+            .spriteRenderer
+            .sortingLayerName;
+        spriteRenderer.sortingOrder = p_gameEffectSO.gameEffectPrefab.spriteRenderer.sortingOrder;
+
+        if (p_gameEffectSO.useSecondarySpriteRenderer)
+        {
+            secondarySpriteRenderer.gameObject.transform.SetLocalPositionAndRotation(
+                p_gameEffectSO.gameEffectPrefab.secondarySpriteRenderer.transform.localPosition,
+                p_gameEffectSO.gameEffectPrefab.secondarySpriteRenderer.transform.localRotation
+            );
+            secondarySpriteRenderer.gameObject.transform.localScale = p_gameEffectSO
+                .gameEffectPrefab
+                .secondarySpriteRenderer
+                .transform
+                .localScale;
+            secondarySpriteRenderer.sprite = p_gameEffectSO
+                .gameEffectPrefab
+                .secondarySpriteRenderer
+                .sprite;
+            secondarySpriteRenderer.color = p_gameEffectSO
+                .gameEffectPrefab
+                .secondarySpriteRenderer
+                .color;
+            secondarySpriteRenderer.material = p_gameEffectSO
+                .gameEffectPrefab
+                .secondarySpriteRenderer
+                .material;
+            secondarySpriteRenderer.sortingLayerName = p_gameEffectSO
+                .gameEffectPrefab
+                .secondarySpriteRenderer
+                .sortingLayerName;
+            secondarySpriteRenderer.sortingOrder = p_gameEffectSO
+                .gameEffectPrefab
+                .secondarySpriteRenderer
+                .sortingOrder;
+        }
+
+        animator.runtimeAnimatorController = p_gameEffectSO.animatorController;
 
         if (p_gameEffectSO.isDeactivateAfterTime)
             StartCoroutine(DeactivateAfterTimeIE(p_gameEffectSO.deactivateTime));
 
-        if (p_gameEffectSO.isTimeline)
-        {
-            playableDirector.playableAsset = p_gameEffectSO.timelineAsset;
-
-            /* Handle timeline rebind */
-            var tracks = p_gameEffectSO.timelineAsset.GetOutputTracks().ToArray();
-
-            for (int i = 0; i < tracks.Count(); i++)
-            {
-                playableDirector.SetGenericBinding(tracks[i], trackReferences[i]);
-            }
-
-            playableDirector.Play();
-        }
-
+        audioSource.resource = p_gameEffectSO.audioSource.resource;
+        audioSource.pitch = p_gameEffectSO.audioSource.pitch;
         if (p_gameEffectSO.playSound)
             PlayAudioSource();
 
@@ -109,33 +191,20 @@ public class GameEffectRevamp : MonoSelfAware
             polygonCollider2D.points = p_gameEffectSO.polygonCollider2D.points;
         }
 
-        /* Turn on behavior */
-        switch (p_gameEffectSO.useBehaviour)
+        if (p_gameEffectSO.isTimeline)
         {
-            case EGameEffectBehaviour.CollideAndDamage:
-            {
-                behaviours[EGameEffectBehaviour.CollideAndDamage].Enable(p_gameEffectSO);
-                break;
-            }
-            case EGameEffectBehaviour.BlueHole:
-            {
-                behaviours[EGameEffectBehaviour.BlueHole].Enable(p_gameEffectSO);
-                break;
-            }
-            default:
-                break;
-        }
-    }
+            playableDirector.playableAsset = p_gameEffectSO.timelineAsset;
 
-    void Reset()
-    {
-        foreach (var behaviour in behaviours.Values)
-        {
-            behaviour.Disable();
-        }
+            /* Handle timeline rebind */
+            var tracks = p_gameEffectSO.timelineAsset.GetOutputTracks().ToArray();
 
-        boxCollider2D.enabled = false;
-        polygonCollider2D.enabled = false;
+            for (int i = 0; i < tracks.Count(); i++)
+            {
+                playableDirector.SetGenericBinding(tracks[i], trackReferences[i]);
+            }
+
+            playableDirector.Play();
+        }
     }
 
     IEnumerator DeactivateAfterTimeIE(float deactivateTime)
