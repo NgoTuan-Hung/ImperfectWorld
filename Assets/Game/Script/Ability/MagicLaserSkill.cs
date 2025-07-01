@@ -13,13 +13,6 @@ public class MagicLaserSkill : SkillBase
         cooldown = 10f;
         damage = defaultDamage = 1f;
         boolHash = Animator.StringToHash("CastingMagic");
-
-        magicLaserPrefab = Resources.Load("MagicLaser") as GameObject;
-        magicLaserPool ??= new ObjectPool(
-            magicLaserPrefab,
-            100,
-            new PoolArgument(ComponentType.GameEffect, PoolArgument.WhereComponent.Self)
-        );
         AddActionManuals();
     }
 
@@ -32,9 +25,6 @@ public class MagicLaserSkill : SkillBase
     {
         base.Start();
         actionClip = customMono.AnimatorWrapper.GetAnimationClip("CastingMagic");
-#if UNITY_EDITOR
-        onExitPlayModeEvent += () => magicLaserPool = null;
-#endif
         StatChangeRegister();
     }
 
@@ -85,9 +75,11 @@ public class MagicLaserSkill : SkillBase
         customMono.animationEventFunctionCaller.castingMagic = false;
         bool t_animatorLocalScale = customMono.AnimatorWrapper.animator.transform.localScale.x > 0;
 
-        CollideAndDamage gameEffect = magicLaserPool
-            .PickOne()
-            .gameEffect.GetBehaviour<CollideAndDamage>();
+        CollideAndDamage gameEffect =
+            magicLaserPool
+                .PickOne()
+                .gameEffect.Init(GameManager.Instance.magicLaserSO)
+                .GetBehaviour(EGameEffectBehaviour.CollideAndDamage) as CollideAndDamage;
         gameEffect.allyTags = customMono.allyTags;
         gameEffect.collideDamage = damage;
 

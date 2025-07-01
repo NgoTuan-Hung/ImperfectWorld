@@ -5,19 +5,19 @@ using UnityEngine;
 public class BlueHole : MonoBehaviour, IGameEffectBehaviour
 {
     public HashSet<string> allyTags = new();
-    public new Rigidbody2D rigidbody2D;
     float drawForce = 0.1f;
+    Action<Collider2D> onTriggerStay2D = (Collider2D other) => { };
 
     public GameEffect GameEffect { get; set; }
 
     public void Disable()
     {
-        throw new NotImplementedException();
+        onTriggerStay2D = DisabledOnTriggerStay2D;
     }
 
     public void Enable(GameEffectSO p_gameEffectSO)
     {
-        // throw new NotImplementedException();
+        onTriggerStay2D = OnTriggerStay2DLogic;
     }
 
     public void Initialize(GameEffect gameEffect)
@@ -25,14 +25,16 @@ public class BlueHole : MonoBehaviour, IGameEffectBehaviour
         GameEffect = gameEffect;
     }
 
-    private void OnEnable()
-    {
-        rigidbody2D = GetComponent<Rigidbody2D>();
-    }
-
     private void OnTriggerEnter2D(Collider2D other) { }
 
     private void OnTriggerStay2D(Collider2D other)
+    {
+        onTriggerStay2D(other);
+    }
+
+    private void DisabledOnTriggerStay2D(Collider2D other) { }
+
+    private void OnTriggerStay2DLogic(Collider2D other)
     {
         if (other.transform.parent != null)
         {

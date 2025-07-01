@@ -21,5 +21,5 @@ public class CollideAndDamageSO : ScriptableObject
     public PushEnemyOnCollideType pushEnemyOnCollideType = PushEnemyOnCollideType.Random;
     public bool deactivateOnCollide = false;
     public bool spawnEffectOnCollide = false;
-    public EffectPool collisionEffectPoolType;
+    public GameEffectSO spawnedEffectOnCollide = null;
 }

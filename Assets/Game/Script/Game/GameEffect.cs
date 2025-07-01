@@ -1,119 +1,263 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.Playables;
 using Random = UnityEngine.Random;
 
+public enum EGameEffectBehaviour
+{
+    None,
+    CollideAndDamage,
+    BlueHole,
+}
+
 public class GameEffect : MonoSelfAware
 {
-    public Animator animator;
-    public SpriteRenderer spriteRenderer;
-
-    [SerializeField]
-    private bool isDeactivatedAfterTime = false;
-    Action deactiveAfterTime = () => { };
-
-    [SerializeField]
-    private float deactivateTime = 1f;
+    public new Rigidbody2D rigidbody2D;
+    Animator animator;
     PlayableDirector playableDirector;
-    public bool isTimeline = false;
-    public bool randomRotation = false;
-    public float flyAtSpeed = 0.03f;
-    Action onEnable = () => { };
-    public Vector3 followOffset = new(-0.8f, 1.5f, 0);
-    public float followSlowlyPositionLerpTime = 0.04f;
     AudioSource audioSource;
-    public bool playSoundOnEnable = false;
-    public Material material;
-    public Vector3 effectLocalPosition,
-        effectLocalRotation;
-    public bool isColoredOverLifetime = false;
-    public Gradient colorOverLifetime;
-    Dictionary<Type, IGameEffectBehaviour> behaviours = new();
+    public SpriteRenderer spriteRenderer,
+        secondarySpriteRenderer;
+    public List<GameObject> trackReferences;
+    public BoxCollider2D boxCollider2D;
+    public PolygonCollider2D polygonCollider2D;
+    public CircleCollider2D circleCollider2D;
+    public TrailRenderer trailRenderer;
+    Dictionary<EGameEffectBehaviour, IGameEffectBehaviour> behaviours = new();
 
     public override void Awake()
     {
         base.Awake();
 
+        rigidbody2D = GetComponent<Rigidbody2D>();
+        animator = GetComponent<Animator>();
         playableDirector = GetComponent<PlayableDirector>();
         audioSource = GetComponent<AudioSource>();
-
-        /* Don't put these on Start because Start run after OnEnable, if so the first time they
-        show up, they won't handle deactivation correctly */
-        if (isDeactivatedAfterTime)
-        {
-            deactiveAfterTime += () =>
-            {
-                StartCoroutine(DeactivateAfterTimeCoroutine(deactivateTime));
-            };
-        }
-        if (isTimeline)
-            onEnable += () => playableDirector.Play();
-        if (playSoundOnEnable)
-            onEnable += () => audioSource.Play();
-        if (randomRotation)
-            onEnable += () => transform.Rotate(0, 0, Random.Range(0, 360));
-        if (isColoredOverLifetime)
-            onEnable += DoColorOverLifetime;
+        spriteRenderer = GetComponentInChildren<SpriteRenderer>();
+        secondarySpriteRenderer =
+            spriteRenderer.gameObject.GetComponentInChildren<SpriteRenderer>();
+        boxCollider2D = GetComponent<BoxCollider2D>();
+        polygonCollider2D = GetComponent<PolygonCollider2D>();
+        circleCollider2D = GetComponent<CircleCollider2D>();
+        trailRenderer = GetComponent<TrailRenderer>();
 
         GetAllBehaviours();
     }
 
     void GetAllBehaviours()
     {
-        var t_behaviours = GetComponents<IGameEffectBehaviour>();
-        foreach (var behaviour in t_behaviours)
+        foreach (EGameEffectBehaviour behaviour in Enum.GetValues(typeof(EGameEffectBehaviour)))
         {
-            behaviours.Add(behaviour.GetType(), behaviour);
-            behaviour.Initialize(this);
+            if (behaviour != EGameEffectBehaviour.None)
+            {
+                var t_behaviour =
+                    GetComponent(Type.GetType(behaviour.ToString())) as IGameEffectBehaviour;
+                behaviours.Add(behaviour, t_behaviour);
+
+                t_behaviour.Initialize(this);
+            }
         }
     }
 
-    public T GetBehaviour<T>()
-        where T : class, IGameEffectBehaviour
+    public IGameEffectBehaviour GetBehaviour(EGameEffectBehaviour p_behaviour) =>
+        behaviours[p_behaviour];
+
+    public GameEffect Init(GameEffectSO p_gameEffectSO)
     {
-        if (behaviours.TryGetValue(typeof(T), out var behaviour))
-            return behaviour as T;
-        return null;
+        /* Turn off behaviors, rigidbody, colliders and reset to default state */
+        ResetGameEffect();
+
+        /* Set up game effect */
+        HandleGameEffect(p_gameEffectSO);
+
+        /* Turn on behavior */
+        switch (p_gameEffectSO.useBehaviour)
+        {
+            case EGameEffectBehaviour.CollideAndDamage:
+            {
+                behaviours[EGameEffectBehaviour.CollideAndDamage].Enable(p_gameEffectSO);
+                break;
+            }
+            case EGameEffectBehaviour.BlueHole:
+            {
+                behaviours[EGameEffectBehaviour.BlueHole].Enable(p_gameEffectSO);
+                break;
+            }
+            default:
+                break;
+        }
+
+        return this;
     }
 
-    private void OnEnable()
+    void ResetGameEffect()
     {
-        deactiveAfterTime();
-        onEnable();
+        foreach (var behaviour in behaviours.Values)
+        {
+            behaviour.Disable();
+        }
+
+        boxCollider2D.enabled = false;
+        polygonCollider2D.enabled = false;
+        secondarySpriteRenderer.sprite = null;
+        trailRenderer.enabled = false;
     }
 
-    public void DeactivateAfterTime(float deactivateTime) =>
-        StartCoroutine(DeactivateAfterTimeCoroutine(deactivateTime));
+    void HandleGameEffect(GameEffectSO p_gameEffectSO)
+    {
+        spriteRenderer.transform.SetLocalPositionAndRotation(
+            p_gameEffectSO.gameEffectPrefab.spriteRenderer.transform.localPosition,
+            p_gameEffectSO.gameEffectPrefab.spriteRenderer.transform.localRotation
+        );
+        spriteRenderer.transform.localScale = p_gameEffectSO
+            .gameEffectPrefab
+            .spriteRenderer
+            .transform
+            .localScale;
+        spriteRenderer.spriteSortPoint = p_gameEffectSO
+            .gameEffectPrefab
+            .spriteRenderer
+            .spriteSortPoint;
+        spriteRenderer.material = p_gameEffectSO.gameEffectPrefab.spriteRenderer.material;
+        spriteRenderer.sortingLayerName = p_gameEffectSO
+            .gameEffectPrefab
+            .spriteRenderer
+            .sortingLayerName;
+        spriteRenderer.sortingOrder = p_gameEffectSO.gameEffectPrefab.spriteRenderer.sortingOrder;
 
-    IEnumerator DeactivateAfterTimeCoroutine(float deactivateTime)
+        if (p_gameEffectSO.useSecondarySpriteRenderer)
+        {
+            secondarySpriteRenderer.gameObject.transform.SetLocalPositionAndRotation(
+                p_gameEffectSO.gameEffectPrefab.secondarySpriteRenderer.transform.localPosition,
+                p_gameEffectSO.gameEffectPrefab.secondarySpriteRenderer.transform.localRotation
+            );
+            secondarySpriteRenderer.gameObject.transform.localScale = p_gameEffectSO
+                .gameEffectPrefab
+                .secondarySpriteRenderer
+                .transform
+                .localScale;
+            secondarySpriteRenderer.sprite = p_gameEffectSO
+                .gameEffectPrefab
+                .secondarySpriteRenderer
+                .sprite;
+            secondarySpriteRenderer.color = p_gameEffectSO
+                .gameEffectPrefab
+                .secondarySpriteRenderer
+                .color;
+            secondarySpriteRenderer.material = p_gameEffectSO
+                .gameEffectPrefab
+                .secondarySpriteRenderer
+                .material;
+            secondarySpriteRenderer.sortingLayerName = p_gameEffectSO
+                .gameEffectPrefab
+                .secondarySpriteRenderer
+                .sortingLayerName;
+            secondarySpriteRenderer.sortingOrder = p_gameEffectSO
+                .gameEffectPrefab
+                .secondarySpriteRenderer
+                .sortingOrder;
+        }
+
+        animator.runtimeAnimatorController = p_gameEffectSO.animatorController;
+
+        if (p_gameEffectSO.isDeactivateAfterTime)
+            StartCoroutine(DeactivateAfterTimeIE(p_gameEffectSO.deactivateTime));
+
+        audioSource.resource = p_gameEffectSO.audioSource.resource;
+        audioSource.pitch = p_gameEffectSO.audioSource.pitch;
+        if (p_gameEffectSO.playSound)
+            PlayAudioSource();
+
+        if (p_gameEffectSO.randomRotation)
+            transform.Rotate(0, 0, Random.Range(0, 360));
+
+        if (p_gameEffectSO.isColoredOverLifetime)
+            DoColorOverLifetime(
+                p_gameEffectSO.colorOverLifetimeGrad,
+                p_gameEffectSO.deactivateTime
+            );
+
+        /* Handle colliders */
+        if (p_gameEffectSO.useBoxCollider)
+        {
+            boxCollider2D.enabled = true;
+            boxCollider2D.offset = p_gameEffectSO.boxCollider2D.offset;
+            boxCollider2D.size = p_gameEffectSO.boxCollider2D.size;
+        }
+
+        if (p_gameEffectSO.usePolygonCollider)
+        {
+            polygonCollider2D.enabled = true;
+            polygonCollider2D.offset = p_gameEffectSO.polygonCollider2D.offset;
+            polygonCollider2D.points = p_gameEffectSO.polygonCollider2D.points;
+        }
+
+        if (p_gameEffectSO.useTrailRenderer)
+        {
+            trailRenderer.enabled = true;
+            trailRenderer.widthCurve = p_gameEffectSO.gameEffectPrefab.trailRenderer.widthCurve;
+            trailRenderer.time = p_gameEffectSO.gameEffectPrefab.trailRenderer.time;
+            trailRenderer.colorGradient = p_gameEffectSO
+                .gameEffectPrefab
+                .trailRenderer
+                .colorGradient;
+            trailRenderer.material = p_gameEffectSO.gameEffectPrefab.trailRenderer.material;
+            trailRenderer.sortingLayerName = p_gameEffectSO
+                .gameEffectPrefab
+                .trailRenderer
+                .sortingLayerName;
+            trailRenderer.sortingOrder = p_gameEffectSO.gameEffectPrefab.trailRenderer.sortingOrder;
+        }
+
+        if (p_gameEffectSO.isTimeline)
+        {
+            playableDirector.playableAsset = p_gameEffectSO.timelineAsset;
+
+            /* Handle timeline rebind */
+            var tracks = p_gameEffectSO.timelineAsset.GetOutputTracks().ToArray();
+
+            for (int i = 0; i < tracks.Count(); i++)
+            {
+                playableDirector.SetGenericBinding(tracks[i], trackReferences[i]);
+            }
+
+            playableDirector.Play();
+        }
+    }
+
+    IEnumerator DeactivateAfterTimeIE(float deactivateTime)
     {
         yield return new WaitForSeconds(deactivateTime);
         deactivate();
     }
 
-    void DoColorOverLifetime() => StartCoroutine(ColorOverLifetimeIE());
+    public void PlayAudioSource() => audioSource.Play();
 
-    IEnumerator ColorOverLifetimeIE()
+    void DoColorOverLifetime(Gradient p_gradient, float p_lifeTime) =>
+        StartCoroutine(ColorOverLifetimeIE(p_gradient, p_lifeTime));
+
+    IEnumerator ColorOverLifetimeIE(Gradient p_gradient, float p_lifeTime)
     {
         float currentTime = 0;
-        while (currentTime < deactivateTime)
+        while (currentTime < p_lifeTime)
         {
-            spriteRenderer.color = colorOverLifetime.Evaluate(currentTime / deactivateTime);
+            spriteRenderer.color = p_gradient.Evaluate(currentTime / p_lifeTime);
             yield return new WaitForSeconds(Time.fixedDeltaTime);
             currentTime += Time.fixedDeltaTime;
         }
     }
 
-    public void KeepFlyingAt(Vector3 direction)
+    public void KeepFlyingAt(Vector3 direction, GameEffectSO p_gameEffectSO)
     {
-        StartCoroutine(KeepFlyingAtCoroutine(direction));
+        StartCoroutine(KeepFlyingAtCoroutine(direction, p_gameEffectSO));
     }
 
-    IEnumerator KeepFlyingAtCoroutine(Vector3 direction)
+    IEnumerator KeepFlyingAtCoroutine(Vector3 direction, GameEffectSO p_gameEffectSO)
     {
-        direction = direction.normalized * flyAtSpeed;
+        direction = direction.normalized * p_gameEffectSO.flyAtSpeed;
         while (true)
         {
             transform.position += direction;
@@ -121,14 +265,14 @@ public class GameEffect : MonoSelfAware
         }
     }
 
-    public void FollowSlowly(Transform master)
+    public void FollowSlowly(Transform master, GameEffectSO p_gameEffectSO)
     {
-        StartCoroutine(FollowSlowlyCoroutine(master));
+        StartCoroutine(FollowSlowlyCoroutine(master, p_gameEffectSO));
     }
 
-    IEnumerator FollowSlowlyCoroutine(Transform master)
+    IEnumerator FollowSlowlyCoroutine(Transform master, GameEffectSO p_gameEffectSO)
     {
-        Vector2 newVector2Position = master.position + followOffset,
+        Vector2 newVector2Position = master.position + p_gameEffectSO.followOffset,
             prevVector2Position,
             expectedVector2Position;
         float currentTime;
@@ -137,18 +281,20 @@ public class GameEffect : MonoSelfAware
         {
             prevVector2Position = newVector2Position;
             /* Check current position */
-            newVector2Position = master.position + followOffset;
+            newVector2Position = master.position + p_gameEffectSO.followOffset;
 
             /* Start lerping position for specified duration if position change detected.*/
             if (prevVector2Position != newVector2Position)
             {
                 currentTime = 0;
-                while (currentTime < followSlowlyPositionLerpTime + Time.fixedDeltaTime)
+                while (
+                    currentTime < p_gameEffectSO.followSlowlyPositionLerpTime + Time.fixedDeltaTime
+                )
                 {
                     expectedVector2Position = Vector2.Lerp(
                         prevVector2Position,
                         newVector2Position,
-                        currentTime / followSlowlyPositionLerpTime
+                        currentTime / p_gameEffectSO.followSlowlyPositionLerpTime
                     );
                     transform.position = new Vector2(
                         expectedVector2Position.x,
@@ -165,13 +311,14 @@ public class GameEffect : MonoSelfAware
         }
     }
 
-    public void Follow(Transform master) => StartCoroutine(FollowCoroutine(master));
+    public void Follow(Transform master, GameEffectSO p_gameEffectSO) =>
+        StartCoroutine(FollowCoroutine(master, p_gameEffectSO));
 
-    IEnumerator FollowCoroutine(Transform master)
+    IEnumerator FollowCoroutine(Transform master, GameEffectSO p_gameEffectSO)
     {
         while (true)
         {
-            transform.position = master.position + followOffset;
+            transform.position = master.position + p_gameEffectSO.followOffset;
             yield return new WaitForSeconds(Time.fixedDeltaTime);
         }
     }

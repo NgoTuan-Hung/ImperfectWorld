@@ -5,9 +5,6 @@ using Touch = UnityEngine.InputSystem.EnhancedTouch.Touch;
 
 public class Slaughter : SkillBase
 {
-    GameObject projectilePrefab;
-    static ObjectPool projectilePool;
-
     public override void Awake()
     {
         base.Awake();
@@ -16,13 +13,6 @@ public class Slaughter : SkillBase
         cooldown = defaultCooldown = 1f;
         damage = 5f;
         maxAmmo = 10;
-
-        projectilePrefab = Resources.Load("SlaughterProjectile") as GameObject;
-        projectilePool ??= new ObjectPool(
-            projectilePrefab,
-            100,
-            new PoolArgument(ComponentType.GameEffect, PoolArgument.WhereComponent.Self)
-        );
 
         AddActionManuals();
     }
@@ -60,13 +50,6 @@ public class Slaughter : SkillBase
     public override void Start()
     {
         base.Start();
-
-#if UNITY_EDITOR
-        onExitPlayModeEvent += () =>
-        {
-            projectilePool = null;
-        };
-#endif
     }
 
     public override void AddActionManuals()
@@ -94,8 +77,14 @@ public class Slaughter : SkillBase
             customMono.currentAction = this;
 
             customMono.SetUpdateDirectionIndicator(direction, UpdateDirectionIndicatorPriority.Low);
-            GameEffect t_projectileEffect = projectilePool.PickOne().gameEffect;
-            var t_collideAndDamage = t_projectileEffect.GetBehaviour<CollideAndDamage>();
+            GameEffect t_projectileEffect = GameManager
+                .Instance.gameEffectPool.PickOne()
+                .gameEffect;
+            var t_projectileEffectSO = GameManager.Instance.slaughterProjectileSO;
+            t_projectileEffect.Init(t_projectileEffectSO);
+            var t_collideAndDamage =
+                t_projectileEffect.GetBehaviour(EGameEffectBehaviour.CollideAndDamage)
+                as CollideAndDamage;
             t_collideAndDamage.allyTags = customMono.allyTags;
             t_collideAndDamage.collideDamage = damage;
             t_projectileEffect.transform.position = customMono.firePoint.transform.position;
@@ -117,7 +106,7 @@ public class Slaughter : SkillBase
                 t_projectileEffect.transform.TransformDirection(Vector3.up).normalized
                 * Random.Range(-0.3f, 0.3f);
 
-            t_projectileEffect.KeepFlyingAt(direction);
+            t_projectileEffect.KeepFlyingAt(direction, t_projectileEffectSO);
         }
     }
 

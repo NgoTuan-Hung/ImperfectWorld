@@ -60,16 +60,18 @@ public class RayOfJungle : SkillBase
 
         customMono.animationEventFunctionCaller.mainSkill1Signal = false;
         customMono.rotationAndCenterObject.transform.localRotation = Quaternion.identity;
-        GameEffect t_rayOfJungleBeam = GameManager
-            .Instance.rayOfJungleBeamPool.PickOne()
-            .gameEffect;
+        GameEffect t_rayOfJungleBeam = GameManager.Instance.gameEffectPool.PickOne().gameEffect;
+        var t_rayOfJungleBeamSO = GameManager.Instance.rayOfJungleBeamSO;
+        t_rayOfJungleBeam.Init(t_rayOfJungleBeamSO);
         t_rayOfJungleBeam.transform.parent = customMono.rotationAndCenterObject.transform;
         t_rayOfJungleBeam.transform.SetLocalPositionAndRotation(
-            t_rayOfJungleBeam.effectLocalPosition,
-            Quaternion.Euler(t_rayOfJungleBeam.effectLocalRotation)
+            t_rayOfJungleBeamSO.effectLocalPosition,
+            Quaternion.Euler(t_rayOfJungleBeamSO.effectLocalRotation)
         );
         t_rayOfJungleBeam.transform.localScale = Vector3.one;
-        var t_collideAndDamage = t_rayOfJungleBeam.GetBehaviour<CollideAndDamage>();
+        var t_collideAndDamage =
+            t_rayOfJungleBeam.GetBehaviour(EGameEffectBehaviour.CollideAndDamage)
+            as CollideAndDamage;
         t_collideAndDamage.allyTags = customMono.allyTags;
         t_collideAndDamage.collideDamage = damage;
         customMono.rotationAndCenterObject.transform.localScale = new(

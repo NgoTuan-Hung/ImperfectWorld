@@ -5,27 +5,6 @@ using System.Linq;
 using Unity.Cinemachine;
 using UnityEngine;
 
-public enum EffectPool
-{
-    MoonSlashExplode,
-    MagicLaserImpact,
-    SlaughterExplosion,
-    StrongDudePunchImpact,
-    SamuraiSlash,
-    BladeOfPhongTornadoImpact,
-    BladeOfVuImpact,
-    Arrow,
-    ElementalLeafRangerArrow,
-    ElementalLeafRangerPoisonArrowImpact,
-    ElementalLeafRangerVineArrowImpact,
-    WanderMagicianProjectile,
-
-    /// <summary>
-    /// For attack collider with different collision effect
-    /// </summary>
-    LaterDecide,
-}
-
 public class GameManager : MonoSingleton<GameManager>
 {
     public readonly int attackButtonScrollViewIndex = 7;
@@ -47,49 +26,11 @@ public class GameManager : MonoSingleton<GameManager>
     public float waveDuration = 60f;
     public new Camera camera;
     public CinemachineCamera cinemachineCamera;
-    public Dictionary<EffectPool, ObjectPool> effectPoolDict = new();
-    GameObject vanishEffectPrefab,
-        bladeOfMinhKhaiSlashEffectPrefab,
-        bladeOfPhongTornadoEffectPrefab,
-        ghostPrefab,
-        bladeOfVuStarPrefab,
-        bladeOfVuSlashPrefab,
-        pierceStrikePrefab,
-        pierceStrikeSecondPhasePrefab,
-        deepBladeSlashPrefab,
-        rayOfJungleBeamPrefab,
-        woodCryArrowPrefab,
-        elementalLeafRangerPoisonArrowPrefab,
-        elementalLeafRangerVineArrowPrefab,
-        lightingForwardLightingPrefab,
-        blueHolePrefab,
-        nuclearBombExplosionPrefab,
-        swordTempestSlash1Prefab,
-        swordTempestSlash2Prefab,
-        swordTempestSlash3Prefab;
-    public ObjectPool vanishEffectPool,
-        bladeOfMinhKhaiSlashEffectPool,
-        bladeOfPhongTornadoEffectPool,
-        ghostPool,
-        bladeOfVuStarPool,
-        bladeOfVuSlashPool,
-        pierceStrikePool,
-        pierceStrikeSecondPhasePool,
-        deepBladeSlashPool,
-        rayOfJungleBeamPool,
-        woodCryArrowPool,
-        elementalLeafRangerPoisonArrowPool,
-        elementalLeafRangerVineArrowPool,
-        lightingForwardLightingPool,
-        blueHolePool,
-        nuclearBombExplosionPool,
-        swordTempestSlash1Pool,
-        swordTempestSlash2Pool,
-        swordTempestSlash3Pool;
     GameObject gameEffectPrefab;
     public ObjectPool gameEffectPool;
     public GameEffectSO MoonSlashExplodeSO,
         MagicLaserImpactSO,
+        slaughterProjectileSO,
         SlaughterExplosionSO,
         StrongDudePunchImpactSO,
         SamuraiSlashSO,
@@ -118,7 +59,12 @@ public class GameManager : MonoSingleton<GameManager>
         nuclearBombExplosionSO,
         swordTempestSlash1SO,
         swordTempestSlash2SO,
-        swordTempestSlash3SO;
+        swordTempestSlash3SO,
+        dashEffectSO,
+        magicLaserSO,
+        moonSlashSO,
+        scatterArrowSO,
+        scatterChargeSO;
     public int attackBoolHash = Animator.StringToHash("Attack"),
         mainSkill1BoolHash = Animator.StringToHash("MainSkill1"),
         mainSkill2BoolHash = Animator.StringToHash("MainSkill2"),
@@ -173,238 +119,13 @@ public class GameManager : MonoSingleton<GameManager>
             spawnCumulativeDistribution.Add(0);
         }
 
-        InitAllCollisionEffectPools();
         InitAllEffectPools();
         LoadOtherResources();
     }
 
-    void InitAllCollisionEffectPools()
-    {
-        effectPoolDict.Add(
-            EffectPool.MoonSlashExplode,
-            new(
-                Resources.Load("MoonSlashExplode") as GameObject,
-                10,
-                new PoolArgument(ComponentType.GameEffect, PoolArgument.WhereComponent.Self)
-            )
-        );
-        effectPoolDict.Add(
-            EffectPool.MagicLaserImpact,
-            new(
-                Resources.Load("MagicLaserImpact") as GameObject,
-                10,
-                new PoolArgument(ComponentType.GameEffect, PoolArgument.WhereComponent.Self)
-            )
-        );
-        effectPoolDict.Add(
-            EffectPool.SlaughterExplosion,
-            new(
-                Resources.Load("SlaughterExplosion") as GameObject,
-                10,
-                new PoolArgument(ComponentType.GameEffect, PoolArgument.WhereComponent.Self)
-            )
-        );
-        effectPoolDict.Add(
-            EffectPool.StrongDudePunchImpact,
-            new(
-                Resources.Load("StrongDudePunchImpact") as GameObject,
-                10,
-                new PoolArgument(ComponentType.GameEffect, PoolArgument.WhereComponent.Self)
-            )
-        );
-        effectPoolDict.Add(
-            EffectPool.SamuraiSlash,
-            new(
-                Resources.Load("SamuraiSlash") as GameObject,
-                10,
-                new PoolArgument(ComponentType.GameEffect, PoolArgument.WhereComponent.Self)
-            )
-        );
-        effectPoolDict.Add(
-            EffectPool.BladeOfPhongTornadoImpact,
-            new(
-                Resources.Load("BladeOfPhongTornadoImpact") as GameObject,
-                10,
-                new PoolArgument(ComponentType.GameEffect, PoolArgument.WhereComponent.Self)
-            )
-        );
-        effectPoolDict.Add(
-            EffectPool.BladeOfVuImpact,
-            new(
-                Resources.Load("BladeOfVuImpact") as GameObject,
-                10,
-                new PoolArgument(ComponentType.GameEffect, PoolArgument.WhereComponent.Self)
-            )
-        );
-        effectPoolDict.Add(
-            EffectPool.Arrow,
-            new(
-                Resources.Load("Arrow") as GameObject,
-                10,
-                new PoolArgument(ComponentType.GameEffect, PoolArgument.WhereComponent.Self)
-            )
-        );
-        effectPoolDict.Add(
-            EffectPool.ElementalLeafRangerArrow,
-            new(
-                Resources.Load("ElementalLeafRangerArrow") as GameObject,
-                10,
-                new PoolArgument(ComponentType.GameEffect, PoolArgument.WhereComponent.Self)
-            )
-        );
-        effectPoolDict.Add(
-            EffectPool.ElementalLeafRangerPoisonArrowImpact,
-            new(
-                Resources.Load("ElementalLeafRangerPoisonArrowImpact") as GameObject,
-                10,
-                new PoolArgument(ComponentType.GameEffect, PoolArgument.WhereComponent.Self)
-            )
-        );
-        effectPoolDict.Add(
-            EffectPool.ElementalLeafRangerVineArrowImpact,
-            new(
-                Resources.Load("ElementalLeafRangerVineArrowImpact") as GameObject,
-                10,
-                new PoolArgument(ComponentType.GameEffect, PoolArgument.WhereComponent.Self)
-            )
-        );
-        effectPoolDict.Add(
-            EffectPool.WanderMagicianProjectile,
-            new(
-                Resources.Load("WanderMagicianProjectile") as GameObject,
-                10,
-                new PoolArgument(ComponentType.GameEffect, PoolArgument.WhereComponent.Self)
-            )
-        );
-        effectPoolDict.Add(EffectPool.LaterDecide, null);
-    }
-
-    void InitAllEffectPools()
-    {
-        vanishEffectPrefab = Resources.Load("VanishEffect") as GameObject;
-        vanishEffectPool ??= new ObjectPool(
-            vanishEffectPrefab,
-            10,
-            new PoolArgument(ComponentType.GameEffect, PoolArgument.WhereComponent.Self)
-        );
-        bladeOfMinhKhaiSlashEffectPrefab = Resources.Load("BladeOfMinhKhaiSlash") as GameObject;
-        bladeOfMinhKhaiSlashEffectPool ??= new ObjectPool(
-            bladeOfMinhKhaiSlashEffectPrefab,
-            10,
-            new PoolArgument(ComponentType.GameEffect, PoolArgument.WhereComponent.Self)
-        );
-        bladeOfPhongTornadoEffectPrefab = Resources.Load("BladeOfPhongTornado") as GameObject;
-        bladeOfPhongTornadoEffectPool ??= new(
-            bladeOfPhongTornadoEffectPrefab,
-            10,
-            new PoolArgument(ComponentType.GameEffect, PoolArgument.WhereComponent.Self)
-        );
-        ghostPrefab = Resources.Load("Ghost") as GameObject;
-        ghostPool ??= new(
-            ghostPrefab,
-            10,
-            new PoolArgument(ComponentType.GameEffect, PoolArgument.WhereComponent.Self)
-        );
-        bladeOfVuStarPrefab = Resources.Load("BladeOfVuStar") as GameObject;
-        bladeOfVuStarPool ??= new(
-            bladeOfVuStarPrefab,
-            10,
-            new PoolArgument(ComponentType.GameEffect, PoolArgument.WhereComponent.Self)
-        );
-        bladeOfVuSlashPrefab = Resources.Load("BladeOfVuSlash") as GameObject;
-        bladeOfVuSlashPool ??= new(
-            bladeOfVuSlashPrefab,
-            10,
-            new PoolArgument(ComponentType.GameEffect, PoolArgument.WhereComponent.Self)
-        );
-        pierceStrikePrefab = Resources.Load("PierceStrike") as GameObject;
-        pierceStrikePool ??= new(
-            pierceStrikePrefab,
-            10,
-            new PoolArgument(ComponentType.GameEffect, PoolArgument.WhereComponent.Self)
-        );
-        pierceStrikeSecondPhasePrefab = Resources.Load("PierceStrikeSecondPhase") as GameObject;
-        pierceStrikeSecondPhasePool ??= new(
-            pierceStrikeSecondPhasePrefab,
-            10,
-            new PoolArgument(ComponentType.GameEffect, PoolArgument.WhereComponent.Self)
-        );
-        deepBladeSlashPrefab = Resources.Load("DeepBladeSlash") as GameObject;
-        deepBladeSlashPool ??= new(
-            deepBladeSlashPrefab,
-            10,
-            new PoolArgument(ComponentType.GameEffect, PoolArgument.WhereComponent.Self)
-        );
-        rayOfJungleBeamPrefab = Resources.Load("RayOfJungleBeam") as GameObject;
-        rayOfJungleBeamPool ??= new(
-            rayOfJungleBeamPrefab,
-            10,
-            new PoolArgument(ComponentType.GameEffect, PoolArgument.WhereComponent.Self)
-        );
-        woodCryArrowPrefab = Resources.Load("WoodCryArrow") as GameObject;
-        woodCryArrowPool ??= new(
-            woodCryArrowPrefab,
-            10,
-            new PoolArgument(ComponentType.GameEffect, PoolArgument.WhereComponent.Self)
-        );
-        elementalLeafRangerPoisonArrowPrefab =
-            Resources.Load("ElementalLeafRangerPoisonArrow") as GameObject;
-        elementalLeafRangerPoisonArrowPool ??= new(
-            elementalLeafRangerPoisonArrowPrefab,
-            10,
-            new PoolArgument(ComponentType.GameEffect, PoolArgument.WhereComponent.Self)
-        );
-        elementalLeafRangerVineArrowPrefab =
-            Resources.Load("ElementalLeafRangerVineArrow") as GameObject;
-        elementalLeafRangerVineArrowPool ??= new(
-            elementalLeafRangerVineArrowPrefab,
-            10,
-            new PoolArgument(ComponentType.GameEffect, PoolArgument.WhereComponent.Self)
-        );
-        lightingForwardLightingPrefab = Resources.Load("LightingForwardLighting") as GameObject;
-        lightingForwardLightingPool ??= new(
-            lightingForwardLightingPrefab,
-            10,
-            new PoolArgument(ComponentType.GameEffect, PoolArgument.WhereComponent.Self)
-        );
-        blueHolePrefab = Resources.Load("BlueHole") as GameObject;
-        blueHolePool ??= new(
-            blueHolePrefab,
-            10,
-            new PoolArgument(ComponentType.GameEffect, PoolArgument.WhereComponent.Self)
-        );
-        nuclearBombExplosionPrefab = Resources.Load("NuclearBombExplosion") as GameObject;
-        nuclearBombExplosionPool ??= new(
-            nuclearBombExplosionPrefab,
-            10,
-            new PoolArgument(ComponentType.GameEffect, PoolArgument.WhereComponent.Self)
-        );
-        swordTempestSlash1Prefab = Resources.Load("SwordTempestSlash1") as GameObject;
-        swordTempestSlash1Pool ??= new(
-            swordTempestSlash1Prefab,
-            5,
-            new PoolArgument(ComponentType.GameEffect, PoolArgument.WhereComponent.Self)
-        );
-        swordTempestSlash2Prefab = Resources.Load("SwordTempestSlash2") as GameObject;
-        swordTempestSlash2Pool ??= new(
-            swordTempestSlash2Prefab,
-            5,
-            new PoolArgument(ComponentType.GameEffect, PoolArgument.WhereComponent.Self)
-        );
-        swordTempestSlash3Prefab = Resources.Load("SwordTempestSlash3") as GameObject;
-        swordTempestSlash3Pool ??= new(
-            swordTempestSlash3Prefab,
-            5,
-            new PoolArgument(ComponentType.GameEffect, PoolArgument.WhereComponent.Self)
-        );
-    }
+    void InitAllEffectPools() { }
 
     void LoadOtherResources() { }
-
-    public ObjectPool GetEffectPool(EffectPool p_effectPool)
-    {
-        return effectPoolDict[p_effectPool];
-    }
 
     private void Start()
     {

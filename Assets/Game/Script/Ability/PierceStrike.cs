@@ -90,15 +90,17 @@ public class PierceStrike : SkillBase
 
         customMono.animationEventFunctionCaller.mainSkill1Signal = false;
         customMono.rotationAndCenterObject.transform.localRotation = Quaternion.identity;
-        GameEffect t_pierceStrikeEffect = GameManager
-            .Instance.pierceStrikePool.PickOne()
-            .gameEffect;
+        GameEffect t_pierceStrikeEffect = GameManager.Instance.gameEffectPool.PickOne().gameEffect;
+        var t_pierceStrikeEffectSO = GameManager.Instance.pierceStrikeSO;
+        t_pierceStrikeEffect.Init(t_pierceStrikeEffectSO);
         t_pierceStrikeEffect.transform.parent = customMono.rotationAndCenterObject.transform;
         t_pierceStrikeEffect.transform.SetLocalPositionAndRotation(
-            t_pierceStrikeEffect.effectLocalPosition,
-            Quaternion.Euler(t_pierceStrikeEffect.effectLocalRotation)
+            t_pierceStrikeEffectSO.effectLocalPosition,
+            Quaternion.Euler(t_pierceStrikeEffectSO.effectLocalRotation)
         );
-        var t_collideAndDamage = t_pierceStrikeEffect.GetBehaviour<CollideAndDamage>();
+        var t_collideAndDamage =
+            t_pierceStrikeEffect.GetBehaviour(EGameEffectBehaviour.CollideAndDamage)
+            as CollideAndDamage;
         t_pierceStrikeEffect.transform.localScale = Vector3.one;
         t_collideAndDamage.allyTags = customMono.allyTags;
         t_collideAndDamage.collideDamage = damage;
@@ -132,7 +134,9 @@ public class PierceStrike : SkillBase
         currentTime = 0;
 
         customMono.SetUpdateDirectionIndicator(p_direction, UpdateDirectionIndicatorPriority.Low);
-        GameEffect vanishEffect = GameManager.Instance.vanishEffectPool.PickOne().gameEffect;
+        GameEffect vanishEffect = GameManager
+            .Instance.gameEffectPool.PickOne()
+            .gameEffect.Init(GameManager.Instance.vanishEffectSO);
         vanishEffect.transform.position = transform.position;
         StartCoroutine(actionIE1 = SecondPhaseTriggerIE(p_direction: p_direction));
 
@@ -156,14 +160,18 @@ public class PierceStrike : SkillBase
 
         customMono.rotationAndCenterObject.transform.localRotation = Quaternion.identity;
         GameEffect t_pierceStrikeSecondPhase = GameManager
-            .Instance.pierceStrikeSecondPhasePool.PickOne()
+            .Instance.gameEffectPool.PickOne()
             .gameEffect;
+        var t_pierceStrikeSecondPhaseSO = GameManager.Instance.pierceStrikeSecondPhaseSO;
+        t_pierceStrikeSecondPhase.Init(t_pierceStrikeSecondPhaseSO);
         t_pierceStrikeSecondPhase.transform.parent = customMono.rotationAndCenterObject.transform;
         t_pierceStrikeSecondPhase.transform.SetLocalPositionAndRotation(
-            t_pierceStrikeSecondPhase.effectLocalPosition,
-            Quaternion.Euler(t_pierceStrikeSecondPhase.effectLocalRotation)
+            t_pierceStrikeSecondPhaseSO.effectLocalPosition,
+            Quaternion.Euler(t_pierceStrikeSecondPhaseSO.effectLocalRotation)
         );
-        var t_collideAndDamage = t_pierceStrikeSecondPhase.GetBehaviour<CollideAndDamage>();
+        var t_collideAndDamage =
+            t_pierceStrikeSecondPhase.GetBehaviour(EGameEffectBehaviour.CollideAndDamage)
+            as CollideAndDamage;
         t_pierceStrikeSecondPhase.transform.localScale = Vector3.one;
         t_collideAndDamage.allyTags = customMono.allyTags;
         t_collideAndDamage.collideDamage = damage;

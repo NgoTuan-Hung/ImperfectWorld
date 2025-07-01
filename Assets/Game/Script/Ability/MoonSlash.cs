@@ -3,8 +3,6 @@ using UnityEngine;
 
 public class MoonSlash : SkillBase
 {
-    static ObjectPool moonSlashPool;
-    GameObject moonSlashPrefab;
     int releaseBoolHash;
     ActionWaitInfo actionWaitInfo = new();
 
@@ -20,12 +18,6 @@ public class MoonSlash : SkillBase
         actionWaitInfo.releaseBoolHash = Animator.StringToHash("Release");
         actionWaitInfo.requiredWaitTime = 0.3f;
 
-        moonSlashPrefab = Resources.Load("MoonSlash") as GameObject;
-        moonSlashPool ??= new ObjectPool(
-            moonSlashPrefab,
-            100,
-            new PoolArgument(ComponentType.GameEffect, PoolArgument.WhereComponent.Self)
-        );
         AddActionManuals();
     }
 
@@ -38,9 +30,6 @@ public class MoonSlash : SkillBase
     public override void Start()
     {
         base.Start();
-#if UNITY_EDITOR
-        onExitPlayModeEvent += () => moonSlashPool = null;
-#endif
     }
 
     public override void AddActionManuals()
@@ -97,8 +86,14 @@ public class MoonSlash : SkillBase
             Vector2 moonSlashDirection;
             for (int i = 0; i < currentAmmo; i++)
             {
-                GameEffect t_moonSlashGameEffect = moonSlashPool.PickOne().gameEffect;
-                var t_collideAndDamage = t_moonSlashGameEffect.GetBehaviour<CollideAndDamage>();
+                GameEffect t_moonSlashGameEffect = GameManager
+                    .Instance.gameEffectPool.PickOne()
+                    .gameEffect;
+                var t_moonSlashGameEffectSO = GameManager.Instance.moonSlashSO;
+                t_moonSlashGameEffect.Init(t_moonSlashGameEffectSO);
+                var t_collideAndDamage =
+                    t_moonSlashGameEffect.GetBehaviour(EGameEffectBehaviour.CollideAndDamage)
+                    as CollideAndDamage;
                 t_collideAndDamage.allyTags = customMono.allyTags;
                 t_collideAndDamage.collideDamage = damage;
                 if (i % 2 == 1)
@@ -130,7 +125,7 @@ public class MoonSlash : SkillBase
                     );
                 }
 
-                t_moonSlashGameEffect.KeepFlyingAt(moonSlashDirection);
+                t_moonSlashGameEffect.KeepFlyingAt(moonSlashDirection, t_moonSlashGameEffectSO);
             }
 
             while (!customMono.animationEventFunctionCaller.endRelease)

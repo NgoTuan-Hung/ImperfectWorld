@@ -35,4 +35,5 @@ public class GameEffectSO : ScriptableObject
     public GameEffectPrefab gameEffectPrefab;
     #endregion
     public bool useSecondarySpriteRenderer = false;
+    public bool useTrailRenderer = false;
 }

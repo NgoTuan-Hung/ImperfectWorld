@@ -1,0 +1,69 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 98f3bba0a7728f04cadd88fdf57d5924, type: 3}
+  m_Name: SwordTempestSlash1SO
+  m_EditorClassIdentifier: 
+  animatorController: {fileID: -8478143265813073305, guid: 46d908b49eb169040bce0a93c6c8f3e0, type: 3}
+  isDeactivateAfterTime: 1
+  deactivateTime: 0.27
+  isTimeline: 0
+  randomRotation: 0
+  flyAtSpeed: 0.2
+  followOffset: {x: -0.8, y: 1.5, z: 0}
+  followSlowlyPositionLerpTime: 0.04
+  playSound: 0
+  effectLocalPosition: {x: 0.8899999, y: -1.21, z: 0}
+  effectLocalRotation: {x: 0, y: 0, z: 0}
+  isColoredOverLifetime: 0
+  colorOverLifetimeGrad:
+    serializedVersion: 2
+    key0: {r: 1, g: 1, b: 1, a: 1}
+    key1: {r: 1, g: 1, b: 1, a: 1}
+    key2: {r: 0, g: 0, b: 0, a: 0}
+    key3: {r: 0, g: 0, b: 0, a: 0}
+    key4: {r: 0, g: 0, b: 0, a: 0}
+    key5: {r: 0, g: 0, b: 0, a: 0}
+    key6: {r: 0, g: 0, b: 0, a: 0}
+    key7: {r: 0, g: 0, b: 0, a: 0}
+    ctime0: 0
+    ctime1: 65535
+    ctime2: 0
+    ctime3: 0
+    ctime4: 0
+    ctime5: 0
+    ctime6: 0
+    ctime7: 0
+    atime0: 0
+    atime1: 65535
+    atime2: 0
+    atime3: 0
+    atime4: 0
+    atime5: 0
+    atime6: 0
+    atime7: 0
+    m_Mode: 0
+    m_ColorSpace: -1
+    m_NumColorKeys: 2
+    m_NumAlphaKeys: 2
+  timelineAsset: {fileID: 0}
+  useBoxCollider: 0
+  usePolygonCollider: 1
+  useCircleCollider: 0
+  boxCollider2D: {fileID: 0}
+  polygonCollider2D: {fileID: 2526826503493738874, guid: acb51ca5996ab584b93253a13a25421d, type: 3}
+  circleCollider2D: {fileID: 0}
+  useBehaviour: 1
+  collideAndDamageSO: {fileID: 11400000, guid: 666a151d1f29b864b964146846da4426, type: 2}
+  audioSource: {fileID: 3043240207491260681, guid: acb51ca5996ab584b93253a13a25421d, type: 3}
+  gameEffectPrefab: {fileID: 8038004898374428783, guid: acb51ca5996ab584b93253a13a25421d, type: 3}
+  useSecondarySpriteRenderer: 0
+  useTrailRenderer: 0

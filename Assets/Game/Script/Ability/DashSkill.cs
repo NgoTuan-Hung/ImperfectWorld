@@ -4,8 +4,6 @@ using UnityEngine;
 
 public class DashSkill : SkillBase
 {
-    static ObjectPool dashEffectPool;
-    GameObject dashEffectPrefab;
     public int totalEffect = 10;
     public float dashAmmountPerFrame = 0.5f;
     public float effectLifeTime = 0.5f;
@@ -17,12 +15,6 @@ public class DashSkill : SkillBase
         duration = 1f;
         cooldown = 8f;
 
-        dashEffectPrefab = Resources.Load("DashEffect") as GameObject;
-        dashEffectPool ??= new ObjectPool(
-            dashEffectPrefab,
-            100,
-            new PoolArgument(ComponentType.GameEffect, PoolArgument.WhereComponent.Self)
-        );
         spawnEffectInterval = duration / totalEffect;
         AddActionManuals();
     }
@@ -77,9 +69,6 @@ public class DashSkill : SkillBase
     public override void Start()
     {
         base.Start();
-#if UNITY_EDITOR
-        onExitPlayModeEvent += () => dashEffectPool = null;
-#endif
     }
 
     public override void WhileWaiting(Vector2 p_location = default, Vector2 p_direction = default)
@@ -93,23 +82,21 @@ public class DashSkill : SkillBase
         {
             canUse = false;
             customMono.movementActionBlocking = true;
-            List<PoolObject> poolObjects = dashEffectPool.PickAndPlace(
-                totalEffect,
-                effectActiveLocation
-            );
-            StartCoroutine(actionIE = Dashing(poolObjects, direction));
+            StartCoroutine(actionIE = Dashing(direction));
             StartCoroutine(CooldownCoroutine());
             customMono.currentAction = this;
         }
     }
 
-    public IEnumerator Dashing(List<PoolObject> poolObjects, Vector3 direction)
+    public IEnumerator Dashing(Vector3 direction)
     {
         GameEffect gameEffect;
         direction = direction.normalized * dashAmmountPerFrame;
-        for (int i = 0; i < poolObjects.Count; i++)
+        for (int i = 0; i < totalEffect; i++)
         {
-            gameEffect = poolObjects[i].gameEffect;
+            gameEffect = GameManager
+                .Instance.gameEffectPool.PickOne()
+                .gameEffect.Init(GameManager.Instance.dashEffectSO);
             gameEffect.spriteRenderer.sprite = customMono.spriteRenderer.sprite;
             gameEffect.spriteRenderer.transform.localScale = customMono
                 .directionModifier

@@ -4,10 +4,6 @@ using UnityEngine;
 
 public class Scatter : SkillBase
 {
-    GameObject scatterArrowPrefab;
-    static ObjectPool scatterArrowPool;
-    GameObject scatterChargePrefab;
-    static ObjectPool scatterChargePool;
     ActionWaitInfo actionWaitInfo = new();
     GameEffect scatterChargeGameEffect;
 
@@ -22,20 +18,6 @@ public class Scatter : SkillBase
         currentAmmo = 3;
         modifiedAngle = 30f.DegToRad();
 
-        scatterArrowPrefab = Resources.Load("ScatterArrow") as GameObject;
-        scatterArrowPool ??= new ObjectPool(
-            scatterArrowPrefab,
-            100,
-            new PoolArgument(ComponentType.GameEffect, PoolArgument.WhereComponent.Self)
-        );
-
-        scatterChargePrefab = Resources.Load("ScatterCharge") as GameObject;
-        scatterChargePool ??= new ObjectPool(
-            scatterChargePrefab,
-            100,
-            new PoolArgument(ComponentType.GameEffect, PoolArgument.WhereComponent.Self)
-        );
-
         AddActionManuals();
     }
 
@@ -48,13 +30,6 @@ public class Scatter : SkillBase
     public override void Start()
     {
         base.Start();
-#if UNITY_EDITOR
-        onExitPlayModeEvent += () =>
-        {
-            scatterArrowPool = null;
-            scatterChargePool = null;
-        };
-#endif
     }
 
     public override void AddActionManuals()
@@ -96,8 +71,9 @@ public class Scatter : SkillBase
 
     IEnumerator WaitingCoroutine()
     {
-        scatterChargeGameEffect = scatterChargePool.PickOne().gameEffect;
-        scatterChargeGameEffect.Follow(transform);
+        scatterChargeGameEffect = GameManager.Instance.gameEffectPool.PickOne().gameEffect;
+        var t_scatterChargeGameEffectSO = GameManager.Instance.scatterChargeSO;
+        scatterChargeGameEffect.Follow(transform, t_scatterChargeGameEffectSO);
         stopwatch.Restart();
 
         while (actionWaitInfo.stillWaiting)
@@ -115,8 +91,14 @@ public class Scatter : SkillBase
             Vector2 arrowDirection;
             for (int i = 0; i < currentAmmo; i++)
             {
-                GameEffect t_scatterArrowGameEffect = scatterArrowPool.PickOne().gameEffect;
-                var t_collideAndDamage = t_scatterArrowGameEffect.GetBehaviour<CollideAndDamage>();
+                GameEffect t_scatterArrowGameEffect = GameManager
+                    .Instance.gameEffectPool.PickOne()
+                    .gameEffect;
+                var t_scatterArrowGameEffectSO = GameManager.Instance.scatterArrowSO;
+                t_scatterArrowGameEffect.Init(t_scatterArrowGameEffectSO);
+                var t_collideAndDamage =
+                    t_scatterArrowGameEffect.GetBehaviour(EGameEffectBehaviour.CollideAndDamage)
+                    as CollideAndDamage;
                 t_collideAndDamage.allyTags = customMono.allyTags;
                 t_collideAndDamage.collideDamage = damage;
                 if (i % 2 == 1)
@@ -138,7 +120,7 @@ public class Scatter : SkillBase
                     );
                 }
 
-                t_scatterArrowGameEffect.KeepFlyingAt(arrowDirection);
+                t_scatterArrowGameEffect.KeepFlyingAt(arrowDirection, t_scatterArrowGameEffectSO);
             }
 
             while (!customMono.animationEventFunctionCaller.endRelease)
