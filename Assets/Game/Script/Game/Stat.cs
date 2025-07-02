@@ -46,7 +46,6 @@ public class Stat : MonoEditor, INotifyBindablePropertyChanged
     [SerializeField]
     float size = 1f;
     float dissolveTime = 5f;
-    static ObjectPool dieDissolveEffectPool;
     int dieBoolHash = Animator.StringToHash("Die");
     public event EventHandler<BindablePropertyChangedEventArgs> propertyChanged;
     Action onEnable = () => { };
@@ -201,13 +200,6 @@ public class Stat : MonoEditor, INotifyBindablePropertyChanged
     {
         customMono = GetComponent<CustomMono>();
         AddPropertyChangeEvent();
-
-        var dieDissolveEffectPrefab = Resources.Load("DieDissolve") as GameObject;
-        dieDissolveEffectPool ??= new ObjectPool(
-            dieDissolveEffectPrefab,
-            100,
-            new PoolArgument(ComponentType.GameEffect, PoolArgument.WhereComponent.Self)
-        );
     }
 
     private void OnEnable()
@@ -237,13 +229,6 @@ public class Stat : MonoEditor, INotifyBindablePropertyChanged
             Health = DefaultHealth;
             MoveSpeed = DefaultMoveSpeed;
         };
-
-#if UNITY_EDITOR
-        onExitPlayModeEvent += () =>
-        {
-            dieDissolveEffectPool = null;
-        };
-#endif
     }
 
     IEnumerator LateStart()
@@ -283,7 +268,7 @@ public class Stat : MonoEditor, INotifyBindablePropertyChanged
         {
             customMono.AnimatorWrapper.SetBool(dieBoolHash, true);
             customMono.combatCollision.SetActive(false);
-            healthBar.gameEffect.deactivate();
+            healthBar.worldSpaceUI.deactivate();
             healthBar = null;
             StartCoroutine(DissolveCoroutine());
         };
@@ -315,7 +300,9 @@ public class Stat : MonoEditor, INotifyBindablePropertyChanged
     {
         yield return new WaitForSeconds(dissolveTime);
 
-        GameEffect dieDissolveEffect = dieDissolveEffectPool.PickOne().gameEffect;
+        GameEffect dieDissolveEffect = GameManager
+            .Instance.gameEffectPool.PickOne()
+            .gameEffect.Init(GameManager.Instance.dieDissolveSO);
         dieDissolveEffect.spriteRenderer.transform.localScale = customMono
             .directionModifier
             .transform

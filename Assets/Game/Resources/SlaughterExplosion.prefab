@@ -27,8 +27,8 @@ Transform:
   m_GameObject: {fileID: 6001975073635874099}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.06, y: -0.94, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: 0.02, y: -0.25, z: 0}
+  m_LocalScale: {x: 0.25, y: 0.25, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 5352672994902591809}
@@ -119,11 +119,11 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5352672994902591809}
-  - component: {fileID: 3991713259007162580}
   - component: {fileID: 7930190469032888950}
   - component: {fileID: 3408638979053483570}
   - component: {fileID: 8761734720174501232}
-  - component: {fileID: 3233697449648336122}
+  - component: {fileID: 2884776039751576798}
+  - component: {fileID: 416147800094590497}
   m_Layer: 0
   m_Name: SlaughterExplosion
   m_TagString: Untagged
@@ -141,68 +141,12 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 50.68, y: 0.3, z: 0.01937996}
-  m_LocalScale: {x: 0.25, y: 0.25, z: 1}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 4155279487673137310}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &3991713259007162580
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7282093002630404119}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 168cfb170d8d5ef49a8d48318a9a5709, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  animator: {fileID: 0}
-  spriteRenderer: {fileID: 0}
-  isDeactivatedAfterTime: 1
-  deactivateTime: 1
-  isTimeline: 1
-  randomRotation: 0
-  flyAtSpeed: 0.03
-  followOffset: {x: -0.8, y: 1.5, z: 0}
-  followSlowlyPositionLerpTime: 0.04
-  playSoundOnEnable: 0
-  material: {fileID: 0}
-  effectLocalPosition: {x: 0, y: 0, z: 0}
-  effectLocalRotation: {x: 0, y: 0, z: 0}
-  isColoredOverLifetime: 0
-  colorOverLifetime:
-    serializedVersion: 2
-    key0: {r: 1, g: 1, b: 1, a: 1}
-    key1: {r: 1, g: 1, b: 1, a: 1}
-    key2: {r: 0, g: 0, b: 0, a: 0}
-    key3: {r: 0, g: 0, b: 0, a: 0}
-    key4: {r: 0, g: 0, b: 0, a: 0}
-    key5: {r: 0, g: 0, b: 0, a: 0}
-    key6: {r: 0, g: 0, b: 0, a: 0}
-    key7: {r: 0, g: 0, b: 0, a: 0}
-    ctime0: 0
-    ctime1: 65535
-    ctime2: 0
-    ctime3: 0
-    ctime4: 0
-    ctime5: 0
-    ctime6: 0
-    ctime7: 0
-    atime0: 0
-    atime1: 65535
-    atime2: 0
-    atime3: 0
-    atime4: 0
-    atime5: 0
-    atime6: 0
-    atime7: 0
-    m_Mode: 0
-    m_ColorSpace: -1
-    m_NumColorKeys: 2
-    m_NumAlphaKeys: 2
 --- !u!82 &7930190469032888950
 AudioSource:
   m_ObjectHideFlags: 0
@@ -317,8 +261,8 @@ PlayableDirector:
   m_SceneBindings:
   - key: {fileID: -3000734491303041370, guid: 91a6cd84f8a96ff4db8eef29e6266aae, type: 2}
     value: {fileID: 6527690551738527164}
-  - key: {fileID: 6084844204407188021, guid: 91a6cd84f8a96ff4db8eef29e6266aae, type: 2}
-    value: {fileID: 3233697449648336122}
+  - key: {fileID: -7015275678907441630, guid: 91a6cd84f8a96ff4db8eef29e6266aae, type: 2}
+    value: {fileID: 8761734720174501232}
   m_ExposedReferences:
     m_References: []
 --- !u!95 &8761734720174501232
@@ -343,7 +287,7 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &3233697449648336122
+--- !u!114 &2884776039751576798
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -352,24 +296,30 @@ MonoBehaviour:
   m_GameObject: {fileID: 7282093002630404119}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e52de21a22b6dd44c9cc19f810c65059, type: 3}
+  m_Script: {fileID: 11500000, guid: 168cfb170d8d5ef49a8d48318a9a5709, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Events:
-    m_Signals:
-    - {fileID: 11400000, guid: e7ebbc2a3ea106048871bccd77a77b7e, type: 2}
-    m_Events:
-    - m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 7930190469032888950}
-          m_TargetAssemblyTypeName: UnityEngine.AudioSource, UnityEngine
-          m_MethodName: Play
-          m_Mode: 1
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 1
+  rigidbody2D: {fileID: 0}
+  spriteRenderer: {fileID: 0}
+  secondarySpriteRenderer: {fileID: 0}
+  trackReferences: []
+  boxCollider2D: {fileID: 0}
+  polygonCollider2D: {fileID: 0}
+  circleCollider2D: {fileID: 0}
+  trailRenderer: {fileID: 0}
+  currentGameEffectSO: {fileID: 0}
+--- !u!114 &416147800094590497
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7282093002630404119}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 19e58d24264fe2e49b0b652bf22ee2d4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  spriteRenderer: {fileID: 2602859353932658263}
+  secondarySpriteRenderer: {fileID: 0}
+  trailRenderer: {fileID: 0}

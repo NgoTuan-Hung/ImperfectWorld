@@ -64,7 +64,9 @@ public class GameManager : MonoSingleton<GameManager>
         magicLaserSO,
         moonSlashSO,
         scatterArrowSO,
-        scatterChargeSO;
+        scatterChargeSO,
+        attackColliderSO,
+        dieDissolveSO;
     public int attackBoolHash = Animator.StringToHash("Attack"),
         mainSkill1BoolHash = Animator.StringToHash("MainSkill1"),
         mainSkill2BoolHash = Animator.StringToHash("MainSkill2"),
@@ -123,7 +125,15 @@ public class GameManager : MonoSingleton<GameManager>
         LoadOtherResources();
     }
 
-    void InitAllEffectPools() { }
+    void InitAllEffectPools()
+    {
+        gameEffectPrefab = Resources.Load("GameEffect") as GameObject;
+        gameEffectPool = new(
+            gameEffectPrefab,
+            100,
+            new PoolArgument(ComponentType.GameEffect, PoolArgument.WhereComponent.Self)
+        );
+    }
 
     void LoadOtherResources() { }
 

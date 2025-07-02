@@ -43,7 +43,7 @@ public class GameUIManagerRevamp : MonoEditorSingleton<GameUIManagerRevamp>
             healthBarPrefab,
             20,
             new PoolArgument(ComponentType.HealthUIRevamp, PoolArgument.WhereComponent.Self),
-            new PoolArgument(ComponentType.GameEffect, PoolArgument.WhereComponent.Self)
+            new PoolArgument(ComponentType.WorldSpaceUI, PoolArgument.WhereComponent.Self)
         );
         healthBarPool.ForEach(
             (p_pO) =>
@@ -319,7 +319,7 @@ public class GameUIManagerRevamp : MonoEditorSingleton<GameUIManagerRevamp>
     public PoolObject CreateAndHandleRadialProgressFollowing(Transform transform)
     {
         PoolObject healthBarObject = healthBarPool.PickOne();
-        healthBarObject.gameEffect.FollowSlowly(transform);
+        healthBarObject.worldSpaceUI.FollowSlowly(transform);
         return healthBarObject;
     }
 }

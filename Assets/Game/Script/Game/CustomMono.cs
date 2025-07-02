@@ -83,8 +83,8 @@ public class CustomMono : MonoSelfAware, IComparable<CustomMono>
     public Action<CustomMono> nearestEnemyChanged = (person) => { };
     public Action startPhase1 = () => { };
     public AudioClip attackAudioClip;
-    public EffectPool meleeCollisionEP,
-        longRangeProjectileEP;
+    public GameEffectSO meleeCollisionEffectSO,
+        longRangeProjectileEffectSO;
     public AttackType attackType;
     public StatusEffect statusEffect;
     public GameObject rotationAndCenterObject,

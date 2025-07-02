@@ -9,14 +9,12 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8646578576087641116}
-  - component: {fileID: 281897730286328348}
   - component: {fileID: 9025241160854359740}
   - component: {fileID: 7875046274362802972}
   - component: {fileID: 6003543732940233531}
   - component: {fileID: 8545997470628268970}
-  - component: {fileID: 1572774415447046525}
-  - component: {fileID: 5040749699347002923}
-  - component: {fileID: 1697508604647031708}
+  - component: {fileID: 505424418571345598}
+  - component: {fileID: 2627680256109512036}
   m_Layer: 7
   m_Name: MagicLaser
   m_TagString: Untagged
@@ -40,33 +38,6 @@ Transform:
   - {fileID: 3513616422403128024}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!50 &281897730286328348
-Rigidbody2D:
-  serializedVersion: 5
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1493546202965711012}
-  m_BodyType: 0
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDamping: 0
-  m_AngularDamping: 0.05
-  m_GravityScale: 0
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 4
 --- !u!61 &9025241160854359740
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -253,7 +224,7 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &1572774415447046525
+--- !u!114 &505424418571345598
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -265,43 +236,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 168cfb170d8d5ef49a8d48318a9a5709, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  animator: {fileID: 0}
-  spriteRenderer: {fileID: 0}
-  isDeactivatedAfterTime: 1
-  deactivateTime: 2.5
-  collideAndDamage: {fileID: 0}
-  isTimeline: 1
-  randomRotation: 0
-  flyAtSpeed: 0.03
-  followOffset: {x: -0.8, y: 1.5, z: 0}
-  followSlowlyPositionLerpTime: 0.04
-  playSoundOnEnable: 0
-  material: {fileID: 0}
-  effectLocalPosition: {x: 0, y: 0, z: 0}
-  effectLocalRotation: {x: 0, y: 0, z: 0}
---- !u!114 &5040749699347002923
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1493546202965711012}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 154a6a151704bea43b23fe6d54e16d48, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
   rigidbody2D: {fileID: 0}
-  collideType: 1
-  collideDamage: 1
-  multipleCollideInterval: 0.05
-  oneTimeContactInteraction: 0
-  pushEnemyOnCollideType: 0
-  pushEnemyOnCollideForce: 1
-  deactivateOnCollide: 0
-  spawnEffectOnCollide: 1
-  collisionEffectPoolType: 1
---- !u!114 &1697508604647031708
+  spriteRenderer: {fileID: 0}
+  secondarySpriteRenderer: {fileID: 0}
+  trackReferences: []
+  boxCollider2D: {fileID: 0}
+  polygonCollider2D: {fileID: 0}
+  circleCollider2D: {fileID: 0}
+  trailRenderer: {fileID: 0}
+--- !u!114 &2627680256109512036
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -310,27 +253,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 1493546202965711012}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e52de21a22b6dd44c9cc19f810c65059, type: 3}
+  m_Script: {fileID: 11500000, guid: 19e58d24264fe2e49b0b652bf22ee2d4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Events:
-    m_Signals:
-    - {fileID: 11400000, guid: e8efff1ac3e59794ca0645946654bf0f, type: 2}
-    m_Events:
-    - m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 7875046274362802972}
-          m_TargetAssemblyTypeName: UnityEngine.AudioSource, UnityEngine
-          m_MethodName: Play
-          m_Mode: 1
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 1
+  spriteRenderer: {fileID: 1398214319663403252}
+  secondarySpriteRenderer: {fileID: 0}
+  trailRenderer: {fileID: 0}
 --- !u!1 &8505452889549373243
 GameObject:
   m_ObjectHideFlags: 0

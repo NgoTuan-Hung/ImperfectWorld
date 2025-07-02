@@ -4,9 +4,6 @@ using Touch = UnityEngine.InputSystem.EnhancedTouch.Touch;
 
 public class MagicLaserSkill : SkillBase
 {
-    static ObjectPool magicLaserPool;
-    GameObject magicLaserPrefab;
-
     public override void Awake()
     {
         base.Awake();
@@ -76,8 +73,8 @@ public class MagicLaserSkill : SkillBase
         bool t_animatorLocalScale = customMono.AnimatorWrapper.animator.transform.localScale.x > 0;
 
         CollideAndDamage gameEffect =
-            magicLaserPool
-                .PickOne()
+            GameManager
+                .Instance.gameEffectPool.PickOne()
                 .gameEffect.Init(GameManager.Instance.magicLaserSO)
                 .GetBehaviour(EGameEffectBehaviour.CollideAndDamage) as CollideAndDamage;
         gameEffect.allyTags = customMono.allyTags;

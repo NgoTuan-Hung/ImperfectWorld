@@ -27,16 +27,17 @@ public class GameEffect : MonoSelfAware
     public CircleCollider2D circleCollider2D;
     public TrailRenderer trailRenderer;
     Dictionary<EGameEffectBehaviour, IGameEffectBehaviour> behaviours = new();
+    public GameEffectSO currentGameEffectSO;
 
     public override void Awake()
     {
         base.Awake();
 
         rigidbody2D = GetComponent<Rigidbody2D>();
-        animator = GetComponent<Animator>();
         playableDirector = GetComponent<PlayableDirector>();
         audioSource = GetComponent<AudioSource>();
         spriteRenderer = GetComponentInChildren<SpriteRenderer>();
+        animator = spriteRenderer.gameObject.GetComponent<Animator>();
         secondarySpriteRenderer =
             spriteRenderer.gameObject.GetComponentInChildren<SpriteRenderer>();
         boxCollider2D = GetComponent<BoxCollider2D>();
@@ -67,6 +68,7 @@ public class GameEffect : MonoSelfAware
 
     public GameEffect Init(GameEffectSO p_gameEffectSO)
     {
+        currentGameEffectSO = p_gameEffectSO;
         /* Turn off behaviors, rigidbody, colliders and reset to default state */
         ResetGameEffect();
 
@@ -100,8 +102,13 @@ public class GameEffect : MonoSelfAware
             behaviour.Disable();
         }
 
+        transform.parent = null;
+        transform.rotation = Quaternion.identity;
+        transform.localScale = Vector3.one;
+
         boxCollider2D.enabled = false;
         polygonCollider2D.enabled = false;
+        circleCollider2D.enabled = false;
         secondarySpriteRenderer.sprite = null;
         trailRenderer.enabled = false;
     }
@@ -117,11 +124,12 @@ public class GameEffect : MonoSelfAware
             .spriteRenderer
             .transform
             .localScale;
+        spriteRenderer.color = p_gameEffectSO.gameEffectPrefab.spriteRenderer.color;
         spriteRenderer.spriteSortPoint = p_gameEffectSO
             .gameEffectPrefab
             .spriteRenderer
             .spriteSortPoint;
-        spriteRenderer.material = p_gameEffectSO.gameEffectPrefab.spriteRenderer.material;
+        spriteRenderer.material = p_gameEffectSO.gameEffectPrefab.spriteRenderer.sharedMaterial;
         spriteRenderer.sortingLayerName = p_gameEffectSO
             .gameEffectPrefab
             .spriteRenderer
@@ -150,7 +158,7 @@ public class GameEffect : MonoSelfAware
             secondarySpriteRenderer.material = p_gameEffectSO
                 .gameEffectPrefab
                 .secondarySpriteRenderer
-                .material;
+                .sharedMaterial;
             secondarySpriteRenderer.sortingLayerName = p_gameEffectSO
                 .gameEffectPrefab
                 .secondarySpriteRenderer
@@ -195,16 +203,27 @@ public class GameEffect : MonoSelfAware
             polygonCollider2D.points = p_gameEffectSO.polygonCollider2D.points;
         }
 
+        if (p_gameEffectSO.useCircleCollider)
+        {
+            circleCollider2D.enabled = true;
+            circleCollider2D.offset = p_gameEffectSO.circleCollider2D.offset;
+            circleCollider2D.radius = p_gameEffectSO.circleCollider2D.radius;
+        }
+
         if (p_gameEffectSO.useTrailRenderer)
         {
             trailRenderer.enabled = true;
+            trailRenderer.widthMultiplier = p_gameEffectSO
+                .gameEffectPrefab
+                .trailRenderer
+                .widthMultiplier;
             trailRenderer.widthCurve = p_gameEffectSO.gameEffectPrefab.trailRenderer.widthCurve;
             trailRenderer.time = p_gameEffectSO.gameEffectPrefab.trailRenderer.time;
             trailRenderer.colorGradient = p_gameEffectSO
                 .gameEffectPrefab
                 .trailRenderer
                 .colorGradient;
-            trailRenderer.material = p_gameEffectSO.gameEffectPrefab.trailRenderer.material;
+            trailRenderer.material = p_gameEffectSO.gameEffectPrefab.trailRenderer.sharedMaterial;
             trailRenderer.sortingLayerName = p_gameEffectSO
                 .gameEffectPrefab
                 .trailRenderer

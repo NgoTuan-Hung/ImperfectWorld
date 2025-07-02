@@ -4,6 +4,7 @@ public enum ComponentType
 {
     HealthUIRevamp,
     GameEffect,
+    WorldSpaceUI,
     CustomMono,
 };
 

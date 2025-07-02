@@ -9,11 +9,11 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3188304014552707516}
-  - component: {fileID: 8918059445036634798}
   - component: {fileID: 7989121492639908765}
   - component: {fileID: 4423091211803878309}
   - component: {fileID: 6812837167981481577}
-  - component: {fileID: 6637796215624062352}
+  - component: {fileID: 2982733132636509848}
+  - component: {fileID: 1914710065624815468}
   m_Layer: 0
   m_Name: MagicLaserImpact
   m_TagString: Untagged
@@ -37,29 +37,6 @@ Transform:
   - {fileID: 4910889040490737233}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &8918059445036634798
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 19316051145377854}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 168cfb170d8d5ef49a8d48318a9a5709, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  animator: {fileID: 0}
-  spriteRenderer: {fileID: 0}
-  isDeactivatedAfterTime: 1
-  deactivateTime: 0.4
-  collideAndDamage: {fileID: 0}
-  isTimeline: 1
-  flyAtSpeed: 0.03
-  followOffset: {x: -0.8, y: 1.5, z: 0}
-  followSlowlyPositionLerpTime: 0.04
-  playSoundOnEnable: 0
-  material: {fileID: 0}
 --- !u!82 &7989121492639908765
 AudioSource:
   m_ObjectHideFlags: 0
@@ -196,11 +173,11 @@ PlayableDirector:
   m_SceneBindings:
   - key: {fileID: -1437032362370976886, guid: c7493032382a88b4582fdd8732186781, type: 2}
     value: {fileID: 1285095089582152417}
-  - key: {fileID: -8331033644303038767, guid: c7493032382a88b4582fdd8732186781, type: 2}
-    value: {fileID: 6637796215624062352}
+  - key: {fileID: -8126284472955692288, guid: c7493032382a88b4582fdd8732186781, type: 2}
+    value: {fileID: 4423091211803878309}
   m_ExposedReferences:
     m_References: []
---- !u!114 &6637796215624062352
+--- !u!114 &2982733132636509848
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -209,27 +186,33 @@ MonoBehaviour:
   m_GameObject: {fileID: 19316051145377854}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e52de21a22b6dd44c9cc19f810c65059, type: 3}
+  m_Script: {fileID: 11500000, guid: 19e58d24264fe2e49b0b652bf22ee2d4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Events:
-    m_Signals:
-    - {fileID: 11400000, guid: bdec939d0c1fb8a49bd7778c9e781840, type: 2}
-    m_Events:
-    - m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 7989121492639908765}
-          m_TargetAssemblyTypeName: UnityEngine.AudioSource, UnityEngine
-          m_MethodName: Play
-          m_Mode: 1
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 1
+  spriteRenderer: {fileID: 4507694558223277724}
+  secondarySpriteRenderer: {fileID: 0}
+  trailRenderer: {fileID: 0}
+--- !u!114 &1914710065624815468
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 19316051145377854}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 168cfb170d8d5ef49a8d48318a9a5709, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rigidbody2D: {fileID: 0}
+  spriteRenderer: {fileID: 0}
+  secondarySpriteRenderer: {fileID: 0}
+  trackReferences: []
+  boxCollider2D: {fileID: 0}
+  polygonCollider2D: {fileID: 0}
+  circleCollider2D: {fileID: 0}
+  trailRenderer: {fileID: 0}
+  currentGameEffectSO: {fileID: 0}
 --- !u!1 &7889416867915674391
 GameObject:
   m_ObjectHideFlags: 0

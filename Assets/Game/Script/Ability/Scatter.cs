@@ -73,6 +73,7 @@ public class Scatter : SkillBase
     {
         scatterChargeGameEffect = GameManager.Instance.gameEffectPool.PickOne().gameEffect;
         var t_scatterChargeGameEffectSO = GameManager.Instance.scatterChargeSO;
+        scatterChargeGameEffect.Init(t_scatterChargeGameEffectSO);
         scatterChargeGameEffect.Follow(transform, t_scatterChargeGameEffectSO);
         stopwatch.Restart();
 

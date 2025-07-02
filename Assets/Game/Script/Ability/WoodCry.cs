@@ -73,9 +73,12 @@ public class WoodCry : SkillBase
         customMono.animationEventFunctionCaller.mainSkill2Signal = false;
         // bool t_animatorLocalScale = customMono.AnimatorWrapper.animator.transform.localScale.x > 0;
 
-        CollideAndDamage t_gameEffect = GameManager
-            .Instance.woodCryArrowPool.PickOne()
-            .gameEffect.GetBehaviour<CollideAndDamage>();
+        CollideAndDamage t_gameEffect =
+            GameManager
+                .Instance.gameEffectPool.PickOne()
+                .gameEffect.Init(GameManager.Instance.woodCryArrowSO)
+                .GetBehaviour(EGameEffectBehaviour.CollideAndDamage) as CollideAndDamage;
+
         t_gameEffect.allyTags = customMono.allyTags;
         t_gameEffect.collideDamage = damage;
         t_gameEffect.healAmmount = healAmmount;

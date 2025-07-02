@@ -35,7 +35,6 @@ public class CollideAndDamage : MonoEditor, IGameEffectBehaviour
     public float healAmmount;
     public PoisonInfo poisonInfo;
     public SlowInfo slowInfo;
-    public GameEffectSO spawnedEffectOnCollideSO;
 
     public void Awake() { }
 
@@ -49,7 +48,9 @@ public class CollideAndDamage : MonoEditor, IGameEffectBehaviour
     public void SpawnCollisionEffectOnEnemy(CustomMono p_customMono, Collider2D p_collider2D)
     {
         GameEffect t_collisionEffect = GameManager.Instance.gameEffectPool.PickOne().gameEffect;
-        t_collisionEffect.Init(spawnedEffectOnCollideSO);
+        t_collisionEffect.Init(
+            GameEffect.currentGameEffectSO.collideAndDamageSO.spawnedEffectOnCollide
+        );
 
         t_randomBias = Random.Range(0, 1f);
         t_collisionEffect.transform.position =

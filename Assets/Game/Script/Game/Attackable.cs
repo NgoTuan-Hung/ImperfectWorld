@@ -4,8 +4,6 @@ using UnityEngine;
 
 public class Attackable : SkillBase
 {
-    GameObject attackColliderPrefab;
-    protected static ObjectPool attackColliderPool;
     public float colliderForce = 5f;
     public Action<Vector2> Attack;
 
@@ -19,12 +17,6 @@ public class Attackable : SkillBase
         {
             Attack = MeleeAttack;
             damage = defaultDamage = 15f;
-            attackColliderPrefab = Resources.Load("AttackCollider") as GameObject;
-            attackColliderPool ??= new ObjectPool(
-                attackColliderPrefab,
-                100,
-                new PoolArgument(ComponentType.GameEffect, PoolArgument.WhereComponent.Self)
-            );
             botActionManuals.Add(
                 new BotActionManual(
                     ActionUse.MeleeDamage,
@@ -92,12 +84,6 @@ public class Attackable : SkillBase
     public override void Start()
     {
         base.Start();
-#if UNITY_EDITOR
-        onExitPlayModeEvent += () =>
-        {
-            attackColliderPool = null;
-        };
-#endif
 
         StatChangeRegister();
     }
@@ -153,17 +139,17 @@ public class Attackable : SkillBase
             attackDirection,
             UpdateDirectionIndicatorPriority.Low
         );
-        CollideAndDamage attackCollider = attackColliderPool
-            .PickOne(po =>
-            {
-                po.gameEffect.GetBehaviour<CollideAndDamage>().collisionEffectPool =
-                    GameManager.Instance.GetEffectPool(customMono.meleeCollisionEP);
-            })
-            .gameEffect.GetBehaviour<CollideAndDamage>();
+        CollideAndDamage attackCollider =
+            GameManager
+                .Instance.gameEffectPool.PickOne()
+                .gameEffect.Init(GameManager.Instance.attackColliderSO)
+                .GetBehaviour(EGameEffectBehaviour.CollideAndDamage) as CollideAndDamage;
+        attackCollider.GameEffect.currentGameEffectSO.collideAndDamageSO.spawnedEffectOnCollide =
+            customMono.meleeCollisionEffectSO;
         attackCollider.allyTags = customMono.allyTags;
         attackCollider.transform.position = customMono.firePoint.transform.position;
         attackCollider.collideDamage = damage;
-        attackCollider.rigidbody2D.AddForce(
+        attackCollider.GameEffect.rigidbody2D.AddForce(
             attackDirection.normalized * colliderForce,
             ForceMode2D.Impulse
         );
@@ -204,10 +190,11 @@ public class Attackable : SkillBase
             UpdateDirectionIndicatorPriority.Low
         );
         GameEffect t_projectileEffect = GameManager
-            .Instance.effectPoolDict[customMono.longRangeProjectileEP]
-            .PickOne()
-            .gameEffect;
-        var t_collideAndDamage = t_projectileEffect.GetBehaviour<CollideAndDamage>();
+            .Instance.gameEffectPool.PickOne()
+            .gameEffect.Init(customMono.longRangeProjectileEffectSO);
+        var t_collideAndDamage =
+            t_projectileEffect.GetBehaviour(EGameEffectBehaviour.CollideAndDamage)
+            as CollideAndDamage;
         t_collideAndDamage.allyTags = customMono.allyTags;
         t_collideAndDamage.collideDamage = damage;
         t_projectileEffect.transform.position = customMono.firePoint.transform.position;
@@ -217,7 +204,7 @@ public class Attackable : SkillBase
             Vector2.SignedAngle(Vector2.right, attackDirection)
         );
 
-        t_projectileEffect.KeepFlyingAt(attackDirection);
+        t_projectileEffect.KeepFlyingAt(attackDirection, customMono.longRangeProjectileEffectSO);
 
         while (!customMono.animationEventFunctionCaller.endAttack)
             yield return new WaitForSeconds(Time.fixedDeltaTime);

@@ -136,6 +136,8 @@ MonoBehaviour:
   endMainSkill1: 0
   mainSkill2Signal: 0
   endMainSkill2: 0
+  mainSkill3Signal: 0
+  endMainSkill3: 0
 --- !u!1 &1427103596814760749
 GameObject:
   m_ObjectHideFlags: 0
@@ -443,14 +445,15 @@ MonoBehaviour:
   currentNearestEnemy: {fileID: 0}
   rigidbody2D: {fileID: 0}
   attackAudioClip: {fileID: 8300000, guid: 4a4b48223eddcde4ca98850c4a405077, type: 3}
-  meleeCollisionEP: 4
-  longRangeProjectileEP: 0
+  meleeCollisionEffectSO: {fileID: 11400000, guid: 57f5a5216cc7363438a755be830c78a9, type: 2}
+  longRangeProjectileEffectSO: {fileID: 0}
   attackType: 0
   statusEffect: {fileID: 0}
   rotationAndCenterObject: {fileID: 0}
   directionModifier: {fileID: 0}
   currentAction: {fileID: 0}
   currentMovementAction: {fileID: 0}
+  skill: {fileID: 0}
 --- !u!114 &5776027955895354842
 MonoBehaviour:
   m_ObjectHideFlags: 0

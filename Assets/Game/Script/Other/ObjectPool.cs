@@ -59,6 +59,16 @@ public class ObjectPool
                         poolObject.gameEffect.deactivate += () => currentActive--;
                     };
                     break;
+                case ComponentType.WorldSpaceUI:
+                    handleCachedComponentRefs += (poolObject) =>
+                    {
+                        poolObject.worldSpaceUI =
+                            getComponentInLocation(typeof(WorldSpaceUI), poolObject)
+                            as WorldSpaceUI;
+
+                        poolObject.worldSpaceUI.deactivate += () => currentActive--;
+                    };
+                    break;
                 case ComponentType.CustomMono:
                     handleCachedComponentRefs += (poolObject) =>
                     {

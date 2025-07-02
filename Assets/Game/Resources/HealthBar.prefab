@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 4606418968856648212}
   - component: {fileID: 2780067043283390902}
   - component: {fileID: 4852789847204422178}
-  - component: {fileID: 2659397204463371872}
+  - component: {fileID: -1475057228853663522}
   m_Layer: 0
   m_Name: HealthBar
   m_TagString: Untagged
@@ -90,7 +90,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 22526050dfabb884e8ab648efc4bbcfb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &2659397204463371872
+--- !u!114 &-1475057228853663522
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -99,53 +99,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 6764889229525289389}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 168cfb170d8d5ef49a8d48318a9a5709, type: 3}
+  m_Script: {fileID: 11500000, guid: 620fde5e484237f4987dcb768a51333c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  animator: {fileID: 0}
-  spriteRenderer: {fileID: 0}
-  isDeactivatedAfterTime: 0
-  deactivateTime: 1
-  isTimeline: 0
-  randomRotation: 0
-  flyAtSpeed: 0.03
   followOffset: {x: -0.8, y: 1.5, z: 0}
   followSlowlyPositionLerpTime: 0.04
-  playSoundOnEnable: 0
-  material: {fileID: 0}
-  effectLocalPosition: {x: 0, y: 0, z: 0}
-  effectLocalRotation: {x: 0, y: 0, z: 0}
-  isColoredOverLifetime: 0
-  colorOverLifetime:
-    serializedVersion: 2
-    key0: {r: 1, g: 1, b: 1, a: 1}
-    key1: {r: 1, g: 1, b: 1, a: 1}
-    key2: {r: 0, g: 0, b: 0, a: 0}
-    key3: {r: 0, g: 0, b: 0, a: 0}
-    key4: {r: 0, g: 0, b: 0, a: 0}
-    key5: {r: 0, g: 0, b: 0, a: 0}
-    key6: {r: 0, g: 0, b: 0, a: 0}
-    key7: {r: 0, g: 0, b: 0, a: 0}
-    ctime0: 0
-    ctime1: 65535
-    ctime2: 0
-    ctime3: 0
-    ctime4: 0
-    ctime5: 0
-    ctime6: 0
-    ctime7: 0
-    atime0: 0
-    atime1: 65535
-    atime2: 0
-    atime3: 0
-    atime4: 0
-    atime5: 0
-    atime6: 0
-    atime7: 0
-    m_Mode: 0
-    m_ColorSpace: -1
-    m_NumColorKeys: 2
-    m_NumAlphaKeys: 2
 --- !u!1 &6917171115477004116
 GameObject:
   m_ObjectHideFlags: 0

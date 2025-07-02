@@ -780,6 +780,7 @@ MonoBehaviour:
   cinemachineCamera: {fileID: 893338232}
   MoonSlashExplodeSO: {fileID: 11400000, guid: 069940b05bd0720409a82e3cc41b3190, type: 2}
   MagicLaserImpactSO: {fileID: 11400000, guid: 679d29df8f8d6eb41bddaa3d46cd2c56, type: 2}
+  slaughterProjectileSO: {fileID: 11400000, guid: b2e1aa53b3f22b1408ac9b624e74e30d, type: 2}
   SlaughterExplosionSO: {fileID: 11400000, guid: a21b18423a5bebb4d8a3f62865c45b6a, type: 2}
   StrongDudePunchImpactSO: {fileID: 11400000, guid: 951c4fdc46f88fd49a84b52e6f745a48, type: 2}
   SamuraiSlashSO: {fileID: 11400000, guid: 57f5a5216cc7363438a755be830c78a9, type: 2}
@@ -809,6 +810,13 @@ MonoBehaviour:
   swordTempestSlash1SO: {fileID: 11400000, guid: 36c5de4faaf62f04da848283f69418ef, type: 2}
   swordTempestSlash2SO: {fileID: 11400000, guid: cac6dd50cb83584479f7391bd960da8d, type: 2}
   swordTempestSlash3SO: {fileID: 11400000, guid: 0006d3986c2e99f46b4108482e60f2bc, type: 2}
+  dashEffectSO: {fileID: 11400000, guid: 8625fbe71f2fac0478162c0d01e917d3, type: 2}
+  magicLaserSO: {fileID: 11400000, guid: 90bf971c7a5af9246b0efdce3a05d317, type: 2}
+  moonSlashSO: {fileID: 11400000, guid: b783f712e80179f4da8ba6965c37898e, type: 2}
+  scatterArrowSO: {fileID: 11400000, guid: 4ebb71448fb1989448f961ed04096346, type: 2}
+  scatterChargeSO: {fileID: 11400000, guid: 1a44c9a2906ec2740878fc01672ba164, type: 2}
+  attackColliderSO: {fileID: 11400000, guid: cc044e2fb5effb349b20034e34c5bd26, type: 2}
+  dieDissolveSO: {fileID: 11400000, guid: 2288276caff2700459f20d78b94d1dd1, type: 2}
   attackBoolHash: 1080829965
   mainSkill1BoolHash: 745959408
   mainSkill2BoolHash: -1249952182
@@ -1905,8 +1913,8 @@ MonoBehaviour:
   currentNearestEnemy: {fileID: 0}
   rigidbody2D: {fileID: 0}
   attackAudioClip: {fileID: 8300000, guid: 1831f3e85531e554081da581aac0d078, type: 3}
-  meleeCollisionEP: 0
-  longRangeProjectileEP: 7
+  meleeCollisionEffectSO: {fileID: 0}
+  longRangeProjectileEffectSO: {fileID: 11400000, guid: beb7626fb219e1d48b9bb34853235630, type: 2}
   attackType: 1
   statusEffect: {fileID: 0}
   rotationAndCenterObject: {fileID: 0}
@@ -2963,8 +2971,8 @@ MonoBehaviour:
   currentNearestEnemy: {fileID: 0}
   rigidbody2D: {fileID: 0}
   attackAudioClip: {fileID: 8300000, guid: 1831f3e85531e554081da581aac0d078, type: 3}
-  meleeCollisionEP: 0
-  longRangeProjectileEP: 7
+  meleeCollisionEffectSO: {fileID: 0}
+  longRangeProjectileEffectSO: {fileID: 0}
   attackType: 1
   statusEffect: {fileID: 0}
   rotationAndCenterObject: {fileID: 0}
@@ -3261,8 +3269,8 @@ MonoBehaviour:
   currentNearestEnemy: {fileID: 0}
   rigidbody2D: {fileID: 0}
   attackAudioClip: {fileID: 8300000, guid: 1614f5e1bf42b054ca0b933399c6264e, type: 3}
-  meleeCollisionEP: 3
-  longRangeProjectileEP: 0
+  meleeCollisionEffectSO: {fileID: 11400000, guid: 951c4fdc46f88fd49a84b52e6f745a48, type: 2}
+  longRangeProjectileEffectSO: {fileID: 0}
   attackType: 0
   statusEffect: {fileID: 0}
   rotationAndCenterObject: {fileID: 0}
@@ -10194,8 +10202,8 @@ MonoBehaviour:
   currentNearestEnemy: {fileID: 0}
   rigidbody2D: {fileID: 0}
   attackAudioClip: {fileID: 0}
-  meleeCollisionEP: 0
-  longRangeProjectileEP: 0
+  meleeCollisionEffectSO: {fileID: 0}
+  longRangeProjectileEffectSO: {fileID: 0}
   attackType: 0
   statusEffect: {fileID: 0}
   rotationAndCenterObject: {fileID: 0}
@@ -81288,8 +81296,8 @@ MonoBehaviour:
   currentNearestEnemy: {fileID: 0}
   rigidbody2D: {fileID: 0}
   attackAudioClip: {fileID: 8300000, guid: 118b9b5bd2015ec4abe7777d825907c5, type: 3}
-  meleeCollisionEP: 4
-  longRangeProjectileEP: 0
+  meleeCollisionEffectSO: {fileID: 11400000, guid: 57f5a5216cc7363438a755be830c78a9, type: 2}
+  longRangeProjectileEffectSO: {fileID: 0}
   attackType: 0
   statusEffect: {fileID: 0}
   rotationAndCenterObject: {fileID: 0}
@@ -82027,8 +82035,8 @@ MonoBehaviour:
   currentNearestEnemy: {fileID: 0}
   rigidbody2D: {fileID: 0}
   attackAudioClip: {fileID: 8300000, guid: 1831f3e85531e554081da581aac0d078, type: 3}
-  meleeCollisionEP: 0
-  longRangeProjectileEP: 8
+  meleeCollisionEffectSO: {fileID: 0}
+  longRangeProjectileEffectSO: {fileID: 0}
   attackType: 1
   statusEffect: {fileID: 0}
   rotationAndCenterObject: {fileID: 0}
@@ -83395,8 +83403,8 @@ MonoBehaviour:
   currentNearestEnemy: {fileID: 0}
   rigidbody2D: {fileID: 0}
   attackAudioClip: {fileID: 8300000, guid: 4a4b48223eddcde4ca98850c4a405077, type: 3}
-  meleeCollisionEP: 4
-  longRangeProjectileEP: 0
+  meleeCollisionEffectSO: {fileID: 0}
+  longRangeProjectileEffectSO: {fileID: 0}
   attackType: 0
   statusEffect: {fileID: 0}
   rotationAndCenterObject: {fileID: 0}
@@ -83857,67 +83865,6 @@ MonoBehaviour:
   magicka: 0
   defaultMagicka: 0
   size: 1
---- !u!1001 &3684833190097485902
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 628903115879409572, guid: 9b0174083aa60fb4e840f15d3e5f3c22, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 2.65
-      objectReference: {fileID: 0}
-    - target: {fileID: 628903115879409572, guid: 9b0174083aa60fb4e840f15d3e5f3c22, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 1.901
-      objectReference: {fileID: 0}
-    - target: {fileID: 628903115879409572, guid: 9b0174083aa60fb4e840f15d3e5f3c22, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: -0.01015014
-      objectReference: {fileID: 0}
-    - target: {fileID: 628903115879409572, guid: 9b0174083aa60fb4e840f15d3e5f3c22, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 628903115879409572, guid: 9b0174083aa60fb4e840f15d3e5f3c22, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 628903115879409572, guid: 9b0174083aa60fb4e840f15d3e5f3c22, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 628903115879409572, guid: 9b0174083aa60fb4e840f15d3e5f3c22, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 628903115879409572, guid: 9b0174083aa60fb4e840f15d3e5f3c22, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 628903115879409572, guid: 9b0174083aa60fb4e840f15d3e5f3c22, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 628903115879409572, guid: 9b0174083aa60fb4e840f15d3e5f3c22, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1338611446265746720, guid: 9b0174083aa60fb4e840f15d3e5f3c22, type: 3}
-      propertyPath: m_Name
-      value: MoonSlashExplode
-      objectReference: {fileID: 0}
-    - target: {fileID: 1338611446265746720, guid: 9b0174083aa60fb4e840f15d3e5f3c22, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 9b0174083aa60fb4e840f15d3e5f3c22, type: 3}
 --- !u!1001 &3784369558948340409
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -84025,8 +83972,8 @@ MonoBehaviour:
   currentNearestEnemy: {fileID: 0}
   rigidbody2D: {fileID: 0}
   attackAudioClip: {fileID: 8300000, guid: 4a4b48223eddcde4ca98850c4a405077, type: 3}
-  meleeCollisionEP: 4
-  longRangeProjectileEP: 0
+  meleeCollisionEffectSO: {fileID: 0}
+  longRangeProjectileEffectSO: {fileID: 0}
   attackType: 0
   statusEffect: {fileID: 0}
   rotationAndCenterObject: {fileID: 0}
@@ -84375,8 +84322,8 @@ MonoBehaviour:
   currentNearestEnemy: {fileID: 0}
   rigidbody2D: {fileID: 0}
   attackAudioClip: {fileID: 8300000, guid: 1831f3e85531e554081da581aac0d078, type: 3}
-  meleeCollisionEP: 0
-  longRangeProjectileEP: 11
+  meleeCollisionEffectSO: {fileID: 0}
+  longRangeProjectileEffectSO: {fileID: 0}
   attackType: 1
   statusEffect: {fileID: 0}
   rotationAndCenterObject: {fileID: 0}
@@ -86259,8 +86206,8 @@ MonoBehaviour:
   currentNearestEnemy: {fileID: 0}
   rigidbody2D: {fileID: 0}
   attackAudioClip: {fileID: 8300000, guid: 6eb5c4290eb5f1e45a1f6b9581ca1351, type: 3}
-  meleeCollisionEP: 0
-  longRangeProjectileEP: 0
+  meleeCollisionEffectSO: {fileID: 0}
+  longRangeProjectileEffectSO: {fileID: 0}
   attackType: 0
   statusEffect: {fileID: 0}
   rotationAndCenterObject: {fileID: 0}
@@ -87479,6 +87426,5 @@ SceneRoots:
   - {fileID: 1660952362}
   - {fileID: 7057996245471521679}
   - {fileID: 7344357894127853722}
-  - {fileID: 3684833190097485902}
   - {fileID: 69357795}
   - {fileID: 1640536888}

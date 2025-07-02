@@ -9,13 +9,12 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8815417929076247297}
-  - component: {fileID: 4932198657424954022}
-  - component: {fileID: 2318523727428215700}
   - component: {fileID: 1827643295456562105}
-  - component: {fileID: 4203418246632993994}
   - component: {fileID: 60357867960541645}
   - component: {fileID: 3943609426518423763}
-  - component: {fileID: 8538825940804103077}
+  - component: {fileID: 4616584717786805841}
+  - component: {fileID: 2671767831659022317}
+  - component: {fileID: 3002554916039890506}
   m_Layer: 7
   m_Name: BladeOfVuSlash
   m_TagString: Untagged
@@ -39,90 +38,6 @@ Transform:
   - {fileID: 1011797573602082765}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &4932198657424954022
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 430110825771215944}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 168cfb170d8d5ef49a8d48318a9a5709, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  animator: {fileID: 0}
-  spriteRenderer: {fileID: 0}
-  isDeactivatedAfterTime: 1
-  deactivateTime: 0.56
-  collideAndDamage: {fileID: 0}
-  isTimeline: 1
-  randomRotation: 0
-  flyAtSpeed: 0.03
-  followOffset: {x: -0.8, y: 1.5, z: 0}
-  followSlowlyPositionLerpTime: 0.04
-  playSoundOnEnable: 0
-  material: {fileID: 0}
-  effectLocalPosition: {x: 0, y: 0, z: 0}
-  effectLocalRotation: {x: 0, y: 0, z: 0}
-  isColoredOverLifetime: 0
-  colorOverLifetime:
-    serializedVersion: 2
-    key0: {r: 1, g: 1, b: 1, a: 1}
-    key1: {r: 1, g: 1, b: 1, a: 1}
-    key2: {r: 0, g: 0, b: 0, a: 0}
-    key3: {r: 0, g: 0, b: 0, a: 0}
-    key4: {r: 0, g: 0, b: 0, a: 0}
-    key5: {r: 0, g: 0, b: 0, a: 0}
-    key6: {r: 0, g: 0, b: 0, a: 0}
-    key7: {r: 0, g: 0, b: 0, a: 0}
-    ctime0: 0
-    ctime1: 65535
-    ctime2: 0
-    ctime3: 0
-    ctime4: 0
-    ctime5: 0
-    ctime6: 0
-    ctime7: 0
-    atime0: 0
-    atime1: 65535
-    atime2: 0
-    atime3: 0
-    atime4: 0
-    atime5: 0
-    atime6: 0
-    atime7: 0
-    m_Mode: 0
-    m_ColorSpace: -1
-    m_NumColorKeys: 2
-    m_NumAlphaKeys: 2
---- !u!50 &2318523727428215700
-Rigidbody2D:
-  serializedVersion: 5
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 430110825771215944}
-  m_BodyType: 0
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDamping: 0
-  m_AngularDamping: 0.05
-  m_GravityScale: 0
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 247
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 0
 --- !u!61 &1827643295456562105
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -169,28 +84,6 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 8.468184, y: 5.733931}
   m_EdgeRadius: 0
---- !u!114 &4203418246632993994
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 430110825771215944}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 154a6a151704bea43b23fe6d54e16d48, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  rigidbody2D: {fileID: 0}
-  collideType: 1
-  collideDamage: 1
-  multipleCollideInterval: 0.05
-  oneTimeContactInteraction: 0
-  pushEnemyOnCollideType: 0
-  pushEnemyOnCollideForce: 1
-  deactivateOnCollide: 0
-  spawnEffectOnCollide: 1
-  collisionEffectPoolType: 6
 --- !u!82 &60357867960541645
 AudioSource:
   m_ObjectHideFlags: 0
@@ -305,12 +198,34 @@ PlayableDirector:
   m_SceneBindings:
   - key: {fileID: -1760503928427953446, guid: 4aea493a0cb3f7b4e972b56aa57b2e1a, type: 2}
     value: {fileID: 2165319712666357717}
-  - key: {fileID: -878787605630515976, guid: 4aea493a0cb3f7b4e972b56aa57b2e1a, type: 2}
-    value: {fileID: 8538825940804103077}
+  - key: {fileID: 5463471078497234187, guid: 4aea493a0cb3f7b4e972b56aa57b2e1a, type: 2}
+    value: {fileID: 4616584717786805841}
   m_ExposedReferences:
     m_References:
     - 75fa2af2e3d241a478771d152331a65b: {fileID: 5071033356446960945}
---- !u!114 &8538825940804103077
+--- !u!95 &4616584717786805841
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 430110825771215944}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 0}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &2671767831659022317
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -319,27 +234,32 @@ MonoBehaviour:
   m_GameObject: {fileID: 430110825771215944}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e52de21a22b6dd44c9cc19f810c65059, type: 3}
+  m_Script: {fileID: 11500000, guid: 168cfb170d8d5ef49a8d48318a9a5709, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Events:
-    m_Signals:
-    - {fileID: 11400000, guid: 850e48a8677471c4da2b48ded99d7fb3, type: 2}
-    m_Events:
-    - m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 60357867960541645}
-          m_TargetAssemblyTypeName: UnityEngine.AudioSource, UnityEngine
-          m_MethodName: Play
-          m_Mode: 1
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 1
+  rigidbody2D: {fileID: 0}
+  spriteRenderer: {fileID: 0}
+  secondarySpriteRenderer: {fileID: 0}
+  trackReferences: []
+  boxCollider2D: {fileID: 0}
+  polygonCollider2D: {fileID: 0}
+  circleCollider2D: {fileID: 0}
+  trailRenderer: {fileID: 0}
+--- !u!114 &3002554916039890506
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 430110825771215944}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 19e58d24264fe2e49b0b652bf22ee2d4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  spriteRenderer: {fileID: 8551891475818427421}
+  secondarySpriteRenderer: {fileID: 0}
+  trailRenderer: {fileID: 0}
 --- !u!1 &5071033356446960945
 GameObject:
   m_ObjectHideFlags: 0

@@ -9,11 +9,11 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 628903115879409572}
-  - component: {fileID: 5412280774578539750}
   - component: {fileID: 4255341989875212284}
   - component: {fileID: 5881773194720341600}
   - component: {fileID: 858671832549235909}
-  - component: {fileID: 2793515782276660763}
+  - component: {fileID: 3013762054767741395}
+  - component: {fileID: 4424997219703918313}
   m_Layer: 0
   m_Name: MoonSlashExplode
   m_TagString: Untagged
@@ -37,29 +37,6 @@ Transform:
   - {fileID: 6132301672839536575}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &5412280774578539750
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1338611446265746720}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 168cfb170d8d5ef49a8d48318a9a5709, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  animator: {fileID: 0}
-  spriteRenderer: {fileID: 0}
-  isDeactivatedAfterTime: 1
-  deactivateTime: 1.2
-  collideAndDamage: {fileID: 0}
-  isTimeline: 1
-  flyAtSpeed: 0.03
-  followOffset: {x: -0.8, y: 1.5, z: 0}
-  followSlowlyPositionLerpTime: 0.04
-  playSoundOnEnable: 0
-  material: {fileID: 0}
 --- !u!82 &4255341989875212284
 AudioSource:
   m_ObjectHideFlags: 0
@@ -174,8 +151,8 @@ PlayableDirector:
   m_SceneBindings:
   - key: {fileID: 3436398719903208347, guid: e003542d99ae9cf4b904b131e9b61f4e, type: 2}
     value: {fileID: 4047483020032602945}
-  - key: {fileID: -7831529065016529731, guid: e003542d99ae9cf4b904b131e9b61f4e, type: 2}
-    value: {fileID: 2793515782276660763}
+  - key: {fileID: 2340899133852395910, guid: e003542d99ae9cf4b904b131e9b61f4e, type: 2}
+    value: {fileID: 858671832549235909}
   m_ExposedReferences:
     m_References: []
 --- !u!95 &858671832549235909
@@ -200,7 +177,7 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &2793515782276660763
+--- !u!114 &3013762054767741395
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -209,27 +186,32 @@ MonoBehaviour:
   m_GameObject: {fileID: 1338611446265746720}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e52de21a22b6dd44c9cc19f810c65059, type: 3}
+  m_Script: {fileID: 11500000, guid: 19e58d24264fe2e49b0b652bf22ee2d4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Events:
-    m_Signals:
-    - {fileID: 11400000, guid: d737d4eb719f01e458827fa77e2ad522, type: 2}
-    m_Events:
-    - m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 4255341989875212284}
-          m_TargetAssemblyTypeName: UnityEngine.AudioSource, UnityEngine
-          m_MethodName: Play
-          m_Mode: 1
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 1
+  spriteRenderer: {fileID: 8677773827541416195}
+  secondarySpriteRenderer: {fileID: 0}
+  trailRenderer: {fileID: 0}
+--- !u!114 &4424997219703918313
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1338611446265746720}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 168cfb170d8d5ef49a8d48318a9a5709, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rigidbody2D: {fileID: 0}
+  spriteRenderer: {fileID: 0}
+  secondarySpriteRenderer: {fileID: 0}
+  trackReferences: []
+  boxCollider2D: {fileID: 0}
+  polygonCollider2D: {fileID: 0}
+  circleCollider2D: {fileID: 0}
+  trailRenderer: {fileID: 0}
 --- !u!1 &8850257734560516143
 GameObject:
   m_ObjectHideFlags: 0

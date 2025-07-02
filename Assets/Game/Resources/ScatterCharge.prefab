@@ -120,7 +120,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1785599642699171436}
   - component: {fileID: 4837346575728966326}
-  - component: {fileID: 7561269505374316698}
+  - component: {fileID: 7533158599994992815}
   m_Layer: 0
   m_Name: ScatterCharge
   m_TagString: Untagged
@@ -241,7 +241,7 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
---- !u!114 &7561269505374316698
+--- !u!114 &7533158599994992815
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -250,16 +250,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 4255016364325633656}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 168cfb170d8d5ef49a8d48318a9a5709, type: 3}
+  m_Script: {fileID: 11500000, guid: 19e58d24264fe2e49b0b652bf22ee2d4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  animator: {fileID: 0}
-  spriteRenderer: {fileID: 0}
-  isDeactivatedAfterTime: 0
-  deactivateTime: 1
-  collideAndDamage: {fileID: 0}
-  isTimeline: 0
-  flyAtSpeed: 0.03
-  followOffset: {x: 0, y: -0.05, z: 0}
-  followSlowlyPositionLerpTime: 0.04
-  playSoundOnEnable: 1
+  spriteRenderer: {fileID: 1198571280553094989}
+  secondarySpriteRenderer: {fileID: 0}

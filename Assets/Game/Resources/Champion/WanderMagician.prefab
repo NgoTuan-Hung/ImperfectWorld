@@ -447,14 +447,15 @@ MonoBehaviour:
   currentNearestEnemy: {fileID: 0}
   rigidbody2D: {fileID: 0}
   attackAudioClip: {fileID: 8300000, guid: 1831f3e85531e554081da581aac0d078, type: 3}
-  meleeCollisionEP: 0
-  longRangeProjectileEP: 11
+  meleeCollisionEffectSO: {fileID: 0}
+  longRangeProjectileEffectSO: {fileID: 11400000, guid: 0152fa7a68a379f4dabe1a7053af1754, type: 2}
   attackType: 1
   statusEffect: {fileID: 0}
   rotationAndCenterObject: {fileID: 0}
   directionModifier: {fileID: 0}
   currentAction: {fileID: 0}
   currentMovementAction: {fileID: 0}
+  skill: {fileID: 0}
 --- !u!114 &2466865448266440456
 MonoBehaviour:
   m_ObjectHideFlags: 0

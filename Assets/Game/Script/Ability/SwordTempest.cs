@@ -70,19 +70,23 @@ public class SwordTempest : SkillBase
         customMono.animationEventFunctionCaller.mainSkill3Signal = false;
 
         customMono.rotationAndCenterObject.transform.localRotation = Quaternion.identity;
-        GameEffect t_swordTempestSlash1Effect = GameManager
-            .Instance.swordTempestSlash1Pool.PickOne()
+        GameEffect t_swordTempestSlashEffect = GameManager
+            .Instance.gameEffectPool.PickOne()
             .gameEffect;
-        t_swordTempestSlash1Effect.transform.parent = customMono.rotationAndCenterObject.transform;
-        t_swordTempestSlash1Effect.transform.SetLocalPositionAndRotation(
-            t_swordTempestSlash1Effect.effectLocalPosition,
-            Quaternion.Euler(t_swordTempestSlash1Effect.effectLocalRotation)
+        var t_swordTempestSlashEffectSO = GameManager.Instance.swordTempestSlash1SO;
+        t_swordTempestSlashEffect.Init(t_swordTempestSlashEffectSO);
+        t_swordTempestSlashEffect.transform.parent = customMono.rotationAndCenterObject.transform;
+        t_swordTempestSlashEffect.transform.SetLocalPositionAndRotation(
+            t_swordTempestSlashEffectSO.effectLocalPosition,
+            Quaternion.Euler(t_swordTempestSlashEffectSO.effectLocalRotation)
         );
 
-        var t_collideAndDamage = t_swordTempestSlash1Effect.GetBehaviour<CollideAndDamage>();
+        var t_collideAndDamage =
+            t_swordTempestSlashEffect.GetBehaviour(EGameEffectBehaviour.CollideAndDamage)
+            as CollideAndDamage;
 
         /* This is needed because it will change parent eventually */
-        t_swordTempestSlash1Effect.transform.localScale = Vector3.one;
+        t_swordTempestSlashEffect.transform.localScale = Vector3.one;
         t_collideAndDamage.allyTags = customMono.allyTags;
         t_collideAndDamage.collideDamage = damage;
         customMono.rotationAndCenterObject.transform.localScale = new(
@@ -102,19 +106,21 @@ public class SwordTempest : SkillBase
             yield return new WaitForSeconds(Time.fixedDeltaTime);
 
         customMono.animationEventFunctionCaller.mainSkill3Signal = false;
-        GameEffect t_swordTempestSlash2Effect = GameManager
-            .Instance.swordTempestSlash2Pool.PickOne()
-            .gameEffect;
-        t_swordTempestSlash2Effect.transform.parent = customMono.rotationAndCenterObject.transform;
-        t_swordTempestSlash2Effect.transform.SetLocalPositionAndRotation(
-            t_swordTempestSlash2Effect.effectLocalPosition,
-            Quaternion.Euler(t_swordTempestSlash2Effect.effectLocalRotation)
+        t_swordTempestSlashEffect = GameManager.Instance.gameEffectPool.PickOne().gameEffect;
+        t_swordTempestSlashEffectSO = GameManager.Instance.swordTempestSlash2SO;
+        t_swordTempestSlashEffect.Init(t_swordTempestSlashEffectSO);
+        t_swordTempestSlashEffect.transform.parent = customMono.rotationAndCenterObject.transform;
+        t_swordTempestSlashEffect.transform.SetLocalPositionAndRotation(
+            t_swordTempestSlashEffectSO.effectLocalPosition,
+            Quaternion.Euler(t_swordTempestSlashEffectSO.effectLocalRotation)
         );
 
-        t_collideAndDamage = t_swordTempestSlash2Effect.GetBehaviour<CollideAndDamage>();
+        t_collideAndDamage =
+            t_swordTempestSlashEffect.GetBehaviour(EGameEffectBehaviour.CollideAndDamage)
+            as CollideAndDamage;
 
         /* This is needed because it will change parent eventually */
-        t_swordTempestSlash2Effect.transform.localScale = Vector3.one;
+        t_swordTempestSlashEffect.transform.localScale = Vector3.one;
         t_collideAndDamage.allyTags = customMono.allyTags;
         t_collideAndDamage.collideDamage = 2 * damage;
 
@@ -122,19 +128,21 @@ public class SwordTempest : SkillBase
             yield return new WaitForSeconds(Time.fixedDeltaTime);
 
         customMono.animationEventFunctionCaller.mainSkill3Signal = false;
-        t_swordTempestSlash1Effect = GameManager
-            .Instance.swordTempestSlash1Pool.PickOne()
-            .gameEffect;
-        t_swordTempestSlash1Effect.transform.parent = customMono.rotationAndCenterObject.transform;
-        t_swordTempestSlash1Effect.transform.SetLocalPositionAndRotation(
-            t_swordTempestSlash1Effect.effectLocalPosition,
-            Quaternion.Euler(t_swordTempestSlash1Effect.effectLocalRotation)
+        t_swordTempestSlashEffect = GameManager.Instance.gameEffectPool.PickOne().gameEffect;
+        t_swordTempestSlashEffectSO = GameManager.Instance.swordTempestSlash1SO;
+        t_swordTempestSlashEffect.Init(t_swordTempestSlashEffectSO);
+        t_swordTempestSlashEffect.transform.parent = customMono.rotationAndCenterObject.transform;
+        t_swordTempestSlashEffect.transform.SetLocalPositionAndRotation(
+            t_swordTempestSlashEffectSO.effectLocalPosition,
+            Quaternion.Euler(t_swordTempestSlashEffectSO.effectLocalRotation)
         );
 
-        t_collideAndDamage = t_swordTempestSlash1Effect.GetBehaviour<CollideAndDamage>();
+        t_collideAndDamage =
+            t_swordTempestSlashEffect.GetBehaviour(EGameEffectBehaviour.CollideAndDamage)
+            as CollideAndDamage;
 
         /* This is needed because it will change parent eventually */
-        t_swordTempestSlash1Effect.transform.localScale = Vector3.one;
+        t_swordTempestSlashEffect.transform.localScale = Vector3.one;
         t_collideAndDamage.allyTags = customMono.allyTags;
         t_collideAndDamage.collideDamage = 3 * damage;
 
@@ -142,19 +150,21 @@ public class SwordTempest : SkillBase
             yield return new WaitForSeconds(Time.fixedDeltaTime);
 
         customMono.animationEventFunctionCaller.mainSkill3Signal = false;
-        GameEffect t_swordTempestSlash3Effect = GameManager
-            .Instance.swordTempestSlash3Pool.PickOne()
-            .gameEffect;
-        t_swordTempestSlash3Effect.transform.parent = customMono.rotationAndCenterObject.transform;
-        t_swordTempestSlash3Effect.transform.SetLocalPositionAndRotation(
-            t_swordTempestSlash3Effect.effectLocalPosition,
-            Quaternion.Euler(t_swordTempestSlash3Effect.effectLocalRotation)
+        t_swordTempestSlashEffect = GameManager.Instance.gameEffectPool.PickOne().gameEffect;
+        t_swordTempestSlashEffectSO = GameManager.Instance.swordTempestSlash3SO;
+        t_swordTempestSlashEffect.Init(t_swordTempestSlashEffectSO);
+        t_swordTempestSlashEffect.transform.parent = customMono.rotationAndCenterObject.transform;
+        t_swordTempestSlashEffect.transform.SetLocalPositionAndRotation(
+            t_swordTempestSlashEffectSO.effectLocalPosition,
+            Quaternion.Euler(t_swordTempestSlashEffectSO.effectLocalRotation)
         );
 
-        t_collideAndDamage = t_swordTempestSlash3Effect.GetBehaviour<CollideAndDamage>();
+        t_collideAndDamage =
+            t_swordTempestSlashEffect.GetBehaviour(EGameEffectBehaviour.CollideAndDamage)
+            as CollideAndDamage;
 
         /* This is needed because it will change parent eventually */
-        t_swordTempestSlash3Effect.transform.localScale = Vector3.one;
+        t_swordTempestSlashEffect.transform.localScale = Vector3.one;
         t_collideAndDamage.allyTags = customMono.allyTags;
         t_collideAndDamage.collideDamage = 4 * damage;
 
