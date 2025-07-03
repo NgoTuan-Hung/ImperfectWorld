@@ -11,6 +11,8 @@ GameObject:
   - component: {fileID: 2152746890601727339}
   - component: {fileID: 7676635675797615492}
   - component: {fileID: 5421726445149963675}
+  - component: {fileID: 4407056123809082239}
+  - component: {fileID: 7631692154975949849}
   m_Layer: 0
   m_Name: VanishEffect
   m_TagString: Untagged
@@ -146,6 +148,49 @@ MonoBehaviour:
   spriteRenderer: {fileID: 4625631756483543313}
   secondarySpriteRenderer: {fileID: 0}
   trailRenderer: {fileID: 0}
+--- !u!320 &4407056123809082239
+PlayableDirector:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4676768732056859092}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_PlayableAsset: {fileID: 11400000, guid: a72e11a74b55b974fbad8e448b8a2bf0, type: 2}
+  m_InitialState: 1
+  m_WrapMode: 2
+  m_DirectorUpdateMode: 1
+  m_InitialTime: 0
+  m_SceneBindings:
+  - key: {fileID: -206711882072106922, guid: a72e11a74b55b974fbad8e448b8a2bf0, type: 2}
+    value: {fileID: 2405643647740535729}
+  - key: {fileID: 1745614136100595912, guid: a72e11a74b55b974fbad8e448b8a2bf0, type: 2}
+    value: {fileID: 7631692154975949849}
+  m_ExposedReferences:
+    m_References: []
+--- !u!95 &7631692154975949849
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4676768732056859092}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 0}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &9220828718675508842
 GameObject:
   m_ObjectHideFlags: 0

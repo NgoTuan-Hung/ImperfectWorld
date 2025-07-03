@@ -38,8 +38,9 @@ public class GameEffect : MonoSelfAware
         audioSource = GetComponent<AudioSource>();
         spriteRenderer = GetComponentInChildren<SpriteRenderer>();
         animator = spriteRenderer.gameObject.GetComponent<Animator>();
-        secondarySpriteRenderer =
-            spriteRenderer.gameObject.GetComponentInChildren<SpriteRenderer>();
+        secondarySpriteRenderer = spriteRenderer
+            .transform.Find("SecondarySpriteRenderer")
+            .gameObject.GetComponent<SpriteRenderer>();
         boxCollider2D = GetComponent<BoxCollider2D>();
         polygonCollider2D = GetComponent<PolygonCollider2D>();
         circleCollider2D = GetComponent<CircleCollider2D>();
@@ -97,6 +98,10 @@ public class GameEffect : MonoSelfAware
 
     void ResetGameEffect()
     {
+        playableDirector.time = 0;
+        playableDirector.Evaluate();
+        playableDirector.Stop();
+
         foreach (var behaviour in behaviours.Values)
         {
             behaviour.Disable();
