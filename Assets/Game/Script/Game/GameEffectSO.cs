@@ -1,4 +1,3 @@
-using UnityEditor.Animations;
 using UnityEngine;
 using UnityEngine.Audio;
 using UnityEngine.Timeline;
@@ -6,7 +5,7 @@ using UnityEngine.Timeline;
 [CreateAssetMenu(fileName = "ScriptableObject", menuName = "GameEffectSO", order = 0)]
 public class GameEffectSO : ScriptableObject
 {
-    public AnimatorController animatorController;
+    public RuntimeAnimatorController runtimeAnimatorController;
     public bool isDeactivateAfterTime = false;
     public float deactivateTime = 1f;
     public bool isTimeline = false;

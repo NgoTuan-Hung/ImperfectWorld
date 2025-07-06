@@ -1,3 +1,4 @@
+#if UNITY_EDITOR
 using UnityEditor;
 using UnityEngine;
 using System.IO;
@@ -20,7 +21,7 @@ public class AudioEditor : EditorWindow
     private const int waveformWidth = 500; // Width of the waveform
     private const int waveformHeight = 100; // Height of the waveform
 
-    [MenuItem("Tools/Simblend/Audio Editor")] 
+    [MenuItem("Tools/Simblend/Audio Editor")]
     public static void ShowWindow()
     {
         GetWindow<AudioEditor>("Audio Editor");
@@ -49,14 +50,24 @@ public class AudioEditor : EditorWindow
     {
         GUILayout.Label("Trim and Fade Audio Clip", EditorStyles.boldLabel);
 
-        audioClip = (AudioClip)EditorGUILayout.ObjectField("Audio Clip", audioClip, typeof(AudioClip), false);
+        audioClip = (AudioClip)
+            EditorGUILayout.ObjectField("Audio Clip", audioClip, typeof(AudioClip), false);
 
         if (audioClip != null)
         {
             // Display waveform with the trimmed and faded section
             if (waveformTexture == null || GUILayout.Button("Generate Waveform"))
             {
-                waveformTexture = DrawWaveform(audioClip, waveformWidth, waveformHeight, new Color(1, 0.5f, 0), startTrim, endTrim, fadeStartDuration, fadeEndDuration);
+                waveformTexture = DrawWaveform(
+                    audioClip,
+                    waveformWidth,
+                    waveformHeight,
+                    new Color(1, 0.5f, 0),
+                    startTrim,
+                    endTrim,
+                    fadeStartDuration,
+                    fadeEndDuration
+                );
             }
 
             // Display waveform texture
@@ -69,25 +80,51 @@ public class AudioEditor : EditorWindow
                 {
                     //Display the playhead
                     Rect waveformRect = GUILayoutUtility.GetLastRect();
-                    float playheadPosition = Mathf.Min(((previewAudioSource.time) / (previewAudioSource.clip.length / 2f)) * waveformRect.width, waveformRect.width);
-                    Rect playheadRect = new Rect(playheadPosition, GUILayoutUtility.GetLastRect().y, 2, waveformHeight);
+                    float playheadPosition = Mathf.Min(
+                        ((previewAudioSource.time) / (previewAudioSource.clip.length / 2f))
+                            * waveformRect.width,
+                        waveformRect.width
+                    );
+                    Rect playheadRect = new Rect(
+                        playheadPosition,
+                        GUILayoutUtility.GetLastRect().y,
+                        2,
+                        waveformHeight
+                    );
                     EditorGUI.DrawRect(playheadRect, Color.red);
                 }
-
             }
 
             // Sliders to control startTrim and endTrim
             startTrim = EditorGUILayout.Slider("Start Trim", startTrim, 0f, audioClip.length);
             endTrim = EditorGUILayout.Slider("End Trim", endTrim, 0f, audioClip.length);
-            fadeStartDuration = EditorGUILayout.Slider("Fade Start Duration", fadeStartDuration, 0f, endTrim - startTrim);
-            fadeEndDuration = EditorGUILayout.Slider("Fade End Duration", fadeEndDuration, 0f, endTrim - startTrim);
+            fadeStartDuration = EditorGUILayout.Slider(
+                "Fade Start Duration",
+                fadeStartDuration,
+                0f,
+                endTrim - startTrim
+            );
+            fadeEndDuration = EditorGUILayout.Slider(
+                "Fade End Duration",
+                fadeEndDuration,
+                0f,
+                endTrim - startTrim
+            );
             loopPreview = GUILayout.Toggle(loopPreview, "Loop Preview");
-
 
             // Update waveform texture when sliders or fade values are adjusted
             if (GUI.changed)
             {
-                waveformTexture = DrawWaveform(audioClip, waveformWidth, waveformHeight, new Color(1, 0.5f, 0), startTrim, endTrim, fadeStartDuration, fadeEndDuration);
+                waveformTexture = DrawWaveform(
+                    audioClip,
+                    waveformWidth,
+                    waveformHeight,
+                    new Color(1, 0.5f, 0),
+                    startTrim,
+                    endTrim,
+                    fadeStartDuration,
+                    fadeEndDuration
+                );
             }
 
             if (!isAudioAdded)
@@ -139,8 +176,20 @@ public class AudioEditor : EditorWindow
         }
 
         // Trim and fade the audio for preview
-        trimmedSamples = TrimAndFadeAudioSamples(audioClip, startTrim, endTrim, fadeStartDuration, fadeEndDuration);
-        AudioClip trimmedClip = AudioClip.Create("TrimmedClip", trimmedSamples.Length, audioClip.channels, audioClip.frequency, false);
+        trimmedSamples = TrimAndFadeAudioSamples(
+            audioClip,
+            startTrim,
+            endTrim,
+            fadeStartDuration,
+            fadeEndDuration
+        );
+        AudioClip trimmedClip = AudioClip.Create(
+            "TrimmedClip",
+            trimmedSamples.Length,
+            audioClip.channels,
+            audioClip.frequency,
+            false
+        );
         trimmedClip.SetData(trimmedSamples, 0);
         previewAudioSource.loop = loopPreview; // Add looping control
         previewAudioSource.clip = trimmedClip;
@@ -158,7 +207,13 @@ public class AudioEditor : EditorWindow
         isPlaying = false;
     }
 
-    private float[] TrimAndFadeAudioSamples(AudioClip clip, float startTrim, float endTrim, float fadeStartDuration, float fadeEndDuration)
+    private float[] TrimAndFadeAudioSamples(
+        AudioClip clip,
+        float startTrim,
+        float endTrim,
+        float fadeStartDuration,
+        float fadeEndDuration
+    )
     {
         int startSample = Mathf.FloorToInt(startTrim * clip.frequency * clip.channels);
         int endSample = Mathf.FloorToInt(endTrim * clip.frequency * clip.channels);
@@ -171,7 +226,9 @@ public class AudioEditor : EditorWindow
         System.Array.Copy(samples, startSample, trimmedSamples, 0, trimSamples);
 
         // Apply fade-in and fade-out
-        int fadeInSampleCount = Mathf.FloorToInt(fadeStartDuration * clip.frequency * clip.channels);
+        int fadeInSampleCount = Mathf.FloorToInt(
+            fadeStartDuration * clip.frequency * clip.channels
+        );
         int fadeOutSampleCount = Mathf.FloorToInt(fadeEndDuration * clip.frequency * clip.channels);
 
         // Apply fade-in
@@ -184,7 +241,6 @@ public class AudioEditor : EditorWindow
         // Apply fade-out
         if (fadeEndDuration > 0)
         {
-
             // Ensure fade out does not exceed the length of the trimmed data
             int fadeOutStart = trimmedSamples.Length - fadeOutSampleCount;
 
@@ -201,7 +257,16 @@ public class AudioEditor : EditorWindow
         return trimmedSamples;
     }
 
-    private Texture2D DrawWaveform(AudioClip clip, int width, int height, Color waveformColor, float startTrim, float endTrim, float fadeStartDuration, float fadeEndDuration)
+    private Texture2D DrawWaveform(
+        AudioClip clip,
+        int width,
+        int height,
+        Color waveformColor,
+        float startTrim,
+        float endTrim,
+        float fadeStartDuration,
+        float fadeEndDuration
+    )
     {
         Texture2D texture = new Texture2D(width, height);
         float[] samples = new float[clip.samples * clip.channels];
@@ -219,7 +284,9 @@ public class AudioEditor : EditorWindow
         int trimSamples = endSample - startSample;
 
         // Calculate fade-in and fade-out sample ranges
-        int fadeInSampleCount = Mathf.FloorToInt(fadeStartDuration * clip.frequency * clip.channels);
+        int fadeInSampleCount = Mathf.FloorToInt(
+            fadeStartDuration * clip.frequency * clip.channels
+        );
         int fadeOutSampleCount = Mathf.FloorToInt(fadeEndDuration * clip.frequency * clip.channels);
 
         int packSize = (trimSamples / width) + 1; // Calculate packSize based on the trimmed range
@@ -238,18 +305,21 @@ public class AudioEditor : EditorWindow
                     int currentSampleIndex = startSample + (i * packSize);
                     if (currentSampleIndex < startSample + fadeInSampleCount)
                     {
-                        float fadeFactor = (float)(currentSampleIndex - startSample) / fadeInSampleCount;
+                        float fadeFactor =
+                            (float)(currentSampleIndex - startSample) / fadeInSampleCount;
                         wavePeak *= fadeFactor;
                     }
 
                     // Apply fade-out based on the exact sample range
                     if (currentSampleIndex > endSample - fadeOutSampleCount)
                     {
-                        float fadeFactor = (float)(endSample - currentSampleIndex) / fadeOutSampleCount;
+                        float fadeFactor =
+                            (float)(endSample - currentSampleIndex) / fadeOutSampleCount;
                         wavePeak *= fadeFactor;
                     }
 
-                    if (wavePeak > max) max = wavePeak;
+                    if (wavePeak > max)
+                        max = wavePeak;
                 }
             }
 
@@ -278,7 +348,9 @@ public class AudioEditor : EditorWindow
         float length = endTrim - startTrim;
         if (length <= 0)
         {
-            Debug.LogError("Invalid trim values. The end trim must be greater than the start trim.");
+            Debug.LogError(
+                "Invalid trim values. The end trim must be greater than the start trim."
+            );
             return;
         }
 
@@ -292,14 +364,26 @@ public class AudioEditor : EditorWindow
         }
 
         // Create trimmed and faded AudioClip
-        AudioClip trimmedClip = TrimAndFadeClip(audioClip, startTrim, length, fadeStartDuration, fadeEndDuration);
+        AudioClip trimmedClip = TrimAndFadeClip(
+            audioClip,
+            startTrim,
+            length,
+            fadeStartDuration,
+            fadeEndDuration
+        );
         SaveAsWav(trimmedClip, path);
 
         Debug.Log($"Trimmed and faded audio clip saved to {path}");
         AssetDatabase.Refresh();
     }
 
-    private AudioClip TrimAndFadeClip(AudioClip clip, float startTime, float length, float fadeStartDuration, float fadeEndDuration)
+    private AudioClip TrimAndFadeClip(
+        AudioClip clip,
+        float startTime,
+        float length,
+        float fadeStartDuration,
+        float fadeEndDuration
+    )
     {
         float[] data = new float[clip.samples * clip.channels];
         clip.GetData(data, 0);
@@ -313,7 +397,9 @@ public class AudioEditor : EditorWindow
         // Apply fade-in
         if (fadeStartDuration > 0)
         {
-            int fadeStartSamples = Mathf.FloorToInt(fadeStartDuration * clip.frequency * clip.channels);
+            int fadeStartSamples = Mathf.FloorToInt(
+                fadeStartDuration * clip.frequency * clip.channels
+            );
             for (int i = 0; i < fadeStartSamples && i < trimmedData.Length; i++)
             {
                 float fadeFactor = (float)i / fadeStartSamples;
@@ -324,7 +410,9 @@ public class AudioEditor : EditorWindow
         // Apply fade-out
         if (fadeEndDuration > 0)
         {
-            int fadeOutSampleCount = Mathf.FloorToInt(fadeEndDuration * clip.frequency * clip.channels);
+            int fadeOutSampleCount = Mathf.FloorToInt(
+                fadeEndDuration * clip.frequency * clip.channels
+            );
             // Ensure fade out does not exceed the length of the trimmed data
             int fadeOutStart = trimmedSamples.Length - fadeOutSampleCount;
 
@@ -338,7 +426,13 @@ public class AudioEditor : EditorWindow
             }
         }
 
-        AudioClip newClip = AudioClip.Create(clip.name + "_EDITED", trimmedData.Length / clip.channels, clip.channels, clip.frequency, false);
+        AudioClip newClip = AudioClip.Create(
+            clip.name + "_EDITED",
+            trimmedData.Length / clip.channels,
+            clip.channels,
+            clip.frequency,
+            false
+        );
         newClip.SetData(trimmedData, 0);
 
         return newClip;
@@ -356,3 +450,5 @@ public class AudioEditor : EditorWindow
         File.WriteAllBytes(path, wavData);
     }
 }
+
+#endif

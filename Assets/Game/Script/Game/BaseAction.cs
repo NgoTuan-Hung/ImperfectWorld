@@ -79,6 +79,11 @@ public class BaseAction : MonoEditor
         customMono.AnimatorWrapper.animator.SetBool(boolHash, value);
     }
 
+    public virtual void SetBlend(int blendHash, float value)
+    {
+        customMono.AnimatorWrapper.animator.SetFloat(blendHash, value);
+    }
+
     public virtual void AddActionManuals() { }
 
     public virtual bool GetBool(int boolHash) =>

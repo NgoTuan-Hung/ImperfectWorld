@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 98f3bba0a7728f04cadd88fdf57d5924, type: 3}
   m_Name: BlueHoleSO
   m_EditorClassIdentifier: 
-  animatorController: {fileID: -3590138356943333436, guid: 80f466de29ecf3b46b0c0c239f984567, type: 3}
+  runtimeAnimatorController: {fileID: -3590138356943333436, guid: 80f466de29ecf3b46b0c0c239f984567, type: 3}
   isDeactivateAfterTime: 1
   deactivateTime: 1
   isTimeline: 0
@@ -65,3 +65,5 @@ MonoBehaviour:
   collideAndDamageSO: {fileID: 0}
   audioSource: {fileID: 1880613459751742143, guid: 675b426528071d347894d480c3f5c9c1, type: 3}
   gameEffectPrefab: {fileID: 6038115191577900495, guid: 675b426528071d347894d480c3f5c9c1, type: 3}
+  useSecondarySpriteRenderer: 0
+  useTrailRenderer: 0

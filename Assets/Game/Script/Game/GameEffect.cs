@@ -174,7 +174,7 @@ public class GameEffect : MonoSelfAware
                 .sortingOrder;
         }
 
-        animator.runtimeAnimatorController = p_gameEffectSO.animatorController;
+        animator.runtimeAnimatorController = p_gameEffectSO.runtimeAnimatorController;
 
         if (p_gameEffectSO.isDeactivateAfterTime)
             StartCoroutine(DeactivateAfterTimeIE(p_gameEffectSO.deactivateTime));

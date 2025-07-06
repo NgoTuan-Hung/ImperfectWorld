@@ -66,11 +66,14 @@ public class GameManager : MonoSingleton<GameManager>
         scatterArrowSO,
         scatterChargeSO,
         attackColliderSO,
-        dieDissolveSO;
+        dieDissolveSO,
+        strongDudeShockwaveSO,
+        knockUpColliderSO;
     public int attackBoolHash = Animator.StringToHash("Attack"),
         mainSkill1BoolHash = Animator.StringToHash("MainSkill1"),
         mainSkill2BoolHash = Animator.StringToHash("MainSkill2"),
-        mainSkill3BoolHash = Animator.StringToHash("MainSkill3");
+        mainSkill3BoolHash = Animator.StringToHash("MainSkill3"),
+        mainSkill2BlendHash = Animator.StringToHash("MainSkill2Blend");
 
     public void InitializeControllableCharacter(CustomMono p_customMono)
     {
@@ -139,6 +142,10 @@ public class GameManager : MonoSingleton<GameManager>
 
     private void Start()
     {
+        /* Set the frame rate */
+        Application.targetFrameRate = 60;
+        QualitySettings.vSyncCount = 0;
+
         for (int i = 0; i < spawnEnemyInfos.Count; i++)
         {
             SpawnEnemyInfo t_spawnEnemyInfo = spawnEnemyInfos[i];

@@ -1,3 +1,4 @@
+#if UNITY_EDITOR
 using System;
 using UnityEditor;
 using UnityEditor.SceneManagement;
@@ -51,3 +52,4 @@ public class ExtensionsWindow : EditorWindow
         EditorGUI.EndDisabledGroup();
     }
 }
+#endif

@@ -452,7 +452,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0.01}
   m_SizeDelta: {x: 2960, y: 1440}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &110363459
@@ -817,10 +817,13 @@ MonoBehaviour:
   scatterChargeSO: {fileID: 11400000, guid: 1a44c9a2906ec2740878fc01672ba164, type: 2}
   attackColliderSO: {fileID: 11400000, guid: cc044e2fb5effb349b20034e34c5bd26, type: 2}
   dieDissolveSO: {fileID: 11400000, guid: 2288276caff2700459f20d78b94d1dd1, type: 2}
+  strongDudeShockwaveSO: {fileID: 11400000, guid: 63512b1a78708fe4fb8cc4d98a59c64d, type: 2}
+  knockUpColliderSO: {fileID: 11400000, guid: 3b4f3c50581126d4cb27088851ec2792, type: 2}
   attackBoolHash: 1080829965
   mainSkill1BoolHash: 745959408
   mainSkill2BoolHash: -1249952182
   mainSkill3BoolHash: -1032319268
+  mainSkill2BlendHash: -1359682362
 --- !u!1001 &141657759
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3358,6 +3361,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 1c867fbe8b471654dae0b5d9aa81b709, type: 2}
   - {fileID: 11400000, guid: 730d79ca45b10a1469e43dab9144eb57, type: 2}
   - {fileID: 11400000, guid: cacf79545d465a34695ad81cf358887f, type: 2}
+  - {fileID: 11400000, guid: dd1794df1df43ac449d8f473af16cc25, type: 2}
   skillBases: []
 --- !u!61 &889364767
 BoxCollider2D:

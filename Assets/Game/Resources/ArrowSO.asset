@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 98f3bba0a7728f04cadd88fdf57d5924, type: 3}
   m_Name: ArrowSO
   m_EditorClassIdentifier: 
-  animatorController: {fileID: -8042291596417985896, guid: f1659d88d469d9d49a4d203966c613af, type: 3}
+  runtimeAnimatorController: {fileID: -8042291596417985896, guid: f1659d88d469d9d49a4d203966c613af, type: 3}
   isDeactivateAfterTime: 1
   deactivateTime: 5
   isTimeline: 0
@@ -57,9 +57,13 @@ MonoBehaviour:
   timelineAsset: {fileID: 0}
   useBoxCollider: 1
   usePolygonCollider: 0
+  useCircleCollider: 0
   boxCollider2D: {fileID: 760658389573827821, guid: 342b08f5217c5b84493691b79af46d1a, type: 3}
   polygonCollider2D: {fileID: 0}
+  circleCollider2D: {fileID: 0}
   useBehaviour: 1
   collideAndDamageSO: {fileID: 11400000, guid: a25a432ccbb043840ae3d616e78b405c, type: 2}
   audioSource: {fileID: -854398111778407156, guid: 342b08f5217c5b84493691b79af46d1a, type: 3}
   gameEffectPrefab: {fileID: 3771280884400930949, guid: 342b08f5217c5b84493691b79af46d1a, type: 3}
+  useSecondarySpriteRenderer: 0
+  useTrailRenderer: 0

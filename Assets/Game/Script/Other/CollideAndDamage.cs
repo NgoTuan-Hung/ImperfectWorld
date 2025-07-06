@@ -31,6 +31,7 @@ public class CollideAndDamage : MonoEditor, IGameEffectBehaviour
     Action<CustomMono, Collider2D> onTriggerEnterWithAllyCM = (p_customMono, collider2D) => { };
     public Action<float> dealDamageEvent = (damageDealt) => { };
     public float pushEnemyOnCollideForce = 1f;
+    public Vector3 pushDirection = Vector3.zero;
     public float stunDuration;
     public float healAmmount;
     public PoisonInfo poisonInfo;
@@ -111,6 +112,11 @@ public class CollideAndDamage : MonoEditor, IGameEffectBehaviour
                         onTriggerEnterWithEnemyCM += PushEnemyBothSide;
                         break;
                     }
+                    case CollideAndDamageSO.PushEnemyOnCollideType.LaterDecide:
+                    {
+                        onTriggerEnterWithEnemyCM += PushEnemyLaterDecide;
+                        break;
+                    }
                     default:
                     {
                         break;
@@ -157,10 +163,9 @@ public class CollideAndDamage : MonoEditor, IGameEffectBehaviour
 
         #endregion
 
-        #region Handle Trigger Enter And Stay
+
         onTriggerEnter2D += OnTriggerEnter2DLogic;
         onTriggerStay2D += OnTriggerStay2DLogic;
-        #endregion
 
         if (p_collideAndDamageSO.spawnEffectOnCollide)
         {
@@ -178,6 +183,10 @@ public class CollideAndDamage : MonoEditor, IGameEffectBehaviour
             onTriggerEnterWithEnemyCM += DeactivateOnCollide;
     }
 
+    /// <summary>
+    /// Decide logic to apply for colliding with different types of object
+    /// </summary>
+    /// <param name="p_collider2D"></param>
     void OnTriggerEnter2DLogic(Collider2D p_collider2D)
     {
         if (p_collider2D.transform.parent != null)
@@ -200,6 +209,10 @@ public class CollideAndDamage : MonoEditor, IGameEffectBehaviour
         }
     }
 
+    /// <summary>
+    /// Decide logic to apply for colliding with different types of object
+    /// </summary>
+    /// <param name="p_collider2D"></param>
     void OnTriggerStay2DLogic(Collider2D p_collider2D)
     {
         if (p_collider2D.transform.parent != null)
@@ -264,6 +277,14 @@ public class CollideAndDamage : MonoEditor, IGameEffectBehaviour
             pushEnemyOnCollideForce
                 * (Random.Range(-1, 1) == 0 ? 1 : -1)
                 * transform.TransformDirection(Vector3.up).normalized,
+            ForceMode2D.Impulse
+        );
+    }
+
+    void PushEnemyLaterDecide(CustomMono p_customMono, Collider2D p_collider2D)
+    {
+        p_customMono.rigidbody2D.AddForce(
+            pushEnemyOnCollideForce * pushDirection.normalized,
             ForceMode2D.Impulse
         );
     }

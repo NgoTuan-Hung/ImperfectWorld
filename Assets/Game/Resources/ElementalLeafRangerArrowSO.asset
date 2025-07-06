@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 98f3bba0a7728f04cadd88fdf57d5924, type: 3}
   m_Name: ElementalLeafRangerArrowSO
   m_EditorClassIdentifier: 
-  animatorController: {fileID: 9100000, guid: 0861c7d630aabd24ba9a6546e9b726b5, type: 2}
+  runtimeAnimatorController: {fileID: 9100000, guid: 0861c7d630aabd24ba9a6546e9b726b5, type: 2}
   isDeactivateAfterTime: 1
   deactivateTime: 5
   isTimeline: 0
@@ -65,3 +65,5 @@ MonoBehaviour:
   collideAndDamageSO: {fileID: 11400000, guid: f4913fb034c86684584a8a7d6b8538e8, type: 2}
   audioSource: {fileID: 1499273822444370369, guid: 40729879bd178be4b8c90477c0b08d68, type: 3}
   gameEffectPrefab: {fileID: 4731918804945079599, guid: 40729879bd178be4b8c90477c0b08d68, type: 3}
+  useSecondarySpriteRenderer: 0
+  useTrailRenderer: 0

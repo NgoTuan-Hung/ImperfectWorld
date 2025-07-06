@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿#if UNITY_EDITOR
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
@@ -11,7 +12,7 @@ using System.Reflection;
 public class ReadmeEditor : Editor
 {
     static string s_ShowedReadmeSessionStateName = "ReadmeEditor.showedReadme";
-    
+
     static string s_ReadmeSourceDirectory = "Assets/TutorialInfo";
 
     const float k_Space = 16f;
@@ -23,11 +24,14 @@ public class ReadmeEditor : Editor
 
     static void RemoveTutorial()
     {
-        if (EditorUtility.DisplayDialog("Remove Readme Assets",
-            
-            $"All contents under {s_ReadmeSourceDirectory} will be removed, are you sure you want to proceed?",
-            "Proceed",
-            "Cancel"))
+        if (
+            EditorUtility.DisplayDialog(
+                "Remove Readme Assets",
+                $"All contents under {s_ReadmeSourceDirectory} will be removed, are you sure you want to proceed?",
+                "Proceed",
+                "Cancel"
+            )
+        )
         {
             if (Directory.Exists(s_ReadmeSourceDirectory))
             {
@@ -70,8 +74,14 @@ public class ReadmeEditor : Editor
     {
         var assembly = typeof(EditorApplication).Assembly;
         var windowLayoutType = assembly.GetType("UnityEditor.WindowLayout", true);
-        var method = windowLayoutType.GetMethod("LoadWindowLayout", BindingFlags.Public | BindingFlags.Static);
-        method.Invoke(null, new object[] { Path.Combine(Application.dataPath, "TutorialInfo/Layout.wlt"), false });
+        var method = windowLayoutType.GetMethod(
+            "LoadWindowLayout",
+            BindingFlags.Public | BindingFlags.Static
+        );
+        method.Invoke(
+            null,
+            new object[] { Path.Combine(Application.dataPath, "TutorialInfo/Layout.wlt"), false }
+        );
     }
 
     static Readme SelectReadme()
@@ -79,7 +89,9 @@ public class ReadmeEditor : Editor
         var ids = AssetDatabase.FindAssets("Readme t:Readme");
         if (ids.Length == 1)
         {
-            var readmeObject = AssetDatabase.LoadMainAssetAtPath(AssetDatabase.GUIDToAssetPath(ids[0]));
+            var readmeObject = AssetDatabase.LoadMainAssetAtPath(
+                AssetDatabase.GUIDToAssetPath(ids[0])
+            );
 
             Selection.objects = new UnityEngine.Object[] { readmeObject };
 
@@ -104,12 +116,15 @@ public class ReadmeEditor : Editor
             if (readme.icon != null)
             {
                 GUILayout.Space(k_Space);
-                GUILayout.Label(readme.icon, GUILayout.Width(iconWidth), GUILayout.Height(iconWidth));
+                GUILayout.Label(
+                    readme.icon,
+                    GUILayout.Width(iconWidth),
+                    GUILayout.Height(iconWidth)
+                );
             }
             GUILayout.Space(k_Space);
             GUILayout.BeginVertical();
             {
-
                 GUILayout.FlexibleSpace();
                 GUILayout.Label(readme.title, TitleStyle);
                 GUILayout.FlexibleSpace();
@@ -231,7 +246,10 @@ public class ReadmeEditor : Editor
 
         Handles.BeginGUI();
         Handles.color = LinkStyle.normal.textColor;
-        Handles.DrawLine(new Vector3(position.xMin, position.yMax), new Vector3(position.xMax, position.yMax));
+        Handles.DrawLine(
+            new Vector3(position.xMin, position.yMax),
+            new Vector3(position.xMax, position.yMax)
+        );
         Handles.color = Color.white;
         Handles.EndGUI();
 
@@ -240,3 +258,5 @@ public class ReadmeEditor : Editor
         return GUI.Button(position, label, LinkStyle);
     }
 }
+
+#endif

@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 98f3bba0a7728f04cadd88fdf57d5924, type: 3}
   m_Name: BladeOfPhongTornadoSO
   m_EditorClassIdentifier: 
-  animatorController: {fileID: 9100000, guid: 0aceefa726a205b41a84559daeeabd9d, type: 2}
+  runtimeAnimatorController: {fileID: 9100000, guid: 0aceefa726a205b41a84559daeeabd9d, type: 2}
   isDeactivateAfterTime: 1
   deactivateTime: 1.15
   isTimeline: 0
@@ -57,9 +57,13 @@ MonoBehaviour:
   timelineAsset: {fileID: 0}
   useBoxCollider: 1
   usePolygonCollider: 0
+  useCircleCollider: 0
   boxCollider2D: {fileID: 8317447770936760137, guid: c1e776f6e8b5ca3449fccfb8205add52, type: 3}
   polygonCollider2D: {fileID: 0}
+  circleCollider2D: {fileID: 0}
   useBehaviour: 1
   collideAndDamageSO: {fileID: 11400000, guid: d7a32808feaac074da5cfeca2bb7ffc2, type: 2}
   audioSource: {fileID: 4324445389995045442, guid: c1e776f6e8b5ca3449fccfb8205add52, type: 3}
   gameEffectPrefab: {fileID: 7706170964861164137, guid: c1e776f6e8b5ca3449fccfb8205add52, type: 3}
+  useSecondarySpriteRenderer: 0
+  useTrailRenderer: 0
