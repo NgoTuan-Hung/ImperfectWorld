@@ -3,6 +3,9 @@ using UnityEngine;
 
 public class PhantomPulse : SkillBase
 {
+    Vector3 enemyDirection;
+    CustomMono targetEnemy;
+
     public override void Awake()
     {
         base.Awake();
@@ -10,7 +13,7 @@ public class PhantomPulse : SkillBase
         damage = defaultDamage = 1f;
         /* In this skill, this will be the number of animation we will play,
         we want to reuse as many fields as possible */
-        maxAmmo = 3;
+        maxAmmo = 6;
         /* In this skill, this will be the portion each variation hold in blend tree. */
         modifiedAngle = 1f / (maxAmmo - 1);
         AddActionManuals();
@@ -79,12 +82,13 @@ public class PhantomPulse : SkillBase
         }
         else
         {
+            #region Skill variant
             /* In this skill, this will be the selected skill variation */
+            targetEnemy = customMono.currentNearestEnemy;
             currentAmmo = Random.Range(1, maxAmmo);
             SetBlend(GameManager.Instance.mainSkill2BlendHash, modifiedAngle * currentAmmo);
             transform.position =
-                customMono.currentNearestEnemy.transform.position
-                + new Vector3(Random.Range(-1, 1), 0, 0);
+                targetEnemy.transform.position + new Vector3(Random.Range(-1, 1), 0, 0);
 
             while (!customMono.animationEventFunctionCaller.mainSkill2Signal)
                 yield return new WaitForSeconds(Time.fixedDeltaTime);
@@ -92,7 +96,7 @@ public class PhantomPulse : SkillBase
             customMono.animationEventFunctionCaller.mainSkill2Signal = false;
             switch (currentAmmo)
             {
-                case 1:
+                case 1: // fire down
                 {
                     GameEffect t_shockwave = GameManager
                         .Instance.gameEffectPool.PickOne()
@@ -105,15 +109,22 @@ public class PhantomPulse : SkillBase
                     t_collideAndDamage.allyTags = customMono.allyTags;
                     t_collideAndDamage.collideDamage = damage;
                     t_collideAndDamage.pushDirection =
-                        customMono.currentNearestEnemy.rotationAndCenterObject.transform.position
+                        targetEnemy.rotationAndCenterObject.transform.position
                         - customMono.rotationAndCenterObject.transform.position;
                     t_shockwave.transform.parent = customMono.rotationAndCenterObject.transform;
                     t_shockwave.transform.localPosition = Vector3.zero;
 
                     break;
                 }
-                case 2:
+                case 2: // fire punch
                 {
+                    enemyDirection =
+                        targetEnemy.rotationAndCenterObject.transform.position
+                        - customMono.rotationAndCenterObject.transform.position;
+                    customMono.SetUpdateDirectionIndicator(
+                        enemyDirection,
+                        UpdateDirectionIndicatorPriority.Low
+                    );
                     GameEffect t_knockUpCollider = GameManager
                         .Instance.gameEffectPool.PickOne()
                         .gameEffect;
@@ -126,34 +137,85 @@ public class PhantomPulse : SkillBase
                     t_collideAndDamage.collideDamage = damage;
                     t_knockUpCollider.transform.position = customMono.firePoint.transform.position;
                     t_knockUpCollider.rigidbody2D.AddForce(
-                        (
-                            customMono
-                                .currentNearestEnemy
-                                .rotationAndCenterObject
-                                .transform
-                                .position - customMono.rotationAndCenterObject.transform.position
-                        ).normalized * 5f
+                        enemyDirection.normalized * 5f,
+                        ForceMode2D.Impulse
+                    );
+                    break;
+                }
+                case 3: // forward kick
+                {
+                    enemyDirection =
+                        targetEnemy.rotationAndCenterObject.transform.position
+                        - customMono.rotationAndCenterObject.transform.position;
+                    customMono.SetUpdateDirectionIndicator(
+                        enemyDirection,
+                        UpdateDirectionIndicatorPriority.Low
+                    );
+                    GameEffect t_pushRandomCollider = GameManager
+                        .Instance.gameEffectPool.PickOne()
+                        .gameEffect;
+                    var t_pushRandomColliderSO = GameManager.Instance.pushRandomColliderSO;
+                    t_pushRandomCollider.Init(t_pushRandomColliderSO);
+
+                    var t_collideAndDamage = (CollideAndDamage)
+                        t_pushRandomCollider.GetBehaviour(EGameEffectBehaviour.CollideAndDamage);
+                    t_collideAndDamage.allyTags = customMono.allyTags;
+                    t_collideAndDamage.collideDamage = damage;
+                    t_pushRandomCollider.transform.position = customMono
+                        .firePoint
+                        .transform
+                        .position;
+                    t_pushRandomCollider.rigidbody2D.AddForce(
+                        enemyDirection.normalized * 5f,
+                        ForceMode2D.Impulse
+                    );
+                    break;
+                }
+                case 4: // flash kame
+                {
+                    break;
+                }
+                case 5: // left kick
+                {
+                    enemyDirection =
+                        targetEnemy.rotationAndCenterObject.transform.position
+                        - customMono.rotationAndCenterObject.transform.position;
+                    customMono.SetUpdateDirectionIndicator(
+                        enemyDirection,
+                        UpdateDirectionIndicatorPriority.Low
+                    );
+                    GameEffect t_phantomPulseDragon = GameManager
+                        .Instance.gameEffectPool.PickOne()
+                        .gameEffect;
+                    var t_phantomPulseDragonSO = GameManager.Instance.phantomPulseDragonSO;
+                    t_phantomPulseDragon.Init(t_phantomPulseDragonSO);
+
+                    var t_collideAndDamage = (CollideAndDamage)
+                        t_phantomPulseDragon.GetBehaviour(EGameEffectBehaviour.CollideAndDamage);
+                    t_phantomPulseDragon
+                        .currentGameEffectSO
+                        .collideAndDamageSO
+                        .spawnedEffectOnCollide = customMono.meleeCollisionEffectSO;
+                    t_collideAndDamage.allyTags = customMono.allyTags;
+                    t_collideAndDamage.collideDamage = damage;
+                    t_phantomPulseDragon.transform.position = customMono
+                        .firePoint
+                        .transform
+                        .position;
+                    t_phantomPulseDragon.KeepFlyingAt(
+                        enemyDirection,
+                        t_phantomPulseDragonSO,
+                        EasingType.OutQuin
                     );
                     break;
                 }
                 default:
                     break;
             }
+            #endregion
+            #region End Skill variant
+            #endregion
         }
-
-        // while (!customMono.animationEventFunctionCaller.mainSkill2Signal)
-        //     yield return new WaitForSeconds(Time.fixedDeltaTime);
-
-        // customMono.animationEventFunctionCaller.mainSkill2Signal = false;
-        // GameEffect t_tornado = GameManager.Instance.gameEffectPool.PickOne().gameEffect;
-        // var t_tornadoSO = GameManager.Instance.bladeOfPhongTornadoEffectSO;
-        // t_tornado.Init(t_tornadoSO);
-        // var t_collideAndDamage = (CollideAndDamage)
-        //     t_tornado.GetBehaviour(EGameEffectBehaviour.CollideAndDamage);
-        // t_collideAndDamage.allyTags = customMono.allyTags;
-        // t_collideAndDamage.collideDamage = damage;
-        // t_tornado.transform.position = transform.position;
-        // t_tornado.KeepFlyingAt(p_direction, t_tornadoSO);
 
         while (!customMono.animationEventFunctionCaller.endMainSkill2)
             yield return new WaitForSeconds(Time.fixedDeltaTime);

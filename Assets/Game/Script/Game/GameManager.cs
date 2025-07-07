@@ -68,7 +68,9 @@ public class GameManager : MonoSingleton<GameManager>
         attackColliderSO,
         dieDissolveSO,
         strongDudeShockwaveSO,
-        knockUpColliderSO;
+        knockUpColliderSO,
+        pushRandomColliderSO,
+        phantomPulseDragonSO;
     public int attackBoolHash = Animator.StringToHash("Attack"),
         mainSkill1BoolHash = Animator.StringToHash("MainSkill1"),
         mainSkill2BoolHash = Animator.StringToHash("MainSkill2"),

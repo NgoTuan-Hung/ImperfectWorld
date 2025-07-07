@@ -10,18 +10,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 98f3bba0a7728f04cadd88fdf57d5924, type: 3}
-  m_Name: AttackColliderSO
+  m_Name: PushRandomColliderSO
   m_EditorClassIdentifier: 
   runtimeAnimatorController: {fileID: 0}
   isDeactivateAfterTime: 1
   deactivateTime: 0.2
   isTimeline: 0
   randomRotation: 0
-  flyAtSpeed: 0.03
+  flyAtSpeed: 0.2
   followOffset: {x: -0.8, y: 1.5, z: 0}
   followSlowlyPositionLerpTime: 0.04
   playSound: 0
-  effectLocalPosition: {x: 0, y: 0, z: 0}
+  effectLocalPosition: {x: -0.3357435, y: 0.03563553, z: 0}
   effectLocalRotation: {x: 0, y: 0, z: 0}
   isColoredOverLifetime: 0
   colorOverLifetimeGrad:
@@ -58,12 +58,12 @@ MonoBehaviour:
   useBoxCollider: 1
   usePolygonCollider: 0
   useCircleCollider: 0
-  boxCollider2D: {fileID: 5561530595569507496, guid: 32b1a3b3cf5ffac44b841b8e38178030, type: 3}
+  boxCollider2D: {fileID: 8176983392187647143, guid: b931462fe1decce41a7d32030136a527, type: 3}
   polygonCollider2D: {fileID: 0}
   circleCollider2D: {fileID: 0}
   useBehaviour: 1
-  collideAndDamageSO: {fileID: 11400000, guid: 541953a2aec0dc74f9f94201619a4f3e, type: 2}
-  audioSource: {fileID: 4635856369665607362, guid: 32b1a3b3cf5ffac44b841b8e38178030, type: 3}
-  gameEffectPrefab: {fileID: 5749882087382235026, guid: 32b1a3b3cf5ffac44b841b8e38178030, type: 3}
+  collideAndDamageSO: {fileID: 11400000, guid: c107991c7c041584585da22711870f51, type: 2}
+  audioSource: {fileID: 5574922048448142884, guid: b931462fe1decce41a7d32030136a527, type: 3}
+  gameEffectPrefab: {fileID: 6586401228094793217, guid: b931462fe1decce41a7d32030136a527, type: 3}
   useSecondarySpriteRenderer: 0
   useTrailRenderer: 0

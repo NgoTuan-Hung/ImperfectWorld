@@ -10,20 +10,20 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 98f3bba0a7728f04cadd88fdf57d5924, type: 3}
-  m_Name: AttackColliderSO
+  m_Name: PhantomPulseDragonSO
   m_EditorClassIdentifier: 
-  runtimeAnimatorController: {fileID: 0}
+  runtimeAnimatorController: {fileID: 8022472356091263955, guid: ec7fcb308f9fc3240a67e03b44479539, type: 3}
   isDeactivateAfterTime: 1
-  deactivateTime: 0.2
+  deactivateTime: 0.5
   isTimeline: 0
   randomRotation: 0
-  flyAtSpeed: 0.03
+  flyAtSpeed: 1
   followOffset: {x: -0.8, y: 1.5, z: 0}
   followSlowlyPositionLerpTime: 0.04
   playSound: 0
-  effectLocalPosition: {x: 0, y: 0, z: 0}
+  effectLocalPosition: {x: 0.8499999, y: -1.27, z: 0}
   effectLocalRotation: {x: 0, y: 0, z: 0}
-  isColoredOverLifetime: 0
+  isColoredOverLifetime: 1
   colorOverLifetimeGrad:
     serializedVersion: 2
     key0: {r: 1, g: 1, b: 1, a: 1}
@@ -43,8 +43,8 @@ MonoBehaviour:
     ctime6: 0
     ctime7: 0
     atime0: 0
-    atime1: 65535
-    atime2: 0
+    atime1: 13493
+    atime2: 65535
     atime3: 0
     atime4: 0
     atime5: 0
@@ -53,17 +53,17 @@ MonoBehaviour:
     m_Mode: 0
     m_ColorSpace: -1
     m_NumColorKeys: 2
-    m_NumAlphaKeys: 2
+    m_NumAlphaKeys: 3
   timelineAsset: {fileID: 0}
   useBoxCollider: 1
   usePolygonCollider: 0
   useCircleCollider: 0
-  boxCollider2D: {fileID: 5561530595569507496, guid: 32b1a3b3cf5ffac44b841b8e38178030, type: 3}
+  boxCollider2D: {fileID: 3371616314379228682, guid: 4e656b87722e49046823165675f9e377, type: 3}
   polygonCollider2D: {fileID: 0}
   circleCollider2D: {fileID: 0}
   useBehaviour: 1
-  collideAndDamageSO: {fileID: 11400000, guid: 541953a2aec0dc74f9f94201619a4f3e, type: 2}
-  audioSource: {fileID: 4635856369665607362, guid: 32b1a3b3cf5ffac44b841b8e38178030, type: 3}
-  gameEffectPrefab: {fileID: 5749882087382235026, guid: 32b1a3b3cf5ffac44b841b8e38178030, type: 3}
+  collideAndDamageSO: {fileID: 11400000, guid: 7016ddc78b3cdd94c8e76a7ef773c036, type: 2}
+  audioSource: {fileID: 4493332905785993574, guid: 4e656b87722e49046823165675f9e377, type: 3}
+  gameEffectPrefab: {fileID: 5635237588185928842, guid: 4e656b87722e49046823165675f9e377, type: 3}
   useSecondarySpriteRenderer: 0
   useTrailRenderer: 0

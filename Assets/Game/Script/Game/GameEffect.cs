@@ -2,9 +2,15 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Kryz.Tweening;
 using UnityEngine;
 using UnityEngine.Playables;
 using Random = UnityEngine.Random;
+
+public enum EasingType
+{
+    OutQuin,
+}
 
 public enum EGameEffectBehaviour
 {
@@ -28,6 +34,7 @@ public class GameEffect : MonoSelfAware
     public TrailRenderer trailRenderer;
     Dictionary<EGameEffectBehaviour, IGameEffectBehaviour> behaviours = new();
     public GameEffectSO currentGameEffectSO;
+    public Func<float, float> easingFunction;
 
     public override void Awake()
     {
@@ -286,6 +293,51 @@ public class GameEffect : MonoSelfAware
         {
             transform.position += direction;
             yield return new WaitForSeconds(Time.fixedDeltaTime);
+        }
+    }
+
+    public void KeepFlyingAt(
+        Vector3 p_direction,
+        GameEffectSO p_gameEffectSO,
+        EasingType p_easingType
+    )
+    {
+        StartCoroutine(KeepFlyingAtCoroutine(p_direction, p_gameEffectSO, p_easingType));
+    }
+
+    IEnumerator KeepFlyingAtCoroutine(
+        Vector3 p_direction,
+        GameEffectSO p_gameEffectSO,
+        EasingType p_easingType
+    )
+    {
+        switch (p_easingType)
+        {
+            case EasingType.OutQuin:
+                easingFunction = EasingFunctions.OutQuint;
+                break;
+            default:
+                yield break;
+        }
+
+        spriteRenderer.transform.localScale = spriteRenderer.transform.localScale.WithX(
+            spriteRenderer.transform.localScale.x > 0
+                ? spriteRenderer.transform.localScale.x
+                : -spriteRenderer.transform.localScale.x
+        );
+        transform.rotation = Quaternion.Euler(
+            0,
+            0,
+            Vector2.SignedAngle(Vector2.right, p_direction)
+        );
+        p_direction = p_direction.normalized * p_gameEffectSO.flyAtSpeed;
+        float currentTime = 0;
+        while (true)
+        {
+            transform.position +=
+                p_direction * (1 - easingFunction(currentTime / p_gameEffectSO.deactivateTime));
+            yield return new WaitForSeconds(Time.fixedDeltaTime);
+            currentTime += Time.fixedDeltaTime;
         }
     }
 
