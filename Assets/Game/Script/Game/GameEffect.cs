@@ -320,10 +320,8 @@ public class GameEffect : MonoSelfAware
                 yield break;
         }
 
-        spriteRenderer.transform.localScale = spriteRenderer.transform.localScale.WithX(
-            spriteRenderer.transform.localScale.x > 0
-                ? spriteRenderer.transform.localScale.x
-                : -spriteRenderer.transform.localScale.x
+        transform.localScale = transform.localScale.WithY(
+            p_direction.x > 0 ? transform.localScale.y : -transform.localScale.y
         );
         transform.rotation = Quaternion.Euler(
             0,

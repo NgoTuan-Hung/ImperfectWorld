@@ -125,9 +125,12 @@ public class BaseAction : MonoEditor
 
     public virtual void StopAndDisable()
     {
-        StopAllCoroutines();
         if (customMono.currentAction == this)
+        {
+            print(name);
             ActionInterrupt();
+        }
+        StopAllCoroutines();
     }
 
     public virtual void Trigger(Vector2 p_location = default, Vector2 p_direction = default) { }
