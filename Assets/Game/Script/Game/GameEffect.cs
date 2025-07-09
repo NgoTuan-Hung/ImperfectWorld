@@ -22,11 +22,9 @@ public enum EGameEffectBehaviour
 public class GameEffect : MonoSelfAware
 {
     public new Rigidbody2D rigidbody2D;
-    Animator animator;
     PlayableDirector playableDirector;
     AudioSource audioSource;
-    public SpriteRenderer spriteRenderer,
-        secondarySpriteRenderer;
+    public List<AnimateObject> animateObjects;
     public List<GameObject> trackReferences;
     public BoxCollider2D boxCollider2D;
     public PolygonCollider2D polygonCollider2D;
@@ -36,6 +34,11 @@ public class GameEffect : MonoSelfAware
     public GameEffectSO currentGameEffectSO;
     public Func<float, float> easingFunction;
 
+    private void Reset()
+    {
+        animateObjects = GetComponentsInChildren<AnimateObject>().ToList();
+    }
+
     public override void Awake()
     {
         base.Awake();
@@ -43,11 +46,6 @@ public class GameEffect : MonoSelfAware
         rigidbody2D = GetComponent<Rigidbody2D>();
         playableDirector = GetComponent<PlayableDirector>();
         audioSource = GetComponent<AudioSource>();
-        spriteRenderer = GetComponentInChildren<SpriteRenderer>();
-        animator = spriteRenderer.gameObject.GetComponent<Animator>();
-        secondarySpriteRenderer = spriteRenderer
-            .transform.Find("SecondarySpriteRenderer")
-            .gameObject.GetComponent<SpriteRenderer>();
         boxCollider2D = GetComponent<BoxCollider2D>();
         polygonCollider2D = GetComponent<PolygonCollider2D>();
         circleCollider2D = GetComponent<CircleCollider2D>();
@@ -121,67 +119,73 @@ public class GameEffect : MonoSelfAware
         boxCollider2D.enabled = false;
         polygonCollider2D.enabled = false;
         circleCollider2D.enabled = false;
-        secondarySpriteRenderer.sprite = null;
+        animateObjects.ForEach(aO =>
+        {
+            aO.animator.runtimeAnimatorController = null;
+            aO.spriteRenderer.sprite = null;
+            aO.gameObject.SetActive(false);
+        });
         trailRenderer.enabled = false;
     }
 
     void HandleGameEffect(GameEffectSO p_gameEffectSO)
     {
-        spriteRenderer.transform.SetLocalPositionAndRotation(
-            p_gameEffectSO.gameEffectPrefab.spriteRenderer.transform.localPosition,
-            p_gameEffectSO.gameEffectPrefab.spriteRenderer.transform.localRotation
-        );
-        spriteRenderer.transform.localScale = p_gameEffectSO
-            .gameEffectPrefab
-            .spriteRenderer
-            .transform
-            .localScale;
-        spriteRenderer.color = p_gameEffectSO.gameEffectPrefab.spriteRenderer.color;
-        spriteRenderer.spriteSortPoint = p_gameEffectSO
-            .gameEffectPrefab
-            .spriteRenderer
-            .spriteSortPoint;
-        spriteRenderer.material = p_gameEffectSO.gameEffectPrefab.spriteRenderer.sharedMaterial;
-        spriteRenderer.sortingLayerName = p_gameEffectSO
-            .gameEffectPrefab
-            .spriteRenderer
-            .sortingLayerName;
-        spriteRenderer.sortingOrder = p_gameEffectSO.gameEffectPrefab.spriteRenderer.sortingOrder;
-
-        if (p_gameEffectSO.useSecondarySpriteRenderer)
+        for (int i = 0; i < p_gameEffectSO.gameEffectPrefab.animateObjects.Count; i++)
         {
-            secondarySpriteRenderer.gameObject.transform.SetLocalPositionAndRotation(
-                p_gameEffectSO.gameEffectPrefab.secondarySpriteRenderer.transform.localPosition,
-                p_gameEffectSO.gameEffectPrefab.secondarySpriteRenderer.transform.localRotation
-            );
-            secondarySpriteRenderer.gameObject.transform.localScale = p_gameEffectSO
+            animateObjects[i].gameObject.SetActive(true);
+            animateObjects[i]
+                .spriteRenderer.transform.SetLocalPositionAndRotation(
+                    p_gameEffectSO
+                        .gameEffectPrefab
+                        .animateObjects[i]
+                        .spriteRenderer
+                        .transform
+                        .localPosition,
+                    p_gameEffectSO
+                        .gameEffectPrefab
+                        .animateObjects[i]
+                        .spriteRenderer
+                        .transform
+                        .localRotation
+                );
+            animateObjects[i].spriteRenderer.transform.localScale = p_gameEffectSO
                 .gameEffectPrefab
-                .secondarySpriteRenderer
+                .animateObjects[i]
+                .spriteRenderer
                 .transform
                 .localScale;
-            secondarySpriteRenderer.sprite = p_gameEffectSO
+            animateObjects[i].spriteRenderer.color = p_gameEffectSO
                 .gameEffectPrefab
-                .secondarySpriteRenderer
-                .sprite;
-            secondarySpriteRenderer.color = p_gameEffectSO
-                .gameEffectPrefab
-                .secondarySpriteRenderer
+                .animateObjects[i]
+                .spriteRenderer
                 .color;
-            secondarySpriteRenderer.material = p_gameEffectSO
+            animateObjects[i].spriteRenderer.spriteSortPoint = p_gameEffectSO
                 .gameEffectPrefab
-                .secondarySpriteRenderer
+                .animateObjects[i]
+                .spriteRenderer
+                .spriteSortPoint;
+            animateObjects[i].spriteRenderer.material = p_gameEffectSO
+                .gameEffectPrefab
+                .animateObjects[i]
+                .spriteRenderer
                 .sharedMaterial;
-            secondarySpriteRenderer.sortingLayerName = p_gameEffectSO
+            animateObjects[i].spriteRenderer.sortingLayerName = p_gameEffectSO
                 .gameEffectPrefab
-                .secondarySpriteRenderer
+                .animateObjects[i]
+                .spriteRenderer
                 .sortingLayerName;
-            secondarySpriteRenderer.sortingOrder = p_gameEffectSO
+            animateObjects[i].spriteRenderer.sortingOrder = p_gameEffectSO
                 .gameEffectPrefab
-                .secondarySpriteRenderer
+                .animateObjects[i]
+                .spriteRenderer
                 .sortingOrder;
-        }
 
-        animator.runtimeAnimatorController = p_gameEffectSO.runtimeAnimatorController;
+            animateObjects[i].animator.runtimeAnimatorController = p_gameEffectSO
+                .gameEffectPrefab
+                .animateObjects[i]
+                .animator
+                .runtimeAnimatorController;
+        }
 
         if (p_gameEffectSO.isDeactivateAfterTime)
             StartCoroutine(DeactivateAfterTimeIE(p_gameEffectSO.deactivateTime));
@@ -275,7 +279,11 @@ public class GameEffect : MonoSelfAware
         float currentTime = 0;
         while (currentTime < p_lifeTime)
         {
-            spriteRenderer.color = p_gradient.Evaluate(currentTime / p_lifeTime);
+            animateObjects.ForEach(aO =>
+            {
+                if (aO.gameObject.activeSelf)
+                    aO.spriteRenderer.color = p_gradient.Evaluate(currentTime / p_lifeTime);
+            });
             yield return new WaitForSeconds(Time.fixedDeltaTime);
             currentTime += Time.fixedDeltaTime;
         }

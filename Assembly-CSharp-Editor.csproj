@@ -66,10 +66,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\TutorialInfo\Scripts\Editor\ReadmeEditor.cs" />
+    <Compile Include="Assets\Game\Script\Editor\GameEffectPrefabModifier.cs" />
     <Compile Include="Assets\Game\Script\Editor\BotAttackInspector.cs" />
     <Compile Include="Assets\Game\Script\Editor\WavUtility.cs" />
     <Compile Include="Assets\Game\Script\Editor\AudioEditor.cs" />
     <Compile Include="Assets\Game\Script\Editor\StatInspector.cs" />
+    <Compile Include="Assets\Game\Script\Other\Editor\ListGameObject.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\CustomPackage\Dotween\Editor\DOTweenEditor.XML" />

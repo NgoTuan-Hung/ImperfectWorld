@@ -85,7 +85,7 @@ public class BladeOfVu : SkillBase
             GameEffect t_ghost = GameManager
                 .Instance.gameEffectPool.PickOne()
                 .gameEffect.Init(GameManager.Instance.ghostSO);
-            t_ghost.spriteRenderer.sprite = spriteList.sprites[
+            t_ghost.animateObjects[0].spriteRenderer.sprite = spriteList.sprites[
                 Random.Range(0, spriteList.sprites.Count)
             ];
 
@@ -93,7 +93,7 @@ public class BladeOfVu : SkillBase
                 transform.position
                 + new Vector3(Random.Range(-1, 1f), Random.Range(-0.5f, 1f), 0).normalized
                     * Random.Range(0, maxRange);
-            t_ghost.spriteRenderer.transform.localScale = transform.localScale.WithX(
+            t_ghost.animateObjects[0].transform.localScale = transform.localScale.WithX(
                 Random.Range(0, 2) == 0 ? -1 : 1
             );
 

@@ -1,18 +1,18 @@
 using System.Collections;
-using System.Collections.Generic;
+using Kryz.Tweening;
 using UnityEngine;
 
 public class DashSkill : SkillBase
 {
     public int totalEffect = 10;
-    public float dashAmmountPerFrame = 0.5f;
+    public float dashSpeed = 2f;
     public float effectLifeTime = 0.5f;
     public float spawnEffectInterval;
 
     public override void Awake()
     {
         base.Awake();
-        duration = 1f;
+        duration = 0.3f;
         cooldown = 8f;
 
         spawnEffectInterval = duration / totalEffect;
@@ -91,22 +91,26 @@ public class DashSkill : SkillBase
     public IEnumerator Dashing(Vector3 direction)
     {
         GameEffect gameEffect;
-        direction = direction.normalized * dashAmmountPerFrame;
+        direction = direction.normalized;
+
+        float currentTime = 0;
         for (int i = 0; i < totalEffect; i++)
         {
             gameEffect = GameManager
                 .Instance.gameEffectPool.PickOne()
                 .gameEffect.Init(GameManager.Instance.dashEffectSO);
-            gameEffect.spriteRenderer.sprite = customMono.spriteRenderer.sprite;
-            gameEffect.spriteRenderer.transform.localScale = customMono
+            gameEffect.animateObjects[0].spriteRenderer.sprite = customMono.spriteRenderer.sprite;
+            gameEffect.animateObjects[0].transform.localScale = customMono
                 .directionModifier
                 .transform
                 .localScale;
             gameEffect.transform.position = customMono.transform.position;
 
-            transform.position += direction;
+            transform.position +=
+                (1 - EasingFunctions.OutQuint(currentTime / duration)) * dashSpeed * direction;
 
             yield return new WaitForSeconds(spawnEffectInterval);
+            currentTime += spawnEffectInterval;
         }
 
         customMono.movementActionBlocking = false;

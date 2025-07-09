@@ -303,12 +303,14 @@ public class Stat : MonoEditor, INotifyBindablePropertyChanged
         GameEffect dieDissolveEffect = GameManager
             .Instance.gameEffectPool.PickOne()
             .gameEffect.Init(GameManager.Instance.dieDissolveSO);
-        dieDissolveEffect.spriteRenderer.transform.localScale = customMono
+        dieDissolveEffect.animateObjects[0].spriteRenderer.transform.localScale = customMono
             .directionModifier
             .transform
             .localScale;
-        dieDissolveEffect.spriteRenderer.sprite = customMono.spriteRenderer.sprite;
-        dieDissolveEffect.spriteRenderer.transform.position = transform.position;
+        dieDissolveEffect.animateObjects[0].spriteRenderer.sprite = customMono
+            .spriteRenderer
+            .sprite;
+        dieDissolveEffect.animateObjects[0].spriteRenderer.transform.position = transform.position;
         customMono.deactivate();
     }
 }
