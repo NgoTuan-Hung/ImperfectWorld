@@ -12,7 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 98f3bba0a7728f04cadd88fdf57d5924, type: 3}
   m_Name: BladeOfVuSlashSO
   m_EditorClassIdentifier: 
-  runtimeAnimatorController: {fileID: -4686171049448889741, guid: b672a39d912fc514b91a3c39745f952b, type: 3}
   isDeactivateAfterTime: 1
   deactivateTime: 0.56
   isTimeline: 1
@@ -55,15 +54,13 @@ MonoBehaviour:
     m_NumColorKeys: 2
     m_NumAlphaKeys: 2
   timelineAsset: {fileID: 11400000, guid: 4aea493a0cb3f7b4e972b56aa57b2e1a, type: 2}
-  useBoxCollider: 1
-  usePolygonCollider: 0
-  useCircleCollider: 0
-  boxCollider2D: {fileID: 1827643295456562105, guid: 0bba31e1ce2a0874c899a410a859a9f4, type: 3}
-  polygonCollider2D: {fileID: 0}
-  circleCollider2D: {fileID: 0}
   useBehaviour: 1
   collideAndDamageSO: {fileID: 11400000, guid: d66d77b6db9009b489c4c717d676426f, type: 2}
   audioSource: {fileID: 60357867960541645, guid: 0bba31e1ce2a0874c899a410a859a9f4, type: 3}
   gameEffectPrefab: {fileID: 3002554916039890506, guid: 0bba31e1ce2a0874c899a410a859a9f4, type: 3}
-  useSecondarySpriteRenderer: 0
   useTrailRenderer: 0
+  tag: Untagged
+  collisionExcludeLayerMask:
+    serializedVersion: 2
+    m_Bits: 247
+  gameEffectBehaviours: 01000000

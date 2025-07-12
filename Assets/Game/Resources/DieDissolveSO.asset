@@ -12,7 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 98f3bba0a7728f04cadd88fdf57d5924, type: 3}
   m_Name: DieDissolveSO
   m_EditorClassIdentifier: 
-  animatorController: {fileID: 0}
   isDeactivateAfterTime: 1
   deactivateTime: 1
   isTimeline: 1
@@ -55,15 +54,13 @@ MonoBehaviour:
     m_NumColorKeys: 2
     m_NumAlphaKeys: 2
   timelineAsset: {fileID: 11400000, guid: 53253c74a8b51b04e915668a79e94d9b, type: 2}
-  useBoxCollider: 0
-  usePolygonCollider: 0
-  useCircleCollider: 0
-  boxCollider2D: {fileID: 0}
-  polygonCollider2D: {fileID: 0}
-  circleCollider2D: {fileID: 0}
   useBehaviour: 0
   collideAndDamageSO: {fileID: 0}
   audioSource: {fileID: 2369425105305065740, guid: 0df707f2bfe248e4d904da2fc3b4175c, type: 3}
   gameEffectPrefab: {fileID: 4306178512850702461, guid: 0df707f2bfe248e4d904da2fc3b4175c, type: 3}
-  useSecondarySpriteRenderer: 0
   useTrailRenderer: 0
+  tag: Untagged
+  collisionExcludeLayerMask:
+    serializedVersion: 2
+    m_Bits: 247
+  gameEffectBehaviours: 

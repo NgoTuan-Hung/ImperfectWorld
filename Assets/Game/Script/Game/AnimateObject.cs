@@ -5,7 +5,7 @@ public class AnimateObject : MonoBehaviour
     public SpriteRenderer spriteRenderer;
     public Animator animator;
 
-    private void Reset()
+    public void Reset()
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
         animator = GetComponent<Animator>();

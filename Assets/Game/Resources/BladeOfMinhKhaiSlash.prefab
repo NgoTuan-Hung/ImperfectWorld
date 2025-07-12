@@ -1,5 +1,37 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &1377771382261367237
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3939946377972785335}
+  m_Layer: 0
+  m_Name: Colliders
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3939946377972785335
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1377771382261367237}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 4430759709959980411}
+  m_Father: {fileID: 5378686144706963492}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2344697217864791293
 GameObject:
   m_ObjectHideFlags: 0
@@ -125,7 +157,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   spriteRenderer: {fileID: 1356002372003358914}
   animator: {fileID: 2388011782819161204}
---- !u!1 &4673693971746413170
+--- !u!1 &4630508752993829769
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -133,96 +165,37 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 6128617589554716868}
-  m_Layer: 7
-  m_Name: AnimationObjects
+  - component: {fileID: 4430759709959980411}
+  - component: {fileID: 8298459874100972590}
+  m_Layer: 0
+  m_Name: PolygonCollider2D
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &6128617589554716868
+--- !u!4 &4430759709959980411
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4673693971746413170}
+  m_GameObject: {fileID: 4630508752993829769}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 2856105854231785118}
-  m_Father: {fileID: 5378686144706963492}
+  m_Children: []
+  m_Father: {fileID: 3939946377972785335}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &5572656088117030050
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 5378686144706963492}
-  - component: {fileID: 5755622420542195208}
-  - component: {fileID: 7296011020854645595}
-  - component: {fileID: 538698212361872511}
-  - component: {fileID: 2434842856849322529}
-  - component: {fileID: 419563130802282333}
-  - component: {fileID: 4829382557760687424}
-  m_Layer: 7
-  m_Name: BladeOfMinhKhaiSlash
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &5378686144706963492
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5572656088117030050}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.85, y: 0.2, z: -0.06830572}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 6128617589554716868}
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!320 &5755622420542195208
-PlayableDirector:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5572656088117030050}
-  m_Enabled: 1
-  serializedVersion: 3
-  m_PlayableAsset: {fileID: 11400000, guid: 6777d59c34c85d3409400f23f0646631, type: 2}
-  m_InitialState: 0
-  m_WrapMode: 2
-  m_DirectorUpdateMode: 1
-  m_InitialTime: 0
-  m_SceneBindings:
-  - key: {fileID: -7219810443720391852, guid: 6777d59c34c85d3409400f23f0646631, type: 2}
-    value: {fileID: 2388011782819161204}
-  - key: {fileID: -596131921789902617, guid: 6777d59c34c85d3409400f23f0646631, type: 2}
-    value: {fileID: 419563130802282333}
-  m_ExposedReferences:
-    m_References: []
---- !u!60 &7296011020854645595
+--- !u!60 &8298459874100972590
 PolygonCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5572656088117030050}
+  m_GameObject: {fileID: 4630508752993829769}
   m_Enabled: 1
   serializedVersion: 3
   m_Density: 1
@@ -274,6 +247,97 @@ PolygonCollider2D:
       - {x: 0.8265003, y: 0.59814286}
       - {x: 1.629508, y: 1.7915602}
   m_UseDelaunayMesh: 0
+--- !u!1 &4673693971746413170
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6128617589554716868}
+  m_Layer: 7
+  m_Name: AnimationObjects
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6128617589554716868
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4673693971746413170}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 2856105854231785118}
+  m_Father: {fileID: 5378686144706963492}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &5572656088117030050
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5378686144706963492}
+  - component: {fileID: 5755622420542195208}
+  - component: {fileID: 538698212361872511}
+  - component: {fileID: 2434842856849322529}
+  - component: {fileID: 419563130802282333}
+  - component: {fileID: 4829382557760687424}
+  m_Layer: 7
+  m_Name: BladeOfMinhKhaiSlash
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5378686144706963492
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5572656088117030050}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.85, y: 0.2, z: -0.06830572}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 6128617589554716868}
+  - {fileID: 3939946377972785335}
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!320 &5755622420542195208
+PlayableDirector:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5572656088117030050}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_PlayableAsset: {fileID: 11400000, guid: 6777d59c34c85d3409400f23f0646631, type: 2}
+  m_InitialState: 0
+  m_WrapMode: 2
+  m_DirectorUpdateMode: 1
+  m_InitialTime: 0
+  m_SceneBindings:
+  - key: {fileID: -7219810443720391852, guid: 6777d59c34c85d3409400f23f0646631, type: 2}
+    value: {fileID: 2388011782819161204}
+  - key: {fileID: -596131921789902617, guid: 6777d59c34c85d3409400f23f0646631, type: 2}
+    value: {fileID: 419563130802282333}
+  m_ExposedReferences:
+    m_References: []
 --- !u!82 &538698212361872511
 AudioSource:
   m_ObjectHideFlags: 0
@@ -384,8 +448,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rigidbody2D: {fileID: 0}
-  spriteRenderer: {fileID: 0}
-  secondarySpriteRenderer: {fileID: 0}
+  animateObjects: []
   trackReferences: []
   boxCollider2D: {fileID: 0}
   polygonCollider2D: {fileID: 0}
@@ -426,7 +489,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 19e58d24264fe2e49b0b652bf22ee2d4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spriteRenderer: {fileID: 1356002372003358914}
-  secondarySpriteRenderer: {fileID: 0}
   trailRenderer: {fileID: 0}
-  animateObjects: []
+  animateObjects:
+  - {fileID: 7518750093385835392}
+  boxCollider2Ds: []
+  circleCollider2Ds: []
+  polygonCollider2Ds:
+  - {fileID: 8298459874100972590}

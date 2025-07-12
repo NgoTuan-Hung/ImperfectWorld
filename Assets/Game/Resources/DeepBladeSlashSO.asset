@@ -12,7 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 98f3bba0a7728f04cadd88fdf57d5924, type: 3}
   m_Name: DeepBladeSlashSO
   m_EditorClassIdentifier: 
-  runtimeAnimatorController: {fileID: 9100000, guid: a492bb884e9b4db4cb64d8fa559c3a81, type: 2}
   isDeactivateAfterTime: 1
   deactivateTime: 0.2
   isTimeline: 0
@@ -55,15 +54,13 @@ MonoBehaviour:
     m_NumColorKeys: 2
     m_NumAlphaKeys: 2
   timelineAsset: {fileID: 0}
-  useBoxCollider: 0
-  usePolygonCollider: 1
-  useCircleCollider: 0
-  boxCollider2D: {fileID: 0}
-  polygonCollider2D: {fileID: 7250126006769831439, guid: 03b1314e8f9d7ff44a054db562e4d8da, type: 3}
-  circleCollider2D: {fileID: 0}
   useBehaviour: 1
   collideAndDamageSO: {fileID: 11400000, guid: 24f88f7ada1fbc841b39fb79d68a006d, type: 2}
   audioSource: {fileID: 7183057298956166368, guid: 03b1314e8f9d7ff44a054db562e4d8da, type: 3}
   gameEffectPrefab: {fileID: 7433524010219963589, guid: 03b1314e8f9d7ff44a054db562e4d8da, type: 3}
-  useSecondarySpriteRenderer: 0
   useTrailRenderer: 0
+  tag: Untagged
+  collisionExcludeLayerMask:
+    serializedVersion: 2
+    m_Bits: 247
+  gameEffectBehaviours: 01000000

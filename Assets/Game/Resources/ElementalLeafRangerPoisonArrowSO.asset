@@ -12,7 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 98f3bba0a7728f04cadd88fdf57d5924, type: 3}
   m_Name: ElementalLeafRangerPoisonArrowSO
   m_EditorClassIdentifier: 
-  runtimeAnimatorController: {fileID: 9100000, guid: 0861c7d630aabd24ba9a6546e9b726b5, type: 2}
   isDeactivateAfterTime: 1
   deactivateTime: 5
   isTimeline: 0
@@ -55,15 +54,13 @@ MonoBehaviour:
     m_NumColorKeys: 2
     m_NumAlphaKeys: 2
   timelineAsset: {fileID: 0}
-  useBoxCollider: 1
-  usePolygonCollider: 0
-  useCircleCollider: 0
-  boxCollider2D: {fileID: 7573690674128352387, guid: 5bddbd51e5dd53140a447b32a1b9d5ff, type: 3}
-  polygonCollider2D: {fileID: 0}
-  circleCollider2D: {fileID: 0}
   useBehaviour: 1
   collideAndDamageSO: {fileID: 11400000, guid: 7c9a85d377d7cbe41bd21702533f823d, type: 2}
   audioSource: {fileID: 6482824288899342359, guid: 5bddbd51e5dd53140a447b32a1b9d5ff, type: 3}
   gameEffectPrefab: {fileID: 4258999500486174112, guid: 5bddbd51e5dd53140a447b32a1b9d5ff, type: 3}
-  useSecondarySpriteRenderer: 1
   useTrailRenderer: 0
+  tag: Untagged
+  collisionExcludeLayerMask:
+    serializedVersion: 2
+    m_Bits: 247
+  gameEffectBehaviours: 01000000

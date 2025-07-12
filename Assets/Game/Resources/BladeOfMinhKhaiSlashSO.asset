@@ -12,7 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 98f3bba0a7728f04cadd88fdf57d5924, type: 3}
   m_Name: BladeOfMinhKhaiSlashSO
   m_EditorClassIdentifier: 
-  runtimeAnimatorController: {fileID: 9100000, guid: 3d7f00b93f38ae04c9247db07bb6a6a9, type: 2}
   isDeactivateAfterTime: 1
   deactivateTime: 0.203
   isTimeline: 1
@@ -55,15 +54,13 @@ MonoBehaviour:
     m_NumColorKeys: 2
     m_NumAlphaKeys: 2
   timelineAsset: {fileID: 11400000, guid: 6777d59c34c85d3409400f23f0646631, type: 2}
-  useBoxCollider: 0
-  usePolygonCollider: 1
-  useCircleCollider: 0
-  boxCollider2D: {fileID: 0}
-  polygonCollider2D: {fileID: 7296011020854645595, guid: 99e7d738407506c48a7d4738df34eb6e, type: 3}
-  circleCollider2D: {fileID: 0}
   useBehaviour: 1
   collideAndDamageSO: {fileID: 11400000, guid: 6a23fdc1aa8f8a94598471462f2bb41c, type: 2}
   audioSource: {fileID: 538698212361872511, guid: 99e7d738407506c48a7d4738df34eb6e, type: 3}
   gameEffectPrefab: {fileID: 4829382557760687424, guid: 99e7d738407506c48a7d4738df34eb6e, type: 3}
-  useSecondarySpriteRenderer: 0
   useTrailRenderer: 0
+  tag: Untagged
+  collisionExcludeLayerMask:
+    serializedVersion: 2
+    m_Bits: 247
+  gameEffectBehaviours: 01000000

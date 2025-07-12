@@ -61,6 +61,7 @@ public class GameManager : MonoSingleton<GameManager>
         swordTempestSlash2SO,
         swordTempestSlash3SO,
         dashEffectSO,
+        dashExplodeSO,
         magicLaserSO,
         moonSlashSO,
         scatterArrowSO,
@@ -72,12 +73,15 @@ public class GameManager : MonoSingleton<GameManager>
         pushRandomColliderSO,
         pushColliderSO,
         stunColliderSO,
-        phantomPulseDragonSO;
+        phantomPulseDragonSO,
+        infernalTideFlameSO,
+        infernalTideFlameNoReceiverSO;
     public int attackBoolHash = Animator.StringToHash("Attack"),
         mainSkill1BoolHash = Animator.StringToHash("MainSkill1"),
         mainSkill2BoolHash = Animator.StringToHash("MainSkill2"),
         mainSkill3BoolHash = Animator.StringToHash("MainSkill3"),
         mainSkill2BlendHash = Animator.StringToHash("MainSkill2Blend");
+    public Dictionary<int, GameObject> colliderOwner = new();
 
     public void InitializeControllableCharacter(CustomMono p_customMono)
     {

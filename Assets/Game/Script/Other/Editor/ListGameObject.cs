@@ -3,5 +3,5 @@ using UnityEngine;
 
 public class ListGameObject : ScriptableObject
 {
-    public List<GameObject> gameObjects = new();
+    public List<GameObject> gameObjects;
 }

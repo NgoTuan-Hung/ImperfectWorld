@@ -91,6 +91,14 @@ public class DashSkill : SkillBase
     public IEnumerator Dashing(Vector3 direction)
     {
         GameEffect gameEffect;
+        /* Dash explode vfx */
+        gameEffect = GameManager
+            .Instance.gameEffectPool.PickOne()
+            .gameEffect.Init(GameManager.Instance.dashExplodeSO);
+        customMono.rotationAndCenterObject.transform.localRotation = Quaternion.identity;
+        gameEffect.transform.parent = customMono.rotationAndCenterObject.transform;
+        gameEffect.transform.SetLocalPositionAndRotation(Vector3.zero, Quaternion.identity);
+
         direction = direction.normalized;
 
         float currentTime = 0;

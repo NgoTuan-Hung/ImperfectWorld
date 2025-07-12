@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEditor;
 using UnityEditor.UIElements;
 using UnityEngine;
@@ -21,11 +22,8 @@ public class GameEffectPrefabModifier : EditorWindow
 
     void CreateGUI()
     {
-        ObjectField objectField = new();
-        rootVisualElement.Add(objectField);
-
         var inspectorListView = new InspectorElement();
-        ListGameObject prefabs = new ListGameObject();
+        ListGameObject prefabs = CreateInstance<ListGameObject>();
         inspectorListView.Bind(new SerializedObject(prefabs));
         rootVisualElement.Add(inspectorListView);
 
@@ -34,7 +32,10 @@ public class GameEffectPrefabModifier : EditorWindow
         button.clicked += () =>
         {
             // Modify(((GameObject)objectField.value));
-            prefabs.gameObjects.ForEach(gO => Debug.Log(gO.name));
+            // prefabs.gameObjects.ForEach(gO => Modify(gO));
+            // prefabs.gameObjects.ForEach(gO => AddMissingAnimator(gO));
+            // prefabs.gameObjects.ForEach(gO => ChangeCollider(gO));
+            prefabs.gameObjects.ForEach(gO => ResetGameEffectPrefab(gO));
         };
         rootVisualElement.Add(button);
     }
@@ -52,12 +53,99 @@ public class GameEffectPrefabModifier : EditorWindow
         animateObjects.transform.localRotation = Quaternion.identity;
         animateObjects.transform.localScale = Vector3.one;
 
-        GameEffectPrefab gameEffectPrefab = p_gameObject.GetComponent<GameEffectPrefab>();
         SpriteRenderer spriteRenderer = p_gameObject.GetComponentInChildren<SpriteRenderer>();
         spriteRenderer.gameObject.name = "AnimateObject";
         spriteRenderer.transform.SetParent(animateObjects.transform, true);
         spriteRenderer.gameObject.AddComponent<AnimateObject>();
 
+        if (spriteRenderer.transform.childCount > 0)
+        {
+            GameObject secondarySpriteRenderer = spriteRenderer.transform.GetChild(0).gameObject;
+            secondarySpriteRenderer.name = "AnimateObject1";
+            secondarySpriteRenderer.transform.SetParent(animateObjects.transform, true);
+            secondarySpriteRenderer.AddComponent<Animator>();
+            secondarySpriteRenderer.AddComponent<AnimateObject>();
+        }
+
+        GameEffectPrefab gameEffectPrefab = p_gameObject.GetComponent<GameEffectPrefab>();
         gameEffectPrefab.Reset();
+    }
+
+    void AddMissingAnimator(GameObject p_gameObject)
+    {
+        using var editingScope = new PrefabUtility.EditPrefabContentsScope(
+            AssetDatabase.GetAssetPath(p_gameObject)
+        );
+        p_gameObject = editingScope.prefabContentsRoot;
+
+        SpriteRenderer spriteRenderer = p_gameObject.GetComponentInChildren<SpriteRenderer>();
+        if (spriteRenderer.GetComponent<Animator>() == null)
+        {
+            spriteRenderer.AddComponent<Animator>();
+            spriteRenderer.gameObject.GetComponent<AnimateObject>().Reset();
+        }
+    }
+
+    void ChangeCollider(GameObject p_gameObject)
+    {
+        using var editingScope = new PrefabUtility.EditPrefabContentsScope(
+            AssetDatabase.GetAssetPath(p_gameObject)
+        );
+        p_gameObject = editingScope.prefabContentsRoot;
+
+        GameObject colliders = new("Colliders");
+        colliders.transform.SetParent(p_gameObject.transform);
+        colliders.transform.SetLocalPositionAndRotation(Vector3.zero, Quaternion.identity);
+
+        BoxCollider2D currentBC = p_gameObject.GetComponent<BoxCollider2D>();
+        if (currentBC != null)
+        {
+            GameObject newBCGO = new("BoxCollider2D");
+            newBCGO.transform.SetParent(colliders.transform);
+            newBCGO.transform.SetLocalPositionAndRotation(Vector3.zero, Quaternion.identity);
+            BoxCollider2D newBC = newBCGO.AddComponent<BoxCollider2D>();
+            newBC.isTrigger = true;
+            newBC.offset = currentBC.offset;
+            newBC.size = currentBC.size;
+
+            DestroyImmediate(currentBC);
+        }
+
+        PolygonCollider2D currentPC = p_gameObject.GetComponent<PolygonCollider2D>();
+        if (currentPC != null)
+        {
+            GameObject newPCGO = new("PolygonCollider2D");
+            newPCGO.transform.SetParent(colliders.transform);
+            newPCGO.transform.SetLocalPositionAndRotation(Vector3.zero, Quaternion.identity);
+            PolygonCollider2D newBC = newPCGO.AddComponent<PolygonCollider2D>();
+            newBC.isTrigger = true;
+            newBC.offset = currentPC.offset;
+            newBC.points = currentPC.points;
+
+            DestroyImmediate(currentPC);
+        }
+
+        CircleCollider2D currentCC = p_gameObject.GetComponent<CircleCollider2D>();
+        if (currentCC != null)
+        {
+            GameObject newCCGO = new("CircleCollider2D");
+            newCCGO.transform.SetParent(colliders.transform);
+            newCCGO.transform.SetLocalPositionAndRotation(Vector3.zero, Quaternion.identity);
+            CircleCollider2D newCC = newCCGO.AddComponent<CircleCollider2D>();
+            newCC.isTrigger = true;
+            newCC.offset = currentCC.offset;
+            newCC.radius = currentCC.radius;
+
+            DestroyImmediate(currentCC);
+        }
+    }
+
+    void ResetGameEffectPrefab(GameObject p_gameObject)
+    {
+        using var editingScope = new PrefabUtility.EditPrefabContentsScope(
+            AssetDatabase.GetAssetPath(p_gameObject)
+        );
+        p_gameObject = editingScope.prefabContentsRoot;
+        p_gameObject.GetComponent<GameEffectPrefab>()?.Reset();
     }
 }

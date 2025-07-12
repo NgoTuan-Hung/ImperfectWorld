@@ -17,6 +17,7 @@ public enum EGameEffectBehaviour
     None,
     CollideAndDamage,
     BlueHole,
+    InfernalTideFanReceiver,
 }
 
 public class GameEffect : MonoSelfAware
@@ -26,32 +27,43 @@ public class GameEffect : MonoSelfAware
     AudioSource audioSource;
     public List<AnimateObject> animateObjects;
     public List<GameObject> trackReferences;
-    public BoxCollider2D boxCollider2D;
-    public PolygonCollider2D polygonCollider2D;
-    public CircleCollider2D circleCollider2D;
     public TrailRenderer trailRenderer;
     Dictionary<EGameEffectBehaviour, IGameEffectBehaviour> behaviours = new();
     public GameEffectSO currentGameEffectSO;
     public Func<float, float> easingFunction;
-
-    private void Reset()
-    {
-        animateObjects = GetComponentsInChildren<AnimateObject>().ToList();
-    }
+    public List<BoxCollider2D> boxCollider2Ds = new();
+    public List<CircleCollider2D> circleCollider2Ds = new();
+    public List<PolygonCollider2D> polygonCollider2Ds = new();
 
     public override void Awake()
     {
         base.Awake();
 
+        animateObjects = GetComponentsInChildren<AnimateObject>().ToList();
         rigidbody2D = GetComponent<Rigidbody2D>();
         playableDirector = GetComponent<PlayableDirector>();
         audioSource = GetComponent<AudioSource>();
-        boxCollider2D = GetComponent<BoxCollider2D>();
-        polygonCollider2D = GetComponent<PolygonCollider2D>();
-        circleCollider2D = GetComponent<CircleCollider2D>();
         trailRenderer = GetComponent<TrailRenderer>();
 
+        GetAllColliders();
         GetAllBehaviours();
+    }
+
+    void GetAllColliders()
+    {
+        boxCollider2Ds = GetComponentsInChildren<BoxCollider2D>().ToList();
+        circleCollider2Ds = GetComponentsInChildren<CircleCollider2D>().ToList();
+        polygonCollider2Ds = GetComponentsInChildren<PolygonCollider2D>().ToList();
+
+        boxCollider2Ds.ForEach(bC =>
+            GameManager.Instance.colliderOwner.Add(bC.GetHashCode(), gameObject)
+        );
+        circleCollider2Ds.ForEach(cC =>
+            GameManager.Instance.colliderOwner.Add(cC.GetHashCode(), gameObject)
+        );
+        polygonCollider2Ds.ForEach(pC =>
+            GameManager.Instance.colliderOwner.Add(pC.GetHashCode(), gameObject)
+        );
     }
 
     void GetAllBehaviours()
@@ -82,20 +94,28 @@ public class GameEffect : MonoSelfAware
         HandleGameEffect(p_gameEffectSO);
 
         /* Turn on behavior */
-        switch (p_gameEffectSO.useBehaviour)
+        foreach (var behaviour in p_gameEffectSO.gameEffectBehaviours)
         {
-            case EGameEffectBehaviour.CollideAndDamage:
+            switch (behaviour)
             {
-                behaviours[EGameEffectBehaviour.CollideAndDamage].Enable(p_gameEffectSO);
-                break;
+                case EGameEffectBehaviour.CollideAndDamage:
+                {
+                    behaviours[EGameEffectBehaviour.CollideAndDamage].Enable(p_gameEffectSO);
+                    break;
+                }
+                case EGameEffectBehaviour.BlueHole:
+                {
+                    behaviours[EGameEffectBehaviour.BlueHole].Enable(p_gameEffectSO);
+                    break;
+                }
+                case EGameEffectBehaviour.InfernalTideFanReceiver:
+                {
+                    behaviours[EGameEffectBehaviour.InfernalTideFanReceiver].Enable(p_gameEffectSO);
+                    break;
+                }
+                default:
+                    break;
             }
-            case EGameEffectBehaviour.BlueHole:
-            {
-                behaviours[EGameEffectBehaviour.BlueHole].Enable(p_gameEffectSO);
-                break;
-            }
-            default:
-                break;
         }
 
         return this;
@@ -116,9 +136,6 @@ public class GameEffect : MonoSelfAware
         transform.rotation = Quaternion.identity;
         transform.localScale = Vector3.one;
 
-        boxCollider2D.enabled = false;
-        polygonCollider2D.enabled = false;
-        circleCollider2D.enabled = false;
         animateObjects.ForEach(aO =>
         {
             aO.animator.runtimeAnimatorController = null;
@@ -130,6 +147,9 @@ public class GameEffect : MonoSelfAware
 
     void HandleGameEffect(GameEffectSO p_gameEffectSO)
     {
+        gameObject.tag = p_gameEffectSO.tag;
+        rigidbody2D.excludeLayers = p_gameEffectSO.collisionExcludeLayerMask;
+
         for (int i = 0; i < p_gameEffectSO.gameEffectPrefab.animateObjects.Count; i++)
         {
             animateObjects[i].gameObject.SetActive(true);
@@ -204,27 +224,59 @@ public class GameEffect : MonoSelfAware
                 p_gameEffectSO.deactivateTime
             );
 
-        /* Handle colliders */
-        if (p_gameEffectSO.useBoxCollider)
+        #region Colliders Handler
+        for (int i = 0; i < p_gameEffectSO.gameEffectPrefab.boxCollider2Ds.Count; i++)
         {
-            boxCollider2D.enabled = true;
-            boxCollider2D.offset = p_gameEffectSO.boxCollider2D.offset;
-            boxCollider2D.size = p_gameEffectSO.boxCollider2D.size;
+            boxCollider2Ds[i].gameObject.SetActive(true);
+            boxCollider2Ds[i].offset = p_gameEffectSO.gameEffectPrefab.boxCollider2Ds[i].offset;
+            boxCollider2Ds[i].size = p_gameEffectSO.gameEffectPrefab.boxCollider2Ds[i].size;
         }
+        for (
+            int i = p_gameEffectSO.gameEffectPrefab.boxCollider2Ds.Count;
+            i < boxCollider2Ds.Count;
+            i++
+        )
+            boxCollider2Ds[i].gameObject.SetActive(false);
 
-        if (p_gameEffectSO.usePolygonCollider)
+        for (int i = 0; i < p_gameEffectSO.gameEffectPrefab.circleCollider2Ds.Count; i++)
         {
-            polygonCollider2D.enabled = true;
-            polygonCollider2D.offset = p_gameEffectSO.polygonCollider2D.offset;
-            polygonCollider2D.points = p_gameEffectSO.polygonCollider2D.points;
+            circleCollider2Ds[i].gameObject.SetActive(true);
+            circleCollider2Ds[i].offset = p_gameEffectSO
+                .gameEffectPrefab
+                .circleCollider2Ds[i]
+                .offset;
+            circleCollider2Ds[i].radius = p_gameEffectSO
+                .gameEffectPrefab
+                .circleCollider2Ds[i]
+                .radius;
         }
+        for (
+            int i = p_gameEffectSO.gameEffectPrefab.circleCollider2Ds.Count;
+            i < circleCollider2Ds.Count;
+            i++
+        )
+            circleCollider2Ds[i].gameObject.SetActive(false);
 
-        if (p_gameEffectSO.useCircleCollider)
+        for (int i = 0; i < p_gameEffectSO.gameEffectPrefab.polygonCollider2Ds.Count; i++)
         {
-            circleCollider2D.enabled = true;
-            circleCollider2D.offset = p_gameEffectSO.circleCollider2D.offset;
-            circleCollider2D.radius = p_gameEffectSO.circleCollider2D.radius;
+            polygonCollider2Ds[i].gameObject.SetActive(true);
+            polygonCollider2Ds[i].offset = p_gameEffectSO
+                .gameEffectPrefab
+                .polygonCollider2Ds[i]
+                .offset;
+            polygonCollider2Ds[i].points = p_gameEffectSO
+                .gameEffectPrefab
+                .polygonCollider2Ds[i]
+                .points;
         }
+        for (
+            int i = p_gameEffectSO.gameEffectPrefab.polygonCollider2Ds.Count;
+            i < polygonCollider2Ds.Count;
+            i++
+        )
+            polygonCollider2Ds[i].gameObject.SetActive(false);
+
+        #endregion
 
         if (p_gameEffectSO.useTrailRenderer)
         {

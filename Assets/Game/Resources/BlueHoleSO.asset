@@ -12,7 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 98f3bba0a7728f04cadd88fdf57d5924, type: 3}
   m_Name: BlueHoleSO
   m_EditorClassIdentifier: 
-  runtimeAnimatorController: {fileID: -3590138356943333436, guid: 80f466de29ecf3b46b0c0c239f984567, type: 3}
   isDeactivateAfterTime: 1
   deactivateTime: 1
   isTimeline: 0
@@ -55,15 +54,13 @@ MonoBehaviour:
     m_NumColorKeys: 2
     m_NumAlphaKeys: 2
   timelineAsset: {fileID: 0}
-  useBoxCollider: 0
-  usePolygonCollider: 0
-  useCircleCollider: 1
-  boxCollider2D: {fileID: 0}
-  polygonCollider2D: {fileID: 0}
-  circleCollider2D: {fileID: 5411925876366773261, guid: 675b426528071d347894d480c3f5c9c1, type: 3}
   useBehaviour: 2
   collideAndDamageSO: {fileID: 0}
   audioSource: {fileID: 1880613459751742143, guid: 675b426528071d347894d480c3f5c9c1, type: 3}
   gameEffectPrefab: {fileID: 6038115191577900495, guid: 675b426528071d347894d480c3f5c9c1, type: 3}
-  useSecondarySpriteRenderer: 0
   useTrailRenderer: 0
+  tag: Untagged
+  collisionExcludeLayerMask:
+    serializedVersion: 2
+    m_Bits: 247
+  gameEffectBehaviours: 02000000
