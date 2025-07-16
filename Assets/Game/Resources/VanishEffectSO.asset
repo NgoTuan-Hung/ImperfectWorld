@@ -12,7 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 98f3bba0a7728f04cadd88fdf57d5924, type: 3}
   m_Name: VanishEffectSO
   m_EditorClassIdentifier: 
-  runtimeAnimatorController: {fileID: 4919151505799676470, guid: cc72d1d9834d2034abd2c03d73793b45, type: 3}
   isDeactivateAfterTime: 1
   deactivateTime: 0.15
   isTimeline: 0
@@ -55,15 +54,12 @@ MonoBehaviour:
     m_NumColorKeys: 2
     m_NumAlphaKeys: 2
   timelineAsset: {fileID: 0}
-  useBoxCollider: 0
-  usePolygonCollider: 0
-  useCircleCollider: 0
-  boxCollider2D: {fileID: 0}
-  polygonCollider2D: {fileID: 0}
-  circleCollider2D: {fileID: 0}
-  useBehaviour: 0
   collideAndDamageSO: {fileID: 0}
   audioSource: {fileID: 7676635675797615492, guid: c8231141441ba38408a8ee9174b373bb, type: 3}
   gameEffectPrefab: {fileID: 5421726445149963675, guid: c8231141441ba38408a8ee9174b373bb, type: 3}
-  useSecondarySpriteRenderer: 0
   useTrailRenderer: 0
+  tag: Untagged
+  collisionExcludeLayerMask:
+    serializedVersion: 2
+    m_Bits: 247
+  gameEffectBehaviours: 

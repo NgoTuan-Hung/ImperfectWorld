@@ -6,7 +6,7 @@ AnimationClip:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Quick_Charge_And_Fire
+  m_Name: InfernalTide
   serializedVersion: 7
   m_Legacy: 0
   m_Compressed: 0
@@ -38,8 +38,14 @@ AnimationClip:
       value: {fileID: 7532882158563838362, guid: f39e34ba1da4a7c4b85c948d926f8210, type: 3}
     - time: 0.8000002
       value: {fileID: 7832023106306928733, guid: f39e34ba1da4a7c4b85c948d926f8210, type: 3}
-    - time: 0.8900002
-      value: {fileID: 7832023106306928733, guid: f39e34ba1da4a7c4b85c948d926f8210, type: 3}
+    - time: 0.9
+      value: {fileID: -896057456419211863, guid: f39e34ba1da4a7c4b85c948d926f8210, type: 3}
+    - time: 1.1
+      value: {fileID: -3910174268468793215, guid: f39e34ba1da4a7c4b85c948d926f8210, type: 3}
+    - time: 1.2
+      value: {fileID: -2326646844855075538, guid: f39e34ba1da4a7c4b85c948d926f8210, type: 3}
+    - time: 1.29
+      value: {fileID: -2326646844855075538, guid: f39e34ba1da4a7c4b85c948d926f8210, type: 3}
     attribute: m_Sprite
     path: 
     classID: 212
@@ -71,13 +77,16 @@ AnimationClip:
     - {fileID: -8356831244518377347, guid: f39e34ba1da4a7c4b85c948d926f8210, type: 3}
     - {fileID: 7532882158563838362, guid: f39e34ba1da4a7c4b85c948d926f8210, type: 3}
     - {fileID: 7832023106306928733, guid: f39e34ba1da4a7c4b85c948d926f8210, type: 3}
-    - {fileID: 7832023106306928733, guid: f39e34ba1da4a7c4b85c948d926f8210, type: 3}
+    - {fileID: -896057456419211863, guid: f39e34ba1da4a7c4b85c948d926f8210, type: 3}
+    - {fileID: -3910174268468793215, guid: f39e34ba1da4a7c4b85c948d926f8210, type: 3}
+    - {fileID: -2326646844855075538, guid: f39e34ba1da4a7c4b85c948d926f8210, type: 3}
+    - {fileID: -2326646844855075538, guid: f39e34ba1da4a7c4b85c948d926f8210, type: 3}
   m_AnimationClipSettings:
     serializedVersion: 2
     m_AdditiveReferencePoseClip: {fileID: 0}
     m_AdditiveReferencePoseTime: 0
     m_StartTime: 0
-    m_StopTime: 0.9000002
+    m_StopTime: 1.3
     m_OrientationOffsetY: 0
     m_Level: 0
     m_CycleOffset: 0
@@ -104,8 +113,15 @@ AnimationClip:
     floatParameter: 0
     intParameter: 0
     messageOptions: 0
-  - time: 0.89
+  - time: 1.1
     functionName: MainSkill3Signal
+    data: 
+    objectReferenceParameter: {fileID: 0}
+    floatParameter: 0
+    intParameter: 0
+    messageOptions: 0
+  - time: 1.19
+    functionName: EndMainSkill3
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0

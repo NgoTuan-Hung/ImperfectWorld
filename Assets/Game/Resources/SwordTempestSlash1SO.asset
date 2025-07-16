@@ -12,7 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 98f3bba0a7728f04cadd88fdf57d5924, type: 3}
   m_Name: SwordTempestSlash1SO
   m_EditorClassIdentifier: 
-  runtimeAnimatorController: {fileID: -8478143265813073305, guid: 46d908b49eb169040bce0a93c6c8f3e0, type: 3}
   isDeactivateAfterTime: 1
   deactivateTime: 0.27
   isTimeline: 0
@@ -55,15 +54,12 @@ MonoBehaviour:
     m_NumColorKeys: 2
     m_NumAlphaKeys: 2
   timelineAsset: {fileID: 0}
-  useBoxCollider: 0
-  usePolygonCollider: 1
-  useCircleCollider: 0
-  boxCollider2D: {fileID: 0}
-  polygonCollider2D: {fileID: 2526826503493738874, guid: acb51ca5996ab584b93253a13a25421d, type: 3}
-  circleCollider2D: {fileID: 0}
-  useBehaviour: 1
   collideAndDamageSO: {fileID: 11400000, guid: 666a151d1f29b864b964146846da4426, type: 2}
   audioSource: {fileID: 3043240207491260681, guid: acb51ca5996ab584b93253a13a25421d, type: 3}
   gameEffectPrefab: {fileID: 8038004898374428783, guid: acb51ca5996ab584b93253a13a25421d, type: 3}
-  useSecondarySpriteRenderer: 0
   useTrailRenderer: 0
+  tag: Untagged
+  collisionExcludeLayerMask:
+    serializedVersion: 2
+    m_Bits: 247
+  gameEffectBehaviours: 01000000

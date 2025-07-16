@@ -33,4 +33,6 @@ public static class VectorExtension
     {
         return new Vector3(vector2.x, vector2.y, z);
     }
+
+    public static Vector3 AsVector3(this Vector2 vector2) => (Vector3)vector2;
 }

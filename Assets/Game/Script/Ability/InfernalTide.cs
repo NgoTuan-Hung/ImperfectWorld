@@ -69,6 +69,25 @@ public class InfernalTide : SkillBase
         customMono.animationEventFunctionCaller.mainSkill3Signal = false;
         StartCoroutine(SpawnFlameIE(p_direction));
 
+        customMono.SetUpdateDirectionIndicator(p_direction, UpdateDirectionIndicatorPriority.Low);
+        while (!customMono.animationEventFunctionCaller.mainSkill3Signal)
+            yield return new WaitForSeconds(Time.fixedDeltaTime);
+
+        customMono.animationEventFunctionCaller.mainSkill3Signal = false;
+
+        transform.position -= p_direction.normalized * 1.5f;
+        CollideAndDamage t_fan =
+            GameManager
+                .Instance.gameEffectPool.PickOne()
+                .gameEffect.Init(GameManager.Instance.infernalTideFanSO)
+                .GetBehaviour(EGameEffectBehaviour.CollideAndDamage) as CollideAndDamage;
+        t_fan.allyTags = customMono.allyTags;
+        t_fan.collideDamage = damage * 10;
+        t_fan.transform.SetPositionAndRotation(
+            customMono.firePoint.transform.position,
+            Quaternion.Euler(0, 0, Vector2.SignedAngle(Vector2.right, p_direction))
+        );
+
         while (!customMono.animationEventFunctionCaller.endMainSkill3)
             yield return new WaitForSeconds(Time.fixedDeltaTime);
 

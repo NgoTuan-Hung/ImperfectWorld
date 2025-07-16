@@ -12,7 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 98f3bba0a7728f04cadd88fdf57d5924, type: 3}
   m_Name: LightingForwardLightingSO
   m_EditorClassIdentifier: 
-  runtimeAnimatorController: {fileID: 9100000, guid: ad81c93319e05b84c91789c64edde9fd, type: 2}
   isDeactivateAfterTime: 1
   deactivateTime: 0.35
   isTimeline: 0
@@ -55,15 +54,12 @@ MonoBehaviour:
     m_NumColorKeys: 2
     m_NumAlphaKeys: 2
   timelineAsset: {fileID: 0}
-  useBoxCollider: 1
-  usePolygonCollider: 0
-  useCircleCollider: 0
-  boxCollider2D: {fileID: 3409051452120777953, guid: dcf3eed13eec5c04086ff70bdf50d154, type: 3}
-  polygonCollider2D: {fileID: 0}
-  circleCollider2D: {fileID: 0}
-  useBehaviour: 1
   collideAndDamageSO: {fileID: 11400000, guid: 7acf1df532491ec4abf87f7be8a5660f, type: 2}
   audioSource: {fileID: 1985199941881890259, guid: dcf3eed13eec5c04086ff70bdf50d154, type: 3}
   gameEffectPrefab: {fileID: 4006500921755248917, guid: dcf3eed13eec5c04086ff70bdf50d154, type: 3}
-  useSecondarySpriteRenderer: 0
   useTrailRenderer: 0
+  tag: Untagged
+  collisionExcludeLayerMask:
+    serializedVersion: 2
+    m_Bits: 247
+  gameEffectBehaviours: 01000000

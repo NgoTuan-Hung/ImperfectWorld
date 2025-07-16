@@ -10,10 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 98f3bba0a7728f04cadd88fdf57d5924, type: 3}
-  m_Name: MoonSlashExplodeSO
+  m_Name: InfernalTideFlameNoReceiverSO
   m_EditorClassIdentifier: 
   isDeactivateAfterTime: 1
-  deactivateTime: 1.2
+  deactivateTime: 2.8667
   isTimeline: 1
   randomRotation: 0
   flyAtSpeed: 0.2
@@ -26,7 +26,7 @@ MonoBehaviour:
   colorOverLifetimeGrad:
     serializedVersion: 2
     key0: {r: 1, g: 1, b: 1, a: 1}
-    key1: {r: 1, g: 1, b: 1, a: 1}
+    key1: {r: 1, g: 1, b: 1, a: 0}
     key2: {r: 0, g: 0, b: 0, a: 0}
     key3: {r: 0, g: 0, b: 0, a: 0}
     key4: {r: 0, g: 0, b: 0, a: 0}
@@ -53,13 +53,13 @@ MonoBehaviour:
     m_ColorSpace: -1
     m_NumColorKeys: 2
     m_NumAlphaKeys: 2
-  timelineAsset: {fileID: 11400000, guid: c7493032382a88b4582fdd8732186781, type: 2}
-  collideAndDamageSO: {fileID: 11400000, guid: c7fb87d0116e05649aa69d011dfda16c, type: 2}
-  audioSource: {fileID: 4255341989875212284, guid: ac4b11b281af7a446922a326c906bc08, type: 3}
-  gameEffectPrefab: {fileID: 3013762054767741395, guid: ac4b11b281af7a446922a326c906bc08, type: 3}
+  timelineAsset: {fileID: 11400000, guid: 3583dd1b502e05b4eb3b0dfd92da921a, type: 2}
+  collideAndDamageSO: {fileID: 11400000, guid: fe56ff3a800f02c4680fac3b0fe1288f, type: 2}
+  audioSource: {fileID: 5462122147998145885, guid: 10068a6b5705aea4b8d4b7438f236bda, type: 3}
+  gameEffectPrefab: {fileID: 7176939447441834377, guid: 10068a6b5705aea4b8d4b7438f236bda, type: 3}
   useTrailRenderer: 0
   tag: Untagged
   collisionExcludeLayerMask:
     serializedVersion: 2
     m_Bits: 247
-  gameEffectBehaviours: 
+  gameEffectBehaviours: 01000000

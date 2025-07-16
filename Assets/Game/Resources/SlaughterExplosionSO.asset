@@ -12,7 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 98f3bba0a7728f04cadd88fdf57d5924, type: 3}
   m_Name: SlaughterExplosionSO
   m_EditorClassIdentifier: 
-  runtimeAnimatorController: {fileID: 8723578158456153260, guid: a8e3618d6b49fbd44b09b587f6a92681, type: 3}
   isDeactivateAfterTime: 1
   deactivateTime: 1
   isTimeline: 1
@@ -55,15 +54,12 @@ MonoBehaviour:
     m_NumColorKeys: 2
     m_NumAlphaKeys: 2
   timelineAsset: {fileID: 11400000, guid: 91a6cd84f8a96ff4db8eef29e6266aae, type: 2}
-  useBoxCollider: 0
-  usePolygonCollider: 0
-  useCircleCollider: 0
-  boxCollider2D: {fileID: 0}
-  polygonCollider2D: {fileID: 0}
-  circleCollider2D: {fileID: 0}
-  useBehaviour: 0
   collideAndDamageSO: {fileID: 0}
   audioSource: {fileID: 7930190469032888950, guid: 6a849e991cd0ee040b94c0d01a83a8aa, type: 3}
   gameEffectPrefab: {fileID: 416147800094590497, guid: 6a849e991cd0ee040b94c0d01a83a8aa, type: 3}
-  useSecondarySpriteRenderer: 0
   useTrailRenderer: 0
+  tag: Untagged
+  collisionExcludeLayerMask:
+    serializedVersion: 2
+    m_Bits: 247
+  gameEffectBehaviours: 

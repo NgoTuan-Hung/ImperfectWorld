@@ -75,7 +75,8 @@ public class GameManager : MonoSingleton<GameManager>
         stunColliderSO,
         phantomPulseDragonSO,
         infernalTideFlameSO,
-        infernalTideFlameNoReceiverSO;
+        infernalTideFlameNoReceiverSO,
+        infernalTideFanSO;
     public int attackBoolHash = Animator.StringToHash("Attack"),
         mainSkill1BoolHash = Animator.StringToHash("MainSkill1"),
         mainSkill2BoolHash = Animator.StringToHash("MainSkill2"),

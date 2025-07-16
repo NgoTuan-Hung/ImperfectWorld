@@ -12,7 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 98f3bba0a7728f04cadd88fdf57d5924, type: 3}
   m_Name: StrongDudePunchImpactSO
   m_EditorClassIdentifier: 
-  runtimeAnimatorController: {fileID: 4615294398755070348, guid: 947921adbbe912a4a913dbd4d9713cdb, type: 3}
   isDeactivateAfterTime: 1
   deactivateTime: 0.3
   isTimeline: 0
@@ -55,15 +54,12 @@ MonoBehaviour:
     m_NumColorKeys: 2
     m_NumAlphaKeys: 2
   timelineAsset: {fileID: 0}
-  useBoxCollider: 0
-  usePolygonCollider: 0
-  useCircleCollider: 0
-  boxCollider2D: {fileID: 0}
-  polygonCollider2D: {fileID: 0}
-  circleCollider2D: {fileID: 0}
-  useBehaviour: 0
   collideAndDamageSO: {fileID: 0}
   audioSource: {fileID: 8429751133882576595, guid: 8afa6d7c37a87ef42989942afb2fc94e, type: 3}
   gameEffectPrefab: {fileID: 3744040592628738217, guid: 8afa6d7c37a87ef42989942afb2fc94e, type: 3}
-  useSecondarySpriteRenderer: 0
   useTrailRenderer: 0
+  tag: Untagged
+  collisionExcludeLayerMask:
+    serializedVersion: 2
+    m_Bits: 247
+  gameEffectBehaviours: 

@@ -228,6 +228,11 @@ public class GameEffect : MonoSelfAware
         for (int i = 0; i < p_gameEffectSO.gameEffectPrefab.boxCollider2Ds.Count; i++)
         {
             boxCollider2Ds[i].gameObject.SetActive(true);
+            boxCollider2Ds[i]
+                .transform.SetLocalPositionAndRotation(
+                    p_gameEffectSO.gameEffectPrefab.boxCollider2Ds[i].transform.localPosition,
+                    p_gameEffectSO.gameEffectPrefab.boxCollider2Ds[i].transform.localRotation
+                );
             boxCollider2Ds[i].offset = p_gameEffectSO.gameEffectPrefab.boxCollider2Ds[i].offset;
             boxCollider2Ds[i].size = p_gameEffectSO.gameEffectPrefab.boxCollider2Ds[i].size;
         }
@@ -241,6 +246,11 @@ public class GameEffect : MonoSelfAware
         for (int i = 0; i < p_gameEffectSO.gameEffectPrefab.circleCollider2Ds.Count; i++)
         {
             circleCollider2Ds[i].gameObject.SetActive(true);
+            circleCollider2Ds[i]
+                .transform.SetLocalPositionAndRotation(
+                    p_gameEffectSO.gameEffectPrefab.circleCollider2Ds[i].transform.localPosition,
+                    p_gameEffectSO.gameEffectPrefab.circleCollider2Ds[i].transform.localRotation
+                );
             circleCollider2Ds[i].offset = p_gameEffectSO
                 .gameEffectPrefab
                 .circleCollider2Ds[i]
@@ -260,6 +270,11 @@ public class GameEffect : MonoSelfAware
         for (int i = 0; i < p_gameEffectSO.gameEffectPrefab.polygonCollider2Ds.Count; i++)
         {
             polygonCollider2Ds[i].gameObject.SetActive(true);
+            polygonCollider2Ds[i]
+                .transform.SetLocalPositionAndRotation(
+                    p_gameEffectSO.gameEffectPrefab.polygonCollider2Ds[i].transform.localPosition,
+                    p_gameEffectSO.gameEffectPrefab.polygonCollider2Ds[i].transform.localRotation
+                );
             polygonCollider2Ds[i].offset = p_gameEffectSO
                 .gameEffectPrefab
                 .polygonCollider2Ds[i]

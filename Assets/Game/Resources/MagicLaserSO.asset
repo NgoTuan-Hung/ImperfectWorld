@@ -12,7 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 98f3bba0a7728f04cadd88fdf57d5924, type: 3}
   m_Name: MagicLaserSO
   m_EditorClassIdentifier: 
-  runtimeAnimatorController: {fileID: 9100000, guid: 3c6daf8c647a81343b6e87df191d70c6, type: 2}
   isDeactivateAfterTime: 1
   deactivateTime: 2.5
   isTimeline: 1
@@ -55,15 +54,12 @@ MonoBehaviour:
     m_NumColorKeys: 2
     m_NumAlphaKeys: 2
   timelineAsset: {fileID: 11400000, guid: 6f4520e003cde3142af1e6b6085cd22b, type: 2}
-  useBoxCollider: 1
-  usePolygonCollider: 0
-  useCircleCollider: 0
-  boxCollider2D: {fileID: 9025241160854359740, guid: 98d580c6dbfa6a84fa082ace42697d4a, type: 3}
-  polygonCollider2D: {fileID: 0}
-  circleCollider2D: {fileID: 0}
-  useBehaviour: 1
   collideAndDamageSO: {fileID: 11400000, guid: 7447cbf022fccd74b9abfbd577c53e00, type: 2}
   audioSource: {fileID: 7875046274362802972, guid: 98d580c6dbfa6a84fa082ace42697d4a, type: 3}
   gameEffectPrefab: {fileID: 2627680256109512036, guid: 98d580c6dbfa6a84fa082ace42697d4a, type: 3}
-  useSecondarySpriteRenderer: 0
   useTrailRenderer: 0
+  tag: Untagged
+  collisionExcludeLayerMask:
+    serializedVersion: 2
+    m_Bits: 247
+  gameEffectBehaviours: 01000000

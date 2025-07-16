@@ -825,7 +825,8 @@ MonoBehaviour:
   stunColliderSO: {fileID: 11400000, guid: 5c8d2ec5e41f9454f9b801eb40aba30f, type: 2}
   phantomPulseDragonSO: {fileID: 11400000, guid: cc19a1182c72c7e4193b6910dd407f67, type: 2}
   infernalTideFlameSO: {fileID: 11400000, guid: 7d9ae7b501fc6a54fa3718d1ff224fa2, type: 2}
-  infernalTideFlameNoReceiverSO: {fileID: 0}
+  infernalTideFlameNoReceiverSO: {fileID: 11400000, guid: 03bc8130243404a4eab65f45873e0cc4, type: 2}
+  infernalTideFanSO: {fileID: 11400000, guid: e77ba448bc8599c45ac5131e2c6dc30b, type: 2}
   attackBoolHash: 1080829965
   mainSkill1BoolHash: 745959408
   mainSkill2BoolHash: -1249952182
@@ -1854,7 +1855,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &581064773
 Transform:
   m_ObjectHideFlags: 0
@@ -82094,6 +82095,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: InfernalTideFan
       objectReference: {fileID: 0}
+    - target: {fileID: 3986850030225901189, guid: 82b012792e4fc9a48b8542cc18860c81, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3986850030225901189, guid: 82b012792e4fc9a48b8542cc18860c81, type: 3}
+      propertyPath: m_TagString
+      value: InfernalTideFan
+      objectReference: {fileID: 0}
     - target: {fileID: 5045793144273354489, guid: 82b012792e4fc9a48b8542cc18860c81, type: 3}
       propertyPath: m_LocalPosition.x
       value: -2.85
@@ -83923,9 +83932,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9500879ad6b6755408f9c787c95fb42c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  health: 5000
-  defaultHealth: 5000
-  attackSpeed: 1
+  health: 300
+  defaultHealth: 300
+  attackSpeed: 5.9
   moveSpeed: 2.7
   defaultMoveSpeed: 2.7
   actionMoveSpeedReduceRate: 0.9
@@ -84777,7 +84786,7 @@ GameObject:
   - component: {fileID: 4367571609359430946}
   m_Layer: 0
   m_Name: WanderMagician
-  m_TagString: GamePlayer
+  m_TagString: GameBot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

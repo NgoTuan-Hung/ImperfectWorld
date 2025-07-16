@@ -33,7 +33,7 @@ public class GameEffectSO : ScriptableObject
     public LayerMask collisionExcludeLayerMask;
     public List<EGameEffectBehaviour> gameEffectBehaviours;
 
-    private void OnEnable()
+    private void Reset()
     {
         collisionExcludeLayerMask = ~(1 << LayerMask.NameToLayer("CombatCollidee"));
     }

@@ -127,7 +127,6 @@ public class BaseAction : MonoEditor
     {
         if (customMono.currentAction == this)
         {
-            print(name);
             ActionInterrupt();
         }
         StopAllCoroutines();

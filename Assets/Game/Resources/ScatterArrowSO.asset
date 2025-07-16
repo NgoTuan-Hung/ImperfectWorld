@@ -12,7 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 98f3bba0a7728f04cadd88fdf57d5924, type: 3}
   m_Name: ScatterArrowSO
   m_EditorClassIdentifier: 
-  runtimeAnimatorController: {fileID: 9100000, guid: be4abb445f53d0c4fa29482e6242d7ec, type: 2}
   isDeactivateAfterTime: 1
   deactivateTime: 5
   isTimeline: 0
@@ -55,15 +54,12 @@ MonoBehaviour:
     m_NumColorKeys: 2
     m_NumAlphaKeys: 2
   timelineAsset: {fileID: 0}
-  useBoxCollider: 1
-  usePolygonCollider: 0
-  useCircleCollider: 0
-  boxCollider2D: {fileID: 2861120017372867496, guid: db105e4902ba1674198e4b3856b76226, type: 3}
-  polygonCollider2D: {fileID: 0}
-  circleCollider2D: {fileID: 0}
-  useBehaviour: 1
   collideAndDamageSO: {fileID: 11400000, guid: ea1145c372a774149a6dbedf41c99854, type: 2}
   audioSource: {fileID: 7099077978056790427, guid: db105e4902ba1674198e4b3856b76226, type: 3}
   gameEffectPrefab: {fileID: 2831307019184434947, guid: db105e4902ba1674198e4b3856b76226, type: 3}
-  useSecondarySpriteRenderer: 0
   useTrailRenderer: 0
+  tag: Untagged
+  collisionExcludeLayerMask:
+    serializedVersion: 2
+    m_Bits: 247
+  gameEffectBehaviours: 01000000

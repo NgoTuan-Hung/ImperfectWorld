@@ -13,6 +13,7 @@ public class HealthUIRevamp : MonoBehaviour
     [ContextMenu("Test")]
     public void Test()
     {
+        image = GetComponent<Image>();
         SetHealth(Random.Range(0, 1f));
     }
 

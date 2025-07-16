@@ -12,7 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 98f3bba0a7728f04cadd88fdf57d5924, type: 3}
   m_Name: PhantomPulseDragonSO
   m_EditorClassIdentifier: 
-  runtimeAnimatorController: {fileID: 8022472356091263955, guid: ec7fcb308f9fc3240a67e03b44479539, type: 3}
   isDeactivateAfterTime: 1
   deactivateTime: 0.5
   isTimeline: 0
@@ -55,15 +54,12 @@ MonoBehaviour:
     m_NumColorKeys: 2
     m_NumAlphaKeys: 3
   timelineAsset: {fileID: 0}
-  useBoxCollider: 1
-  usePolygonCollider: 0
-  useCircleCollider: 0
-  boxCollider2D: {fileID: 3371616314379228682, guid: 4e656b87722e49046823165675f9e377, type: 3}
-  polygonCollider2D: {fileID: 0}
-  circleCollider2D: {fileID: 0}
-  useBehaviour: 1
   collideAndDamageSO: {fileID: 11400000, guid: 7016ddc78b3cdd94c8e76a7ef773c036, type: 2}
   audioSource: {fileID: 4493332905785993574, guid: 4e656b87722e49046823165675f9e377, type: 3}
   gameEffectPrefab: {fileID: 5635237588185928842, guid: 4e656b87722e49046823165675f9e377, type: 3}
-  useSecondarySpriteRenderer: 0
   useTrailRenderer: 0
+  tag: Untagged
+  collisionExcludeLayerMask:
+    serializedVersion: 2
+    m_Bits: 247
+  gameEffectBehaviours: 01000000

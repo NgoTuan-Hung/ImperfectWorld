@@ -12,7 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 98f3bba0a7728f04cadd88fdf57d5924, type: 3}
   m_Name: RayOfJungleBeamSO
   m_EditorClassIdentifier: 
-  runtimeAnimatorController: {fileID: 9100000, guid: 6f3d1e17abe64ad418ede9804ebdff32, type: 2}
   isDeactivateAfterTime: 1
   deactivateTime: 0.4
   isTimeline: 0
@@ -55,15 +54,12 @@ MonoBehaviour:
     m_NumColorKeys: 2
     m_NumAlphaKeys: 2
   timelineAsset: {fileID: 0}
-  useBoxCollider: 1
-  usePolygonCollider: 0
-  useCircleCollider: 0
-  boxCollider2D: {fileID: 2152193805637312498, guid: 41f49bf3414518e4889a49c02f36e7f1, type: 3}
-  polygonCollider2D: {fileID: 0}
-  circleCollider2D: {fileID: 0}
-  useBehaviour: 1
   collideAndDamageSO: {fileID: 11400000, guid: 31cb34f66b273f64ca0f1a9ccab59b5c, type: 2}
   audioSource: {fileID: 8856170082404779771, guid: 41f49bf3414518e4889a49c02f36e7f1, type: 3}
   gameEffectPrefab: {fileID: 1511637388874332002, guid: 41f49bf3414518e4889a49c02f36e7f1, type: 3}
-  useSecondarySpriteRenderer: 0
   useTrailRenderer: 0
+  tag: Untagged
+  collisionExcludeLayerMask:
+    serializedVersion: 2
+    m_Bits: 247
+  gameEffectBehaviours: 01000000

@@ -12,7 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 98f3bba0a7728f04cadd88fdf57d5924, type: 3}
   m_Name: WanderMagicianProjectileSO
   m_EditorClassIdentifier: 
-  runtimeAnimatorController: {fileID: -7355290423387367146, guid: 542d7287531785f4291ec12d46166e06, type: 3}
   isDeactivateAfterTime: 1
   deactivateTime: 5
   isTimeline: 0
@@ -55,15 +54,12 @@ MonoBehaviour:
     m_NumColorKeys: 2
     m_NumAlphaKeys: 2
   timelineAsset: {fileID: 0}
-  useBoxCollider: 1
-  usePolygonCollider: 0
-  useCircleCollider: 0
-  boxCollider2D: {fileID: 2769451219412252078, guid: caf374498fe9fa648a84bf5203e4239e, type: 3}
-  polygonCollider2D: {fileID: 0}
-  circleCollider2D: {fileID: 0}
-  useBehaviour: 1
   collideAndDamageSO: {fileID: 11400000, guid: 99fe302522ce62d41b626fc2f5f3eef8, type: 2}
   audioSource: {fileID: 8466125307730119543, guid: caf374498fe9fa648a84bf5203e4239e, type: 3}
   gameEffectPrefab: {fileID: 4662037328661818214, guid: caf374498fe9fa648a84bf5203e4239e, type: 3}
-  useSecondarySpriteRenderer: 0
   useTrailRenderer: 0
+  tag: Untagged
+  collisionExcludeLayerMask:
+    serializedVersion: 2
+    m_Bits: 247
+  gameEffectBehaviours: 01000000

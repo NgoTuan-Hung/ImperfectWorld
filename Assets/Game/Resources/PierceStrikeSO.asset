@@ -12,7 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 98f3bba0a7728f04cadd88fdf57d5924, type: 3}
   m_Name: PierceStrikeSO
   m_EditorClassIdentifier: 
-  runtimeAnimatorController: {fileID: 9100000, guid: 1ba10cc8f3a78a343af531a78671fb6f, type: 2}
   isDeactivateAfterTime: 1
   deactivateTime: 0.225
   isTimeline: 0
@@ -55,15 +54,12 @@ MonoBehaviour:
     m_NumColorKeys: 2
     m_NumAlphaKeys: 2
   timelineAsset: {fileID: 0}
-  useBoxCollider: 1
-  usePolygonCollider: 0
-  useCircleCollider: 0
-  boxCollider2D: {fileID: 2166069517613541273, guid: 0b87e299f7ca5ae4c883f06ccb17e44a, type: 3}
-  polygonCollider2D: {fileID: 0}
-  circleCollider2D: {fileID: 0}
-  useBehaviour: 1
   collideAndDamageSO: {fileID: 11400000, guid: 85183e8ca98e5d8499d66a053129f4a0, type: 2}
   audioSource: {fileID: 3059323681340742489, guid: 0b87e299f7ca5ae4c883f06ccb17e44a, type: 3}
   gameEffectPrefab: {fileID: 7330695286827409864, guid: 0b87e299f7ca5ae4c883f06ccb17e44a, type: 3}
-  useSecondarySpriteRenderer: 0
   useTrailRenderer: 0
+  tag: Untagged
+  collisionExcludeLayerMask:
+    serializedVersion: 2
+    m_Bits: 247
+  gameEffectBehaviours: 01000000

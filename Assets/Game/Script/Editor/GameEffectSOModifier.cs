@@ -33,5 +33,8 @@ public class GameEffectSOModifier : EditorWindow
         rootVisualElement.Add(button);
     }
 
-    void ModifyBehavior(GameEffectSO p_gameEffectSO) { }
+    void ModifyBehavior(GameEffectSO p_gameEffectSO)
+    {
+        p_gameEffectSO.gameEffectBehaviours.Add(EGameEffectBehaviour.CollideAndDamage);
+    }
 }

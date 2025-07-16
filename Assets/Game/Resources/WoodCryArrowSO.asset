@@ -12,7 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 98f3bba0a7728f04cadd88fdf57d5924, type: 3}
   m_Name: WoodCryArrowSO
   m_EditorClassIdentifier: 
-  runtimeAnimatorController: {fileID: 9100000, guid: e3410949b643ccd4b911b32b6abd74d8, type: 2}
   isDeactivateAfterTime: 1
   deactivateTime: 1.7
   isTimeline: 0
@@ -55,15 +54,12 @@ MonoBehaviour:
     m_NumColorKeys: 2
     m_NumAlphaKeys: 2
   timelineAsset: {fileID: 0}
-  useBoxCollider: 1
-  usePolygonCollider: 0
-  useCircleCollider: 0
-  boxCollider2D: {fileID: 24522668650229161, guid: fd83338b73b09d24294af352e42bcd51, type: 3}
-  polygonCollider2D: {fileID: 0}
-  circleCollider2D: {fileID: 0}
-  useBehaviour: 1
   collideAndDamageSO: {fileID: 11400000, guid: c8aa4690c263a444a812c0548b632da9, type: 2}
   audioSource: {fileID: 933826157829252248, guid: fd83338b73b09d24294af352e42bcd51, type: 3}
   gameEffectPrefab: {fileID: 6495555778436248608, guid: fd83338b73b09d24294af352e42bcd51, type: 3}
-  useSecondarySpriteRenderer: 0
   useTrailRenderer: 0
+  tag: Untagged
+  collisionExcludeLayerMask:
+    serializedVersion: 2
+    m_Bits: 247
+  gameEffectBehaviours: 01000000

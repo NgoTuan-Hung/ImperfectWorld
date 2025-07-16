@@ -12,7 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 98f3bba0a7728f04cadd88fdf57d5924, type: 3}
   m_Name: MoonSlashSO
   m_EditorClassIdentifier: 
-  runtimeAnimatorController: {fileID: 9100000, guid: 5f54e0691bec54f4ea879604768356df, type: 2}
   isDeactivateAfterTime: 1
   deactivateTime: 0.25
   isTimeline: 0
@@ -55,15 +54,12 @@ MonoBehaviour:
     m_NumColorKeys: 2
     m_NumAlphaKeys: 2
   timelineAsset: {fileID: 0}
-  useBoxCollider: 1
-  usePolygonCollider: 0
-  useCircleCollider: 0
-  boxCollider2D: {fileID: 479653214036385431, guid: cc84238df50505046abda8abb48cac6d, type: 3}
-  polygonCollider2D: {fileID: 0}
-  circleCollider2D: {fileID: 0}
-  useBehaviour: 1
   collideAndDamageSO: {fileID: 11400000, guid: a6bf0b3a9ac72a648818324e615c0238, type: 2}
   audioSource: {fileID: 1786198693098524344, guid: cc84238df50505046abda8abb48cac6d, type: 3}
   gameEffectPrefab: {fileID: 4252144212605909589, guid: cc84238df50505046abda8abb48cac6d, type: 3}
-  useSecondarySpriteRenderer: 0
   useTrailRenderer: 0
+  tag: Untagged
+  collisionExcludeLayerMask:
+    serializedVersion: 2
+    m_Bits: 247
+  gameEffectBehaviours: 01000000
