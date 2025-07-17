@@ -15,7 +15,8 @@ public class SkillUseUI : MonoBehaviour, IPointerDownHandler, IPointerUpHandler,
 {
     RectTransform rectTransform;
     public Image border,
-        icon;
+        icon,
+        cooldownIndicator;
     public Action<Vector2, Vector2> pointerDownEvent = (
             p_pointerPosition,
             p_centerToPointerDir

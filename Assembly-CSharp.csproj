@@ -132,6 +132,7 @@
     <Compile Include="Assets\Test\NoObjectPoolPerformance\NoObjectPoolPerformance.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\VertexZoom.cs" />
     <Compile Include="Assets\Game\Script\UI\Other\UsableScrollViewUIInfo.cs" />
+    <Compile Include="Assets\Game\Script\UI\Revamp\UIImageEffect.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_TextSelector_B.cs" />
     <Compile Include="Assets\Game\Script\Other\MonoEditorSingleton.cs" />
     <Compile Include="Assets\Test\TimelineSerializeTest\PrefabTest.cs" />
@@ -233,6 +234,7 @@
     <Compile Include="Assets\Game\Script\Ability\DashSkill.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_TextEventCheck.cs" />
     <Compile Include="Assets\Game\Script\Other\TestEvent.cs" />
+    <Compile Include="Assets\Test\UIRevamp\UIR_UIImageEffectTest.cs" />
     <Compile Include="Assets\Game\Script\Ability\MagicLaserSkill.cs" />
     <Compile Include="Assets\Game\Script\Game\GameManager.cs" />
     <Compile Include="Assets\Test\UIRevamp\RectTransformSizePrinter.cs" />
@@ -770,6 +772,10 @@
     </Reference>
     <Reference Include="Mono.Cecil">
       <HintPath>Library\PackageCache\com.unity.nuget.mono-cecil\Mono.Cecil.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Coffee.UIEffect.R">
+      <HintPath>Library\PackageCache\com.coffee.ui-effect\Runtime\Coffee.UIEffect.R.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Unity.Android.Types">
@@ -1494,6 +1500,10 @@
     </Reference>
     <Reference Include="Unity.Burst.Editor">
       <HintPath>Library\ScriptAssemblies\Unity.Burst.Editor.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Coffee.UIEffect">
+      <HintPath>Library\ScriptAssemblies\Coffee.UIEffect.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Unity.Burst">
