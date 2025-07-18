@@ -52,6 +52,8 @@ public class BaseAction : MonoEditor
     public Stopwatch stopwatch = new();
     public IEnumerator actionIE,
         botIE;
+    public static ActionResult failResult = new ActionResult();
+    public ActionResult successResult = new ActionResult(true, false, default);
 
     public virtual void Awake()
     {
@@ -132,11 +134,14 @@ public class BaseAction : MonoEditor
         StopAllCoroutines();
     }
 
-    public virtual void Trigger(Vector2 p_location = default, Vector2 p_direction = default) { }
-
-    public virtual bool StartAndWait()
+    public virtual ActionResult Trigger(Vector2 p_location = default, Vector2 p_direction = default)
     {
-        return true;
+        return failResult;
+    }
+
+    public virtual ActionResult StartAndWait()
+    {
+        return failResult;
     }
 
     public virtual void WhileWaiting(

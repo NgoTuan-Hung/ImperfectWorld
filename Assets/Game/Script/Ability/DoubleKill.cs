@@ -13,6 +13,7 @@ public class DoubleKill : SkillBase
         damage = defaultDamage = 10f;
         poisonInfo = new(5, 10);
         slowInfo = new(0.3f, 1f);
+        successResult = new(true, true, cooldown);
         AddActionManuals();
     }
 
@@ -47,7 +48,7 @@ public class DoubleKill : SkillBase
         base.WhileWaiting(p_direction);
     }
 
-    public override void Trigger(Vector2 location = default, Vector2 direction = default)
+    public override ActionResult Trigger(Vector2 location = default, Vector2 direction = default)
     {
         if (canUse && !customMono.actionBlocking)
         {
@@ -58,7 +59,10 @@ public class DoubleKill : SkillBase
             StartCoroutine(actionIE = WaitSpawnArrow(direction));
             StartCoroutine(CooldownCoroutine());
             customMono.currentAction = this;
+            return successResult;
         }
+
+        return failResult;
     }
 
     IEnumerator WaitSpawnArrow(Vector3 p_direction)

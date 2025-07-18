@@ -8,6 +8,7 @@ public class NuclearBomb : SkillBase
         base.Awake();
         cooldown = 5f;
         damage = defaultDamage = 200f;
+        successResult = new(true, true, cooldown);
         AddActionManuals();
     }
 
@@ -42,7 +43,7 @@ public class NuclearBomb : SkillBase
         base.WhileWaiting(p_direction);
     }
 
-    public override void Trigger(Vector2 location = default, Vector2 direction = default)
+    public override ActionResult Trigger(Vector2 location = default, Vector2 direction = default)
     {
         if (canUse && !customMono.actionBlocking)
         {
@@ -53,7 +54,10 @@ public class NuclearBomb : SkillBase
             StartCoroutine(actionIE = WaitSpawnExplosion(location));
             StartCoroutine(CooldownCoroutine());
             customMono.currentAction = this;
+            return successResult;
         }
+
+        return failResult;
     }
 
     IEnumerator WaitSpawnExplosion(Vector3 p_location)

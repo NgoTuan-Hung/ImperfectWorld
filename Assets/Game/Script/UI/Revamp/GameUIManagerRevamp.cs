@@ -63,6 +63,7 @@ public class GameUIManagerRevamp : MonoEditorSingleton<GameUIManagerRevamp>
     Vector2 tooltipEndPosScaler = new Vector2(1, -1);
     Color transparentGreen = new Vector4(0, 1, 0, 0),
         transparentRed = new Vector4(1, 0, 0, 0);
+    ActionResult actionResult;
 
     public void InitializeCharacterUI(CustomMono p_customMono)
     {
@@ -179,7 +180,7 @@ public class GameUIManagerRevamp : MonoEditorSingleton<GameUIManagerRevamp>
 
                     t_characterInfoUI.queueSkillNodeUI.equippedSlot = t_skillSlotUI;
                     t_skillSlotUI.skillNodeUI = t_characterInfoUI.queueSkillNodeUI;
-                    t_skillSlotUI.skillUseUI.icon.sprite = t_skillSlotUI.icon.sprite;
+                    t_skillSlotUI.skillUseUI.icon.image.sprite = t_skillSlotUI.icon.sprite;
                     t_skillSlotUI.skillUseUI.gameObject.SetActive(true);
 
                     t_skillSlotUI.skillUseUI.skillIndicatorType = t_characterInfoUI
@@ -194,10 +195,20 @@ public class GameUIManagerRevamp : MonoEditorSingleton<GameUIManagerRevamp>
                                 p_pointerPosition,
                                 p_centerToPointerDir
                             ) =>
-                                t_skillSlotUI.skillNodeUI.skillBase.Trigger(
+                            {
+                                actionResult = t_skillSlotUI.skillNodeUI.skillBase.Trigger(
                                     p_location: p_pointerPosition,
                                     p_direction: p_centerToPointerDir
                                 );
+
+                                if (actionResult.success)
+                                {
+                                    if (actionResult.timer)
+                                        t_skillSlotUI.skillUseUI.StartCooldown(
+                                            actionResult.cooldown
+                                        );
+                                }
+                            };
                             break;
                         }
                         case SkillDataSO.InputType.Hold:
@@ -206,10 +217,20 @@ public class GameUIManagerRevamp : MonoEditorSingleton<GameUIManagerRevamp>
                                 p_pointerPosition,
                                 p_centerToPointerDir
                             ) =>
-                                t_skillSlotUI.skillNodeUI.skillBase.Trigger(
+                            {
+                                actionResult = t_skillSlotUI.skillNodeUI.skillBase.Trigger(
                                     p_location: p_pointerPosition,
                                     p_direction: p_centerToPointerDir
                                 );
+
+                                if (actionResult.success)
+                                {
+                                    if (actionResult.timer)
+                                        t_skillSlotUI.skillUseUI.StartCooldown(
+                                            actionResult.cooldown
+                                        );
+                                }
+                            };
                             break;
                         }
                         case SkillDataSO.InputType.HoldAndRelease:
@@ -232,10 +253,20 @@ public class GameUIManagerRevamp : MonoEditorSingleton<GameUIManagerRevamp>
                                 p_pointerPosition,
                                 p_centerToPointerDir
                             ) =>
-                                t_skillSlotUI.skillNodeUI.skillBase.Trigger(
+                            {
+                                actionResult = t_skillSlotUI.skillNodeUI.skillBase.Trigger(
                                     p_location: p_pointerPosition,
                                     p_direction: p_centerToPointerDir
                                 );
+
+                                if (actionResult.success)
+                                {
+                                    if (actionResult.timer)
+                                        t_skillSlotUI.skillUseUI.StartCooldown(
+                                            actionResult.cooldown
+                                        );
+                                }
+                            };
                             break;
                         }
                         default:

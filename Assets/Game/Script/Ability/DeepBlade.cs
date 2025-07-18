@@ -9,6 +9,7 @@ public class DeepBlade : SkillBase
         cooldown = 5f;
         damage = defaultDamage = 20f;
         stunDuration = 1f;
+        successResult = new(true, true, cooldown);
         AddActionManuals();
     }
 
@@ -38,7 +39,10 @@ public class DeepBlade : SkillBase
         base.Start();
     }
 
-    public override void Trigger(Vector2 p_location = default, Vector2 p_direction = default)
+    public override ActionResult Trigger(
+        Vector2 p_location = default,
+        Vector2 p_direction = default
+    )
     {
         if (canUse && !customMono.actionBlocking)
         {
@@ -49,7 +53,10 @@ public class DeepBlade : SkillBase
             StartCoroutine(actionIE = TriggerIE(p_location, p_direction));
             StartCoroutine(CooldownCoroutine());
             customMono.currentAction = this;
+            return successResult;
         }
+
+        return failResult;
     }
 
     IEnumerator TriggerIE(Vector2 p_location = default, Vector2 p_direction = default)

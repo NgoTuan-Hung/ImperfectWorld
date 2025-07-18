@@ -26,6 +26,7 @@ public class TheCallOfThePack : SkillBase
             10,
             new PoolArgument(ComponentType.CustomMono, PoolArgument.WhereComponent.Self)
         );
+        successResult = new(true, true, cooldown);
 
         AddActionManuals();
     }
@@ -59,7 +60,7 @@ public class TheCallOfThePack : SkillBase
 #endif
     }
 
-    public override void Trigger(Vector2 location = default, Vector2 direction = default)
+    public override ActionResult Trigger(Vector2 location = default, Vector2 direction = default)
     {
         if (canUse && !customMono.actionBlocking)
         {
@@ -70,7 +71,11 @@ public class TheCallOfThePack : SkillBase
             StartCoroutine(actionIE = TriggerCoroutine());
             StartCoroutine(CooldownCoroutine());
             customMono.currentAction = this;
+
+            return successResult;
         }
+
+        return failResult;
     }
 
     IEnumerator TriggerCoroutine()

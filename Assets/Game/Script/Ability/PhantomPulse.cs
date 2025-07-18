@@ -16,6 +16,7 @@ public class PhantomPulse : SkillBase
         maxAmmo = 9;
         /* In this skill, this will be the portion each variation hold in blend tree. */
         modifiedAngle = 1f / (maxAmmo - 1);
+        successResult = new(true, true, cooldown);
         AddActionManuals();
     }
 
@@ -50,7 +51,7 @@ public class PhantomPulse : SkillBase
         base.WhileWaiting(p_direction);
     }
 
-    public override void Trigger(Vector2 location = default, Vector2 direction = default)
+    public override ActionResult Trigger(Vector2 location = default, Vector2 direction = default)
     {
         if (canUse && !customMono.actionBlocking)
         {
@@ -61,7 +62,10 @@ public class PhantomPulse : SkillBase
             StartCoroutine(actionIE = TriggerIE(direction));
             StartCoroutine(CooldownCoroutine());
             customMono.currentAction = this;
+            return successResult;
         }
+
+        return failResult;
     }
 
     IEnumerator TriggerIE(Vector3 p_direction)

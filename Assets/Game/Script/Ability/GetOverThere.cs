@@ -7,6 +7,7 @@ public class GetOverThere : SkillBase
     {
         base.Awake();
         cooldown = 5f;
+        successResult = new(true, true, cooldown);
         AddActionManuals();
     }
 
@@ -41,7 +42,7 @@ public class GetOverThere : SkillBase
         base.WhileWaiting(p_direction);
     }
 
-    public override void Trigger(Vector2 location = default, Vector2 direction = default)
+    public override ActionResult Trigger(Vector2 location = default, Vector2 direction = default)
     {
         if (canUse && !customMono.actionBlocking)
         {
@@ -52,7 +53,10 @@ public class GetOverThere : SkillBase
             StartCoroutine(actionIE = WaitSpawnBlueHole(location));
             StartCoroutine(CooldownCoroutine());
             customMono.currentAction = this;
+            return successResult;
         }
+
+        return failResult;
     }
 
     IEnumerator WaitSpawnBlueHole(Vector3 p_location)

@@ -49,7 +49,7 @@ public class PierceStrike : SkillBase
         base.Start();
     }
 
-    public override void Trigger(Vector2 location = default, Vector2 direction = default)
+    public override ActionResult Trigger(Vector2 location = default, Vector2 direction = default)
     {
         if (secondPhase)
         {
@@ -63,6 +63,7 @@ public class PierceStrike : SkillBase
                 ToggleAnim(GameManager.Instance.mainSkill1BoolHash, true);
                 customMono.currentAction = this;
                 secondPhase = false;
+                return successResult;
             }
         }
         else
@@ -77,8 +78,11 @@ public class PierceStrike : SkillBase
                 StartCoroutine(CooldownCoroutine());
                 customMono.currentAction = this;
                 phaseOneFinish = false;
+                return successResult;
             }
         }
+
+        return failResult;
     }
 
     IEnumerator TriggerIE(Vector2 p_location = default, Vector2 p_direction = default)

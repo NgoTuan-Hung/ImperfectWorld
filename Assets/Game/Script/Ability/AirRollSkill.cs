@@ -57,7 +57,7 @@ public class AirRollSkill : SkillBase
         base.Start();
     }
 
-    public override void Trigger(Vector2 location = default, Vector2 direction = default)
+    public override ActionResult Trigger(Vector2 location = default, Vector2 direction = default)
     {
         if (canUse && !customMono.actionBlocking)
         {
@@ -70,7 +70,10 @@ public class AirRollSkill : SkillBase
             StartCoroutine(actionIE);
             StartCoroutine(CooldownCoroutine());
             customMono.currentAction = this;
+            return successResult;
         }
+
+        return failResult;
     }
 
     IEnumerator TriggerCoroutine(Vector2 location, Vector2 direction)

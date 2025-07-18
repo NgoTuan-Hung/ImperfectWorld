@@ -11,6 +11,7 @@ public class InfernalTide : SkillBase
         currentAmmo = maxAmmo = 5;
         // maxRange = 2f;
         interval = 0.1f;
+        successResult = new(true, true, cooldown);
         AddActionManuals();
     }
 
@@ -45,7 +46,7 @@ public class InfernalTide : SkillBase
         base.WhileWaiting(p_direction);
     }
 
-    public override void Trigger(Vector2 location = default, Vector2 direction = default)
+    public override ActionResult Trigger(Vector2 location = default, Vector2 direction = default)
     {
         if (canUse && !customMono.actionBlocking)
         {
@@ -56,7 +57,10 @@ public class InfernalTide : SkillBase
             StartCoroutine(actionIE = WaitSpawnFlame(direction));
             StartCoroutine(CooldownCoroutine());
             customMono.currentAction = this;
+            return successResult;
         }
+
+        return failResult;
     }
 
     IEnumerator WaitSpawnFlame(Vector3 p_direction)

@@ -16,6 +16,7 @@ public class DashSkill : SkillBase
         cooldown = 8f;
 
         spawnEffectInterval = duration / totalEffect;
+        successResult = new(true, true, cooldown);
         AddActionManuals();
     }
 
@@ -76,7 +77,7 @@ public class DashSkill : SkillBase
         customMono.SetUpdateDirectionIndicator(p_direction, UpdateDirectionIndicatorPriority.Low);
     }
 
-    public override void Trigger(Vector2 location = default, Vector2 direction = default)
+    public override ActionResult Trigger(Vector2 location = default, Vector2 direction = default)
     {
         if (canUse && !customMono.movementActionBlocking)
         {
@@ -85,7 +86,10 @@ public class DashSkill : SkillBase
             StartCoroutine(actionIE = Dashing(direction));
             StartCoroutine(CooldownCoroutine());
             customMono.currentAction = this;
+            return successResult;
         }
+
+        return failResult;
     }
 
     public IEnumerator Dashing(Vector3 direction)

@@ -15,10 +15,7 @@ public class BotActionManual
     public DoActionParamInfo doActionParamInfo;
     public int botActionManualIndex;
     public bool actionNeedWait;
-    public Func<bool> startAndWait = () =>
-    {
-        return true;
-    };
+    public Func<ActionResult> startAndWait;
     public Action<Vector2, Vector2> whileWaiting = (targetLocation, targetDirection) => { };
     public int actionChanceAjuster = 0;
 
@@ -27,7 +24,7 @@ public class BotActionManual
         DoAction doAction,
         DoActionParamInfo doActionParamInfo,
         bool actionNeedWait = false,
-        Func<bool> startAndWait = null,
+        Func<ActionResult> startAndWait = null,
         Action<Vector2, Vector2> whileWaiting = null
     )
     {

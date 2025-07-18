@@ -112,7 +112,7 @@ public class BaseIntelligence : MonoEditor
                 p_targetOriginPosition,
                 p_targetCenterPosition
             );
-            if (t_botActionManual.startAndWait())
+            if (t_botActionManual.startAndWait().success)
             {
                 actionNeedWait = true;
                 waitBotActionManual = t_botActionManual;

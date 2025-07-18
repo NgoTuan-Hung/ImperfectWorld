@@ -5,7 +5,7 @@ using UnityEngine;
 public class Attackable : SkillBase
 {
     public float colliderForce = 5f;
-    public Action<Vector2> Attack;
+    public Func<Vector2, ActionResult> Attack;
 
     public override void Awake()
     {
@@ -45,6 +45,8 @@ public class Attackable : SkillBase
                 )
             );
         }
+        successResult.timer = true;
+        successResult.cooldown = cooldown;
 
         AddActionManuals();
     }
@@ -109,12 +111,12 @@ public class Attackable : SkillBase
         };
     }
 
-    public override void Trigger(Vector2 location = default, Vector2 direction = default)
+    public override ActionResult Trigger(Vector2 location = default, Vector2 direction = default)
     {
-        Attack(direction);
+        return Attack(direction);
     }
 
-    public void MeleeAttack(Vector2 attackDirection)
+    public ActionResult MeleeAttack(Vector2 attackDirection)
     {
         if (canUse && !customMono.actionBlocking)
         {
@@ -125,7 +127,10 @@ public class Attackable : SkillBase
             StartCoroutine(actionIE = MeleeAttackCoroutine(attackDirection));
             StartCoroutine(CooldownCoroutine());
             customMono.currentAction = this;
+            return successResult;
         }
+        else
+            return failResult;
     }
 
     IEnumerator MeleeAttackCoroutine(Vector2 attackDirection)
@@ -164,7 +169,7 @@ public class Attackable : SkillBase
         customMono.currentAction = null;
     }
 
-    public void RangedAttack(Vector2 attackDirection)
+    public ActionResult RangedAttack(Vector2 attackDirection)
     {
         if (canUse && !customMono.actionBlocking)
         {
@@ -175,7 +180,10 @@ public class Attackable : SkillBase
             StartCoroutine(actionIE = RangedAttackCoroutine(attackDirection));
             StartCoroutine(CooldownCoroutine());
             customMono.currentAction = this;
+            return successResult;
         }
+        else
+            return failResult;
     }
 
     IEnumerator RangedAttackCoroutine(Vector2 attackDirection)

@@ -47,12 +47,13 @@ public class Scatter : SkillBase
         );
     }
 
-    public override void Trigger(Vector2 location = default, Vector2 direction = default)
+    public override ActionResult Trigger(Vector2 location = default, Vector2 direction = default)
     {
         actionWaitInfo.stillWaiting = false;
+        return successResult;
     }
 
-    public override bool StartAndWait()
+    public override ActionResult StartAndWait()
     {
         if (canUse && !customMono.actionBlocking)
         {
@@ -63,10 +64,10 @@ public class Scatter : SkillBase
             actionWaitInfo.stillWaiting = true;
             StartCoroutine(actionIE = WaitingCoroutine());
             customMono.currentAction = this;
-            return true;
+            return successResult;
         }
 
-        return false;
+        return failResult;
     }
 
     IEnumerator WaitingCoroutine()

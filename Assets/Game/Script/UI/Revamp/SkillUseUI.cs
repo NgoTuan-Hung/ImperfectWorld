@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using DG.Tweening;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -15,8 +16,8 @@ public class SkillUseUI : MonoBehaviour, IPointerDownHandler, IPointerUpHandler,
 {
     RectTransform rectTransform;
     public Image border,
-        icon,
         cooldownIndicator;
+    public UIImageEffect icon;
     public Action<Vector2, Vector2> pointerDownEvent = (
             p_pointerPosition,
             p_centerToPointerDir
@@ -148,5 +149,20 @@ public class SkillUseUI : MonoBehaviour, IPointerDownHandler, IPointerUpHandler,
         pointerDownEvent = (p_pointerPosition, p_centerToPointerDir) => { };
         holdEvent = (p_pointerPosition, p_centerToPointerDir) => { };
         pointerUpEvent = (p_pointerPosition, p_centerToPointerDir) => { };
+    }
+
+    Color halfWhite = new Color(126 / 255f, 126 / 255f, 126 / 255f, 1);
+
+    public void StartCooldown(float time)
+    {
+        cooldownIndicator.fillAmount = 1;
+        icon.image.color = halfWhite;
+        cooldownIndicator
+            .DOFillAmount(0, time)
+            .OnComplete(() =>
+            {
+                icon.uIEffectTweener.Play(true);
+                icon.image.color = Color.white;
+            });
     }
 }

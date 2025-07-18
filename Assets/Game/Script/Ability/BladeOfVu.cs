@@ -20,6 +20,7 @@ public class BladeOfVu : SkillBase
         damage = defaultDamage = 10f;
         /* Get sprite list from res */
         spriteList = Resources.Load<SpriteList>("BladeOfVuSpriteList");
+        successResult = new(true, true, cooldown);
         AddActionManuals();
     }
 
@@ -49,7 +50,7 @@ public class BladeOfVu : SkillBase
         base.Start();
     }
 
-    public override void Trigger(Vector2 location = default, Vector2 direction = default)
+    public override ActionResult Trigger(Vector2 location = default, Vector2 direction = default)
     {
         if (canUse && !customMono.actionBlocking && !customMono.movementActionBlocking)
         {
@@ -60,7 +61,10 @@ public class BladeOfVu : SkillBase
             StartCoroutine(actionIE = TriggerIE(location, direction));
             StartCoroutine(CooldownCoroutine());
             customMono.currentAction = this;
+            return successResult;
         }
+
+        return failResult;
     }
 
     IEnumerator TriggerIE(Vector2 location = default, Vector2 direction = default)

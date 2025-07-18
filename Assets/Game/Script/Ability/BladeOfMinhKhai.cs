@@ -13,6 +13,7 @@ public class BladeOfMinhKhai : SkillBase
         cooldown = 5f;
         damage = defaultDamage = 50f;
         lifeStealPercent = 0.25f;
+        successResult = new(true, true, cooldown);
         // dashSpeed *= Time.deltaTime;
         // boolhash = ...
 
@@ -65,7 +66,7 @@ public class BladeOfMinhKhai : SkillBase
         customMono.SetUpdateDirectionIndicator(p_direction, UpdateDirectionIndicatorPriority.Low);
     }
 
-    public override void Trigger(Vector2 location = default, Vector2 direction = default)
+    public override ActionResult Trigger(Vector2 location = default, Vector2 direction = default)
     {
         if (canUse && !customMono.movementActionBlocking && !customMono.actionBlocking)
         {
@@ -76,7 +77,10 @@ public class BladeOfMinhKhai : SkillBase
             StartCoroutine(actionIE = StartDash(direction));
             StartCoroutine(CooldownCoroutine());
             customMono.currentAction = this;
+            return successResult;
         }
+
+        return failResult;
     }
 
     float currentTime,

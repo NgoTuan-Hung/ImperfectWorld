@@ -63,7 +63,7 @@ public class Slaughter : SkillBase
     /* The logic of this ability is we can fire projectile whenever we have ammo,
     if there are no ammo, we can't fire, if ammo isn't full, we will reload it
     automatically (RefillAmmo coroutine). */
-    public override void Trigger(Vector2 location = default, Vector2 direction = default)
+    public override ActionResult Trigger(Vector2 location = default, Vector2 direction = default)
     {
         if (canUse && !customMono.actionBlocking && currentAmmo > 0)
         {
@@ -107,7 +107,11 @@ public class Slaughter : SkillBase
                 * Random.Range(-0.3f, 0.3f);
 
             t_projectileEffect.KeepFlyingAt(direction, t_projectileEffectSO);
+
+            return successResult;
         }
+
+        return failResult;
     }
 
     IEnumerator EndAnimWaitCoroutine()
