@@ -26,7 +26,7 @@ public class TheCallOfThePack : SkillBase
             10,
             new PoolArgument(ComponentType.CustomMono, PoolArgument.WhereComponent.Self)
         );
-        successResult = new(true, true, cooldown);
+        successResult = new(true, ActionResultType.Cooldown, cooldown);
 
         AddActionManuals();
     }

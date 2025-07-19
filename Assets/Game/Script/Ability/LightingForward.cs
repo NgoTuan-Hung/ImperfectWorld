@@ -11,7 +11,7 @@ public class LightingForward : SkillBase
         currentAmmo = maxAmmo = 5;
         maxRange = 2f;
         interval = 0.1f;
-        successResult = new(true, true, cooldown);
+        successResult = new(true, ActionResultType.Cooldown, cooldown);
         AddActionManuals();
     }
 

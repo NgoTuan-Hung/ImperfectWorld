@@ -13,7 +13,7 @@ public class DoubleKill : SkillBase
         damage = defaultDamage = 10f;
         poisonInfo = new(5, 10);
         slowInfo = new(0.3f, 1f);
-        successResult = new(true, true, cooldown);
+        successResult = new(true, ActionResultType.Cooldown, cooldown);
         AddActionManuals();
     }
 

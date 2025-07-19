@@ -20,7 +20,7 @@ public class BladeOfVu : SkillBase
         damage = defaultDamage = 10f;
         /* Get sprite list from res */
         spriteList = Resources.Load<SpriteList>("BladeOfVuSpriteList");
-        successResult = new(true, true, cooldown);
+        successResult = new(true, ActionResultType.Cooldown, cooldown);
         AddActionManuals();
     }
 

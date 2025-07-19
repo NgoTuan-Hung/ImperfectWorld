@@ -13,7 +13,7 @@ public class BladeOfMinhKhai : SkillBase
         cooldown = 5f;
         damage = defaultDamage = 50f;
         lifeStealPercent = 0.25f;
-        successResult = new(true, true, cooldown);
+        successResult = new(true, ActionResultType.Cooldown, cooldown);
         // dashSpeed *= Time.deltaTime;
         // boolhash = ...
 

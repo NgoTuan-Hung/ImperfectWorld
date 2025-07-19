@@ -8,7 +8,7 @@ public class BladeOfPhong : SkillBase
         base.Awake();
         cooldown = 5f;
         damage = defaultDamage = 1f;
-        successResult = new(true, true, cooldown);
+        successResult = new(true, ActionResultType.Cooldown, cooldown);
         AddActionManuals();
     }
 

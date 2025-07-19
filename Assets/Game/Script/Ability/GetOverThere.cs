@@ -7,7 +7,7 @@ public class GetOverThere : SkillBase
     {
         base.Awake();
         cooldown = 5f;
-        successResult = new(true, true, cooldown);
+        successResult = new(true, ActionResultType.Cooldown, cooldown);
         AddActionManuals();
     }
 

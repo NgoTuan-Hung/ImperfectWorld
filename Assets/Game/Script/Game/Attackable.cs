@@ -45,8 +45,7 @@ public class Attackable : SkillBase
                 )
             );
         }
-        successResult.timer = true;
-        successResult.cooldown = cooldown;
+        successResult = new(true, ActionResultType.Cooldown, cooldown);
 
         AddActionManuals();
     }

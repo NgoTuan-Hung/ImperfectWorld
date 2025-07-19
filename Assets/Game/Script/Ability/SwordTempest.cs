@@ -9,7 +9,7 @@ public class SwordTempest : SkillBase
         base.Awake();
         cooldown = 5f;
         damage = defaultDamage = 20f;
-        successResult = new(true, true, cooldown);
+        successResult = new(true, ActionResultType.Cooldown, cooldown);
         // dashSpeed *= Time.deltaTime;
         // boolhash = ...
 

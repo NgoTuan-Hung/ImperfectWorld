@@ -10,7 +10,7 @@ public class MagicLaserSkill : SkillBase
         cooldown = 10f;
         damage = defaultDamage = 1f;
         boolHash = Animator.StringToHash("CastingMagic");
-        successResult = new(true, true, cooldown);
+        successResult = new(true, ActionResultType.Cooldown, cooldown);
         AddActionManuals();
     }
 

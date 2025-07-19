@@ -9,7 +9,7 @@ public class DeepBlade : SkillBase
         cooldown = 5f;
         damage = defaultDamage = 20f;
         stunDuration = 1f;
-        successResult = new(true, true, cooldown);
+        successResult = new(true, ActionResultType.Cooldown, cooldown);
         AddActionManuals();
     }
 
@@ -37,6 +37,11 @@ public class DeepBlade : SkillBase
     public override void Start()
     {
         base.Start();
+    }
+
+    public override void WhileWaiting(Vector2 p_location = default, Vector2 p_direction = default)
+    {
+        customMono.SetUpdateDirectionIndicator(p_direction, UpdateDirectionIndicatorPriority.Low);
     }
 
     public override ActionResult Trigger(

@@ -8,7 +8,7 @@ public class RayOfJungle : SkillBase
         base.Awake();
         cooldown = 5f;
         damage = defaultDamage = 20f;
-        successResult = new(true, true, cooldown);
+        successResult = new(true, ActionResultType.Cooldown, cooldown);
         AddActionManuals();
     }
 

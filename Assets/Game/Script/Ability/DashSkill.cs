@@ -16,7 +16,7 @@ public class DashSkill : SkillBase
         cooldown = 8f;
 
         spawnEffectInterval = duration / totalEffect;
-        successResult = new(true, true, cooldown);
+        successResult = new(true, ActionResultType.Cooldown, cooldown);
         AddActionManuals();
     }
 

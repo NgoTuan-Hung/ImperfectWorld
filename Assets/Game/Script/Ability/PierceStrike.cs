@@ -6,11 +6,13 @@ public class PierceStrike : SkillBase
 {
     bool secondPhase = false;
     IEnumerator secondPhaseHandlerIE,
-        actionIE1;
+        actionIE1,
+        cooldownIE;
     bool phaseOneFinish = false;
     float currentTime,
         speed,
         secondPhaseDeadline;
+    public ActionResult additionalPhaseWithConditionResult;
 
     public override void Awake()
     {
@@ -20,6 +22,13 @@ public class PierceStrike : SkillBase
         secondPhaseDeadline = 3f;
         duration = 0.203f;
         speed = 40f;
+        additionalPhaseWithConditionResult = new(
+            true,
+            ActionResultType.AdditionalPhaseWithCondition,
+            cooldown,
+            secondPhaseDeadline
+        );
+        successResult = new(true, ActionResultType.Cooldown, cooldown);
         AddActionManuals();
     }
 
@@ -49,6 +58,11 @@ public class PierceStrike : SkillBase
         base.Start();
     }
 
+    public override void WhileWaiting(Vector2 p_location = default, Vector2 p_direction = default)
+    {
+        customMono.SetUpdateDirectionIndicator(p_direction, UpdateDirectionIndicatorPriority.Low);
+    }
+
     public override ActionResult Trigger(Vector2 location = default, Vector2 direction = default)
     {
         if (secondPhase)
@@ -60,6 +74,7 @@ public class PierceStrike : SkillBase
                 customMono.movementActionBlocking = true;
                 StopCoroutine(secondPhaseHandlerIE);
                 StartCoroutine(actionIE = StartDash(direction));
+                StartCoroutine(cooldownIE = CooldownCoroutine());
                 ToggleAnim(GameManager.Instance.mainSkill1BoolHash, true);
                 customMono.currentAction = this;
                 secondPhase = false;
@@ -75,10 +90,10 @@ public class PierceStrike : SkillBase
                 customMono.statusEffect.Slow(customMono.stat.ActionMoveSpeedReduceRate);
                 ToggleAnim(GameManager.Instance.mainSkill1BoolHash, true);
                 StartCoroutine(actionIE = TriggerIE(location, direction));
-                StartCoroutine(CooldownCoroutine());
+                StartCoroutine(cooldownIE = CooldownCoroutine());
                 customMono.currentAction = this;
                 phaseOneFinish = false;
-                return successResult;
+                return additionalPhaseWithConditionResult;
             }
         }
 
@@ -220,12 +235,15 @@ public class PierceStrike : SkillBase
         secondPhase = true;
         secondPhaseHandlerIE = SecondPhaseHandlerIE();
         StartCoroutine(secondPhaseHandlerIE);
+        additionalPhaseWithConditionResult.conditionMetCallback(additionalPhaseWithConditionResult);
+        StopCoroutine(cooldownIE);
     }
 
     IEnumerator SecondPhaseHandlerIE()
     {
         yield return new WaitForSeconds(secondPhaseDeadline);
         secondPhase = false;
+        StartCoroutine(cooldownIE = CooldownCoroutine());
     }
 
     public override void ActionInterrupt()

@@ -7,6 +7,8 @@ public class UIImageEffect : MonoBehaviour
     public Image image;
     public UIEffect uIEffect;
     public UIEffectTweener uIEffectTweener;
+    public delegate void TweenerOnComplete();
+    public TweenerOnComplete tweenerOnComplete;
 
     private void Reset()
     {

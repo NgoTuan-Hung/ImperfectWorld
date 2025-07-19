@@ -8,7 +8,7 @@ public class NuclearBomb : SkillBase
         base.Awake();
         cooldown = 5f;
         damage = defaultDamage = 200f;
-        successResult = new(true, true, cooldown);
+        successResult = new(true, ActionResultType.Cooldown, cooldown);
         AddActionManuals();
     }
 

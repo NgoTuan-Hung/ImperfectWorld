@@ -201,12 +201,22 @@ public class GameUIManagerRevamp : MonoEditorSingleton<GameUIManagerRevamp>
                                     p_direction: p_centerToPointerDir
                                 );
 
-                                if (actionResult.success)
+                                switch (actionResult.actionResultType)
                                 {
-                                    if (actionResult.timer)
-                                        t_skillSlotUI.skillUseUI.StartCooldown(
-                                            actionResult.cooldown
+                                    case ActionResultType.Cooldown:
+                                    {
+                                        t_skillSlotUI.skillUseUI.StartCooldown(actionResult);
+                                        break;
+                                    }
+                                    case ActionResultType.AdditionalPhaseWithCondition:
+                                    {
+                                        t_skillSlotUI.skillUseUI.StartAdditionalPhaseWithCondition(
+                                            actionResult
                                         );
+                                        break;
+                                    }
+                                    default:
+                                        break;
                                 }
                             };
                             break;
@@ -223,12 +233,22 @@ public class GameUIManagerRevamp : MonoEditorSingleton<GameUIManagerRevamp>
                                     p_direction: p_centerToPointerDir
                                 );
 
-                                if (actionResult.success)
+                                switch (actionResult.actionResultType)
                                 {
-                                    if (actionResult.timer)
-                                        t_skillSlotUI.skillUseUI.StartCooldown(
-                                            actionResult.cooldown
+                                    case ActionResultType.Cooldown:
+                                    {
+                                        t_skillSlotUI.skillUseUI.StartCooldown(actionResult);
+                                        break;
+                                    }
+                                    case ActionResultType.AdditionalPhaseWithCondition:
+                                    {
+                                        t_skillSlotUI.skillUseUI.StartAdditionalPhaseWithCondition(
+                                            actionResult
                                         );
+                                        break;
+                                    }
+                                    default:
+                                        break;
                                 }
                             };
                             break;
@@ -259,12 +279,22 @@ public class GameUIManagerRevamp : MonoEditorSingleton<GameUIManagerRevamp>
                                     p_direction: p_centerToPointerDir
                                 );
 
-                                if (actionResult.success)
+                                switch (actionResult.actionResultType)
                                 {
-                                    if (actionResult.timer)
-                                        t_skillSlotUI.skillUseUI.StartCooldown(
-                                            actionResult.cooldown
+                                    case ActionResultType.Cooldown:
+                                    {
+                                        t_skillSlotUI.skillUseUI.StartCooldown(actionResult);
+                                        break;
+                                    }
+                                    case ActionResultType.AdditionalPhaseWithCondition:
+                                    {
+                                        t_skillSlotUI.skillUseUI.StartAdditionalPhaseWithCondition(
+                                            actionResult
                                         );
+                                        break;
+                                    }
+                                    default:
+                                        break;
                                 }
                             };
                             break;

@@ -16,7 +16,7 @@ public class PhantomPulse : SkillBase
         maxAmmo = 9;
         /* In this skill, this will be the portion each variation hold in blend tree. */
         modifiedAngle = 1f / (maxAmmo - 1);
-        successResult = new(true, true, cooldown);
+        successResult = new(true, ActionResultType.Cooldown, cooldown);
         AddActionManuals();
     }
 

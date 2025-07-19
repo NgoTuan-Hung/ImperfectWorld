@@ -15,9 +15,10 @@ public enum SkillIndicatorType
 public class SkillUseUI : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IDragHandler
 {
     RectTransform rectTransform;
-    public Image border,
+    public Image image,
         cooldownIndicator;
-    public UIImageEffect icon;
+    public UIImageEffect border,
+        icon;
     public Action<Vector2, Vector2> pointerDownEvent = (
             p_pointerPosition,
             p_centerToPointerDir
@@ -34,7 +35,7 @@ public class SkillUseUI : MonoBehaviour, IPointerDownHandler, IPointerUpHandler,
     private void Awake()
     {
         rectTransform = GetComponent<RectTransform>();
-        border = GetComponent<Image>();
+        image = GetComponent<Image>();
         skillDirectionIndicator = transform
             .Find("SkillDirectionIndicator")
             .GetComponent<RectTransform>();
@@ -48,7 +49,7 @@ public class SkillUseUI : MonoBehaviour, IPointerDownHandler, IPointerUpHandler,
         if (!holding)
         {
             holding = true;
-            border.color = Color.red;
+            border.image.color = Color.red;
             pointerDownEvent(pointerPosition, centerToPointerDir);
             StartCoroutine(OnHold());
 
@@ -86,7 +87,7 @@ public class SkillUseUI : MonoBehaviour, IPointerDownHandler, IPointerUpHandler,
         if (holding)
         {
             holding = false;
-            border.color = Color.white;
+            border.image.color = Color.white;
             switch (skillIndicatorType)
             {
                 case SkillIndicatorType.Direction:
@@ -151,18 +152,69 @@ public class SkillUseUI : MonoBehaviour, IPointerDownHandler, IPointerUpHandler,
         pointerUpEvent = (p_pointerPosition, p_centerToPointerDir) => { };
     }
 
-    Color halfWhite = new Color(126 / 255f, 126 / 255f, 126 / 255f, 1);
+    Color halfWhite = new(0.5f, 0.5f, 0.5f, 1);
+    Tween cooldownTween;
+    Action<ActionResult> currentStateInterruptCallback = (p_actionResult) => { };
 
-    public void StartCooldown(float time)
+    public void DefaultInterruptCallback(ActionResult p_actionResult) { }
+
+    public void StartCooldown(ActionResult p_actionResult)
     {
+        currentStateInterruptCallback(p_actionResult);
         cooldownIndicator.fillAmount = 1;
         icon.image.color = halfWhite;
-        cooldownIndicator
-            .DOFillAmount(0, time)
+        cooldownTween = cooldownIndicator
+            .DOFillAmount(0, p_actionResult.cooldown)
             .OnComplete(() =>
             {
                 icon.uIEffectTweener.Play(true);
                 icon.image.color = Color.white;
             });
+        currentStateInterruptCallback = CooldownInterruptCallback;
     }
+
+    void CooldownInterruptCallback(ActionResult p_actionResult)
+    {
+        cooldownTween?.Kill();
+        cooldownIndicator.fillAmount = 0;
+        icon.image.color = Color.white;
+        currentStateInterruptCallback = DefaultInterruptCallback;
+    }
+
+    IEnumerator additionalPhaseIE;
+
+    public void StartAdditionalPhase(ActionResult p_actionResult)
+    {
+        currentStateInterruptCallback(p_actionResult);
+        image.color = halfWhite;
+        border.uIEffectTweener.duration = p_actionResult.additionalPhaseDuration;
+        border.uIEffectTweener.Play(true);
+        StartCoroutine(additionalPhaseIE = OnCompleteIE(p_actionResult));
+        currentStateInterruptCallback = AdditionalPhaseInterruptCallback;
+    }
+
+    IEnumerator OnCompleteIE(ActionResult p_actionResult)
+    {
+        yield return new WaitForSecondsRealtime(p_actionResult.additionalPhaseDuration);
+
+        AdditionalPhaseInterruptCallback(p_actionResult);
+        StartCooldown(p_actionResult);
+    }
+
+    void AdditionalPhaseInterruptCallback(ActionResult p_actionResult)
+    {
+        image.color = Color.white;
+        border.uIEffectTweener.Stop();
+        border.uIEffectTweener.ResetTime();
+        StopCoroutine(additionalPhaseIE);
+        currentStateInterruptCallback = DefaultInterruptCallback;
+    }
+
+    public void StartAdditionalPhaseWithCondition(ActionResult p_actionResult)
+    {
+        StartCooldown(p_actionResult);
+        p_actionResult.conditionMetCallback = StartAdditionalPhase;
+    }
+
+    public void StartAdditionalPhaseWithConditionInterruptCallback(ActionResult p_actionResult) { }
 }

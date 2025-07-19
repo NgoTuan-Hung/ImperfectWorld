@@ -52,8 +52,8 @@ public class BaseAction : MonoEditor
     public Stopwatch stopwatch = new();
     public IEnumerator actionIE,
         botIE;
-    public static ActionResult failResult = new ActionResult();
-    public ActionResult successResult = new ActionResult(true, false, default);
+    public static ActionResult failResult = new();
+    public ActionResult successResult = new(true, ActionResultType.Cooldown, default);
 
     public virtual void Awake()
     {
@@ -94,7 +94,7 @@ public class BaseAction : MonoEditor
     public IEnumerator CooldownCoroutine()
     {
         onCooldown = true;
-        yield return new WaitForSeconds(cooldown);
+        yield return new WaitForSecondsRealtime(cooldown);
         onCooldown = false;
         canUse = true;
     }
