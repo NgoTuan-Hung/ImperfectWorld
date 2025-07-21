@@ -178,7 +178,6 @@ public class SkillUseUI : MonoBehaviour, IPointerDownHandler, IPointerUpHandler,
         cooldownTween?.Kill();
         cooldownIndicator.fillAmount = 0;
         icon.image.color = Color.white;
-        currentStateInterruptCallback = DefaultInterruptCallback;
     }
 
     IEnumerator additionalPhaseIE;
@@ -197,17 +196,20 @@ public class SkillUseUI : MonoBehaviour, IPointerDownHandler, IPointerUpHandler,
     {
         yield return new WaitForSecondsRealtime(p_actionResult.additionalPhaseDuration);
 
-        AdditionalPhaseInterruptCallback(p_actionResult);
         StartCooldown(p_actionResult);
     }
 
-    void AdditionalPhaseInterruptCallback(ActionResult p_actionResult)
+    void AdditionalPhaseReset()
     {
         image.color = Color.white;
         border.uIEffectTweener.Stop();
         border.uIEffectTweener.ResetTime();
+    }
+
+    void AdditionalPhaseInterruptCallback(ActionResult p_actionResult)
+    {
+        AdditionalPhaseReset();
         StopCoroutine(additionalPhaseIE);
-        currentStateInterruptCallback = DefaultInterruptCallback;
     }
 
     public void StartAdditionalPhaseWithCondition(ActionResult p_actionResult)

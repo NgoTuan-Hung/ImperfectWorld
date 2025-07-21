@@ -1,11 +1,21 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
+using DG.Tweening;
 using UnityEngine;
 
 public class Scatter : SkillBase
 {
     ActionWaitInfo actionWaitInfo = new();
     GameEffect scatterChargeGameEffect;
+    public static List<List<float>> arrowAnglesAtPhases;
+    public long realInterval;
+    SpriteRenderer scatterArrowPhaseIcon;
+    public static Vector3 punch;
+    public static float punchDuration = 0.5f,
+        elasticity = 1;
+    public int vibrato = 10;
+    Tweener iconTweener;
 
     public override void Awake()
     {
@@ -15,8 +25,25 @@ public class Scatter : SkillBase
         audioClip = Resources.Load<AudioClip>("AudioClip/scatter-release");
         actionWaitInfo.releaseBoolHash = Animator.StringToHash("Release");
         damage = defaultDamage = 30f;
-        currentAmmo = 3;
-        modifiedAngle = 30f.DegToRad();
+        /* In this skill ammo mean phase */
+        currentAmmo = 0;
+        maxAmmo = 3;
+        realInterval = (long)(0.5 * 1000);
+
+        arrowAnglesAtPhases ??= new()
+        {
+            new List<float> { 0f.DegToRad() },
+            new List<float> { -30f.DegToRad(), 30f.DegToRad() },
+            new List<float> { 0f.DegToRad(), -30f.DegToRad(), 30f.DegToRad() },
+        };
+        successResult = new(true, ActionResultType.Cooldown, cooldown);
+        scatterArrowPhaseIcon = transform
+            .Find("ScatterArrowPhaseIcon")
+            .GetComponent<SpriteRenderer>();
+        punch = new(0.2f, 0.2f);
+        punchDuration = 0.5f;
+        elasticity = 0;
+        vibrato = 10;
 
         AddActionManuals();
     }
@@ -29,6 +56,9 @@ public class Scatter : SkillBase
 
     public override void Start()
     {
+#if UNITY_EDITOR
+        onExitPlayModeEvent += () => arrowAnglesAtPhases = null;
+#endif
         base.Start();
     }
 
@@ -64,7 +94,6 @@ public class Scatter : SkillBase
             actionWaitInfo.stillWaiting = true;
             StartCoroutine(actionIE = WaitingCoroutine());
             customMono.currentAction = this;
-            return successResult;
         }
 
         return failResult;
@@ -76,54 +105,67 @@ public class Scatter : SkillBase
         var t_scatterChargeGameEffectSO = GameManager.Instance.scatterChargeSO;
         scatterChargeGameEffect.Init(t_scatterChargeGameEffectSO);
         scatterChargeGameEffect.Follow(transform, t_scatterChargeGameEffectSO);
-        stopwatch.Restart();
 
+        stopwatch.Restart();
+        currentAmmo = 0;
         while (actionWaitInfo.stillWaiting)
-            yield return new WaitForSeconds(Time.fixedDeltaTime);
+        {
+            yield return new WaitForEndOfFrame();
+
+            if (currentAmmo < maxAmmo)
+            {
+                if (stopwatch.ElapsedMilliseconds > realInterval)
+                {
+                    currentAmmo++;
+                    HandleIcon();
+
+                    stopwatch.Restart();
+                }
+            }
+        }
 
         stopwatch.Stop();
         scatterChargeGameEffect.deactivate();
-        if (stopwatch.Elapsed.TotalSeconds >= actionWaitInfo.requiredWaitTime)
+        StartCoroutine(CooldownCoroutine());
+        scatterArrowPhaseIcon.gameObject.SetActive(false);
+        iconTweener?.Kill();
+
+        if (currentAmmo > 0)
         {
             ToggleAnim(actionWaitInfo.releaseBoolHash, true);
             ToggleAnim(boolHash, false);
             customMono.audioSource.PlayOneShot(audioClip);
-            StartCoroutine(CooldownCoroutine());
 
-            Vector2 arrowDirection;
-            for (int i = 0; i < currentAmmo; i++)
-            {
-                GameEffect t_scatterArrowGameEffect = GameManager
-                    .Instance.gameEffectPool.PickOne()
-                    .gameEffect;
-                var t_scatterArrowGameEffectSO = GameManager.Instance.scatterArrowSO;
-                t_scatterArrowGameEffect.Init(t_scatterArrowGameEffectSO);
-                var t_collideAndDamage =
-                    t_scatterArrowGameEffect.GetBehaviour(EGameEffectBehaviour.CollideAndDamage)
-                    as CollideAndDamage;
-                t_collideAndDamage.allyTags = customMono.allyTags;
-                t_collideAndDamage.collideDamage = damage;
-                if (i % 2 == 1)
+            GameEffect t_scatterArrowGameEffect;
+            var t_scatterArrowGameEffectSO = GameManager.Instance.scatterArrowSO;
+            CollideAndDamage t_collideAndDamage;
+            arrowAnglesAtPhases[currentAmmo - 1]
+                .ForEach(arrowAngle =>
                 {
-                    arrowDirection = actionWaitInfo.finalDirection.RotateZ(
-                        (i + 1) / 2 * modifiedAngle
-                    );
+                    t_scatterArrowGameEffect = GameManager
+                        .Instance.gameEffectPool.PickOne()
+                        .gameEffect;
+                    t_scatterArrowGameEffect.Init(t_scatterArrowGameEffectSO);
+                    t_collideAndDamage =
+                        t_scatterArrowGameEffect.GetBehaviour(EGameEffectBehaviour.CollideAndDamage)
+                        as CollideAndDamage;
+                    t_collideAndDamage.allyTags = customMono.allyTags;
+                    t_collideAndDamage.collideDamage = damage;
+
                     t_scatterArrowGameEffect.transform.SetPositionAndRotation(
                         customMono.firePoint.transform.position,
-                        Quaternion.Euler(0, 0, Vector2.SignedAngle(Vector2.right, arrowDirection))
+                        Quaternion.Euler(
+                            0,
+                            0,
+                            Vector2.SignedAngle(
+                                Vector2.right,
+                                actionWaitInfo.finalDirection.RotateZ(arrowAngle)
+                            )
+                        )
                     );
-                }
-                else
-                {
-                    arrowDirection = actionWaitInfo.finalDirection.RotateZ(-i / 2 * modifiedAngle);
-                    t_scatterArrowGameEffect.transform.SetPositionAndRotation(
-                        customMono.firePoint.transform.position,
-                        Quaternion.Euler(0, 0, Vector2.SignedAngle(Vector2.right, arrowDirection))
-                    );
-                }
 
-                t_scatterArrowGameEffect.KeepFlyingAt(arrowDirection, t_scatterArrowGameEffectSO);
-            }
+                    t_scatterArrowGameEffect.KeepFlyingForward(t_scatterArrowGameEffectSO);
+                });
 
             while (!customMono.animationEventFunctionCaller.endRelease)
                 yield return new WaitForSeconds(Time.fixedDeltaTime);
@@ -135,13 +177,53 @@ public class Scatter : SkillBase
         }
         else
         {
-            canUse = true;
             customMono.actionBlocking = false;
             ToggleAnim(boolHash, false);
             customMono.statusEffect.RemoveSlow(customMono.stat.ActionMoveSpeedReduceRate);
         }
 
         customMono.currentAction = null;
+    }
+
+    private void HandleIcon()
+    {
+        scatterArrowPhaseIcon.gameObject.SetActive(true);
+        switch (currentAmmo)
+        {
+            case 1:
+            {
+                scatterArrowPhaseIcon.transform.localScale = Vector3.one * 0.1f;
+                scatterArrowPhaseIcon.color = ((Vector4)scatterArrowPhaseIcon.color).WithW(0.33f);
+                scatterArrowPhaseIcon
+                    .transform.DOPunchScale(punch, punchDuration, vibrato, elasticity)
+                    .SetEase(Ease.OutQuart);
+                // .OnComplete(() => spriteRenderer.enabled = false);
+                break;
+            }
+            case 2:
+            {
+                scatterArrowPhaseIcon.transform.localScale = Vector3.one * 0.1f;
+                scatterArrowPhaseIcon.color = ((Vector4)scatterArrowPhaseIcon.color).WithW(0.66f);
+                scatterArrowPhaseIcon
+                    .transform.DOPunchScale(punch, punchDuration, vibrato * 2, elasticity)
+                    .SetEase(Ease.OutQuart);
+                // .OnComplete(() => spriteRenderer.enabled = false);
+                break;
+            }
+            case 3:
+            {
+                scatterArrowPhaseIcon.transform.localScale = Vector3.one * 0.1f;
+                scatterArrowPhaseIcon.color = ((Vector4)scatterArrowPhaseIcon.color).WithW(1);
+                iconTweener = scatterArrowPhaseIcon
+                    .transform.DOPunchScale(punch, punchDuration, vibrato * 3, elasticity)
+                    .SetEase(Ease.OutQuart)
+                    .SetLoops(-1);
+                break;
+            }
+
+            default:
+                break;
+        }
     }
 
     public override void WhileWaiting(Vector2 p_location = default, Vector2 p_direction = default)

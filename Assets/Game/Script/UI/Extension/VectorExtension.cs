@@ -35,4 +35,7 @@ public static class VectorExtension
     }
 
     public static Vector3 AsVector3(this Vector2 vector2) => (Vector3)vector2;
+
+    public static Vector4 WithW(this Vector4 vector, float w) =>
+        new Vector4(vector.x, vector.y, vector.z, w);
 }

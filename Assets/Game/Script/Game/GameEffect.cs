@@ -356,6 +356,9 @@ public class GameEffect : MonoSelfAware
         }
     }
 
+    public void KeepFlyingForward(GameEffectSO p_gameEffectSO) =>
+        StartCoroutine(KeepFlyingAtCoroutine(transform.right, p_gameEffectSO));
+
     public void KeepFlyingAt(Vector3 direction, GameEffectSO p_gameEffectSO)
     {
         StartCoroutine(KeepFlyingAtCoroutine(direction, p_gameEffectSO));
