@@ -76,7 +76,10 @@ public class GameManager : MonoSingleton<GameManager>
         phantomPulseDragonSO,
         infernalTideFlameSO,
         infernalTideFlameNoReceiverSO,
-        infernalTideFanSO;
+        infernalTideFanSO,
+        scatterFlashSO,
+        stormFangMergeBladesSO,
+        stormFangMergeProgressSO;
     public int attackBoolHash = Animator.StringToHash("Attack"),
         mainSkill1BoolHash = Animator.StringToHash("MainSkill1"),
         mainSkill2BoolHash = Animator.StringToHash("MainSkill2"),
@@ -262,4 +265,7 @@ public class GameManager : MonoSingleton<GameManager>
     }
 
     public CustomMono GetRandomPlayerAlly() => playerAllies[Random.Range(0, playerAllies.Count)];
+
+    public GameEffect PickGameEffectAndInit(GameEffectSO p_gameEffectSO) =>
+        gameEffectPool.PickOne().gameEffect.Init(p_gameEffectSO);
 }

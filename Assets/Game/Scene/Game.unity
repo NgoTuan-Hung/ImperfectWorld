@@ -831,6 +831,9 @@ MonoBehaviour:
   infernalTideFlameSO: {fileID: 11400000, guid: 7d9ae7b501fc6a54fa3718d1ff224fa2, type: 2}
   infernalTideFlameNoReceiverSO: {fileID: 11400000, guid: 03bc8130243404a4eab65f45873e0cc4, type: 2}
   infernalTideFanSO: {fileID: 11400000, guid: e77ba448bc8599c45ac5131e2c6dc30b, type: 2}
+  scatterFlashSO: {fileID: 11400000, guid: b87a61973efbcdc4fac28173f270ea59, type: 2}
+  stormFangMergeBladesSO: {fileID: 11400000, guid: ff5f72b7292e7ae459818edfb690ed12, type: 2}
+  stormFangMergeProgressSO: {fileID: 11400000, guid: 53dfff11000017446aef01241acf160c, type: 2}
   attackBoolHash: 1080829965
   mainSkill1BoolHash: 745959408
   mainSkill2BoolHash: -1249952182
@@ -1439,10 +1442,10 @@ RectTransform:
   - {fileID: 38622209}
   m_Father: {fileID: 1874200017}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 380, y: -70}
+  m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &546532736
 MonoBehaviour:
@@ -3338,10 +3341,10 @@ RectTransform:
   - {fileID: 1032758556}
   m_Father: {fileID: 1874200017}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 270, y: -70}
+  m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1012798519
 MonoBehaviour:
@@ -8434,10 +8437,10 @@ RectTransform:
   - {fileID: 1638319142}
   m_Father: {fileID: 1874200017}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 50, y: -70}
+  m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1122076159
 MonoBehaviour:
@@ -11581,10 +11584,10 @@ RectTransform:
   - {fileID: 1415293675}
   m_Father: {fileID: 1874200017}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 160, y: -70}
+  m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1872287108
 MonoBehaviour:
@@ -81396,6 +81399,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 1c867fbe8b471654dae0b5d9aa81b709, type: 2}
   - {fileID: 11400000, guid: cacf79545d465a34695ad81cf358887f, type: 2}
   - {fileID: 11400000, guid: 6eabd5d415fa6b24a871b4ccf2de7e3a, type: 2}
+  - {fileID: 11400000, guid: 04bce6e22da9dca44a0263e6eb110e01, type: 2}
   skillBases: []
 --- !u!114 &2059840850
 MonoBehaviour:

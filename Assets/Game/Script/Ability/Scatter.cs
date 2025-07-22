@@ -79,8 +79,13 @@ public class Scatter : SkillBase
 
     public override ActionResult Trigger(Vector2 location = default, Vector2 direction = default)
     {
-        actionWaitInfo.stillWaiting = false;
-        return successResult;
+        if (actionWaitInfo.stillWaiting)
+        {
+            actionWaitInfo.stillWaiting = false;
+            return successResult;
+        }
+
+        return failResult;
     }
 
     public override ActionResult StartAndWait()
@@ -135,6 +140,11 @@ public class Scatter : SkillBase
             ToggleAnim(actionWaitInfo.releaseBoolHash, true);
             ToggleAnim(boolHash, false);
             customMono.audioSource.PlayOneShot(audioClip);
+
+            GameEffect t_scatterFlashEffect = GameManager.Instance.PickGameEffectAndInit(
+                GameManager.Instance.scatterFlashSO
+            );
+            t_scatterFlashEffect.transform.position = customMono.firePoint.transform.position;
 
             GameEffect t_scatterArrowGameEffect;
             var t_scatterArrowGameEffectSO = GameManager.Instance.scatterArrowSO;

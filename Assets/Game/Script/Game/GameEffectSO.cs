@@ -32,6 +32,8 @@ public class GameEffectSO : ScriptableObject
     // default exclude everything except CombatCollidee
     public LayerMask collisionExcludeLayerMask;
     public List<EGameEffectBehaviour> gameEffectBehaviours;
+    public bool useParticleSystem = false;
+    public GameObject particleSystemPrefab;
 
     private void Reset()
     {

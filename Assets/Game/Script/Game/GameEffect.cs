@@ -314,6 +314,15 @@ public class GameEffect : MonoSelfAware
             trailRenderer.sortingOrder = p_gameEffectSO.gameEffectPrefab.trailRenderer.sortingOrder;
         }
 
+        if (p_gameEffectSO.useParticleSystem)
+        {
+            ParticleSystem t_pS = Instantiate(p_gameEffectSO.particleSystemPrefab)
+                .GetComponent<ParticleSystem>();
+            t_pS.transform.parent = transform;
+            t_pS.transform.localPosition = Vector3.zero;
+            t_pS.Play();
+        }
+
         if (p_gameEffectSO.isTimeline)
         {
             playableDirector.playableAsset = p_gameEffectSO.timelineAsset;
