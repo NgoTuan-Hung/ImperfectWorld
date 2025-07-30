@@ -5,7 +5,7 @@ using System.Linq;
 using Unity.Cinemachine;
 using UnityEngine;
 
-public class GameManager : MonoSingleton<GameManager>
+public partial class GameManager : MonoSingleton<GameManager>
 {
     public readonly int attackButtonScrollViewIndex = 7;
     public readonly int attackButtonIndex = 0;
@@ -26,60 +26,7 @@ public class GameManager : MonoSingleton<GameManager>
     public float waveDuration = 60f;
     public new Camera camera;
     public CinemachineCamera cinemachineCamera;
-    GameObject gameEffectPrefab;
-    public ObjectPool gameEffectPool;
-    public GameEffectSO MoonSlashExplodeSO,
-        MagicLaserImpactSO,
-        slaughterProjectileSO,
-        SlaughterExplosionSO,
-        StrongDudePunchImpactSO,
-        SamuraiSlashSO,
-        BladeOfPhongTornadoImpactSO,
-        BladeOfVuImpactSO,
-        ArrowSO,
-        ElementalLeafRangerArrowSO,
-        ElementalLeafRangerPoisonArrowImpactSO,
-        ElementalLeafRangerVineArrowImpactSO,
-        WanderMagicianProjectileSO,
-        vanishEffectSO,
-        bladeOfMinhKhaiSlashEffectSO,
-        bladeOfPhongTornadoEffectSO,
-        ghostSO,
-        bladeOfVuStarSO,
-        bladeOfVuSlashSO,
-        pierceStrikeSO,
-        pierceStrikeSecondPhaseSO,
-        deepBladeSlashSO,
-        rayOfJungleBeamSO,
-        woodCryArrowSO,
-        elementalLeafRangerPoisonArrowSO,
-        elementalLeafRangerVineArrowSO,
-        lightingForwardLightingSO,
-        blueHoleSO,
-        nuclearBombExplosionSO,
-        swordTempestSlash1SO,
-        swordTempestSlash2SO,
-        swordTempestSlash3SO,
-        dashEffectSO,
-        dashExplodeSO,
-        magicLaserSO,
-        moonSlashSO,
-        scatterArrowSO,
-        scatterChargeSO,
-        attackColliderSO,
-        dieDissolveSO,
-        strongDudeShockwaveSO,
-        knockUpColliderSO,
-        pushRandomColliderSO,
-        pushColliderSO,
-        stunColliderSO,
-        phantomPulseDragonSO,
-        infernalTideFlameSO,
-        infernalTideFlameNoReceiverSO,
-        infernalTideFanSO,
-        scatterFlashSO,
-        stormFangMergeBladesSO,
-        stormFangMergeProgressSO;
+    public Dictionary<GameEffectSO, ObjectPool> poolLink = new();
     public int attackBoolHash = Animator.StringToHash("Attack"),
         mainSkill1BoolHash = Animator.StringToHash("MainSkill1"),
         mainSkill2BoolHash = Animator.StringToHash("MainSkill2"),
@@ -127,7 +74,6 @@ public class GameManager : MonoSingleton<GameManager>
             spawnObjectPools.Add(
                 new ObjectPool(
                     spawnEnemyInfo.prefab,
-                    100,
                     new PoolArgument(ComponentType.CustomMono, PoolArgument.WhereComponent.Self)
                 )
             );
@@ -138,16 +84,6 @@ public class GameManager : MonoSingleton<GameManager>
 
         InitAllEffectPools();
         LoadOtherResources();
-    }
-
-    void InitAllEffectPools()
-    {
-        gameEffectPrefab = Resources.Load("GameEffect") as GameObject;
-        gameEffectPool = new(
-            gameEffectPrefab,
-            100,
-            new PoolArgument(ComponentType.GameEffect, PoolArgument.WhereComponent.Self)
-        );
     }
 
     void LoadOtherResources() { }
@@ -161,12 +97,12 @@ public class GameManager : MonoSingleton<GameManager>
         for (int i = 0; i < spawnEnemyInfos.Count; i++)
         {
             SpawnEnemyInfo t_spawnEnemyInfo = spawnEnemyInfos[i];
-            spawnObjectPools[i]
-                .ForEach(poolObject =>
-                {
-                    poolObject.customMono.stat.healthReachZeroEvent.action += () =>
-                        t_spawnEnemyInfo.currentSpawn--;
-                });
+
+            spawnObjectPools[i].handleCachedComponentRefs += (p_poolObject) =>
+            {
+                p_poolObject.customMono.stat.healthReachZeroEvent.action += () =>
+                    t_spawnEnemyInfo.currentSpawn--;
+            };
         }
 
         stopwatch.Restart();
@@ -265,7 +201,4 @@ public class GameManager : MonoSingleton<GameManager>
     }
 
     public CustomMono GetRandomPlayerAlly() => playerAllies[Random.Range(0, playerAllies.Count)];
-
-    public GameEffect PickGameEffectAndInit(GameEffectSO p_gameEffectSO) =>
-        gameEffectPool.PickOne().gameEffect.Init(p_gameEffectSO);
 }

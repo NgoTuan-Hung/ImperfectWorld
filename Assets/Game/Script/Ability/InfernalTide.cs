@@ -82,9 +82,8 @@ public class InfernalTide : SkillBase
         transform.position -= p_direction.normalized * 1.5f;
         CollideAndDamage t_fan =
             GameManager
-                .Instance.gameEffectPool.PickOne()
-                .gameEffect.Init(GameManager.Instance.infernalTideFanSO)
-                .GetBehaviour(EGameEffectBehaviour.CollideAndDamage) as CollideAndDamage;
+                .Instance.infernalTideFanPool.PickOne()
+                .gameEffect.GetBehaviour(EGameEffectBehaviour.CollideAndDamage) as CollideAndDamage;
         t_fan.allyTags = customMono.allyTags;
         t_fan.collideDamage = damage * 10;
         t_fan.transform.SetPositionAndRotation(
@@ -115,9 +114,9 @@ public class InfernalTide : SkillBase
         {
             CollideAndDamage t_flame =
                 GameManager
-                    .Instance.gameEffectPool.PickOne()
-                    .gameEffect.Init(GameManager.Instance.infernalTideFlameSO)
-                    .GetBehaviour(EGameEffectBehaviour.CollideAndDamage) as CollideAndDamage;
+                    .Instance.infernalTideFlamePool.PickOne()
+                    .gameEffect.GetBehaviour(EGameEffectBehaviour.CollideAndDamage)
+                as CollideAndDamage;
             t_flame.allyTags = customMono.allyTags;
             t_flame.collideDamage = damage;
             t_flame.transform.position =

@@ -136,7 +136,8 @@ GameObject:
   - component: {fileID: 8399823687450435533}
   - component: {fileID: 5837847569938367989}
   - component: {fileID: 3059323681340742489}
-  - component: {fileID: 7330695286827409864}
+  - component: {fileID: 2668862340300163669}
+  - component: {fileID: 8456137323818459475}
   m_Layer: 7
   m_Name: PierceStrike
   m_TagString: Untagged
@@ -183,7 +184,7 @@ Rigidbody2D:
     m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 247
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
@@ -285,7 +286,7 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
---- !u!114 &7330695286827409864
+--- !u!114 &2668862340300163669
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -294,16 +295,35 @@ MonoBehaviour:
   m_GameObject: {fileID: 4988166546865566991}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 19e58d24264fe2e49b0b652bf22ee2d4, type: 3}
+  m_Script: {fileID: 11500000, guid: 744c1bb6659d1bf4388885a43773b6cf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  rigidbody2D: {fileID: 0}
+  animateObjects: []
   trailRenderer: {fileID: 0}
-  animateObjects:
-  - {fileID: 4695041982996303334}
-  boxCollider2Ds:
-  - {fileID: 9108186380893612887}
+  gameEffectSO: {fileID: 11400000, guid: 02cc96b70cc7f704fbc0f1b5093301d4, type: 2}
+  boxCollider2Ds: []
   circleCollider2Ds: []
   polygonCollider2Ds: []
+  particleSystem: {fileID: 0}
+--- !u!114 &8456137323818459475
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4988166546865566991}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 154a6a151704bea43b23fe6d54e16d48, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  collideDamage: 1
+  multipleCollideInterval: 0.05
+  pushEnemyOnCollideForce: 1
+  pushDirection: {x: 0, y: 0, z: 0}
+  stunDuration: 0
+  healAmmount: 0
 --- !u!1 &6830268670528594064
 GameObject:
   m_ObjectHideFlags: 0
@@ -346,7 +366,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7152292175198788736}
   - component: {fileID: 9108186380893612887}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: BoxCollider2D
   m_TagString: Untagged
   m_Icon: {fileID: 0}

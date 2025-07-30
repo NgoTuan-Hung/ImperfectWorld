@@ -79,9 +79,8 @@ public class WoodCry : SkillBase
 
         CollideAndDamage t_gameEffect =
             GameManager
-                .Instance.gameEffectPool.PickOne()
-                .gameEffect.Init(GameManager.Instance.woodCryArrowSO)
-                .GetBehaviour(EGameEffectBehaviour.CollideAndDamage) as CollideAndDamage;
+                .Instance.woodCryArrowPool.PickOne()
+                .gameEffect.GetBehaviour(EGameEffectBehaviour.CollideAndDamage) as CollideAndDamage;
 
         t_gameEffect.allyTags = customMono.allyTags;
         t_gameEffect.collideDamage = damage;

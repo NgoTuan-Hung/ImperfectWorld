@@ -35,6 +35,41 @@ public class GameEffectSOModifier : EditorWindow
 
     void ModifyBehavior(GameEffectSO p_gameEffectSO)
     {
-        p_gameEffectSO.gameEffectBehaviours.Add(EGameEffectBehaviour.CollideAndDamage);
+        using var editingScope = new PrefabUtility.EditPrefabContentsScope(
+            AssetDatabase.GetAssetPath(p_gameEffectSO.gameEffectPrefab.gameObject)
+        );
+        GameObject t_gameObject = editingScope.prefabContentsRoot;
+
+        GameObject.DestroyImmediate(t_gameObject.GetComponent<GameEffectPrefab>());
+
+        GameEffect t_gameEffect = t_gameObject.AddComponent<GameEffect>();
+        t_gameEffect.gameEffectSO = p_gameEffectSO;
+
+        p_gameEffectSO.gameEffectBehaviours.ForEach(gEB =>
+        {
+            switch (gEB)
+            {
+                case EGameEffectBehaviour.CollideAndDamage:
+                    t_gameObject.AddComponent<CollideAndDamage>();
+                    break;
+                case EGameEffectBehaviour.BlueHole:
+                    t_gameObject.AddComponent<BlueHole>();
+                    break;
+                case EGameEffectBehaviour.InfernalTideFanReceiver:
+                    t_gameObject.AddComponent<InfernalTideFanReceiver>();
+                    break;
+                default:
+                    break;
+            }
+        });
+
+        Rigidbody2D t_rigidBody2D;
+        if ((t_rigidBody2D = t_gameObject.GetComponent<Rigidbody2D>()) == null)
+            t_rigidBody2D = t_gameObject.AddComponent<Rigidbody2D>();
+        t_rigidBody2D.excludeLayers = p_gameEffectSO.collisionExcludeLayerMask;
+        t_rigidBody2D.gravityScale = 0;
+
+        t_gameObject.layer = LayerMask.NameToLayer("CombatCollider");
+        t_gameObject.tag = p_gameEffectSO.tag;
     }
 }

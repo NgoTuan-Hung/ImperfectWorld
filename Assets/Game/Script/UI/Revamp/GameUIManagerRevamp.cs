@@ -41,16 +41,13 @@ public class GameUIManagerRevamp : MonoEditorSingleton<GameUIManagerRevamp>
         healthBarPrefab = Resources.Load("HealthBar") as GameObject;
         healthBarPool = new(
             healthBarPrefab,
-            20,
             new PoolArgument(ComponentType.HealthUIRevamp, PoolArgument.WhereComponent.Self),
             new PoolArgument(ComponentType.WorldSpaceUI, PoolArgument.WhereComponent.Self)
         );
-        healthBarPool.ForEach(
-            (p_pO) =>
-            {
-                p_pO.gameObject.transform.SetParent(worldSpaceCanvas.transform, false);
-            }
-        );
+        healthBarPool.handleCachedComponentRefs += (p_poolObject) =>
+        {
+            p_poolObject.gameObject.transform.SetParent(worldSpaceCanvas.transform, false);
+        };
     }
 
     void GetAllUI() { }

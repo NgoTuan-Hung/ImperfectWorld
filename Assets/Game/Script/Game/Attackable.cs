@@ -145,10 +145,9 @@ public class Attackable : SkillBase
         );
         CollideAndDamage attackCollider =
             GameManager
-                .Instance.gameEffectPool.PickOne()
-                .gameEffect.Init(GameManager.Instance.attackColliderSO)
-                .GetBehaviour(EGameEffectBehaviour.CollideAndDamage) as CollideAndDamage;
-        attackCollider.GameEffect.currentGameEffectSO.collideAndDamageSO.spawnedEffectOnCollide =
+                .Instance.attackColliderPool.PickOne()
+                .gameEffect.GetBehaviour(EGameEffectBehaviour.CollideAndDamage) as CollideAndDamage;
+        attackCollider.GameEffect.gameEffectSO.collideAndDamageSO.spawnedEffectOnCollide =
             customMono.meleeCollisionEffectSO;
         attackCollider.allyTags = customMono.allyTags;
         attackCollider.transform.position = customMono.firePoint.transform.position;
@@ -197,8 +196,9 @@ public class Attackable : SkillBase
             UpdateDirectionIndicatorPriority.Low
         );
         GameEffect t_projectileEffect = GameManager
-            .Instance.gameEffectPool.PickOne()
-            .gameEffect.Init(customMono.longRangeProjectileEffectSO);
+            .Instance.poolLink[customMono.longRangeProjectileEffectSO]
+            .PickOne()
+            .gameEffect;
         var t_collideAndDamage =
             t_projectileEffect.GetBehaviour(EGameEffectBehaviour.CollideAndDamage)
             as CollideAndDamage;
@@ -211,7 +211,7 @@ public class Attackable : SkillBase
             Vector2.SignedAngle(Vector2.right, attackDirection)
         );
 
-        t_projectileEffect.KeepFlyingAt(attackDirection, customMono.longRangeProjectileEffectSO);
+        t_projectileEffect.KeepFlyingAt(attackDirection);
 
         while (!customMono.animationEventFunctionCaller.endAttack)
             yield return new WaitForSeconds(Time.fixedDeltaTime);

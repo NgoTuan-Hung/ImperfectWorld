@@ -12,9 +12,9 @@ GameObject:
   - component: {fileID: 7989121492639908765}
   - component: {fileID: 4423091211803878309}
   - component: {fileID: 6812837167981481577}
-  - component: {fileID: 2982733132636509848}
-  - component: {fileID: 1914710065624815468}
-  m_Layer: 0
+  - component: {fileID: 3733665305299790857}
+  - component: {fileID: 4120712322452586932}
+  m_Layer: 7
   m_Name: MagicLaserImpact
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -178,7 +178,7 @@ PlayableDirector:
     value: {fileID: 4423091211803878309}
   m_ExposedReferences:
     m_References: []
---- !u!114 &2982733132636509848
+--- !u!114 &3733665305299790857
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -187,35 +187,44 @@ MonoBehaviour:
   m_GameObject: {fileID: 19316051145377854}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 19e58d24264fe2e49b0b652bf22ee2d4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  trailRenderer: {fileID: 0}
-  animateObjects:
-  - {fileID: 6251428703353796587}
-  boxCollider2Ds: []
-  circleCollider2Ds: []
-  polygonCollider2Ds: []
---- !u!114 &1914710065624815468
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 19316051145377854}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 168cfb170d8d5ef49a8d48318a9a5709, type: 3}
+  m_Script: {fileID: 11500000, guid: 744c1bb6659d1bf4388885a43773b6cf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   rigidbody2D: {fileID: 0}
   animateObjects: []
-  trackReferences: []
-  boxCollider2D: {fileID: 0}
-  polygonCollider2D: {fileID: 0}
-  circleCollider2D: {fileID: 0}
   trailRenderer: {fileID: 0}
-  currentGameEffectSO: {fileID: 0}
+  gameEffectSO: {fileID: 11400000, guid: 679d29df8f8d6eb41bddaa3d46cd2c56, type: 2}
+  boxCollider2Ds: []
+  circleCollider2Ds: []
+  polygonCollider2Ds: []
+  particleSystem: {fileID: 0}
+--- !u!50 &4120712322452586932
+Rigidbody2D:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 19316051145377854}
+  m_BodyType: 0
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
+  m_GravityScale: 0
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 247
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0
 --- !u!1 &432292050215706308
 GameObject:
   m_ObjectHideFlags: 0

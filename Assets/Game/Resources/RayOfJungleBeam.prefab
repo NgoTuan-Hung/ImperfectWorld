@@ -135,7 +135,7 @@ GameObject:
   m_Component:
   - component: {fileID: 839873310370717771}
   - component: {fileID: 6462025565880956788}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: BoxCollider2D
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -213,7 +213,9 @@ GameObject:
   m_Component:
   - component: {fileID: 3244165602634273133}
   - component: {fileID: 8856170082404779771}
-  - component: {fileID: 1511637388874332002}
+  - component: {fileID: 447639184008751201}
+  - component: {fileID: 5564757722710286843}
+  - component: {fileID: 8064638552983754677}
   m_Layer: 7
   m_Name: RayOfJungleBeam
   m_TagString: Untagged
@@ -335,7 +337,7 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
---- !u!114 &1511637388874332002
+--- !u!114 &447639184008751201
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -344,16 +346,62 @@ MonoBehaviour:
   m_GameObject: {fileID: 7231248743938828705}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 19e58d24264fe2e49b0b652bf22ee2d4, type: 3}
+  m_Script: {fileID: 11500000, guid: 744c1bb6659d1bf4388885a43773b6cf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  rigidbody2D: {fileID: 0}
+  animateObjects: []
   trailRenderer: {fileID: 0}
-  animateObjects:
-  - {fileID: 7852395759220871329}
-  boxCollider2Ds:
-  - {fileID: 6462025565880956788}
+  gameEffectSO: {fileID: 11400000, guid: d5fe74e5e95aa9748919dc1fd3e5ea29, type: 2}
+  boxCollider2Ds: []
   circleCollider2Ds: []
   polygonCollider2Ds: []
+  particleSystem: {fileID: 0}
+--- !u!114 &5564757722710286843
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7231248743938828705}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 154a6a151704bea43b23fe6d54e16d48, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  collideDamage: 1
+  multipleCollideInterval: 0.05
+  pushEnemyOnCollideForce: 1
+  pushDirection: {x: 0, y: 0, z: 0}
+  stunDuration: 0
+  healAmmount: 0
+--- !u!50 &8064638552983754677
+Rigidbody2D:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7231248743938828705}
+  m_BodyType: 0
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
+  m_GravityScale: 0
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 247
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0
 --- !u!1 &8579663086851294348
 GameObject:
   m_ObjectHideFlags: 0

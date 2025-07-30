@@ -106,10 +106,8 @@ public class Scatter : SkillBase
 
     IEnumerator WaitingCoroutine()
     {
-        scatterChargeGameEffect = GameManager.Instance.gameEffectPool.PickOne().gameEffect;
-        var t_scatterChargeGameEffectSO = GameManager.Instance.scatterChargeSO;
-        scatterChargeGameEffect.Init(t_scatterChargeGameEffectSO);
-        scatterChargeGameEffect.Follow(transform, t_scatterChargeGameEffectSO);
+        scatterChargeGameEffect = GameManager.Instance.scatterChargePool.PickOne().gameEffect;
+        scatterChargeGameEffect.Follow(transform);
 
         stopwatch.Restart();
         currentAmmo = 0;
@@ -141,21 +139,19 @@ public class Scatter : SkillBase
             ToggleAnim(boolHash, false);
             customMono.audioSource.PlayOneShot(audioClip);
 
-            GameEffect t_scatterFlashEffect = GameManager.Instance.PickGameEffectAndInit(
-                GameManager.Instance.scatterFlashSO
-            );
+            GameEffect t_scatterFlashEffect = GameManager
+                .Instance.scatterFlashPool.PickOne()
+                .gameEffect;
             t_scatterFlashEffect.transform.position = customMono.firePoint.transform.position;
 
             GameEffect t_scatterArrowGameEffect;
-            var t_scatterArrowGameEffectSO = GameManager.Instance.scatterArrowSO;
             CollideAndDamage t_collideAndDamage;
             arrowAnglesAtPhases[currentAmmo - 1]
                 .ForEach(arrowAngle =>
                 {
                     t_scatterArrowGameEffect = GameManager
-                        .Instance.gameEffectPool.PickOne()
+                        .Instance.scatterArrowPool.PickOne()
                         .gameEffect;
-                    t_scatterArrowGameEffect.Init(t_scatterArrowGameEffectSO);
                     t_collideAndDamage =
                         t_scatterArrowGameEffect.GetBehaviour(EGameEffectBehaviour.CollideAndDamage)
                         as CollideAndDamage;
@@ -174,7 +170,7 @@ public class Scatter : SkillBase
                         )
                     );
 
-                    t_scatterArrowGameEffect.KeepFlyingForward(t_scatterArrowGameEffectSO);
+                    t_scatterArrowGameEffect.KeepFlyingForward();
                 });
 
             while (!customMono.animationEventFunctionCaller.endRelease)

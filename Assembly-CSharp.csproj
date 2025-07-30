@@ -79,12 +79,14 @@
     <Compile Include="Assets\Game\Script\Ability\WoodCry.cs" />
     <Compile Include="Assets\Game\Script\Ability\AirRollSkill.cs" />
     <Compile Include="Assets\CustomPackage\Dotween\Modules\DOTweenModuleUtils.cs" />
+    <Compile Include="Assets\Test\ResetParticleSystemState\ResetParticleSystemState.cs" />
     <Compile Include="Assets\Game\Script\UI\Revamp\PointerDownUI.cs" />
     <Compile Include="Assets\Test\TestColliderWhenDie\TestColliderWhenDie.cs" />
     <Compile Include="Assets\Game\Script\UI\UIRenderer\TestVisualElement.cs" />
     <Compile Include="Assets\Game\Script\UI\Revamp\CharacterPartyNode.cs" />
     <Compile Include="Assets\Test\BladeOfPhong\Target.cs" />
     <Compile Include="Assets\Game\Script\Other\CharData.cs" />
+    <Compile Include="Assets\Test\C#\Dynamic.cs" />
     <Compile Include="Assets\Game\Script\UI\Revamp\HealthUIRevamp.cs" />
     <Compile Include="Assets\Game\Script\UI\Revamp\GameUIManagerRevamp.cs" />
     <Compile Include="Assets\CustomPackage\Cainos\Pixel Art Top Down - Basic\Script\CameraFollow.cs" />
@@ -110,7 +112,9 @@
     <Compile Include="Assets\Test\ActionTester1\ClassTest1.cs" />
     <Compile Include="Assets\Game\Script\UI\Model\RadialProgress.cs" />
     <Compile Include="Assets\Game\Script\Game\BotActionManual.cs" />
+    <Compile Include="Assets\Test\StressTest\StressTest.cs" />
     <Compile Include="Assets\CustomPackage\Cainos\Pixel Art Top Down - Basic\Script\PropsAltar.cs" />
+    <Compile Include="Assets\Test\C#\SizeOf.cs" />
     <Compile Include="Assets\Game\Script\Ability\BladeOfMinhKhai.cs" />
     <Compile Include="Assets\Game\Script\UI\UIRenderer\CustomProgressUI.cs" />
     <Compile Include="Assets\Game\Script\Ability\Slaughter.cs" />
@@ -118,6 +122,7 @@
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMPro_InstructionOverlay.cs" />
     <Compile Include="Assets\CustomPackage\Dotween\Modules\DOTweenModulePhysics.cs" />
     <Compile Include="Assets\Game\Script\Game\GameEffect.cs" />
+    <Compile Include="Assets\Game\Script\Game\GameManager.ObjectPools.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\VertexShakeB.cs" />
     <Compile Include="Assets\Game\Script\ScriptableObject\SkillDataSO.cs" />
     <Compile Include="Assets\Game\Script\Other\ActionResult.cs" />
@@ -140,6 +145,7 @@
     <Compile Include="Assets\Game\Script\Game\SpawnEnemyInfo.cs" />
     <Compile Include="Assets\Game\Script\Other\CollideAndDamageSO.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\SkewTextExample.cs" />
+    <Compile Include="Assets\Test\PrefabGetComponentTest\PrefabGetComponentTest2.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\WarpTextExample.cs" />
     <Compile Include="Assets\Game\Script\UI\UIRenderer\TestVisualElementVectorApi.cs" />
     <Compile Include="Assets\Game\Script\Other\DoActionParamInfo.cs" />
@@ -151,6 +157,7 @@
     <Compile Include="Assets\Game\Script\Other\MultipleCollideTimer.cs" />
     <Compile Include="Assets\Game\Script\UI\UIRenderer\HealthUI.cs" />
     <Compile Include="Assets\CustomPackage\Dotween\Modules\DOTweenModuleEPOOutline.cs" />
+    <Compile Include="Assets\Test\C#\Test.cs" />
     <Compile Include="Assets\Test\TimelineSerializeTest\BoxCollider1.cs" />
     <Compile Include="Assets\Test\BladeOfPhong\BladeOfPhongTest.cs" />
     <Compile Include="Assets\Game\Script\UI\Model\CharInfoMenuItem.cs" />
@@ -176,6 +183,7 @@
     <Compile Include="Assets\Game\Script\Ability\DeepBlade.cs" />
     <Compile Include="Assets\Game\Script\Game\AnimateObject.cs" />
     <Compile Include="Assets\Game\Script\Ability\TheCallOfThePack.cs" />
+    <Compile Include="Assets\Test\TestObjectPoolRevamp\PoolRevampPoolObject.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\ChatController.cs" />
     <Compile Include="Assets\Game\Script\Other\ObjectPool.cs" />
     <Compile Include="Assets\Game\Script\Other\CustomMonoPal.cs" />
@@ -195,6 +203,7 @@
     <Compile Include="Assets\Game\Script\Ability\NuclearBomb.cs" />
     <Compile Include="Assets\Game\Script\Game\Movable.cs" />
     <Compile Include="Assets\Game\Script\Other\PausableScript.cs" />
+    <Compile Include="Assets\Game\Script\Ability\SteelCyclone.cs" />
     <Compile Include="Assets\Game\Script\Game\Attackable.cs" />
     <Compile Include="Assets\Game\Script\UI\Other\UsableSlotUIInfo.cs" />
     <Compile Include="Assets\Test\BladeOfVu\BladeOfVuTest.cs" />
@@ -216,6 +225,7 @@
     <Compile Include="Assets\Game\Script\Ability\LightingForward.cs" />
     <Compile Include="Assets\Game\Script\Other\InfernalTideFanReceiver.cs" />
     <Compile Include="Assets\CustomPackage\Cainos\Pixel Art Top Down - Basic\Script\SpriteColorAnimation.cs" />
+    <Compile Include="Assets\Game\Script\Game\GameManager.Prefabs.cs" />
     <Compile Include="Assets\Game\Script\UI\Model\ConfigContentItem.cs" />
     <Compile Include="Assets\Game\Script\Other\BlueHole.cs" />
     <Compile Include="Assets\CustomPackage\Cainos\Pixel Art Top Down - Basic\Script\LayerTrigger.cs" />
@@ -249,10 +259,12 @@
     <Compile Include="Assets\Game\Script\Other\MonoEditor.cs" />
     <Compile Include="Assets\CustomPackage\Dotween\Modules\DOTweenModuleAudio.cs" />
     <Compile Include="Assets\CustomPackage\Dotween\Modules\DOTweenModuleUI.cs" />
+    <Compile Include="Assets\Test\TestObjectPoolRevamp\TestObjectPoolRevamp.cs" />
     <Compile Include="Assets\Test\TimelineSerializeTest\ColliderCopier.cs" />
     <Compile Include="Assets\Game\Script\Other\PoisonInfo.cs" />
     <Compile Include="Assets\Game\Script\UI\Model\ConfigData.cs" />
     <Compile Include="Assets\Test\PierceStrike\PierceStrikeTest.cs" />
+    <Compile Include="Assets\Test\PrefabGetComponentTest\PrefabGetComponentTest1.cs" />
     <Compile Include="Assets\Game\Script\Game\StatusEffect.cs" />
     <Compile Include="Assets\Game\Script\Other\ActionWrapper.cs" />
   </ItemGroup>

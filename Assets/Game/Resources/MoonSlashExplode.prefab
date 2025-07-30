@@ -12,9 +12,9 @@ GameObject:
   - component: {fileID: 4255341989875212284}
   - component: {fileID: 5881773194720341600}
   - component: {fileID: 858671832549235909}
-  - component: {fileID: 3013762054767741395}
-  - component: {fileID: 4424997219703918313}
-  m_Layer: 0
+  - component: {fileID: 7552400553766804265}
+  - component: {fileID: 4527446572550058834}
+  m_Layer: 7
   m_Name: MoonSlashExplode
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -178,7 +178,7 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &3013762054767741395
+--- !u!114 &7552400553766804265
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -187,35 +187,44 @@ MonoBehaviour:
   m_GameObject: {fileID: 1338611446265746720}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 19e58d24264fe2e49b0b652bf22ee2d4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  trailRenderer: {fileID: 0}
-  animateObjects:
-  - {fileID: 2630190219702626793}
-  boxCollider2Ds: []
-  circleCollider2Ds: []
-  polygonCollider2Ds: []
---- !u!114 &4424997219703918313
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1338611446265746720}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 168cfb170d8d5ef49a8d48318a9a5709, type: 3}
+  m_Script: {fileID: 11500000, guid: 744c1bb6659d1bf4388885a43773b6cf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   rigidbody2D: {fileID: 0}
   animateObjects: []
-  trackReferences: []
-  boxCollider2D: {fileID: 0}
-  polygonCollider2D: {fileID: 0}
-  circleCollider2D: {fileID: 0}
   trailRenderer: {fileID: 0}
-  currentGameEffectSO: {fileID: 0}
+  gameEffectSO: {fileID: 11400000, guid: 069940b05bd0720409a82e3cc41b3190, type: 2}
+  boxCollider2Ds: []
+  circleCollider2Ds: []
+  polygonCollider2Ds: []
+  particleSystem: {fileID: 0}
+--- !u!50 &4527446572550058834
+Rigidbody2D:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1338611446265746720}
+  m_BodyType: 0
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
+  m_GravityScale: 0
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 247
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0
 --- !u!1 &6408108448455111740
 GameObject:
   m_ObjectHideFlags: 0

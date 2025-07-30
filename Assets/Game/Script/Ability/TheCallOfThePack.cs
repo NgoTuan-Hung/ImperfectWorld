@@ -23,7 +23,6 @@ public class TheCallOfThePack : SkillBase
         smallWereWolfPrefab = Resources.Load("SmallWereWolf") as GameObject;
         smallWereWolfPool ??= new ObjectPool(
             smallWereWolfPrefab,
-            10,
             new PoolArgument(ComponentType.CustomMono, PoolArgument.WhereComponent.Self)
         );
         successResult = new(true, ActionResultType.Cooldown, cooldown);

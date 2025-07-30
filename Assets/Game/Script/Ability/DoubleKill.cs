@@ -73,21 +73,18 @@ public class DoubleKill : SkillBase
             yield return new WaitForSeconds(Time.fixedDeltaTime);
 
         customMono.animationEventFunctionCaller.attack = false;
-        GameEffect t_arrow = GameManager.Instance.gameEffectPool.PickOne().gameEffect;
-        GameEffectSO t_arrowSO;
+        GameEffect t_arrow;
         CollideAndDamage t_collideAndDamage;
         if (Random.Range(0, 2) == 0)
         {
-            t_arrowSO = GameManager.Instance.elementalLeafRangerPoisonArrowSO;
-            t_arrow.Init(t_arrowSO);
+            t_arrow = GameManager.Instance.elementalLeafRangerPoisonArrowPool.PickOne().gameEffect;
             t_collideAndDamage = (CollideAndDamage)
                 t_arrow.GetBehaviour(EGameEffectBehaviour.CollideAndDamage);
             t_collideAndDamage.poisonInfo = poisonInfo;
         }
         else
         {
-            t_arrowSO = GameManager.Instance.elementalLeafRangerVineArrowSO;
-            t_arrow.Init(t_arrowSO);
+            t_arrow = GameManager.Instance.elementalLeafRangerVineArrowPool.PickOne().gameEffect;
             t_collideAndDamage = (CollideAndDamage)
                 t_arrow.GetBehaviour(EGameEffectBehaviour.CollideAndDamage);
             t_collideAndDamage.slowInfo = slowInfo;
@@ -100,7 +97,7 @@ public class DoubleKill : SkillBase
             0,
             Vector2.SignedAngle(Vector2.right, p_direction)
         );
-        t_arrow.KeepFlyingAt(p_direction, t_arrowSO);
+        t_arrow.KeepFlyingAt(p_direction);
 
         while (!customMono.animationEventFunctionCaller.endAttack)
             yield return new WaitForSeconds(Time.fixedDeltaTime);

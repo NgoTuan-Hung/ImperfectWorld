@@ -300,9 +300,7 @@ public class Stat : MonoEditor, INotifyBindablePropertyChanged
     {
         yield return new WaitForSeconds(dissolveTime);
 
-        GameEffect dieDissolveEffect = GameManager
-            .Instance.gameEffectPool.PickOne()
-            .gameEffect.Init(GameManager.Instance.dieDissolveSO);
+        GameEffect dieDissolveEffect = GameManager.Instance.dieDissolvePool.PickOne().gameEffect;
         dieDissolveEffect.animateObjects[0].spriteRenderer.transform.localScale = customMono
             .directionModifier
             .transform

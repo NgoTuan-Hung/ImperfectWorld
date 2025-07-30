@@ -135,8 +135,9 @@ GameObject:
   m_Component:
   - component: {fileID: 8996026526257096305}
   - component: {fileID: 3235494562136992048}
-  - component: {fileID: 3989360310634852156}
-  m_Layer: 0
+  - component: {fileID: 3435800607443363404}
+  - component: {fileID: 6018948409593297958}
+  m_Layer: 7
   m_Name: SamuraiSlash
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -257,7 +258,7 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
---- !u!114 &3989360310634852156
+--- !u!114 &3435800607443363404
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -266,15 +267,44 @@ MonoBehaviour:
   m_GameObject: {fileID: 4257628154123624839}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 19e58d24264fe2e49b0b652bf22ee2d4, type: 3}
+  m_Script: {fileID: 11500000, guid: 744c1bb6659d1bf4388885a43773b6cf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  rigidbody2D: {fileID: 0}
+  animateObjects: []
   trailRenderer: {fileID: 0}
-  animateObjects:
-  - {fileID: 7910579865115323251}
+  gameEffectSO: {fileID: 11400000, guid: 57f5a5216cc7363438a755be830c78a9, type: 2}
   boxCollider2Ds: []
   circleCollider2Ds: []
   polygonCollider2Ds: []
+  particleSystem: {fileID: 0}
+--- !u!50 &6018948409593297958
+Rigidbody2D:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4257628154123624839}
+  m_BodyType: 0
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
+  m_GravityScale: 0
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 247
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0
 --- !u!1 &5202860800647709698
 GameObject:
   m_ObjectHideFlags: 0

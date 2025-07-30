@@ -292,7 +292,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5127168580704450769}
   - component: {fileID: 7509368998568073602}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: BoxCollider2D
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -371,7 +371,8 @@ GameObject:
   - component: {fileID: 5938150861775853242}
   - component: {fileID: 2204155550031826260}
   - component: {fileID: 8799425725753903636}
-  - component: {fileID: 913022849555809960}
+  - component: {fileID: 1325483026379795887}
+  - component: {fileID: 2684835817012470497}
   m_Layer: 7
   m_Name: ElementalLeafRangerVineArrow
   m_TagString: Untagged
@@ -511,7 +512,7 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
---- !u!114 &913022849555809960
+--- !u!114 &1325483026379795887
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -520,17 +521,44 @@ MonoBehaviour:
   m_GameObject: {fileID: 6899650762552340999}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 19e58d24264fe2e49b0b652bf22ee2d4, type: 3}
+  m_Script: {fileID: 11500000, guid: 744c1bb6659d1bf4388885a43773b6cf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  rigidbody2D: {fileID: 0}
+  animateObjects: []
   trailRenderer: {fileID: 0}
-  animateObjects:
-  - {fileID: 5137824276186813475}
-  - {fileID: 9035193229803976860}
-  boxCollider2Ds:
-  - {fileID: 7509368998568073602}
+  gameEffectSO: {fileID: 11400000, guid: 90cdef6582a1b8346a276b677461a497, type: 2}
+  boxCollider2Ds: []
   circleCollider2Ds: []
   polygonCollider2Ds: []
+  particleSystem: {fileID: 0}
+--- !u!50 &2684835817012470497
+Rigidbody2D:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6899650762552340999}
+  m_BodyType: 0
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
+  m_GravityScale: 0
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 247
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0
 --- !u!1 &7274683706296011540
 GameObject:
   m_ObjectHideFlags: 0

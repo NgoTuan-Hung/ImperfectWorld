@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public class PoolObject
@@ -7,4 +8,6 @@ public class PoolObject
     public GameEffect gameEffect;
     public WorldSpaceUI worldSpaceUI;
     public CustomMono customMono;
+    public IEnumerator idleScheme;
+    public PoolRevampPoolObject poolRevampPoolObject;
 }

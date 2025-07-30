@@ -42,7 +42,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7332457754877640064}
   - component: {fileID: 8418899552476651535}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: BoxCollider2D
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -59,7 +59,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 4, y: 4, z: 4}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 4864932597039642979}
@@ -246,7 +246,9 @@ GameObject:
   - component: {fileID: 2693928160190017660}
   - component: {fileID: 1466242262854108801}
   - component: {fileID: 8588958279007187636}
-  - component: {fileID: 3006066007807035261}
+  - component: {fileID: 6697696717229646275}
+  - component: {fileID: 7449481952600388840}
+  - component: {fileID: 2497652811184359312}
   m_Layer: 7
   m_Name: SlaughterProjectile
   m_TagString: Untagged
@@ -484,7 +486,7 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
---- !u!114 &3006066007807035261
+--- !u!114 &6697696717229646275
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -493,16 +495,62 @@ MonoBehaviour:
   m_GameObject: {fileID: 8098417295161135028}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 19e58d24264fe2e49b0b652bf22ee2d4, type: 3}
+  m_Script: {fileID: 11500000, guid: 744c1bb6659d1bf4388885a43773b6cf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  trailRenderer: {fileID: 1466242262854108801}
-  animateObjects:
-  - {fileID: 1473158993139184711}
-  boxCollider2Ds:
-  - {fileID: 8418899552476651535}
+  rigidbody2D: {fileID: 0}
+  animateObjects: []
+  trailRenderer: {fileID: 0}
+  gameEffectSO: {fileID: 11400000, guid: b2e1aa53b3f22b1408ac9b624e74e30d, type: 2}
+  boxCollider2Ds: []
   circleCollider2Ds: []
   polygonCollider2Ds: []
+  particleSystem: {fileID: 0}
+--- !u!114 &7449481952600388840
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8098417295161135028}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 154a6a151704bea43b23fe6d54e16d48, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  collideDamage: 1
+  multipleCollideInterval: 0.05
+  pushEnemyOnCollideForce: 1
+  pushDirection: {x: 0, y: 0, z: 0}
+  stunDuration: 0
+  healAmmount: 0
+--- !u!50 &2497652811184359312
+Rigidbody2D:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8098417295161135028}
+  m_BodyType: 0
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
+  m_GravityScale: 0
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 247
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0
 --- !u!1 &8777722550635249922
 GameObject:
   m_ObjectHideFlags: 0

@@ -67,9 +67,8 @@ public class GetOverThere : SkillBase
         customMono.animationEventFunctionCaller.mainSkill2Signal = false;
         BlueHole blueHole = (BlueHole)
             GameManager
-                .Instance.gameEffectPool.PickOne()
-                .gameEffect.Init(GameManager.Instance.blueHoleSO)
-                .GetBehaviour(EGameEffectBehaviour.BlueHole);
+                .Instance.blueHolePool.PickOne()
+                .gameEffect.GetBehaviour(EGameEffectBehaviour.BlueHole);
         blueHole.allyTags = customMono.allyTags;
         blueHole.transform.position = p_location;
 

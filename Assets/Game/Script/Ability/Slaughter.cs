@@ -78,10 +78,8 @@ public class Slaughter : SkillBase
 
             customMono.SetUpdateDirectionIndicator(direction, UpdateDirectionIndicatorPriority.Low);
             GameEffect t_projectileEffect = GameManager
-                .Instance.gameEffectPool.PickOne()
+                .Instance.slaughterProjectilePool.PickOne()
                 .gameEffect;
-            var t_projectileEffectSO = GameManager.Instance.slaughterProjectileSO;
-            t_projectileEffect.Init(t_projectileEffectSO);
             var t_collideAndDamage =
                 t_projectileEffect.GetBehaviour(EGameEffectBehaviour.CollideAndDamage)
                 as CollideAndDamage;
@@ -106,7 +104,7 @@ public class Slaughter : SkillBase
                 t_projectileEffect.transform.TransformDirection(Vector3.up).normalized
                 * Random.Range(-0.3f, 0.3f);
 
-            t_projectileEffect.KeepFlyingAt(direction, t_projectileEffectSO);
+            t_projectileEffect.KeepFlyingAt(direction);
 
             return successResult;
         }

@@ -12,8 +12,9 @@ GameObject:
   - component: {fileID: 7875046274362802972}
   - component: {fileID: 6003543732940233531}
   - component: {fileID: 8545997470628268970}
-  - component: {fileID: 505424418571345598}
-  - component: {fileID: 2627680256109512036}
+  - component: {fileID: 2251935971989353163}
+  - component: {fileID: 8215399607233697057}
+  - component: {fileID: 8182501240016076374}
   m_Layer: 7
   m_Name: MagicLaser
   m_TagString: Untagged
@@ -180,7 +181,7 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &505424418571345598
+--- !u!114 &2251935971989353163
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -189,18 +190,18 @@ MonoBehaviour:
   m_GameObject: {fileID: 1493546202965711012}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 168cfb170d8d5ef49a8d48318a9a5709, type: 3}
+  m_Script: {fileID: 11500000, guid: 744c1bb6659d1bf4388885a43773b6cf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   rigidbody2D: {fileID: 0}
   animateObjects: []
-  trackReferences: []
-  boxCollider2D: {fileID: 0}
-  polygonCollider2D: {fileID: 0}
-  circleCollider2D: {fileID: 0}
   trailRenderer: {fileID: 0}
-  currentGameEffectSO: {fileID: 0}
---- !u!114 &2627680256109512036
+  gameEffectSO: {fileID: 11400000, guid: 90bf971c7a5af9246b0efdce3a05d317, type: 2}
+  boxCollider2Ds: []
+  circleCollider2Ds: []
+  polygonCollider2Ds: []
+  particleSystem: {fileID: 0}
+--- !u!114 &8215399607233697057
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -209,16 +210,42 @@ MonoBehaviour:
   m_GameObject: {fileID: 1493546202965711012}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 19e58d24264fe2e49b0b652bf22ee2d4, type: 3}
+  m_Script: {fileID: 11500000, guid: 154a6a151704bea43b23fe6d54e16d48, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  trailRenderer: {fileID: 0}
-  animateObjects:
-  - {fileID: 2276254893043454296}
-  boxCollider2Ds:
-  - {fileID: 2247556150880897265}
-  circleCollider2Ds: []
-  polygonCollider2Ds: []
+  collideDamage: 1
+  multipleCollideInterval: 0.05
+  pushEnemyOnCollideForce: 1
+  pushDirection: {x: 0, y: 0, z: 0}
+  stunDuration: 0
+  healAmmount: 0
+--- !u!50 &8182501240016076374
+Rigidbody2D:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1493546202965711012}
+  m_BodyType: 0
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
+  m_GravityScale: 0
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 247
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0
 --- !u!1 &7850894368249348723
 GameObject:
   m_ObjectHideFlags: 0
@@ -419,7 +446,7 @@ GameObject:
   - component: {fileID: 6886504591198956086}
   - component: {fileID: 2247556150880897265}
   - component: {fileID: 4894014244044772522}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: BoxCollider2D
   m_TagString: Untagged
   m_Icon: {fileID: 0}

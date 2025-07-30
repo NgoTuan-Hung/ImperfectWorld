@@ -109,13 +109,13 @@ public class PierceStrike : SkillBase
 
         customMono.animationEventFunctionCaller.mainSkill1Signal = false;
         customMono.rotationAndCenterObject.transform.localRotation = Quaternion.identity;
-        GameEffect t_pierceStrikeEffect = GameManager.Instance.gameEffectPool.PickOne().gameEffect;
-        var t_pierceStrikeEffectSO = GameManager.Instance.pierceStrikeSO;
-        t_pierceStrikeEffect.Init(t_pierceStrikeEffectSO);
+        GameEffect t_pierceStrikeEffect = GameManager
+            .Instance.pierceStrikePool.PickOne()
+            .gameEffect;
         t_pierceStrikeEffect.transform.parent = customMono.rotationAndCenterObject.transform;
         t_pierceStrikeEffect.transform.SetLocalPositionAndRotation(
-            t_pierceStrikeEffectSO.effectLocalPosition,
-            Quaternion.Euler(t_pierceStrikeEffectSO.effectLocalRotation)
+            t_pierceStrikeEffect.gameEffectSO.effectLocalPosition,
+            Quaternion.Euler(t_pierceStrikeEffect.gameEffectSO.effectLocalRotation)
         );
         var t_collideAndDamage =
             t_pierceStrikeEffect.GetBehaviour(EGameEffectBehaviour.CollideAndDamage)
@@ -153,9 +153,7 @@ public class PierceStrike : SkillBase
         currentTime = 0;
 
         customMono.SetUpdateDirectionIndicator(p_direction, UpdateDirectionIndicatorPriority.Low);
-        GameEffect vanishEffect = GameManager
-            .Instance.gameEffectPool.PickOne()
-            .gameEffect.Init(GameManager.Instance.vanishEffectSO);
+        GameEffect vanishEffect = GameManager.Instance.vanishEffectPool.PickOne().gameEffect;
         vanishEffect.transform.position = transform.position;
         StartCoroutine(actionIE1 = SecondPhaseTriggerIE(p_direction: p_direction));
 
@@ -179,14 +177,12 @@ public class PierceStrike : SkillBase
 
         customMono.rotationAndCenterObject.transform.localRotation = Quaternion.identity;
         GameEffect t_pierceStrikeSecondPhase = GameManager
-            .Instance.gameEffectPool.PickOne()
+            .Instance.pierceStrikeSecondPhasePool.PickOne()
             .gameEffect;
-        var t_pierceStrikeSecondPhaseSO = GameManager.Instance.pierceStrikeSecondPhaseSO;
-        t_pierceStrikeSecondPhase.Init(t_pierceStrikeSecondPhaseSO);
         t_pierceStrikeSecondPhase.transform.parent = customMono.rotationAndCenterObject.transform;
         t_pierceStrikeSecondPhase.transform.SetLocalPositionAndRotation(
-            t_pierceStrikeSecondPhaseSO.effectLocalPosition,
-            Quaternion.Euler(t_pierceStrikeSecondPhaseSO.effectLocalRotation)
+            t_pierceStrikeSecondPhase.gameEffectSO.effectLocalPosition,
+            Quaternion.Euler(t_pierceStrikeSecondPhase.gameEffectSO.effectLocalRotation)
         );
         var t_collideAndDamage =
             t_pierceStrikeSecondPhase.GetBehaviour(EGameEffectBehaviour.CollideAndDamage)

@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3492090969110676787}
   - component: {fileID: 4326445855308565653}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: CircleCollider2D
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -268,7 +268,8 @@ GameObject:
   - component: {fileID: 5256989931986642290}
   - component: {fileID: 5178589685330491932}
   - component: {fileID: 1880613459751742143}
-  - component: {fileID: 6038115191577900495}
+  - component: {fileID: 241205991108978459}
+  - component: {fileID: 1429698158273325243}
   m_Layer: 7
   m_Name: BlueHole
   m_TagString: Untagged
@@ -417,7 +418,7 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
---- !u!114 &6038115191577900495
+--- !u!114 &241205991108978459
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -426,13 +427,26 @@ MonoBehaviour:
   m_GameObject: {fileID: 6562566934438068017}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 19e58d24264fe2e49b0b652bf22ee2d4, type: 3}
+  m_Script: {fileID: 11500000, guid: 744c1bb6659d1bf4388885a43773b6cf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  rigidbody2D: {fileID: 0}
+  animateObjects: []
   trailRenderer: {fileID: 0}
-  animateObjects:
-  - {fileID: 7844010950731279242}
+  gameEffectSO: {fileID: 11400000, guid: 40d00570f53f0944ca600ea81c1d3ccc, type: 2}
   boxCollider2Ds: []
-  circleCollider2Ds:
-  - {fileID: 4326445855308565653}
+  circleCollider2Ds: []
   polygonCollider2Ds: []
+  particleSystem: {fileID: 0}
+--- !u!114 &1429698158273325243
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6562566934438068017}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 44b1e79401ef3ba44a1479907e623f9d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

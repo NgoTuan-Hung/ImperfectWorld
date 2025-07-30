@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 129626350721957922}
   - component: {fileID: 2189520638500557047}
   - component: {fileID: 7758831472656626778}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: BoxCollider2D
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -144,7 +144,7 @@ GameObject:
   - component: {fileID: 5612637702486147188}
   - component: {fileID: 4762755028577032691}
   - component: {fileID: 3729328462608985878}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: BoxCollider2D
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -369,10 +369,12 @@ GameObject:
   m_Component:
   - component: {fileID: 5045793144273354489}
   - component: {fileID: 1213191379824052560}
-  - component: {fileID: 2457222553475139624}
-  m_Layer: 0
+  - component: {fileID: 5712953738208580426}
+  - component: {fileID: 6646092256268946803}
+  - component: {fileID: 4850104712629350506}
+  m_Layer: 7
   m_Name: InfernalTideFan
-  m_TagString: Untagged
+  m_TagString: InfernalTideFan
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -491,7 +493,7 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
---- !u!114 &2457222553475139624
+--- !u!114 &5712953738208580426
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -500,24 +502,62 @@ MonoBehaviour:
   m_GameObject: {fileID: 3986850030225901189}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 19e58d24264fe2e49b0b652bf22ee2d4, type: 3}
+  m_Script: {fileID: 11500000, guid: 744c1bb6659d1bf4388885a43773b6cf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  rigidbody2D: {fileID: 0}
+  animateObjects: []
   trailRenderer: {fileID: 0}
-  animateObjects:
-  - {fileID: 4872588192406139501}
-  boxCollider2Ds:
-  - {fileID: 1502251352965434780}
-  - {fileID: 2189520638500557047}
-  - {fileID: 7243915044463313193}
-  - {fileID: 2688144984332092878}
-  - {fileID: 6472244867766254317}
-  - {fileID: 4762755028577032691}
-  - {fileID: 656812499904443811}
-  - {fileID: 2994218733283451491}
-  - {fileID: 129267198234454856}
+  gameEffectSO: {fileID: 11400000, guid: e77ba448bc8599c45ac5131e2c6dc30b, type: 2}
+  boxCollider2Ds: []
   circleCollider2Ds: []
   polygonCollider2Ds: []
+  particleSystem: {fileID: 0}
+--- !u!114 &6646092256268946803
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3986850030225901189}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 154a6a151704bea43b23fe6d54e16d48, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  collideDamage: 1
+  multipleCollideInterval: 0.05
+  pushEnemyOnCollideForce: 1
+  pushDirection: {x: 0, y: 0, z: 0}
+  stunDuration: 0
+  healAmmount: 0
+--- !u!50 &4850104712629350506
+Rigidbody2D:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3986850030225901189}
+  m_BodyType: 0
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
+  m_GravityScale: 0
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 119
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0
 --- !u!1 &4218478000531440725
 GameObject:
   m_ObjectHideFlags: 0
@@ -529,7 +569,7 @@ GameObject:
   - component: {fileID: 1183478632601671230}
   - component: {fileID: 2688144984332092878}
   - component: {fileID: 1997380973696968454}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: BoxCollider2D
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -630,7 +670,7 @@ GameObject:
   - component: {fileID: 8988748063267318292}
   - component: {fileID: 7243915044463313193}
   - component: {fileID: 8069531365796133924}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: BoxCollider2D
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -731,7 +771,7 @@ GameObject:
   - component: {fileID: 9021416986591921447}
   - component: {fileID: 1502251352965434780}
   - component: {fileID: 1807909853386966998}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: BoxCollider2D
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -832,7 +872,7 @@ GameObject:
   - component: {fileID: 464633334256583503}
   - component: {fileID: 129267198234454856}
   - component: {fileID: 7211088706474539022}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: BoxCollider2D
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -933,7 +973,7 @@ GameObject:
   - component: {fileID: 7672729215016270440}
   - component: {fileID: 2994218733283451491}
   - component: {fileID: 6625879572412626545}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: BoxCollider2D
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1034,7 +1074,7 @@ GameObject:
   - component: {fileID: 7773283638249059709}
   - component: {fileID: 656812499904443811}
   - component: {fileID: 8492896582298782890}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: BoxCollider2D
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1175,7 +1215,7 @@ GameObject:
   - component: {fileID: 4323883823158798652}
   - component: {fileID: 6472244867766254317}
   - component: {fileID: 4762472205039590283}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: BoxCollider2D
   m_TagString: Untagged
   m_Icon: {fileID: 0}

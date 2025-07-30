@@ -81,10 +81,6 @@ public class MyBotPersonality : CustomMonoPal
         };
 
         customMono.nearestEnemyChanged += (person) => targetEnemy = person;
-
-        pausableScript.resumeFixedUpdate = () => pausableScript.fixedUpdate = DoFixedUpdate;
-        pausableScript.pauseFixedUpdate = () => pausableScript.fixedUpdate = () => { };
-        pausableScript.resumeFixedUpdate();
     }
 
     private void OnEnable()
@@ -98,6 +94,15 @@ public class MyBotPersonality : CustomMonoPal
     public override void Start()
     {
         base.Start();
+        StartCoroutine(LateStart());
+    }
+
+    IEnumerator LateStart()
+    {
+        yield return null;
+        pausableScript.resumeFixedUpdate = () => pausableScript.fixedUpdate = DoFixedUpdate;
+        pausableScript.pauseFixedUpdate = () => pausableScript.fixedUpdate = () => { };
+        pausableScript.resumeFixedUpdate();
     }
 
     private void FixedUpdate()

@@ -91,9 +91,9 @@ public class LightingForward : SkillBase
         {
             CollideAndDamage t_lighting =
                 GameManager
-                    .Instance.gameEffectPool.PickOne()
-                    .gameEffect.Init(GameManager.Instance.lightingForwardLightingSO)
-                    .GetBehaviour(EGameEffectBehaviour.CollideAndDamage) as CollideAndDamage;
+                    .Instance.lightingForwardLightingPool.PickOne()
+                    .gameEffect.GetBehaviour(EGameEffectBehaviour.CollideAndDamage)
+                as CollideAndDamage;
             t_lighting.allyTags = customMono.allyTags;
             t_lighting.collideDamage = damage;
             t_lighting.transform.position =

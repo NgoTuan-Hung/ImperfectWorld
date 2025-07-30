@@ -1,11 +1,15 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Unity.VisualScripting;
 using UnityEditor;
 using UnityEditor.UIElements;
 using UnityEngine;
 using UnityEngine.UIElements;
 
+/// <summary>
+/// Just automation script, nothing special
+/// </summary>
 public class GameEffectPrefabModifier : EditorWindow
 {
     [MenuItem("Window/Modify Game Effect Prefab")]
@@ -35,7 +39,9 @@ public class GameEffectPrefabModifier : EditorWindow
             // prefabs.gameObjects.ForEach(gO => Modify(gO));
             // prefabs.gameObjects.ForEach(gO => AddMissingAnimator(gO));
             // prefabs.gameObjects.ForEach(gO => ChangeCollider(gO));
-            prefabs.gameObjects.ForEach(gO => ResetGameEffectPrefab(gO));
+            // prefabs.gameObjects.ForEach(gO => ResetGameEffectPrefab(gO));
+            // prefabs.gameObjects.ForEach(gO => TurnOnTrigger(gO));
+            prefabs.gameObjects.ForEach(gO => ChangeCollidersLayer(gO));
         };
         rootVisualElement.Add(button);
     }
@@ -147,5 +153,33 @@ public class GameEffectPrefabModifier : EditorWindow
         );
         p_gameObject = editingScope.prefabContentsRoot;
         p_gameObject.GetComponent<GameEffectPrefab>()?.Reset();
+    }
+
+    void TurnOnTrigger(GameObject p_gameObject)
+    {
+        using var editingScope = new PrefabUtility.EditPrefabContentsScope(
+            AssetDatabase.GetAssetPath(p_gameObject)
+        );
+        p_gameObject = editingScope.prefabContentsRoot;
+
+        List<Collider2D> collider2Ds = p_gameObject.GetComponentsInChildren<Collider2D>().ToList();
+        foreach (Collider2D collider2D in collider2Ds)
+        {
+            collider2D.isTrigger = true;
+        }
+    }
+
+    void ChangeCollidersLayer(GameObject p_gameObject)
+    {
+        using var editingScope = new PrefabUtility.EditPrefabContentsScope(
+            AssetDatabase.GetAssetPath(p_gameObject)
+        );
+        p_gameObject = editingScope.prefabContentsRoot;
+
+        List<Collider2D> collider2Ds = p_gameObject.GetComponentsInChildren<Collider2D>().ToList();
+        foreach (Collider2D collider2D in collider2Ds)
+        {
+            collider2D.gameObject.layer = LayerMask.NameToLayer("CombatCollider");
+        }
     }
 }

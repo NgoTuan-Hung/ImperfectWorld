@@ -41,9 +41,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8466345240711559874}
-  - component: {fileID: 1000551797019568807}
-  - component: {fileID: 4006077370073062146}
   - component: {fileID: 1950467176421537105}
+  - component: {fileID: 2612464834443655508}
+  - component: {fileID: 4382362518274391429}
+  - component: {fileID: 8386799856026852809}
   m_Layer: 7
   m_Name: SwordTempestSlash2
   m_TagString: Untagged
@@ -68,43 +69,6 @@ Transform:
   - {fileID: 4015924855705755208}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1000551797019568807
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2710663254649805436}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 154a6a151704bea43b23fe6d54e16d48, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  collideDamage: 1
-  multipleCollideInterval: 0.05
-  pushEnemyOnCollideForce: 1
-  pushDirection: {x: 0, y: 0, z: 0}
-  stunDuration: 0
-  healAmmount: 0
---- !u!114 &4006077370073062146
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2710663254649805436}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 19e58d24264fe2e49b0b652bf22ee2d4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  trailRenderer: {fileID: 0}
-  animateObjects:
-  - {fileID: 1065733790185804471}
-  boxCollider2Ds: []
-  circleCollider2Ds: []
-  polygonCollider2Ds:
-  - {fileID: 8867746754582971762}
 --- !u!82 &1950467176421537105
 AudioSource:
   m_ObjectHideFlags: 0
@@ -202,6 +166,71 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &2612464834443655508
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2710663254649805436}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 744c1bb6659d1bf4388885a43773b6cf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rigidbody2D: {fileID: 0}
+  animateObjects: []
+  trailRenderer: {fileID: 0}
+  gameEffectSO: {fileID: 11400000, guid: cac6dd50cb83584479f7391bd960da8d, type: 2}
+  boxCollider2Ds: []
+  circleCollider2Ds: []
+  polygonCollider2Ds: []
+  particleSystem: {fileID: 0}
+--- !u!114 &4382362518274391429
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2710663254649805436}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 154a6a151704bea43b23fe6d54e16d48, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  collideDamage: 1
+  multipleCollideInterval: 0.05
+  pushEnemyOnCollideForce: 1
+  pushDirection: {x: 0, y: 0, z: 0}
+  stunDuration: 0
+  healAmmount: 0
+--- !u!50 &8386799856026852809
+Rigidbody2D:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2710663254649805436}
+  m_BodyType: 0
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
+  m_GravityScale: 0
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 247
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0
 --- !u!1 &4964735181523458794
 GameObject:
   m_ObjectHideFlags: 0
@@ -212,7 +241,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1023347081013810607}
   - component: {fileID: 8867746754582971762}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: PolygonCollider2D
   m_TagString: Untagged
   m_Icon: {fileID: 0}

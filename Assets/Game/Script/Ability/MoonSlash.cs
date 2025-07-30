@@ -88,10 +88,8 @@ public class MoonSlash : SkillBase
             for (int i = 0; i < currentAmmo; i++)
             {
                 GameEffect t_moonSlashGameEffect = GameManager
-                    .Instance.gameEffectPool.PickOne()
+                    .Instance.moonSlashPool.PickOne()
                     .gameEffect;
-                var t_moonSlashGameEffectSO = GameManager.Instance.moonSlashSO;
-                t_moonSlashGameEffect.Init(t_moonSlashGameEffectSO);
                 var t_collideAndDamage =
                     t_moonSlashGameEffect.GetBehaviour(EGameEffectBehaviour.CollideAndDamage)
                     as CollideAndDamage;
@@ -126,7 +124,7 @@ public class MoonSlash : SkillBase
                     );
                 }
 
-                t_moonSlashGameEffect.KeepFlyingAt(moonSlashDirection, t_moonSlashGameEffectSO);
+                t_moonSlashGameEffect.KeepFlyingAt(moonSlashDirection);
             }
 
             while (!customMono.animationEventFunctionCaller.endRelease)

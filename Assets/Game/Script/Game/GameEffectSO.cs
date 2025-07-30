@@ -20,7 +20,6 @@ public class GameEffectSO : ScriptableObject
     public Gradient colorOverLifetimeGrad;
     public TimelineAsset timelineAsset;
     public CollideAndDamageSO collideAndDamageSO;
-    public AudioSource audioSource;
 
     #region SpriteRenderer
     [Header("Sprite Renderer")]

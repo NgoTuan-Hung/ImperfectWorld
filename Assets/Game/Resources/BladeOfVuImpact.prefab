@@ -9,9 +9,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5085543863744094339}
-  - component: {fileID: 3580187916180492363}
   - component: {fileID: 1467635567821328584}
-  m_Layer: 0
+  - component: {fileID: 7830109424602315758}
+  - component: {fileID: 1655338832692594224}
+  m_Layer: 7
   m_Name: BladeOfVuImpact
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -35,24 +36,6 @@ Transform:
   - {fileID: 7262363506340819309}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &3580187916180492363
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 822231655601038114}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 19e58d24264fe2e49b0b652bf22ee2d4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  trailRenderer: {fileID: 0}
-  animateObjects:
-  - {fileID: 7764810216187099481}
-  boxCollider2Ds: []
-  circleCollider2Ds: []
-  polygonCollider2Ds: []
 --- !u!82 &1467635567821328584
 AudioSource:
   m_ObjectHideFlags: 0
@@ -150,6 +133,53 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &7830109424602315758
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 822231655601038114}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 744c1bb6659d1bf4388885a43773b6cf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rigidbody2D: {fileID: 0}
+  animateObjects: []
+  trailRenderer: {fileID: 0}
+  gameEffectSO: {fileID: 11400000, guid: d28c11b9ade101044ad7831ae26b286a, type: 2}
+  boxCollider2Ds: []
+  circleCollider2Ds: []
+  polygonCollider2Ds: []
+  particleSystem: {fileID: 0}
+--- !u!50 &1655338832692594224
+Rigidbody2D:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 822231655601038114}
+  m_BodyType: 0
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
+  m_GravityScale: 0
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 247
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0
 --- !u!1 &3254369827411746912
 GameObject:
   m_ObjectHideFlags: 0

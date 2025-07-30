@@ -48,10 +48,10 @@ public class CollideAndDamage : MonoEditor, IGameEffectBehaviour
 
     public void SpawnCollisionEffectOnEnemy(CustomMono p_customMono, Collider2D p_collider2D)
     {
-        GameEffect t_collisionEffect = GameManager.Instance.gameEffectPool.PickOne().gameEffect;
-        t_collisionEffect.Init(
-            GameEffect.currentGameEffectSO.collideAndDamageSO.spawnedEffectOnCollide
-        );
+        GameEffect t_collisionEffect = GameManager
+            .Instance.poolLink[GameEffect.gameEffectSO.collideAndDamageSO.spawnedEffectOnCollide]
+            .PickOne()
+            .gameEffect;
 
         t_randomBias = Random.Range(0, 1f);
         t_collisionEffect.transform.position =
@@ -74,27 +74,8 @@ public class CollideAndDamage : MonoEditor, IGameEffectBehaviour
     public void Initialize(GameEffect gameEffect)
     {
         GameEffect = gameEffect;
-    }
 
-    static void DisabledOnTrigger(Collider2D other) { }
-
-    static void DisabledOnTrigger(CustomMono p_customMono, Collider2D p_collider2D) { }
-
-    static void DisabledDealDamageEvent(float p_damageDealt) { }
-
-    public void Disable()
-    {
-        onTriggerEnter2D = DisabledOnTrigger;
-        onTriggerStay2D = DisabledOnTrigger;
-        onTriggerEnterWithEnemyCM = DisabledOnTrigger;
-        onTriggerStayWithEnemyCM = DisabledOnTrigger;
-        onTriggerEnterWithAllyCM = DisabledOnTrigger;
-        dealDamageEvent = DisabledDealDamageEvent;
-    }
-
-    public void Enable(GameEffectSO p_gameEffectSO)
-    {
-        var p_collideAndDamageSO = p_gameEffectSO.collideAndDamageSO;
+        var p_collideAndDamageSO = GameEffect.gameEffectSO.collideAndDamageSO;
         #region Contact Action
         switch (p_collideAndDamageSO.oneTimeContactInteraction)
         {
@@ -316,9 +297,4 @@ public class CollideAndDamage : MonoEditor, IGameEffectBehaviour
 
     void DeactivateOnCollide(CustomMono p_customMono, Collider2D p_collider2D) =>
         GameEffect.deactivate();
-
-    public void Enable()
-    {
-        /*  */
-    }
 }

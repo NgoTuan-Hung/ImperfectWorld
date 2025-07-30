@@ -68,9 +68,8 @@ public class NuclearBomb : SkillBase
         customMono.animationEventFunctionCaller.mainSkill3Signal = false;
         CollideAndDamage t_nuclearBomb =
             GameManager
-                .Instance.gameEffectPool.PickOne()
-                .gameEffect.Init(GameManager.Instance.nuclearBombExplosionSO)
-                .GetBehaviour(EGameEffectBehaviour.CollideAndDamage) as CollideAndDamage;
+                .Instance.nuclearBombExplosionPool.PickOne()
+                .gameEffect.GetBehaviour(EGameEffectBehaviour.CollideAndDamage) as CollideAndDamage;
         t_nuclearBomb.allyTags = customMono.allyTags;
         t_nuclearBomb.collideDamage = damage;
         t_nuclearBomb.transform.position = p_location;

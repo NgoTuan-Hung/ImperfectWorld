@@ -68,15 +68,15 @@ public class BladeOfPhong : SkillBase
             yield return new WaitForSeconds(Time.fixedDeltaTime);
 
         customMono.animationEventFunctionCaller.mainSkill2Signal = false;
-        GameEffect t_tornado = GameManager.Instance.gameEffectPool.PickOne().gameEffect;
-        var t_tornadoSO = GameManager.Instance.bladeOfPhongTornadoEffectSO;
-        t_tornado.Init(t_tornadoSO);
+        GameEffect t_tornado = GameManager
+            .Instance.bladeOfPhongTornadoEffectPool.PickOne()
+            .gameEffect;
         var t_collideAndDamage = (CollideAndDamage)
             t_tornado.GetBehaviour(EGameEffectBehaviour.CollideAndDamage);
         t_collideAndDamage.allyTags = customMono.allyTags;
         t_collideAndDamage.collideDamage = damage;
         t_tornado.transform.position = transform.position;
-        t_tornado.KeepFlyingAt(p_direction, t_tornadoSO);
+        t_tornado.KeepFlyingAt(p_direction);
 
         while (!customMono.animationEventFunctionCaller.endMainSkill2)
             yield return new WaitForSeconds(Time.fixedDeltaTime);

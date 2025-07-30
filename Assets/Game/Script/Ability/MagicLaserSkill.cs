@@ -78,9 +78,8 @@ public class MagicLaserSkill : SkillBase
 
         CollideAndDamage gameEffect =
             GameManager
-                .Instance.gameEffectPool.PickOne()
-                .gameEffect.Init(GameManager.Instance.magicLaserSO)
-                .GetBehaviour(EGameEffectBehaviour.CollideAndDamage) as CollideAndDamage;
+                .Instance.magicLaserPool.PickOne()
+                .gameEffect.GetBehaviour(EGameEffectBehaviour.CollideAndDamage) as CollideAndDamage;
         gameEffect.allyTags = customMono.allyTags;
         gameEffect.collideDamage = damage;
 

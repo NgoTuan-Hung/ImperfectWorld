@@ -2,7 +2,7 @@ trackSelection = true
 refreshSearchWindowsInPlayMode = false
 pickerAdvancedUI = false
 fetchPreview = true
-defaultFlags = 0
+defaultFlags = 8
 keepOpen = true
 queryFolder = "Assets"
 onBoardingDoNotAskAgain = true
@@ -14,7 +14,8 @@ scopes = {
 	"picker_item_size.075BCD15" = "96"
 	"picker_inspector.075BCD15" = "0"
 	"OpenInspectorPreview.66F56946" = "0"
-	"currentGroup.66F56946" = null
+	"currentGroup.66F56946" = "all"
+	"last_search.66F56946" = "kunai prefab"
 }
 providers = {
 	asset = {
@@ -67,34 +68,56 @@ providers = {
 		priority = 210
 		defaultAction = null
 	}
+	menu = {
+		active = true
+		priority = 80
+		defaultAction = null
+	}
+	settings = {
+		active = true
+		priority = 100
+		defaultAction = null
+	}
+	calculator = {
+		active = true
+		priority = 10
+		defaultAction = null
+	}
+	static_methods = {
+		active = false
+		priority = 85
+		defaultAction = null
+	}
 }
 objectSelectors = {
 }
 recentSearches = [
-	"type: name:\"\""
+	"kunai prefab"
+	"kun"
+	"phan"
+	"kunai"
+	"phantompusl"
+	"kunai prefab test assets"
+	"ph"
+	"Graphic"
+	"Ku"
+	"stormfan"
 	""
-	"name:\"\""
-	"type:"
-	"type: asm=Assembly-CSharp"
-	"type: ns:\"Assets.Game.Script.Game"
-	"type: ns:\"Assets.Game.Sc"
-	"type: ns:\"Assets."
-	"type: ns:\""
-	"type: ns:\"\""
-	"type: type:"
-	"type: StatInspector"
-	"type: StatI"
-	"type: BotAttac"
-	"type: botatta"
-	"type: Attac"
+	"StormFangMerge"
+	"StormF"
+	"find: Resour"
+	"Resource"
+	"p: k"
+	"p: kunai-pixel."
+	"p: kunai"
+	"p: stormfangmergeblade"
 ]
 searchItemFavorites = [
 ]
 savedSearchesSortOrder = 0
 showSavedSearchPanel = true
 hideTabs = false
-expandedQueries = [
-]
+expandedQueries = [961552606]
 queryBuilder = true
 ignoredProperties = "id;name;classname;imagecontentshash"
 helperWidgetCurrentArea = "all"

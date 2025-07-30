@@ -10,19 +10,10 @@ public class BlueHole : MonoBehaviour, IGameEffectBehaviour
 
     public GameEffect GameEffect { get; set; }
 
-    public void Disable()
-    {
-        onTriggerStay2D = DisabledOnTriggerStay2D;
-    }
-
-    public void Enable(GameEffectSO p_gameEffectSO)
-    {
-        onTriggerStay2D = OnTriggerStay2DLogic;
-    }
-
     public void Initialize(GameEffect gameEffect)
     {
         GameEffect = gameEffect;
+        onTriggerStay2D = OnTriggerStay2DLogic;
     }
 
     private void OnTriggerEnter2D(Collider2D other) { }
@@ -31,8 +22,6 @@ public class BlueHole : MonoBehaviour, IGameEffectBehaviour
     {
         onTriggerStay2D(other);
     }
-
-    private void DisabledOnTriggerStay2D(Collider2D other) { }
 
     private void OnTriggerStay2DLogic(Collider2D other)
     {

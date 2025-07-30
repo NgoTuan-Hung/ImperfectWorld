@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8044812091784681536}
   - component: {fileID: 2424913510970179190}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: PolygonCollider2D
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -94,9 +94,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3469666413712053493}
-  - component: {fileID: 5549095964888670986}
   - component: {fileID: 3043240207491260681}
-  - component: {fileID: 8038004898374428783}
+  - component: {fileID: 8335176811486752921}
+  - component: {fileID: 6360728068081646549}
+  - component: {fileID: 2457276532510534238}
   m_Layer: 7
   m_Name: SwordTempestSlash1
   m_TagString: Untagged
@@ -121,24 +122,6 @@ Transform:
   - {fileID: 8944663730478991322}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &5549095964888670986
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2706796019349605674}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 154a6a151704bea43b23fe6d54e16d48, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  collideDamage: 1
-  multipleCollideInterval: 0.05
-  pushEnemyOnCollideForce: 1
-  pushDirection: {x: 0, y: 0, z: 0}
-  stunDuration: 0
-  healAmmount: 0
 --- !u!82 &3043240207491260681
 AudioSource:
   m_ObjectHideFlags: 0
@@ -236,7 +219,7 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
---- !u!114 &8038004898374428783
+--- !u!114 &8335176811486752921
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -245,16 +228,62 @@ MonoBehaviour:
   m_GameObject: {fileID: 2706796019349605674}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 19e58d24264fe2e49b0b652bf22ee2d4, type: 3}
+  m_Script: {fileID: 11500000, guid: 744c1bb6659d1bf4388885a43773b6cf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  rigidbody2D: {fileID: 0}
+  animateObjects: []
   trailRenderer: {fileID: 0}
-  animateObjects:
-  - {fileID: 4176655937402945755}
+  gameEffectSO: {fileID: 11400000, guid: 36c5de4faaf62f04da848283f69418ef, type: 2}
   boxCollider2Ds: []
   circleCollider2Ds: []
-  polygonCollider2Ds:
-  - {fileID: 2424913510970179190}
+  polygonCollider2Ds: []
+  particleSystem: {fileID: 0}
+--- !u!114 &6360728068081646549
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2706796019349605674}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 154a6a151704bea43b23fe6d54e16d48, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  collideDamage: 1
+  multipleCollideInterval: 0.05
+  pushEnemyOnCollideForce: 1
+  pushDirection: {x: 0, y: 0, z: 0}
+  stunDuration: 0
+  healAmmount: 0
+--- !u!50 &2457276532510534238
+Rigidbody2D:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2706796019349605674}
+  m_BodyType: 0
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
+  m_GravityScale: 0
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 247
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0
 --- !u!1 &2939877181021110845
 GameObject:
   m_ObjectHideFlags: 0

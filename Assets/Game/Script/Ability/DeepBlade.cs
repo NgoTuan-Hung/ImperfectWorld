@@ -72,14 +72,12 @@ public class DeepBlade : SkillBase
         customMono.animationEventFunctionCaller.mainSkill2Signal = false;
 
         GameEffect t_deepBladeSlashEffect = GameManager
-            .Instance.gameEffectPool.PickOne()
+            .Instance.deepBladeSlashPool.PickOne()
             .gameEffect;
-        var t_deepBladeSlashEffectSO = GameManager.Instance.deepBladeSlashSO;
-        t_deepBladeSlashEffect.Init(t_deepBladeSlashEffectSO);
         t_deepBladeSlashEffect.transform.parent = customMono.rotationAndCenterObject.transform;
         t_deepBladeSlashEffect.transform.SetLocalPositionAndRotation(
-            t_deepBladeSlashEffectSO.effectLocalPosition,
-            Quaternion.Euler(t_deepBladeSlashEffectSO.effectLocalRotation)
+            t_deepBladeSlashEffect.gameEffectSO.effectLocalPosition,
+            Quaternion.Euler(t_deepBladeSlashEffect.gameEffectSO.effectLocalRotation)
         );
 
         var t_collideAndDamage = (CollideAndDamage)

@@ -200,9 +200,9 @@ GameObject:
   - component: {fileID: 7930190469032888950}
   - component: {fileID: 3408638979053483570}
   - component: {fileID: 8761734720174501232}
-  - component: {fileID: 2884776039751576798}
-  - component: {fileID: 416147800094590497}
-  m_Layer: 0
+  - component: {fileID: 1317001702374912816}
+  - component: {fileID: 1599775376601363554}
+  m_Layer: 7
   m_Name: SlaughterExplosion
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -366,7 +366,7 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &2884776039751576798
+--- !u!114 &1317001702374912816
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -375,32 +375,41 @@ MonoBehaviour:
   m_GameObject: {fileID: 7282093002630404119}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 168cfb170d8d5ef49a8d48318a9a5709, type: 3}
+  m_Script: {fileID: 11500000, guid: 744c1bb6659d1bf4388885a43773b6cf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   rigidbody2D: {fileID: 0}
   animateObjects: []
-  trackReferences: []
-  boxCollider2D: {fileID: 0}
-  polygonCollider2D: {fileID: 0}
-  circleCollider2D: {fileID: 0}
   trailRenderer: {fileID: 0}
-  currentGameEffectSO: {fileID: 0}
---- !u!114 &416147800094590497
-MonoBehaviour:
+  gameEffectSO: {fileID: 11400000, guid: a21b18423a5bebb4d8a3f62865c45b6a, type: 2}
+  boxCollider2Ds: []
+  circleCollider2Ds: []
+  polygonCollider2Ds: []
+  particleSystem: {fileID: 0}
+--- !u!50 &1599775376601363554
+Rigidbody2D:
+  serializedVersion: 5
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7282093002630404119}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 19e58d24264fe2e49b0b652bf22ee2d4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  trailRenderer: {fileID: 0}
-  animateObjects:
-  - {fileID: 860346183544208816}
-  boxCollider2Ds: []
-  circleCollider2Ds: []
-  polygonCollider2Ds: []
+  m_BodyType: 0
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
+  m_GravityScale: 0
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 247
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0

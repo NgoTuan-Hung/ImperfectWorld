@@ -96,9 +96,7 @@ public class DashSkill : SkillBase
     {
         GameEffect gameEffect;
         /* Dash explode vfx */
-        gameEffect = GameManager
-            .Instance.gameEffectPool.PickOne()
-            .gameEffect.Init(GameManager.Instance.dashExplodeSO);
+        gameEffect = GameManager.Instance.dashExplodePool.PickOne().gameEffect;
         customMono.rotationAndCenterObject.transform.localRotation = Quaternion.identity;
         gameEffect.transform.parent = customMono.rotationAndCenterObject.transform;
         gameEffect.transform.SetLocalPositionAndRotation(Vector3.zero, Quaternion.identity);
@@ -108,9 +106,7 @@ public class DashSkill : SkillBase
         float currentTime = 0;
         for (int i = 0; i < totalEffect; i++)
         {
-            gameEffect = GameManager
-                .Instance.gameEffectPool.PickOne()
-                .gameEffect.Init(GameManager.Instance.dashEffectSO);
+            gameEffect = GameManager.Instance.dashEffectPool.PickOne().gameEffect;
             gameEffect.animateObjects[0].spriteRenderer.sprite = customMono.spriteRenderer.sprite;
             gameEffect.animateObjects[0].transform.localScale = customMono
                 .directionModifier

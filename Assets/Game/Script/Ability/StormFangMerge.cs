@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Diagnostics;
 using Kryz.Tweening;
 using UnityEngine;
 
@@ -7,7 +8,7 @@ public class StormFangMerge : SkillBase
     public override void Awake()
     {
         base.Awake();
-        duration = 1f;
+        duration = 2f;
         cooldown = 5f;
         damage = defaultDamage = 2f;
         successResult = new(true, ActionResultType.Cooldown, cooldown);
@@ -78,8 +79,8 @@ public class StormFangMerge : SkillBase
         // StartCoroutine(actionIE1 = WaitSpawnSlashSignal(p_direction));
 
         GameManager
-            .Instance.PickGameEffectAndInit(GameManager.Instance.stormFangMergeProgressSO)
-            .transform.position = customMono.rotationAndCenterObject.transform.position;
+            .Instance.stormFangMergeProgressPool.PickOne()
+            .gameEffect.transform.position = customMono.rotationAndCenterObject.transform.position;
 
         customMono.boxCollider2D.enabled = false;
         customMono.combatCollider2D.enabled = false;
@@ -89,24 +90,25 @@ public class StormFangMerge : SkillBase
 
         CollideAndDamage t_stormFangMergeBlades =
             GameManager
-                .Instance.PickGameEffectAndInit(GameManager.Instance.stormFangMergeBladesSO)
-                .GetBehaviour(EGameEffectBehaviour.CollideAndDamage) as CollideAndDamage;
+                .Instance.stormFangMergeBladesPool.PickOne()
+                .gameEffect.GetBehaviour(EGameEffectBehaviour.CollideAndDamage) as CollideAndDamage;
         t_stormFangMergeBlades.transform.parent = customMono.rotationAndCenterObject.transform;
         t_stormFangMergeBlades.transform.localPosition = Vector3.zero;
         t_stormFangMergeBlades.allyTags = customMono.allyTags;
         t_stormFangMergeBlades.collideDamage = damage;
 
         p_direction = p_direction.normalized * travelSpeed * Time.fixedDeltaTime;
-        currentTime = 0;
-        while (currentTime < duration)
+        stopwatch.Restart();
+        while (stopwatch.Elapsed.TotalSeconds < duration)
         {
             transform.position +=
                 // (1 - EasingFunctions.InQuint(currentTime / duration)) * p_direction;
-                EasingFunctions.InQuint(currentTime / duration) * p_direction;
+                EasingFunctions.InQuint((float)stopwatch.Elapsed.TotalSeconds / duration)
+                * p_direction;
 
-            yield return new WaitForSeconds(Time.fixedDeltaTime);
-            currentTime += Time.fixedDeltaTime;
+            yield return new WaitForEndOfFrame();
         }
+        stopwatch.Stop();
 
         customMono.actionBlocking = false;
         customMono.movementActionBlocking = false;

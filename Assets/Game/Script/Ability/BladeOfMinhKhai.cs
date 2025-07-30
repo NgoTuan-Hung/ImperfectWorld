@@ -91,9 +91,7 @@ public class BladeOfMinhKhai : SkillBase
         currentTime = 0;
 
         customMono.SetUpdateDirectionIndicator(p_direction, UpdateDirectionIndicatorPriority.Low);
-        GameEffect vanishEffect = GameManager
-            .Instance.gameEffectPool.PickOne()
-            .gameEffect.Init(GameManager.Instance.vanishEffectSO);
+        GameEffect vanishEffect = GameManager.Instance.vanishEffectPool.PickOne().gameEffect;
         vanishEffect.transform.position = transform.position;
         StartCoroutine(actionIE1 = WaitSpawnSlashSignal(p_direction));
 
@@ -117,13 +115,13 @@ public class BladeOfMinhKhai : SkillBase
 
         customMono.rotationAndCenterObject.transform.localRotation = Quaternion.identity;
 
-        GameEffect t_slashEffect = GameManager.Instance.gameEffectPool.PickOne().gameEffect;
-        var t_slashEffectSO = GameManager.Instance.bladeOfMinhKhaiSlashEffectSO;
-        t_slashEffect.Init(t_slashEffectSO);
+        GameEffect t_slashEffect = GameManager
+            .Instance.bladeOfMinhKhaiSlashEffectPool.PickOne()
+            .gameEffect;
         t_slashEffect.transform.parent = customMono.rotationAndCenterObject.transform;
         t_slashEffect.transform.SetLocalPositionAndRotation(
-            t_slashEffectSO.effectLocalPosition,
-            Quaternion.Euler(t_slashEffectSO.effectLocalRotation)
+            t_slashEffect.gameEffectSO.effectLocalPosition,
+            Quaternion.Euler(t_slashEffect.gameEffectSO.effectLocalRotation)
         );
 
         var t_collideAndDamage = (CollideAndDamage)

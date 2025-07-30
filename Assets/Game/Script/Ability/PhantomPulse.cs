@@ -103,10 +103,8 @@ public class PhantomPulse : SkillBase
                 case 1: // fire down
                 {
                     GameEffect t_shockwave = GameManager
-                        .Instance.gameEffectPool.PickOne()
+                        .Instance.strongDudeShockwavePool.PickOne()
                         .gameEffect;
-                    var t_shockwaveSO = GameManager.Instance.strongDudeShockwaveSO;
-                    t_shockwave.Init(t_shockwaveSO);
 
                     var t_collideAndDamage = (CollideAndDamage)
                         t_shockwave.GetBehaviour(EGameEffectBehaviour.CollideAndDamage);
@@ -130,10 +128,8 @@ public class PhantomPulse : SkillBase
                         UpdateDirectionIndicatorPriority.Low
                     );
                     GameEffect t_knockUpCollider = GameManager
-                        .Instance.gameEffectPool.PickOne()
+                        .Instance.knockUpColliderPool.PickOne()
                         .gameEffect;
-                    var t_knockUpColliderSO = GameManager.Instance.knockUpColliderSO;
-                    t_knockUpCollider.Init(t_knockUpColliderSO);
 
                     var t_collideAndDamage = (CollideAndDamage)
                         t_knockUpCollider.GetBehaviour(EGameEffectBehaviour.CollideAndDamage);
@@ -156,10 +152,8 @@ public class PhantomPulse : SkillBase
                         UpdateDirectionIndicatorPriority.Low
                     );
                     GameEffect t_pushRandomCollider = GameManager
-                        .Instance.gameEffectPool.PickOne()
+                        .Instance.pushColliderPool.PickOne()
                         .gameEffect;
-                    var t_pushRandomColliderSO = GameManager.Instance.pushColliderSO;
-                    t_pushRandomCollider.Init(t_pushRandomColliderSO);
 
                     var t_collideAndDamage = (CollideAndDamage)
                         t_pushRandomCollider.GetBehaviour(EGameEffectBehaviour.CollideAndDamage);
@@ -193,10 +187,8 @@ public class PhantomPulse : SkillBase
                         UpdateDirectionIndicatorPriority.Low
                     );
                     GameEffect t_pushRandomCollider = GameManager
-                        .Instance.gameEffectPool.PickOne()
+                        .Instance.pushColliderPool.PickOne()
                         .gameEffect;
-                    var t_pushColliderSO = GameManager.Instance.pushColliderSO;
-                    t_pushRandomCollider.Init(t_pushColliderSO);
 
                     var t_collideAndDamage = (CollideAndDamage)
                         t_pushRandomCollider.GetBehaviour(EGameEffectBehaviour.CollideAndDamage);
@@ -223,10 +215,8 @@ public class PhantomPulse : SkillBase
                         UpdateDirectionIndicatorPriority.Low
                     );
                     GameEffect t_stunCollider = GameManager
-                        .Instance.gameEffectPool.PickOne()
+                        .Instance.stunColliderPool.PickOne()
                         .gameEffect;
-                    var t_stunColliderSO = GameManager.Instance.stunColliderSO;
-                    t_stunCollider.Init(t_stunColliderSO);
 
                     var t_collideAndDamage = (CollideAndDamage)
                         t_stunCollider.GetBehaviour(EGameEffectBehaviour.CollideAndDamage);
@@ -273,22 +263,14 @@ public class PhantomPulse : SkillBase
 
         for (int i = 0; i < 2; i++)
         {
-            t_phantomPulseDragon = GameManager.Instance.gameEffectPool.PickOne().gameEffect;
-            t_phantomPulseDragonSO = GameManager.Instance.phantomPulseDragonSO;
-            t_phantomPulseDragon.Init(t_phantomPulseDragonSO);
+            t_phantomPulseDragon = GameManager.Instance.phantomPulseDragonPool.PickOne().gameEffect;
 
             t_collideAndDamage = (CollideAndDamage)
                 t_phantomPulseDragon.GetBehaviour(EGameEffectBehaviour.CollideAndDamage);
-            t_phantomPulseDragon.currentGameEffectSO.collideAndDamageSO.spawnedEffectOnCollide =
-                customMono.meleeCollisionEffectSO;
             t_collideAndDamage.allyTags = customMono.allyTags;
             t_collideAndDamage.collideDamage = damage;
             t_phantomPulseDragon.transform.position = customMono.firePoint.transform.position;
-            t_phantomPulseDragon.KeepFlyingAt(
-                enemyDirection,
-                t_phantomPulseDragonSO,
-                EasingType.OutQuin
-            );
+            t_phantomPulseDragon.KeepFlyingAt(enemyDirection, true, EasingType.OutQuint);
 
             yield return new WaitForSeconds(0.2f);
         }

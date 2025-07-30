@@ -69,9 +69,7 @@ public class BladeOfVu : SkillBase
 
     IEnumerator TriggerIE(Vector2 location = default, Vector2 direction = default)
     {
-        GameEffect t_star = GameManager
-            .Instance.gameEffectPool.PickOne()
-            .gameEffect.Init(GameManager.Instance.bladeOfVuStarSO);
+        GameEffect t_star = GameManager.Instance.bladeOfVuStarPool.PickOne().gameEffect;
         t_star.transform.position = customMono.spriteRenderer.transform.TransformPoint(
             starPos.transform.localPosition
         );
@@ -86,9 +84,7 @@ public class BladeOfVu : SkillBase
         currentAmmo = 0;
         while (currentAmmo < maxAmmo)
         {
-            GameEffect t_ghost = GameManager
-                .Instance.gameEffectPool.PickOne()
-                .gameEffect.Init(GameManager.Instance.ghostSO);
+            GameEffect t_ghost = GameManager.Instance.ghostPool.PickOne().gameEffect;
             t_ghost.animateObjects[0].spriteRenderer.sprite = spriteList.sprites[
                 Random.Range(0, spriteList.sprites.Count)
             ];
@@ -108,9 +104,8 @@ public class BladeOfVu : SkillBase
         /* Spawn slash */
         CollideAndDamage t_slash = (CollideAndDamage)
             GameManager
-                .Instance.gameEffectPool.PickOne()
-                .gameEffect.Init(GameManager.Instance.bladeOfVuSlashSO)
-                .GetBehaviour(EGameEffectBehaviour.CollideAndDamage);
+                .Instance.bladeOfVuSlashPool.PickOne()
+                .gameEffect.GetBehaviour(EGameEffectBehaviour.CollideAndDamage);
         t_slash.allyTags = customMono.allyTags;
         t_slash.collideDamage = damage;
         t_slash.transform.position = transform.position;
