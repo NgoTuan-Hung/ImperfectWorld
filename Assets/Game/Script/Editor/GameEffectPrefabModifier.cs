@@ -41,7 +41,8 @@ public class GameEffectPrefabModifier : EditorWindow
             // prefabs.gameObjects.ForEach(gO => ChangeCollider(gO));
             // prefabs.gameObjects.ForEach(gO => ResetGameEffectPrefab(gO));
             // prefabs.gameObjects.ForEach(gO => TurnOnTrigger(gO));
-            prefabs.gameObjects.ForEach(gO => ChangeCollidersLayer(gO));
+            // prefabs.gameObjects.ForEach(gO => ChangeCollidersLayer(gO));
+            prefabs.gameObjects.ForEach(gO => RemoveAnimatorFromColliders(gO));
         };
         rootVisualElement.Add(button);
     }
@@ -180,6 +181,22 @@ public class GameEffectPrefabModifier : EditorWindow
         foreach (Collider2D collider2D in collider2Ds)
         {
             collider2D.gameObject.layer = LayerMask.NameToLayer("CombatCollider");
+        }
+    }
+
+    void RemoveAnimatorFromColliders(GameObject p_gameObject)
+    {
+        using var editingScope = new PrefabUtility.EditPrefabContentsScope(
+            AssetDatabase.GetAssetPath(p_gameObject)
+        );
+        p_gameObject = editingScope.prefabContentsRoot;
+
+        List<Collider2D> collider2Ds = p_gameObject.GetComponentsInChildren<Collider2D>().ToList();
+        foreach (Collider2D collider2D in collider2Ds)
+        {
+            var animator = collider2D.gameObject.GetComponent<Animator>();
+            if (animator != null)
+                DestroyImmediate(animator);
         }
     }
 }

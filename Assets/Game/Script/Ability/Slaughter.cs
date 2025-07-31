@@ -1,14 +1,11 @@
 using System.Collections;
-using Unity.VisualScripting;
 using UnityEngine;
-using Touch = UnityEngine.InputSystem.EnhancedTouch.Touch;
 
 public class Slaughter : SkillBase
 {
     public override void Awake()
     {
         base.Awake();
-        boolHash = Animator.StringToHash("Slaughter");
         audioClip = Resources.Load<AudioClip>("AudioClip/slaughter");
         cooldown = defaultCooldown = 1f;
         damage = 5f;
@@ -72,7 +69,7 @@ public class Slaughter : SkillBase
             customMono.statusEffect.Slow(customMono.stat.ActionMoveSpeedReduceRate);
             customMono.audioSource.PlayOneShot(audioClip);
             AddAmmo(-1);
-            ToggleAnim(boolHash, true);
+            ToggleAnim(GameManager.Instance.mainSkill1BoolHash, true);
             StartCoroutine(actionIE = EndAnimWaitCoroutine());
             customMono.currentAction = this;
 
@@ -114,13 +111,13 @@ public class Slaughter : SkillBase
 
     IEnumerator EndAnimWaitCoroutine()
     {
-        while (!customMono.animationEventFunctionCaller.endSlaughter)
+        while (!customMono.animationEventFunctionCaller.endMainSkill1)
             yield return new WaitForSeconds(Time.fixedDeltaTime);
 
-        ToggleAnim(boolHash, false);
+        ToggleAnim(GameManager.Instance.mainSkill1BoolHash, false);
         customMono.statusEffect.RemoveSlow(customMono.stat.ActionMoveSpeedReduceRate);
         customMono.actionBlocking = false;
-        customMono.animationEventFunctionCaller.endSlaughter = false;
+        customMono.animationEventFunctionCaller.endMainSkill1 = false;
         canUse = true;
         customMono.currentAction = null;
     }
@@ -136,9 +133,9 @@ public class Slaughter : SkillBase
         canUse = true;
         customMono.actionBlocking = false;
         customMono.statusEffect.RemoveSlow(customMono.stat.ActionMoveSpeedReduceRate);
-        ToggleAnim(boolHash, false);
+        ToggleAnim(GameManager.Instance.mainSkill1BoolHash, false);
         StopCoroutine(actionIE);
-        customMono.animationEventFunctionCaller.endSlaughter = false;
+        customMono.animationEventFunctionCaller.endMainSkill1 = false;
         customMono.currentAction = null;
     }
 }

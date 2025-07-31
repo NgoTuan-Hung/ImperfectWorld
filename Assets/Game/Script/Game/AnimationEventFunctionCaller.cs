@@ -19,7 +19,6 @@ public class AnimationEventFunctionCaller : MonoBehaviour
     public bool endCastingMagic;
     public bool summon;
     public bool endSummon;
-    public bool endSlaughter;
     public bool endRelease;
     public bool mainSkill1Signal;
     public bool endMainSkill1;
@@ -39,8 +38,6 @@ public class AnimationEventFunctionCaller : MonoBehaviour
     public void Summon() => summon = true;
 
     public void EndSummon() => endSummon = true;
-
-    public void EndSlaughter() => endSlaughter = true;
 
     public void EndRelease() => endRelease = true;
 
@@ -64,7 +61,6 @@ public class AnimationEventFunctionCaller : MonoBehaviour
         endCastingMagic = false;
         summon = false;
         endSummon = false;
-        endSlaughter = false;
         endRelease = false;
         mainSkill1Signal = false;
         endMainSkill1 = false;

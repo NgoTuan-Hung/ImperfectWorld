@@ -9,7 +9,7 @@ public partial class GameManager : MonoSingleton<GameManager>
 {
     public readonly int attackButtonScrollViewIndex = 7;
     public readonly int attackButtonIndex = 0;
-    BinarySearchTree<CustomMono> customMonos = new BinarySearchTree<CustomMono>();
+    Dictionary<int, CustomMono> customMonos = new();
     List<CustomMono> playerAllies = new();
     int wave = 0;
     public List<SpawnEnemyInfo> spawnEnemyInfos = new();
@@ -187,17 +187,19 @@ public partial class GameManager : MonoSingleton<GameManager>
 
     public void AddCustomMono(CustomMono customMono)
     {
-        customMonos.Insert(customMono);
+        customMonos.Add(customMono.gameObject.GetHashCode(), customMono);
         if (customMono.allyTags.Contains("GamePlayer"))
             playerAllies.Add(customMono);
     }
 
-    public CustomMono GetCustomMono(GameObject gameObject)
+    public CustomMono GetCustomMono(GameObject p_gameObject)
     {
-        return customMonos.Search(
-            (customMono) => customMono.gameObject.GetHashCode(),
-            gameObject.GetHashCode()
-        );
+        return customMonos.GetValueOrDefault(p_gameObject.GetHashCode());
+    }
+
+    public void RemoveCustomMono(GameObject p_gameObject)
+    {
+        customMonos.Remove(p_gameObject.GetHashCode());
     }
 
     public CustomMono GetRandomPlayerAlly() => playerAllies[Random.Range(0, playerAllies.Count)];

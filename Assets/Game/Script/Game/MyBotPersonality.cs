@@ -72,8 +72,8 @@ public class MyBotPersonality : CustomMonoPal
                 if (targetEnemy.Equals(person))
                 {
                     targetEnemy = null;
-                    SetOriginToTargetOriginDirection(Vector2.zero, ModificationPriority.VeryLow);
-                    SetCenterToTargetCenterDirection(Vector2.zero, ModificationPriority.VeryLow);
+                    SetOriginToTargetOriginDirection(Vector2.one, ModificationPriority.VeryLow);
+                    SetCenterToTargetCenterDirection(Vector2.one, ModificationPriority.VeryLow);
                     SetTargetOriginPosition(Vector3.zero, ModificationPriority.VeryLow);
                     SetTargetCenterPosition(Vector3.zero, ModificationPriority.VeryLow);
                 }
@@ -131,7 +131,7 @@ public class MyBotPersonality : CustomMonoPal
     {
         if ((int)p_priority <= current_OTTOD_ChangePriority)
         {
-            originToTargetOriginDirection = p_direction;
+            originToTargetOriginDirection = p_direction == Vector2.zero ? Vector2.one : p_direction;
             current_OTTOD_ChangePriority = (int)p_priority;
         }
     }
@@ -143,7 +143,7 @@ public class MyBotPersonality : CustomMonoPal
     {
         if ((int)p_priority <= current_CTTCD_ChangePriority)
         {
-            centerToTargetCenterDirection = p_direction;
+            centerToTargetCenterDirection = p_direction == Vector2.zero ? Vector2.one : p_direction;
             current_CTTCD_ChangePriority = (int)p_priority;
         }
     }
@@ -155,7 +155,8 @@ public class MyBotPersonality : CustomMonoPal
     {
         if ((int)p_priority <= current_FPTTCD_ChangePriority)
         {
-            firePointToTargetCenterDirection = p_direction;
+            firePointToTargetCenterDirection =
+                p_direction == Vector2.zero ? Vector2.one : p_direction;
             current_FPTTCD_ChangePriority = (int)p_priority;
         }
     }

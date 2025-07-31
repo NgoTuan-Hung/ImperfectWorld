@@ -76,7 +76,7 @@ public class CustomMono : MonoSelfAware, IComparable<CustomMono>
     Vector2 combatCollisionDefaultSize,
         combatCollisionDefaultOffset;
     public AudioSource audioSource;
-    public Action<GameObject> someOneExitView = (person) => { };
+    public Action<CustomMono> someOneExitView = (person) => { };
     float currentNearestEnemySqrDistance = Mathf.Infinity;
     public CustomMono currentNearestEnemy = null;
     public new Rigidbody2D rigidbody2D;
@@ -270,56 +270,74 @@ public class CustomMono : MonoSelfAware, IComparable<CustomMono>
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        /* if we see a new enemy, remember him. */
-        if (!allyTags.Contains(other.transform.parent.tag))
-            enemiesWeSee.Add(GameManager.Instance.GetCustomMono(other.transform.parent.gameObject));
+        if (
+            (onTriggerCM = GameManager.Instance.GetCustomMono(other.transform.parent.gameObject))
+            != null
+        )
+        {
+            /* if we see a new enemy, remember him. */
+            if (!allyTags.Contains(onTriggerCM.tag))
+                enemiesWeSee.Add(onTriggerCM);
+        }
     }
+
+    CustomMono onTriggerCM;
 
     private void OnTriggerExit2D(Collider2D other)
     {
-        someOneExitView(other.transform.parent.gameObject);
-
-        /* Check if we saw this enemy before. */
-        CustomMono t_customMono = enemiesWeSee.FirstOrDefault(customMono =>
-            customMono.gameObject.Equals(other.transform.parent.gameObject)
-        );
-
-        /* If we saw this enemy before, erase him. */
-        if (t_customMono != null)
+        if (
+            (onTriggerCM = GameManager.Instance.GetCustomMono(other.transform.parent.gameObject))
+            != null
+        )
         {
-            enemiesWeSee.Remove(t_customMono);
+            someOneExitView(onTriggerCM);
 
-            /* If the current nearest enemy is this one, erase it as well. */
-            if (t_customMono.Equals(currentNearestEnemy))
+            /* Check if we saw this enemy before. If we did, erase him. */
+            if (enemiesWeSee.Contains(onTriggerCM))
             {
-                currentNearestEnemy = null;
-                currentNearestEnemySqrDistance = float.MaxValue;
+                enemiesWeSee.Remove(onTriggerCM);
+
+                /* If the current nearest enemy is this one, erase it as well. */
+                if (onTriggerCM.Equals(currentNearestEnemy))
+                {
+                    currentNearestEnemy = null;
+                    currentNearestEnemySqrDistance = float.MaxValue;
+                }
             }
         }
     }
 
     private void OnTriggerStay2D(Collider2D other)
     {
-        if (!allyTags.Contains(other.transform.parent.tag))
+        if (
+            (onTriggerCM = GameManager.Instance.GetCustomMono(other.transform.parent.gameObject))
+            != null
+        )
         {
-            /* We can compare squared distance instead of distance because it's faster yet
-            still gives the same result. */
-            float t_enemySqrDistance = (
-                transform.position - other.transform.parent.position
-            ).sqrMagnitude;
-
-            /* if we see a closer enemy, put him as the nearest. Else, update the distance of
-            the nearest enemy instead. */
-            if (t_enemySqrDistance < currentNearestEnemySqrDistance)
+            if (!allyTags.Contains(onTriggerCM.transform.tag))
             {
-                currentNearestEnemySqrDistance = t_enemySqrDistance;
-                currentNearestEnemy = GameManager.Instance.GetCustomMono(
-                    other.transform.parent.gameObject
-                );
-                nearestEnemyChanged(currentNearestEnemy);
+                /* We can compare squared distance instead of distance because it's faster yet
+                still gives the same result. */
+                float t_enemySqrDistance = (
+                    transform.position - onTriggerCM.transform.position
+                ).sqrMagnitude;
+
+                /* if we see a closer enemy, put him as the nearest. Else, update the distance of
+                the nearest enemy instead. */
+                if (t_enemySqrDistance < currentNearestEnemySqrDistance)
+                {
+                    currentNearestEnemySqrDistance = t_enemySqrDistance;
+                    currentNearestEnemy = onTriggerCM;
+                    nearestEnemyChanged(currentNearestEnemy);
+                }
+                else if (onTriggerCM.Equals(currentNearestEnemy))
+                    currentNearestEnemySqrDistance = t_enemySqrDistance;
             }
-            else if (other.transform.parent.gameObject.Equals(currentNearestEnemy.gameObject))
-                currentNearestEnemySqrDistance = t_enemySqrDistance;
         }
+    }
+
+    private void OnDestroy()
+    {
+        GameManager.Instance.RemoveCustomMono(gameObject);
     }
 }

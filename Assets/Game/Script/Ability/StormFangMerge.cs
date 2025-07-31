@@ -72,15 +72,9 @@ public class StormFangMerge : SkillBase
     IEnumerator StartSpinning(Vector3 p_direction)
     {
         customMono.SetUpdateDirectionIndicator(p_direction, UpdateDirectionIndicatorPriority.Low);
-        // GameEffect vanishEffect = GameManager
-        //     .Instance.gameEffectPool.PickOne()
-        //     .gameEffect.Init(GameManager.Instance.vanishEffectSO);
-        // vanishEffect.transform.position = transform.position;
-        // StartCoroutine(actionIE1 = WaitSpawnSlashSignal(p_direction));
 
-        GameManager
-            .Instance.stormFangMergeProgressPool.PickOne()
-            .gameEffect.transform.position = customMono.rotationAndCenterObject.transform.position;
+        GameManager.Instance.stormFangMergeProgressPool.PickOne().gameEffect.transform.position =
+            customMono.rotationAndCenterObject.transform.position;
 
         customMono.boxCollider2D.enabled = false;
         customMono.combatCollider2D.enabled = false;
@@ -97,7 +91,7 @@ public class StormFangMerge : SkillBase
         t_stormFangMergeBlades.allyTags = customMono.allyTags;
         t_stormFangMergeBlades.collideDamage = damage;
 
-        p_direction = p_direction.normalized * travelSpeed * Time.fixedDeltaTime;
+        p_direction = Time.fixedDeltaTime * travelSpeed * p_direction.normalized;
         stopwatch.Restart();
         while (stopwatch.Elapsed.TotalSeconds < duration)
         {
@@ -106,7 +100,8 @@ public class StormFangMerge : SkillBase
                 EasingFunctions.InQuint((float)stopwatch.Elapsed.TotalSeconds / duration)
                 * p_direction;
 
-            yield return new WaitForEndOfFrame();
+            // yield return new WaitForEndOfFrame();
+            yield return null;
         }
         stopwatch.Stop();
 
