@@ -211,6 +211,7 @@ public class PierceStrike : SkillBase
         customMono.movementActionBlocking = false;
         ToggleAnim(GameManager.Instance.mainSkill1BoolHash, false);
         customMono.currentAction = null;
+        botActionManuals[0].actionUse = ActionUse.RangedDamage;
     }
 
     void BotTrigger(Vector2 p_direction, float p_duration)
@@ -233,12 +234,14 @@ public class PierceStrike : SkillBase
         StartCoroutine(secondPhaseHandlerIE);
         additionalPhaseWithConditionResult.conditionMetCallback(additionalPhaseWithConditionResult);
         StopCoroutine(cooldownIE);
+        botActionManuals[0].actionUse = ActionUse.GetCloser;
     }
 
     IEnumerator SecondPhaseHandlerIE()
     {
         yield return new WaitForSeconds(secondPhaseDeadline);
         secondPhase = false;
+        botActionManuals[0].actionUse = ActionUse.RangedDamage;
         StartCoroutine(cooldownIE = CooldownCoroutine());
     }
 
@@ -255,5 +258,6 @@ public class PierceStrike : SkillBase
         customMono.animationEventFunctionCaller.endMainSkill1 = false;
         customMono.statusEffect.RemoveSlow(customMono.stat.ActionMoveSpeedReduceRate);
         customMono.currentAction = null;
+        botActionManuals[0].actionUse = ActionUse.RangedDamage;
     }
 }

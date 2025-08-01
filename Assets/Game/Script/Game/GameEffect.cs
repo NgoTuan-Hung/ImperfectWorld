@@ -72,6 +72,8 @@ public class GameEffect : MonoSelfAware
 
     void PlayParticleSystem() => particleSystem.Play();
 
+    void PlayTimeline() => playableDirector.Play();
+
     IEnumerator DoColorOverLifetimeIE()
     {
         float currentTime = 0;
@@ -134,6 +136,8 @@ public class GameEffect : MonoSelfAware
             onEnable += DoColorOverLifetime;
         if (gameEffectSO.useParticleSystem)
             onEnable += PlayParticleSystem;
+        if (gameEffectSO.isTimeline)
+            onEnable += PlayTimeline;
     }
 
     public void KeepFlyingForward() => StartCoroutine(KeepFlyingAtCoroutine(transform.right));

@@ -18,6 +18,10 @@ public class BaseIntelligence : MonoEditor
     /// </summary>
     public List<float> actionCumulativeDistribution = new();
     public List<BotActionManual> botActionManuals = new();
+
+    /// <summary>
+    /// SCHEDULE_FOR_REMOVAL
+    /// </summary>
     public List<List<BotActionManual>> botActionManualCategories = new();
     public List<int> presummedActionChances = new();
     bool actionNeedWait = false;
@@ -162,12 +166,22 @@ public class BaseIntelligence : MonoEditor
     /// Loop through each category only once and set the final action chance
     /// of each action.
     /// </summary>
+    // void CalculatingFinalActionChances()
+    // {
+    //     for (int i = 0; i < botActionManualCategories.Count; i++)
+    //     for (int j = 0; j < botActionManualCategories[i].Count; j++)
+    //         actionChances[botActionManualCategories[i][j].botActionManualIndex] =
+    //             presummedActionChances[i] + botActionManualCategories[i][j].actionChanceAjuster;
+    // }
+
     void CalculatingFinalActionChances()
     {
-        for (int i = 0; i < botActionManualCategories.Count; i++)
-        for (int j = 0; j < botActionManualCategories[i].Count; j++)
-            actionChances[botActionManualCategories[i][j].botActionManualIndex] =
-                presummedActionChances[i] + botActionManualCategories[i][j].actionChanceAjuster;
+        for (int i = 0; i < botActionManuals.Count; i++)
+        {
+            actionChances[i] =
+                presummedActionChances[(int)botActionManuals[i].actionUse]
+                + botActionManuals[i].actionChanceAjuster;
+        }
     }
 
     /// <summary>

@@ -18,24 +18,11 @@ public class GameEffectSO : ScriptableObject
         effectLocalRotation;
     public bool isColoredOverLifetime = false;
     public Gradient colorOverLifetimeGrad;
-    public TimelineAsset timelineAsset;
     public CollideAndDamageSO collideAndDamageSO;
-
-    #region SpriteRenderer
-    [Header("Sprite Renderer")]
-    public GameEffectPrefab gameEffectPrefab;
-    #endregion
-    public bool useTrailRenderer = false;
     public string tag = "Untagged";
 
     // default exclude everything except CombatCollidee
     public LayerMask collisionExcludeLayerMask;
     public List<EGameEffectBehaviour> gameEffectBehaviours;
     public bool useParticleSystem = false;
-    public GameObject particleSystemPrefab;
-
-    private void Reset()
-    {
-        collisionExcludeLayerMask = ~(1 << LayerMask.NameToLayer("CombatCollidee"));
-    }
 }
