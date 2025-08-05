@@ -11,6 +11,7 @@ public class MagicLaserSkill : SkillBase
         damage = defaultDamage = 1f;
         boolHash = Animator.StringToHash("CastingMagic");
         successResult = new(true, ActionResultType.Cooldown, cooldown);
+        manaCost = 20f;
         AddActionManuals();
     }
 
@@ -29,11 +30,6 @@ public class MagicLaserSkill : SkillBase
     public override void StatChangeRegister()
     {
         base.StatChangeRegister();
-        customMono.stat.magickaChangeEvent.action += () =>
-        {
-            // magicka 0 -> 100
-            damage = defaultDamage + customMono.stat.Magicka * 0.1f;
-        };
     }
 
     public override void AddActionManuals()
@@ -54,7 +50,9 @@ public class MagicLaserSkill : SkillBase
 
     public override ActionResult Trigger(Vector2 location = default, Vector2 direction = default)
     {
-        if (canUse && !customMono.actionBlocking)
+        if (customMono.stat.CurrentManaPoint < manaCost)
+            return failResult;
+        else if (canUse && !customMono.actionBlocking)
         {
             canUse = false;
             customMono.actionBlocking = true;
@@ -62,6 +60,7 @@ public class MagicLaserSkill : SkillBase
             StartCoroutine(actionIE = TriggerCoroutine(location, direction));
             StartCoroutine(CooldownCoroutine());
             customMono.currentAction = this;
+            customMono.stat.CurrentManaPoint -= manaCost;
             return successResult;
         }
 

@@ -44,6 +44,7 @@ public class Scatter : SkillBase
         punchDuration = 0.5f;
         elasticity = 0;
         vibrato = 10;
+        manaCost = 30f;
 
         AddActionManuals();
     }
@@ -90,7 +91,9 @@ public class Scatter : SkillBase
 
     public override ActionResult StartAndWait()
     {
-        if (canUse && !customMono.actionBlocking)
+        if (customMono.stat.CurrentManaPoint < manaCost)
+            return failResult;
+        else if (canUse && !customMono.actionBlocking)
         {
             canUse = false;
             customMono.actionBlocking = true;
@@ -99,6 +102,9 @@ public class Scatter : SkillBase
             actionWaitInfo.stillWaiting = true;
             StartCoroutine(actionIE = WaitingCoroutine());
             customMono.currentAction = this;
+            customMono.stat.CurrentManaPoint -= manaCost;
+
+            return successResult;
         }
 
         return failResult;
@@ -113,7 +119,7 @@ public class Scatter : SkillBase
         currentAmmo = 0;
         while (actionWaitInfo.stillWaiting)
         {
-            yield return new WaitForEndOfFrame();
+            yield return null;
 
             if (currentAmmo < maxAmmo)
             {
@@ -266,5 +272,7 @@ public class Scatter : SkillBase
             scatterChargeGameEffect.deactivate();
         customMono.animationEventFunctionCaller.endRelease = false;
         customMono.currentAction = null;
+        scatterArrowPhaseIcon.gameObject.SetActive(false);
+        iconTweener?.Kill();
     }
 }

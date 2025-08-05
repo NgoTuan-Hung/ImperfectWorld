@@ -11,33 +11,44 @@ public class StatInspector : Editor
     [SerializeField]
     private VisualTreeAsset statInspectorAsset;
     VisualElement root;
-    ProgressBar healthProgress;
-    Slider healthSlider,
-        attackSpeedSlider,
-        defaultMoveSpeedSlider,
+    Slider defaultMoveSpeedSlider,
         actionMoveSpeedReduceRateSlider,
-        defaultMagickaSlider,
         sizeSlider;
-    Label healthLabel,
-        attackSpeedLabel,
-        moveSpeedLabel,
+    Label moveSpeedLabel,
         defaultMoveSpeedLabel,
         actionMoveSpeedReduceRateLabel,
-        magickaLabel,
-        defaultMagickaLabel,
         sizeLabel;
-    FloatField defaultHealthFloatField;
+    FloatField attackSpeedFloatField,
+        baseAttackSpeedFloatField,
+        currentHealthPointFloatField,
+        healthPointFloatField,
+        baseHealthPointFloatField,
+        currentManaPointFloatField,
+        manaPointFloatField,
+        baseManaPointFloatField,
+        mightFloatField,
+        baseMightFloatField,
+        reflexFloatField,
+        baseReflexFloatField,
+        wisdomFloatField,
+        baseWisdomFloatField;
 
     private void OnEnable()
     {
         stat = (Stat)target;
         root = statInspectorAsset.Instantiate();
-        healthProgress = root.Q<ProgressBar>("inspector__health-progress-bar");
-        healthSlider = root.Q<Slider>("inspector__health-slider");
-        healthLabel = root.Q<Label>("inspector__health-label");
-        defaultHealthFloatField = root.Q<FloatField>("inspector__default-health-float-field");
-        attackSpeedSlider = root.Q<Slider>(name: "inspector__attack-speed-slider");
-        attackSpeedLabel = root.Q<Label>(name: "inspector__attack-speed-label");
+        attackSpeedFloatField = root.Q<FloatField>("inspector__attack-speed-float-field");
+        baseAttackSpeedFloatField = root.Q<FloatField>("inspector__base-attack-speed-float-field");
+        currentHealthPointFloatField = root.Q<FloatField>(
+            "inspector__current-health-point-float-field"
+        );
+        healthPointFloatField = root.Q<FloatField>("inspector__health-point-float-field");
+        baseHealthPointFloatField = root.Q<FloatField>("inspector__base-health-point-float-field");
+        currentManaPointFloatField = root.Q<FloatField>(
+            "inspector__current-mana-point-float-field"
+        );
+        manaPointFloatField = root.Q<FloatField>("inspector__mana-point-float-field");
+        baseManaPointFloatField = root.Q<FloatField>("inspector__base-mana-point-float-field");
         moveSpeedLabel = root.Q<Label>(name: "inspector__move-speed-label");
         defaultMoveSpeedSlider = root.Q<Slider>(name: "inspector__default-move-speed-slider");
         defaultMoveSpeedLabel = root.Q<Label>(name: "inspector__default-move-speed-label");
@@ -47,85 +58,26 @@ public class StatInspector : Editor
         actionMoveSpeedReduceRateLabel = root.Q<Label>(
             name: "inspector__action-move-speed-reduce-rate-label"
         );
-        magickaLabel = root.Q<Label>(name: "inspector__magicka-label");
-        defaultMagickaSlider = root.Q<Slider>(name: "inspector__default-magicka-slider");
-        defaultMagickaLabel = root.Q<Label>(name: "inspector__default-magicka-label");
         sizeSlider = root.Q<Slider>(name: "inspector__size-slider");
         sizeLabel = root.Q<Label>(name: "inspector__size-label");
+        mightFloatField = root.Q<FloatField>(name: "inspector__might-float-field");
+        baseMightFloatField = root.Q<FloatField>(name: "inspector__base-might-float-field");
+        reflexFloatField = root.Q<FloatField>(name: "inspector__reflex-float-field");
+        baseReflexFloatField = root.Q<FloatField>(name: "inspector__base-reflex-float-field");
+        wisdomFloatField = root.Q<FloatField>(name: "inspector__wisdom-float-field");
+        baseWisdomFloatField = root.Q<FloatField>(name: "inspector__base-wisdom-float-field");
 
-        healthProgress.lowValue =
-            healthSlider.lowValue =
-            defaultMoveSpeedSlider.lowValue =
+        defaultMoveSpeedSlider.lowValue =
             actionMoveSpeedReduceRateSlider.lowValue =
-            defaultMagickaSlider.lowValue =
             sizeSlider.lowValue =
                 0;
-        attackSpeedSlider.lowValue = 0.01f;
         sizeSlider.highValue = 5f;
-        healthSlider.highValue =
-            attackSpeedSlider.highValue =
-            defaultMoveSpeedSlider.highValue =
-            defaultMagickaSlider.highValue =
-                100;
+        defaultMoveSpeedSlider.highValue = 100;
         actionMoveSpeedReduceRateSlider.highValue = 10f;
 
         root.dataSource = stat;
-        healthProgress.SetBinding(
-            "value",
-            new DataBinding()
-            {
-                dataSourcePath = new Unity.Properties.PropertyPath(nameof(Stat.Health)),
-                bindingMode = BindingMode.ToTarget,
-            }
-        );
 
-        healthProgress.SetBinding(
-            "highValue",
-            new DataBinding()
-            {
-                dataSourcePath = new Unity.Properties.PropertyPath(nameof(Stat.DefaultHealth)),
-                bindingMode = BindingMode.ToTarget,
-            }
-        );
-
-        healthSlider.SetBinding(
-            "value",
-            new DataBinding()
-            {
-                dataSourcePath = new Unity.Properties.PropertyPath(nameof(Stat.Health)),
-                bindingMode = BindingMode.TwoWay,
-            }
-        );
-
-        healthSlider.SetBinding(
-            "highValue",
-            new DataBinding()
-            {
-                dataSourcePath = new Unity.Properties.PropertyPath(nameof(Stat.DefaultHealth)),
-                bindingMode = BindingMode.ToTarget,
-            }
-        );
-
-        healthLabel.dataSourcePath = new Unity.Properties.PropertyPath(nameof(Stat.Health));
-        var healthBinding = new DataBinding() { bindingMode = BindingMode.ToTarget };
-        healthBinding.sourceToUiConverters.AddConverter(
-            (ref float value) =>
-            {
-                return value + " 💖";
-            }
-        );
-        healthLabel.SetBinding("text", healthBinding);
-
-        defaultHealthFloatField.SetBinding(
-            "value",
-            new DataBinding()
-            {
-                dataSourcePath = new Unity.Properties.PropertyPath(nameof(Stat.DefaultHealth)),
-                bindingMode = BindingMode.TwoWay,
-            }
-        );
-
-        attackSpeedSlider.SetBinding(
+        attackSpeedFloatField.SetBinding(
             "value",
             new DataBinding()
             {
@@ -134,17 +86,68 @@ public class StatInspector : Editor
             }
         );
 
-        attackSpeedLabel.dataSourcePath = new Unity.Properties.PropertyPath(
-            nameof(Stat.AttackSpeed)
-        );
-        var attackSpeedBinding = new DataBinding() { bindingMode = BindingMode.ToTarget };
-        attackSpeedBinding.sourceToUiConverters.AddConverter(
-            (ref float value) =>
+        baseAttackSpeedFloatField.SetBinding(
+            "value",
+            new DataBinding()
             {
-                return value + " ⚔";
+                dataSourcePath = new Unity.Properties.PropertyPath(nameof(Stat.BaseAttackSpeed)),
+                bindingMode = BindingMode.TwoWay,
             }
         );
-        attackSpeedLabel.SetBinding("text", attackSpeedBinding);
+
+        currentHealthPointFloatField.SetBinding(
+            "value",
+            new DataBinding()
+            {
+                dataSourcePath = new Unity.Properties.PropertyPath(nameof(Stat.CurrentHealthPoint)),
+                bindingMode = BindingMode.TwoWay,
+            }
+        );
+
+        healthPointFloatField.SetBinding(
+            "value",
+            new DataBinding()
+            {
+                dataSourcePath = new Unity.Properties.PropertyPath(nameof(Stat.HealthPoint)),
+                bindingMode = BindingMode.TwoWay,
+            }
+        );
+
+        baseHealthPointFloatField.SetBinding(
+            "value",
+            new DataBinding()
+            {
+                dataSourcePath = new Unity.Properties.PropertyPath(nameof(Stat.BaseHealthPoint)),
+                bindingMode = BindingMode.TwoWay,
+            }
+        );
+
+        currentManaPointFloatField.SetBinding(
+            "value",
+            new DataBinding()
+            {
+                dataSourcePath = new Unity.Properties.PropertyPath(nameof(Stat.CurrentManaPoint)),
+                bindingMode = BindingMode.TwoWay,
+            }
+        );
+
+        manaPointFloatField.SetBinding(
+            "value",
+            new DataBinding()
+            {
+                dataSourcePath = new Unity.Properties.PropertyPath(nameof(Stat.ManaPoint)),
+                bindingMode = BindingMode.TwoWay,
+            }
+        );
+
+        baseManaPointFloatField.SetBinding(
+            "value",
+            new DataBinding()
+            {
+                dataSourcePath = new Unity.Properties.PropertyPath(nameof(Stat.BaseManaPoint)),
+                bindingMode = BindingMode.TwoWay,
+            }
+        );
 
         moveSpeedLabel.dataSourcePath = new Unity.Properties.PropertyPath(nameof(Stat.MoveSpeed));
         var moveSpeedBinding = new DataBinding() { bindingMode = BindingMode.ToTarget };
@@ -155,8 +158,6 @@ public class StatInspector : Editor
             }
         );
         moveSpeedLabel.SetBinding("text", moveSpeedBinding);
-
-        healthSlider.value = stat.Health;
 
         defaultMoveSpeedSlider.SetBinding(
             "value",
@@ -205,37 +206,6 @@ public class StatInspector : Editor
         );
         actionMoveSpeedReduceRateLabel.SetBinding("text", actionMoveSpeedReduceRateBinding);
 
-        magickaLabel.dataSourcePath = new Unity.Properties.PropertyPath(nameof(Stat.Magicka));
-        var magickaBinding = new DataBinding() { bindingMode = BindingMode.ToTarget };
-        magickaBinding.sourceToUiConverters.AddConverter(
-            (ref float value) =>
-            {
-                return "Magicka " + value + " 🪄";
-            }
-        );
-        magickaLabel.SetBinding("text", magickaBinding);
-
-        defaultMagickaSlider.SetBinding(
-            "value",
-            new DataBinding()
-            {
-                dataSourcePath = new Unity.Properties.PropertyPath(nameof(Stat.DefaultMagicka)),
-                bindingMode = BindingMode.TwoWay,
-            }
-        );
-
-        defaultMagickaLabel.dataSourcePath = new Unity.Properties.PropertyPath(
-            nameof(Stat.DefaultMagicka)
-        );
-        var defaultMagickaBinding = new DataBinding() { bindingMode = BindingMode.ToTarget };
-        defaultMagickaBinding.sourceToUiConverters.AddConverter(
-            (ref float value) =>
-            {
-                return value + " 🧙";
-            }
-        );
-        defaultMagickaLabel.SetBinding("text", defaultMagickaBinding);
-
         sizeSlider.SetBinding(
             "value",
             new DataBinding()
@@ -254,6 +224,72 @@ public class StatInspector : Editor
             }
         );
         sizeLabel.SetBinding("text", sizeBinding);
+
+        mightFloatField.SetBinding(
+            "value",
+            new DataBinding()
+            {
+                dataSourcePath = new Unity.Properties.PropertyPath(nameof(Stat.Might)),
+                bindingMode = BindingMode.TwoWay,
+            }
+        );
+
+        baseMightFloatField.SetBinding(
+            "value",
+            new DataBinding()
+            {
+                dataSourcePath = new Unity.Properties.PropertyPath(nameof(Stat.BaseMight)),
+                bindingMode = BindingMode.TwoWay,
+            }
+        );
+
+        reflexFloatField.SetBinding(
+            "value",
+            new DataBinding()
+            {
+                dataSourcePath = new Unity.Properties.PropertyPath(nameof(Stat.Reflex)),
+                bindingMode = BindingMode.TwoWay,
+            }
+        );
+
+        baseReflexFloatField.SetBinding(
+            "value",
+            new DataBinding()
+            {
+                dataSourcePath = new Unity.Properties.PropertyPath(nameof(Stat.BaseReflex)),
+                bindingMode = BindingMode.TwoWay,
+            }
+        );
+
+        wisdomFloatField.SetBinding(
+            "value",
+            new DataBinding()
+            {
+                dataSourcePath = new Unity.Properties.PropertyPath(nameof(Stat.Wisdom)),
+                bindingMode = BindingMode.TwoWay,
+            }
+        );
+
+        baseWisdomFloatField.SetBinding(
+            "value",
+            new DataBinding()
+            {
+                dataSourcePath = new Unity.Properties.PropertyPath(nameof(Stat.BaseWisdom)),
+                bindingMode = BindingMode.TwoWay,
+            }
+        );
+
+        Redraw();
+    }
+
+    void Redraw()
+    {
+        // baseMightFloatField.RegisterValueChangedCallback(
+        //     (b) =>
+        //     {
+        //         Repaint();
+        //     }
+        // );
     }
 
     public override VisualElement CreateInspectorGUI()

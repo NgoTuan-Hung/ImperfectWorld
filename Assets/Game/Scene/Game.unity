@@ -1389,10 +1389,10 @@ RectTransform:
   - {fileID: 38622209}
   m_Father: {fileID: 1874200017}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 380, y: -70}
+  m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &546532736
 MonoBehaviour:
@@ -1744,17 +1744,37 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9500879ad6b6755408f9c787c95fb42c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  health: 2000
-  defaultHealth: 2000
   attackSpeed: 6
+  baseAttackSpeed: 1
+  attackSpeedAdditionModifier: 0
+  attackSpeedMultiplicationModifier: 1
   moveSpeed: 2.7
   defaultMoveSpeed: 2.7
   actionMoveSpeedReduceRate: 0.9
   actionMoveSpeedReduced: 0
   moveSpeedPerFrame: 0.05399998
-  magicka: 0
-  defaultMagicka: 0
   size: 1
+  currentHealthPoint: 100
+  healthPoint: 50
+  baseHealthPoint: 50
+  healthPointAdditionModifier: 0
+  healthPointMultiplicationModifier: 1
+  might: 1
+  baseMight: 40
+  mightAdditionModifier: 0
+  mightMultiplicationModifier: 1
+  reflex: 1
+  baseReflex: 30
+  reflexAdditionModifier: 0
+  reflexMultiplicationModifier: 1
+  wisdom: 1
+  baseWisdom: 1
+  wisdomAdditionModifier: 0
+  wisdomMultiplicationModifier: 1
+  manaPoint: 0
+  baseManaPoint: 50
+  manaPointAdditionModifier: 0
+  manaPointMultiplicationModifier: 1
 --- !u!50 &581064779
 Rigidbody2D:
   serializedVersion: 5
@@ -2681,17 +2701,37 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9500879ad6b6755408f9c787c95fb42c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  health: 5000
-  defaultHealth: 5000
   attackSpeed: 1
-  moveSpeed: 3.4
-  defaultMoveSpeed: 3.4
+  baseAttackSpeed: 1
+  attackSpeedAdditionModifier: 0
+  attackSpeedMultiplicationModifier: 1
+  moveSpeed: 2
+  defaultMoveSpeed: 2
   actionMoveSpeedReduceRate: 0.9
   actionMoveSpeedReduced: 0
-  moveSpeedPerFrame: 0.067999974
-  magicka: 1
-  defaultMagicka: 1
+  moveSpeedPerFrame: 0.039999984
   size: 1
+  currentHealthPoint: 100
+  healthPoint: 50
+  baseHealthPoint: 50
+  healthPointAdditionModifier: 0
+  healthPointMultiplicationModifier: 1
+  might: 1
+  baseMight: 2
+  mightAdditionModifier: 0
+  mightMultiplicationModifier: 1
+  reflex: 1
+  baseReflex: 1
+  reflexAdditionModifier: 0
+  reflexMultiplicationModifier: 1
+  wisdom: 1
+  baseWisdom: 1
+  wisdomAdditionModifier: 0
+  wisdomMultiplicationModifier: 1
+  manaPoint: 0
+  baseManaPoint: 50
+  manaPointAdditionModifier: 0
+  manaPointMultiplicationModifier: 1
 --- !u!114 &889364766
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3287,10 +3327,10 @@ RectTransform:
   - {fileID: 1032758556}
   m_Father: {fileID: 1874200017}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 270, y: -70}
+  m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1012798519
 MonoBehaviour:
@@ -8383,10 +8423,10 @@ RectTransform:
   - {fileID: 1638319142}
   m_Father: {fileID: 1874200017}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 50, y: -70}
+  m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1122076159
 MonoBehaviour:
@@ -8850,17 +8890,37 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9500879ad6b6755408f9c787c95fb42c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  health: 2000
-  defaultHealth: 2000
   attackSpeed: 6
+  baseAttackSpeed: 1
+  attackSpeedAdditionModifier: 0
+  attackSpeedMultiplicationModifier: 1
   moveSpeed: 2.7
   defaultMoveSpeed: 2.7
   actionMoveSpeedReduceRate: 0.9
   actionMoveSpeedReduced: 0
   moveSpeedPerFrame: 0.05399998
-  magicka: 0
-  defaultMagicka: 0
   size: 1
+  currentHealthPoint: 100
+  healthPoint: 50
+  baseHealthPoint: 50
+  healthPointAdditionModifier: 0
+  healthPointMultiplicationModifier: 1
+  might: 1
+  baseMight: 40
+  mightAdditionModifier: 0
+  mightMultiplicationModifier: 1
+  reflex: 1
+  baseReflex: 100
+  reflexAdditionModifier: 0
+  reflexMultiplicationModifier: 1
+  wisdom: 1
+  baseWisdom: 1
+  wisdomAdditionModifier: 0
+  wisdomMultiplicationModifier: 1
+  manaPoint: 0
+  baseManaPoint: 50
+  manaPointAdditionModifier: 0
+  manaPointMultiplicationModifier: 1
 --- !u!82 &1254232936
 AudioSource:
   m_ObjectHideFlags: 0
@@ -10151,17 +10211,37 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9500879ad6b6755408f9c787c95fb42c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  health: 1000
-  defaultHealth: 1000
   attackSpeed: 1
+  baseAttackSpeed: 1
+  attackSpeedAdditionModifier: 0
+  attackSpeedMultiplicationModifier: 1
   moveSpeed: 2
   defaultMoveSpeed: 2
   actionMoveSpeedReduceRate: 0.1
   actionMoveSpeedReduced: 0
   moveSpeedPerFrame: 0.039999984
-  magicka: 1
-  defaultMagicka: 1
   size: 1
+  currentHealthPoint: 100
+  healthPoint: 50
+  baseHealthPoint: 50
+  healthPointAdditionModifier: 0
+  healthPointMultiplicationModifier: 1
+  might: 1
+  baseMight: 1
+  mightAdditionModifier: 0
+  mightMultiplicationModifier: 1
+  reflex: 1
+  baseReflex: 1
+  reflexAdditionModifier: 0
+  reflexMultiplicationModifier: 1
+  wisdom: 1
+  baseWisdom: 1
+  wisdomAdditionModifier: 0
+  wisdomMultiplicationModifier: 1
+  manaPoint: 0
+  baseManaPoint: 50
+  manaPointAdditionModifier: 0
+  manaPointMultiplicationModifier: 1
 --- !u!114 &1582844851
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11527,10 +11607,10 @@ RectTransform:
   - {fileID: 1415293675}
   m_Father: {fileID: 1874200017}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 160, y: -70}
+  m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1872287108
 MonoBehaviour:
@@ -81269,17 +81349,37 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9500879ad6b6755408f9c787c95fb42c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  health: 1000
-  defaultHealth: 1000
   attackSpeed: 1
+  baseAttackSpeed: 1
+  attackSpeedAdditionModifier: 0
+  attackSpeedMultiplicationModifier: 1
   moveSpeed: 2
   defaultMoveSpeed: 2
   actionMoveSpeedReduceRate: 0.9
   actionMoveSpeedReduced: 0
   moveSpeedPerFrame: 0.039999984
-  magicka: 1
-  defaultMagicka: 1
   size: 1
+  currentHealthPoint: 100
+  healthPoint: 50
+  baseHealthPoint: 50
+  healthPointAdditionModifier: 0
+  healthPointMultiplicationModifier: 1
+  might: 1
+  baseMight: 1
+  mightAdditionModifier: 0
+  mightMultiplicationModifier: 1
+  reflex: 1
+  baseReflex: 1
+  reflexAdditionModifier: 0
+  reflexMultiplicationModifier: 1
+  wisdom: 1
+  baseWisdom: 1
+  wisdomAdditionModifier: 0
+  wisdomMultiplicationModifier: 1
+  manaPoint: 0
+  baseManaPoint: 50
+  manaPointAdditionModifier: 0
+  manaPointMultiplicationModifier: 1
 --- !u!114 &2059840848
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -83723,17 +83823,37 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9500879ad6b6755408f9c787c95fb42c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  health: 5000
-  defaultHealth: 5000
   attackSpeed: 1
+  baseAttackSpeed: 1
+  attackSpeedAdditionModifier: 0
+  attackSpeedMultiplicationModifier: 1
   moveSpeed: 2.7
   defaultMoveSpeed: 2.7
   actionMoveSpeedReduceRate: 0.9
   actionMoveSpeedReduced: 0
   moveSpeedPerFrame: 0.05399998
-  magicka: 0
-  defaultMagicka: 0
   size: 1
+  currentHealthPoint: 100
+  healthPoint: 50
+  baseHealthPoint: 50
+  healthPointAdditionModifier: 0
+  healthPointMultiplicationModifier: 1
+  might: 1
+  baseMight: 1
+  mightAdditionModifier: 0
+  mightMultiplicationModifier: 1
+  reflex: 1
+  baseReflex: 1
+  reflexAdditionModifier: 0
+  reflexMultiplicationModifier: 1
+  wisdom: 1
+  baseWisdom: 1
+  wisdomAdditionModifier: 0
+  wisdomMultiplicationModifier: 1
+  manaPoint: 0
+  baseManaPoint: 50
+  manaPointAdditionModifier: 0
+  manaPointMultiplicationModifier: 1
 --- !u!95 &3086580546858740257
 Animator:
   serializedVersion: 7
@@ -83902,17 +84022,37 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9500879ad6b6755408f9c787c95fb42c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  health: 300
-  defaultHealth: 300
   attackSpeed: 5.9
+  baseAttackSpeed: 1
+  attackSpeedAdditionModifier: 0
+  attackSpeedMultiplicationModifier: 1
   moveSpeed: 2.7
   defaultMoveSpeed: 2.7
   actionMoveSpeedReduceRate: 0.9
   actionMoveSpeedReduced: 0
   moveSpeedPerFrame: 0.05399998
-  magicka: 0
-  defaultMagicka: 0
   size: 1
+  currentHealthPoint: 100
+  healthPoint: 50
+  baseHealthPoint: 50
+  healthPointAdditionModifier: 0
+  healthPointMultiplicationModifier: 1
+  might: 1
+  baseMight: 1
+  mightAdditionModifier: 0
+  mightMultiplicationModifier: 1
+  reflex: 1
+  baseReflex: 1
+  reflexAdditionModifier: 0
+  reflexMultiplicationModifier: 1
+  wisdom: 1
+  baseWisdom: 1
+  wisdomAdditionModifier: 0
+  wisdomMultiplicationModifier: 1
+  manaPoint: 0
+  baseManaPoint: 50
+  manaPointAdditionModifier: 0
+  manaPointMultiplicationModifier: 1
 --- !u!1001 &3784369558948340409
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -85236,17 +85376,37 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9500879ad6b6755408f9c787c95fb42c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  health: 5000
-  defaultHealth: 5000
   attackSpeed: 1
+  baseAttackSpeed: 1
+  attackSpeedAdditionModifier: 0
+  attackSpeedMultiplicationModifier: 1
   moveSpeed: 2.7
   defaultMoveSpeed: 2.7
   actionMoveSpeedReduceRate: 0.9
   actionMoveSpeedReduced: 0
   moveSpeedPerFrame: 0.05399998
-  magicka: 0
-  defaultMagicka: 0
   size: 1
+  currentHealthPoint: 100
+  healthPoint: 50
+  baseHealthPoint: 50
+  healthPointAdditionModifier: 0
+  healthPointMultiplicationModifier: 1
+  might: 1
+  baseMight: 1
+  mightAdditionModifier: 0
+  mightMultiplicationModifier: 1
+  reflex: 1
+  baseReflex: 1
+  reflexAdditionModifier: 0
+  reflexMultiplicationModifier: 1
+  wisdom: 1
+  baseWisdom: 1
+  wisdomAdditionModifier: 0
+  wisdomMultiplicationModifier: 1
+  manaPoint: 0
+  baseManaPoint: 50
+  manaPointAdditionModifier: 0
+  manaPointMultiplicationModifier: 1
 --- !u!212 &6010868429156375791
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -86108,17 +86268,37 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9500879ad6b6755408f9c787c95fb42c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  health: 200
-  defaultHealth: 200
   attackSpeed: 2
+  baseAttackSpeed: 1
+  attackSpeedAdditionModifier: 0
+  attackSpeedMultiplicationModifier: 1
   moveSpeed: 2.4
   defaultMoveSpeed: 2.4
   actionMoveSpeedReduceRate: 0.9
   actionMoveSpeedReduced: 0
   moveSpeedPerFrame: 0.04799998
-  magicka: 1
-  defaultMagicka: 1
   size: 1
+  currentHealthPoint: 100
+  healthPoint: 50
+  baseHealthPoint: 50
+  healthPointAdditionModifier: 0
+  healthPointMultiplicationModifier: 1
+  might: 1
+  baseMight: 1
+  mightAdditionModifier: 0
+  mightMultiplicationModifier: 1
+  reflex: 1
+  baseReflex: 1
+  reflexAdditionModifier: 0
+  reflexMultiplicationModifier: 1
+  wisdom: 1
+  baseWisdom: 1
+  wisdomAdditionModifier: 0
+  wisdomMultiplicationModifier: 1
+  manaPoint: 0
+  baseManaPoint: 50
+  manaPointAdditionModifier: 0
+  manaPointMultiplicationModifier: 1
 --- !u!114 &7285419098741409359
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -87495,17 +87675,37 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9500879ad6b6755408f9c787c95fb42c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  health: 5000
-  defaultHealth: 5000
   attackSpeed: 1
+  baseAttackSpeed: 1
+  attackSpeedAdditionModifier: 0
+  attackSpeedMultiplicationModifier: 1
   moveSpeed: 2.7
   defaultMoveSpeed: 2.7
   actionMoveSpeedReduceRate: 0.9
   actionMoveSpeedReduced: 0
   moveSpeedPerFrame: 0.05399998
-  magicka: 0
-  defaultMagicka: 0
   size: 1
+  currentHealthPoint: 100
+  healthPoint: 50
+  baseHealthPoint: 50
+  healthPointAdditionModifier: 0
+  healthPointMultiplicationModifier: 1
+  might: 1
+  baseMight: 1
+  mightAdditionModifier: 0
+  mightMultiplicationModifier: 1
+  reflex: 1
+  baseReflex: 1
+  reflexAdditionModifier: 0
+  reflexMultiplicationModifier: 1
+  wisdom: 1
+  baseWisdom: 1
+  wisdomAdditionModifier: 0
+  wisdomMultiplicationModifier: 1
+  manaPoint: 0
+  baseManaPoint: 50
+  manaPointAdditionModifier: 0
+  manaPointMultiplicationModifier: 1
 --- !u!114 &9221185469189333116
 MonoBehaviour:
   m_ObjectHideFlags: 0

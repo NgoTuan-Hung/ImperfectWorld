@@ -1,19 +1,22 @@
 <engine:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:engine="UnityEngine.UIElements" xmlns:editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="True">
     <Style src="project://database/Assets/Game/Graphics/UIToolkit/USS/StatInspector.uss?fileID=7433441132597879392&amp;guid=e01248bc8a377b84091ef06c7797646d&amp;type=3#StatInspector" />
     <engine:VisualElement style="flex-grow: 0; border-left-color: rgb(0, 0, 0); border-right-color: rgb(0, 0, 0); border-top-color: rgb(0, 0, 0); border-bottom-color: rgb(0, 0, 0); border-top-width: 2px; border-right-width: 2px; border-bottom-width: 2px; border-left-width: 2px; border-top-left-radius: 6px; border-top-right-radius: 6px; border-bottom-right-radius: 6px; border-bottom-left-radius: 6px; background-color: rgba(0, 0, 0, 0.25);">
-        <engine:ProgressBar value="0" title="♥" name="inspector__health-progress-bar" />
+        <engine:FloatField label="&lt;b&gt;&lt;color=#FF4C4C&gt;CURRENT HP 💖" value="42.2" name="inspector__current-health-point-float-field" />
         <engine:VisualElement style="flex-grow: 0; flex-direction: row;">
-            <engine:Slider label="Health" value="42.3" high-value="100" name="inspector__health-slider" style="width: 80%;" />
-            <engine:Label text="1 💖" name="inspector__health-label" style="flex-grow: 1; -unity-text-align: middle-center; width: 20%;" />
+            <engine:FloatField label="&lt;b&gt;&lt;color=#FF4C4C&gt;HP 💖" value="1" focusable="false" readonly="true" name="inspector__health-point-float-field" style="flex-grow: 0; flex-basis: 50%;" />
+            <engine:FloatField label="&lt;b&gt;&lt;color=#FF4C4C&gt;BASE HP 💖" value="1" name="inspector__base-health-point-float-field" style="flex-grow: 1; flex-basis: 50%;" />
         </engine:VisualElement>
+    </engine:VisualElement>
+    <engine:VisualElement style="flex-grow: 0;">
+        <engine:FloatField label="&lt;b&gt;&lt;color=#00BFFF&gt;CURRENT MP 💧" value="42.2" name="inspector__current-mana-point-float-field" />
         <engine:VisualElement style="flex-grow: 0; flex-direction: row;">
-            <engine:FloatField label="Default Health" value="42.2" name="inspector__default-health-float-field" />
-            <engine:Label text="❦" name="inspector__default-health-label" style="flex-grow: 1; -unity-text-align: middle-center; width: 20%;" />
+            <engine:FloatField label="&lt;b&gt;&lt;color=#00BFFF&gt;MP 💧" value="1" focusable="false" readonly="true" name="inspector__mana-point-float-field" style="flex-grow: 0; flex-basis: 50%;" />
+            <engine:FloatField label="&lt;b&gt;&lt;color=#00BFFF&gt;BASE MP 💧" value="1" name="inspector__base-mana-point-float-field" style="flex-grow: 1; flex-basis: 50%;" />
         </engine:VisualElement>
     </engine:VisualElement>
     <engine:VisualElement style="flex-grow: 0; flex-direction: row;">
-        <engine:Slider label="Attack Speed" value="42.3" high-value="100" name="inspector__attack-speed-slider" style="width: 80%;" />
-        <engine:Label text="1 ⚔" name="inspector__attack-speed-label" style="flex-grow: 1; -unity-text-align: middle-center; width: 20%;" />
+        <engine:FloatField label="&lt;b&gt;&lt;color=#FFD700&gt;ATTACK SPEED ⚡" value="1" focusable="false" readonly="true" name="inspector__attack-speed-float-field" style="flex-grow: 0; flex-basis: 50%;" />
+        <engine:FloatField label="&lt;b&gt;&lt;color=#FFD700&gt;BASE ATTACK SPEED ⚡" value="1" name="inspector__base-attack-speed-float-field" style="flex-grow: 1; flex-basis: 50%;" />
     </engine:VisualElement>
     <engine:VisualElement style="flex-grow: 0; flex-direction: row;">
         <engine:Slider label="Size" value="42.3" high-value="100" name="inspector__size-slider" style="width: 80%;" />
@@ -32,13 +35,18 @@
             <engine:Label text="1 👠" name="inspector__action-move-speed-reduce-rate-label" style="flex-grow: 1; -unity-text-align: middle-center; width: 20%;" />
         </engine:VisualElement>
     </engine:VisualElement>
-    <engine:VisualElement style="flex-grow: 0; border-left-color: rgb(183, 0, 255); border-right-color: rgb(183, 0, 255); border-top-color: rgb(183, 0, 255); border-bottom-color: rgb(183, 0, 255); border-top-width: 2px; border-right-width: 2px; border-bottom-width: 2px; border-left-width: 2px; background-color: rgba(0, 0, 0, 0); border-top-left-radius: 6px; border-top-right-radius: 6px; border-bottom-right-radius: 6px; border-bottom-left-radius: 6px; background-image: url(&quot;project://database/Assets/Game/Graphics/Texture/magicka.jpg?fileID=2800000&amp;guid=8536565addb1d6c4db863dc185df2b07&amp;type=3#magicka&quot;); -unity-background-image-tint-color: rgba(255, 255, 255, 0.5);">
-        <engine:VisualElement style="flex-grow: 0; flex-direction: row;">
-            <engine:Label text="Magicka 1 🪄" name="inspector__magicka-label" style="flex-grow: 1; -unity-text-align: middle-center; width: 20%;" />
+    <engine:VisualElement style="flex-grow: 0; border-left-color: rgb(183, 0, 255); border-right-color: rgb(183, 0, 255); border-top-color: rgb(183, 0, 255); border-bottom-color: rgb(183, 0, 255); border-top-width: 2px; border-right-width: 2px; border-bottom-width: 2px; border-left-width: 2px; background-color: rgba(0, 0, 0, 0); border-top-left-radius: 6px; border-top-right-radius: 6px; border-bottom-right-radius: 6px; border-bottom-left-radius: 6px; background-image: url(&quot;project://database/Assets/Game/Graphics/Texture/magicka.jpg?fileID=2800000&amp;guid=8536565addb1d6c4db863dc185df2b07&amp;type=3#magicka&quot;); -unity-background-image-tint-color: rgba(255, 255, 255, 0.5); flex-direction: column;">
+        <engine:VisualElement style="flex-grow: 1; flex-direction: row;">
+            <engine:FloatField label="&lt;b&gt;&lt;color=#FF6F00&gt;MIGHT 💪" value="1" focusable="false" readonly="true" name="inspector__might-float-field" style="flex-grow: 0; flex-basis: 50%;" />
+            <engine:FloatField label="&lt;b&gt;&lt;color=#FF6F00&gt;BASE MIGHT 💪" value="1" name="inspector__base-might-float-field" style="flex-grow: 1; flex-basis: 50%;" />
         </engine:VisualElement>
-        <engine:VisualElement style="flex-grow: 0; flex-direction: row;">
-            <engine:Slider label="Default Magicka" value="42.3" high-value="100" name="inspector__default-magicka-slider" style="width: 80%;" />
-            <engine:Label text="1 🧙" name="inspector__default-magicka-label" style="flex-grow: 1; -unity-text-align: middle-center; width: 20%;" />
+        <engine:VisualElement style="flex-grow: 1; flex-direction: row;">
+            <engine:FloatField label="&lt;b&gt;&lt;color=#00BCD4&gt;REFLEX 🌀" value="1" focusable="false" readonly="true" name="inspector__reflex-float-field" style="flex-grow: 0; flex-basis: 50%;" />
+            <engine:FloatField label="&lt;b&gt;&lt;color=#00BCD4&gt;BASE REFLEX 🌀" value="1" name="inspector__base-reflex-float-field" style="flex-grow: 1; flex-basis: 50%;" />
+        </engine:VisualElement>
+        <engine:VisualElement style="flex-grow: 1; flex-direction: row;">
+            <engine:FloatField label="&lt;b&gt;&lt;color=#E040FB&gt;WISDOM 📜" value="1" focusable="false" readonly="true" name="inspector__wisdom-float-field" style="flex-grow: 0; flex-basis: 50%;" />
+            <engine:FloatField label="&lt;b&gt;&lt;color=#E040FB&gt;BASE WISDOM 📜" value="1" name="inspector__base-wisdom-float-field" style="flex-grow: 1; flex-basis: 50%;" />
         </engine:VisualElement>
     </engine:VisualElement>
 </engine:UXML>

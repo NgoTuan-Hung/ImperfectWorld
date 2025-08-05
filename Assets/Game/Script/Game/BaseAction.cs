@@ -73,7 +73,7 @@ public class BaseAction : MonoEditor
     {
         base.Start();
         /* Stop action when we die */
-        customMono.stat.healthReachZeroEvent.action += () => StopAndDisable();
+        customMono.stat.currentHealthPointReachZeroEvent.action += () => StopAndDisable();
     }
 
     public virtual void ToggleAnim(int boolHash, bool value)

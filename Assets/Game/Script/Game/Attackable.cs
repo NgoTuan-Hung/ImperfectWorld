@@ -16,7 +16,7 @@ public class Attackable : SkillBase
         if (customMono.attackType == AttackType.Melee)
         {
             Attack = MeleeAttack;
-            damage = defaultDamage = 15f;
+            damage = defaultDamage = 5f;
             botActionManuals.Add(
                 new BotActionManual(
                     ActionUse.MeleeDamage,
@@ -32,7 +32,7 @@ public class Attackable : SkillBase
         else
         {
             Attack = RangedAttack;
-            damage = defaultDamage = 10f;
+            damage = defaultDamage = 2.5f;
             botActionManuals.Add(
                 new BotActionManual(
                     ActionUse.RangedDamage,
@@ -107,6 +107,8 @@ public class Attackable : SkillBase
                 0.5f / customMono.stat.AttackSpeed;
             botActionManuals[2].doActionParamInfo.nextActionChoosingIntervalProposal =
                 0.5f / customMono.stat.AttackSpeed;
+
+            botActionManuals[0].actionChanceAjuster = (int)((customMono.stat.AttackSpeed - 1) * 60);
         };
     }
 

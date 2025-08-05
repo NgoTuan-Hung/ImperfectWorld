@@ -29,11 +29,6 @@ public class WoodCry : SkillBase
     public override void StatChangeRegister()
     {
         base.StatChangeRegister();
-        customMono.stat.magickaChangeEvent.action += () =>
-        {
-            // magicka 0 -> 100
-            damage = defaultDamage + customMono.stat.Magicka * 0.1f;
-        };
     }
 
     public override void AddActionManuals()

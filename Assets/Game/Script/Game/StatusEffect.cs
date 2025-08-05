@@ -66,7 +66,7 @@ public class StatusEffect : CustomMonoPal
 
     public void GetHit(float p_damage)
     {
-        customMono.stat.Health -= p_damage;
+        customMono.stat.CurrentHealthPoint -= p_damage;
         if (damageInEffect)
             currentDamageTime = 0;
         else
@@ -187,7 +187,7 @@ public class StatusEffect : CustomMonoPal
 
     public void Heal(float p_ammount)
     {
-        customMono.stat.Health += p_ammount;
+        customMono.stat.CurrentHealthPoint += p_ammount;
         healIndicator.Play();
     }
 

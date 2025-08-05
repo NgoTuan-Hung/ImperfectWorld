@@ -1,8 +1,6 @@
 using System;
 using System.Collections;
-using System.Collections.Generic;
 using System.Runtime.CompilerServices;
-using Unity.Properties;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -12,189 +10,9 @@ using UnityEngine.UIElements;
 /// convinience sake.
 /// DON'T REMOVE SERIALIZEFIELD, THEY ARE MEAN TO BE PERSISTED.
 /// </summary>
-public class Stat : MonoEditor, INotifyBindablePropertyChanged
+public partial class Stat : MonoEditor, INotifyBindablePropertyChanged
 {
-    CustomMono customMono;
-
-    [SerializeField]
-    float health = 100f;
-
-    [SerializeField]
-    float defaultHealth = 100f;
-    private PoolObject healthBar;
-
-    [SerializeField]
-    float attackSpeed = 1;
-
-    [SerializeField]
-    float moveSpeed = 1f;
-
-    [SerializeField]
-    private float defaultMoveSpeed;
-
-    [SerializeField]
-    float actionMoveSpeedReduceRate = 0.9f;
-    public float actionMoveSpeedReduced;
-    public float moveSpeedPerFrame;
-
-    [SerializeField]
-    float magicka = 1f;
-
-    [SerializeField]
-    float defaultMagicka = 1f;
-
-    [SerializeField]
-    float size = 1f;
-    float dissolveTime = 5f;
-    int dieBoolHash = Animator.StringToHash("Die");
     public event EventHandler<BindablePropertyChangedEventArgs> propertyChanged;
-    Action onEnable = () => { };
-
-    [CreateProperty]
-    public float AttackSpeed
-    {
-        get => attackSpeed;
-        set
-        {
-            if (value == attackSpeed)
-                return;
-
-            attackSpeed = value;
-            Notify();
-        }
-    }
-    public ActionWrapper attackSpeedChangeEvent = new();
-
-    [CreateProperty]
-    public float Health
-    {
-        get => health;
-        set
-        {
-            if (value == health)
-                return;
-
-            if (value > defaultHealth)
-                health = defaultHealth;
-            else
-                health = value;
-            Notify();
-            if (health <= 0)
-                healthReachZeroEvent.action();
-        }
-    }
-    public ActionWrapper healthChangeEvent = new();
-    public ActionWrapper healthReachZeroEvent = new();
-
-    [CreateProperty]
-    public float DefaultHealth
-    {
-        get => defaultHealth;
-        set
-        {
-            if (value == defaultHealth)
-                return;
-
-            defaultHealth = value;
-            Health = defaultHealth;
-            Notify();
-        }
-    }
-    public ActionWrapper defaultHealthChangeEvent = new();
-
-    [CreateProperty]
-    public float MoveSpeed
-    {
-        get => moveSpeed;
-        set
-        {
-            if (value == moveSpeed)
-                return;
-
-            moveSpeed = value;
-            moveSpeedPerFrame = moveSpeed * Time.fixedDeltaTime;
-            Notify();
-        }
-    }
-    public ActionWrapper moveSpeedChangeEvent = new();
-
-    [CreateProperty]
-    public float DefaultMoveSpeed
-    {
-        get => defaultMoveSpeed;
-        set
-        {
-            if (value == defaultMoveSpeed)
-                return;
-
-            defaultMoveSpeed = value;
-            MoveSpeed = defaultMoveSpeed;
-            Notify();
-        }
-    }
-    public ActionWrapper defaultMoveSpeedChangeEvent = new();
-
-    [CreateProperty]
-    public float ActionMoveSpeedReduceRate
-    {
-        get => actionMoveSpeedReduceRate;
-        set
-        {
-            if (value == actionMoveSpeedReduceRate)
-                return;
-
-            actionMoveSpeedReduceRate = value;
-            Notify();
-        }
-    }
-    public ActionWrapper actionMoveSpeedReduceRateChangeEvent = new();
-
-    [CreateProperty]
-    public float Magicka
-    {
-        get => magicka;
-        set
-        {
-            if (value == magicka)
-                return;
-
-            magicka = value;
-            Notify();
-        }
-    }
-    public ActionWrapper magickaChangeEvent = new();
-
-    [CreateProperty]
-    public float DefaultMagicka
-    {
-        get => defaultMagicka;
-        set
-        {
-            if (value == defaultMagicka)
-                return;
-
-            defaultMagicka = value;
-            Magicka = defaultMagicka;
-            Notify();
-        }
-    }
-    public ActionWrapper defaultMagickaChangeEvent = new();
-
-    [CreateProperty]
-    public float Size
-    {
-        get => size;
-        set
-        {
-            if (value == size)
-                return;
-
-            size = value;
-            Notify();
-        }
-    }
-    public ActionWrapper sizeChangeEvent = new();
-    public Dictionary<string, ActionWrapper> propertyChangeEventDictionary = new();
 
     private void Awake()
     {
@@ -220,14 +38,11 @@ public class Stat : MonoEditor, INotifyBindablePropertyChanged
     {
         InitUI();
         StartCoroutine(LateStart());
-        Health = DefaultHealth;
-        MoveSpeed = DefaultMoveSpeed;
         onEnable += () =>
         {
             InitUI();
             StartCoroutine(LateStart());
-            Health = DefaultHealth;
-            MoveSpeed = DefaultMoveSpeed;
+            ResetStat();
         };
     }
 
@@ -235,6 +50,14 @@ public class Stat : MonoEditor, INotifyBindablePropertyChanged
     {
         yield return null;
         InitProperty();
+        ResetStat();
+    }
+
+    void ResetStat()
+    {
+        CurrentHealthPoint = HealthPoint;
+        CurrentManaPoint = ManaPoint;
+        MoveSpeed = DefaultMoveSpeed;
     }
 
     void InitUI()
@@ -245,26 +68,33 @@ public class Stat : MonoEditor, INotifyBindablePropertyChanged
     public void InitProperty()
     {
         Notify("AttackSpeed");
-        Notify("Health");
-        Notify("DefaultHealth");
+        Notify("BaseAttackSpeed");
+        Notify("CurrentHealthPoint");
+        Notify("HealthPoint");
+        Notify("CurrentManaPoint");
+        Notify("ManaPoint");
+        Notify("Might");
+        Notify("BaseMight");
+        Notify("Reflex");
+        Notify("BaseReflex");
+        Notify("Wisdom");
+        Notify("BaseWisdom");
         Notify("MoveSpeed");
         Notify("DefaultMoveSpeed");
         Notify("ActionMoveSpeedReduceRate");
-        Notify("Magicka");
-        Notify("DefaultMagicka");
         Notify("Size");
     }
 
     void AddPropertyChangeEvent()
     {
-        healthChangeEvent.action += () =>
+        currentHealthPointChangeEvent.action += () =>
         {
-            healthBar.healthUIRevamp.SetHealth(health / defaultHealth);
+            healthBar.healthUIRevamp.SetHealth(CurrentHealthPoint / HealthPoint);
         };
 
         actionMoveSpeedReduceRateChangeEvent.action += () =>
             actionMoveSpeedReduced = defaultMoveSpeed * actionMoveSpeedReduceRate;
-        healthReachZeroEvent.action += () =>
+        currentHealthPointReachZeroEvent.action += () =>
         {
             customMono.AnimatorWrapper.SetBool(dieBoolHash, true);
             customMono.combatCollision.SetActive(false);
@@ -273,25 +103,151 @@ public class Stat : MonoEditor, INotifyBindablePropertyChanged
             StartCoroutine(DissolveCoroutine());
         };
 
+        baseAttackSpeedChangeEvent.action += DefaultAttackSpeedChange;
+        attackSpeedAdditionModifierChangeEvent.action += DefaultAttackSpeedChange;
+        attackSpeedMultiplicationModifierChangeEvent.action += DefaultAttackSpeedChange;
+        baseHealthPointChangeEvent.action += DefaultHealthPointChange;
+        healthPointAdditionModifierChangeEvent.action += DefaultHealthPointChange;
+        healthPointMultiplicationModifierChangeEvent.action += DefaultHealthPointChange;
+        baseManaPointChangeEvent.action += DefaultManaPointChange;
+        manaPointAdditionModifierChangeEvent.action += DefaultManaPointChange;
+        manaPointMultiplicationModifierChangeEvent.action += DefaultManaPointChange;
+        baseMightChangeEvent.action += DefaultMightChange;
+        mightAdditionModifierChangeEvent.action += DefaultMightChange;
+        mightMultiplicationModifierChangeEvent.action += DefaultMightChange;
+        baseReflexChangeEvent.action += DefaultReflexChange;
+        reflexAdditionModifierChangeEvent.action += DefaultReflexChange;
+        reflexMultiplicationModifierChangeEvent.action += DefaultReflexChange;
+        baseWisdomChangeEvent.action += DefaultWisdomChange;
+        wisdomAdditionModifierChangeEvent.action += DefaultWisdomChange;
+        wisdomMultiplicationModifierChangeEvent.action += DefaultWisdomChange;
+
+        mightChangeEvent.action += DefaultHealthPointChange;
+        reflexChangeEvent.action += DefaultAttackSpeedChange;
+        wisdomChangeEvent.action += DefaultManaPointChange;
+
         propertyChangeEventDictionary.Add("AttackSpeed", attackSpeedChangeEvent);
-        propertyChangeEventDictionary.Add("Health", healthChangeEvent);
-        propertyChangeEventDictionary.Add("DefaultHealth", defaultHealthChangeEvent);
+        propertyChangeEventDictionary.Add("BaseAttackSpeed", baseAttackSpeedChangeEvent);
+        propertyChangeEventDictionary.Add(
+            "AttackSpeedAdditionModifier",
+            attackSpeedAdditionModifierChangeEvent
+        );
+        propertyChangeEventDictionary.Add(
+            "AttackSpeedMultiplicationModifier",
+            attackSpeedMultiplicationModifierChangeEvent
+        );
+
+        propertyChangeEventDictionary.Add("CurrentHealthPoint", currentHealthPointChangeEvent);
+        propertyChangeEventDictionary.Add("HealthPoint", healthPointChangeEvent);
+        propertyChangeEventDictionary.Add("BaseHealthPoint", baseHealthPointChangeEvent);
+        propertyChangeEventDictionary.Add(
+            "HealthPointAdditionModifier",
+            healthPointAdditionModifierChangeEvent
+        );
+        propertyChangeEventDictionary.Add(
+            "HealthPointMultiplicationModifier",
+            healthPointMultiplicationModifierChangeEvent
+        );
+
+        propertyChangeEventDictionary.Add("CurrentManaPoint", currentManaPointChangeEvent);
+        propertyChangeEventDictionary.Add("ManaPoint", manaPointChangeEvent);
+        propertyChangeEventDictionary.Add("BaseManaPoint", baseManaPointChangeEvent);
+        propertyChangeEventDictionary.Add(
+            "ManaPointAdditionModifier",
+            manaPointAdditionModifierChangeEvent
+        );
+        propertyChangeEventDictionary.Add(
+            "ManaPointMultiplicationModifier",
+            manaPointMultiplicationModifierChangeEvent
+        );
+
+        propertyChangeEventDictionary.Add("Might", mightChangeEvent);
+        propertyChangeEventDictionary.Add("BaseMight", baseMightChangeEvent);
+        propertyChangeEventDictionary.Add(
+            "MightAdditionModifier",
+            mightAdditionModifierChangeEvent
+        );
+        propertyChangeEventDictionary.Add(
+            "MightMultiplicationModifier",
+            mightMultiplicationModifierChangeEvent
+        );
+        propertyChangeEventDictionary.Add("Reflex", reflexChangeEvent);
+        propertyChangeEventDictionary.Add("BaseReflex", baseReflexChangeEvent);
+        propertyChangeEventDictionary.Add(
+            "ReflexAdditionModifier",
+            reflexAdditionModifierChangeEvent
+        );
+        propertyChangeEventDictionary.Add(
+            "ReflexMultiplicationModifier",
+            reflexMultiplicationModifierChangeEvent
+        );
+        propertyChangeEventDictionary.Add("Wisdom", wisdomChangeEvent);
+        propertyChangeEventDictionary.Add("BaseWisdom", baseWisdomChangeEvent);
+        propertyChangeEventDictionary.Add(
+            "WisdomAdditionModifier",
+            wisdomAdditionModifierChangeEvent
+        );
+        propertyChangeEventDictionary.Add(
+            "WisdomMultiplicationModifier",
+            wisdomMultiplicationModifierChangeEvent
+        );
+
         propertyChangeEventDictionary.Add("MoveSpeed", moveSpeedChangeEvent);
         propertyChangeEventDictionary.Add("DefaultMoveSpeed", defaultMoveSpeedChangeEvent);
         propertyChangeEventDictionary.Add(
             "ActionMoveSpeedReduceRate",
             actionMoveSpeedReduceRateChangeEvent
         );
-        propertyChangeEventDictionary.Add("Magicka", magickaChangeEvent);
-        propertyChangeEventDictionary.Add("DefaultMagicka", defaultMagickaChangeEvent);
         propertyChangeEventDictionary.Add("Size", sizeChangeEvent);
+        propertyChangeEventDictionary.Add("ManaRegen", manaRegenChangeEvent);
+    }
+
+    void DefaultAttackSpeedChange()
+    {
+        AttackSpeed =
+            (BaseAttackSpeed + AttackSpeedAdditionModifier + 0.1f * Reflex)
+            * AttackSpeedMultiplicationModifier;
+    }
+
+    void DefaultHealthPointChange()
+    {
+        HealthPoint =
+            (BaseHealthPoint + HealthPointAdditionModifier + 19 * Might)
+            * HealthPointMultiplicationModifier;
+    }
+
+    void DefaultManaPointChange()
+    {
+        ManaPoint =
+            (BaseManaPoint + ManaPointAdditionModifier + 13 * Wisdom)
+            * ManaPointMultiplicationModifier;
+    }
+
+    void DefaultMightChange()
+    {
+        Might = (BaseMight + MightAdditionModifier) * MightMultiplicationModifier;
+    }
+
+    void DefaultReflexChange()
+    {
+        Reflex = (BaseReflex + ReflexAdditionModifier) * ReflexMultiplicationModifier;
+    }
+
+    void DefaultWisdomChange()
+    {
+        Wisdom = (BaseWisdom + WisdomAdditionModifier) * WisdomMultiplicationModifier;
+    }
+
+    void RecalculateManaRegen()
+    {
+        ManaRegen = (BaseManaRegen + ManaRegenAdditionModifier) * ManaRegenMultiplicationModifier;
     }
 
     void Notify([CallerMemberName] string property = "")
     {
         propertyChanged?.Invoke(this, new BindablePropertyChangedEventArgs(property));
-        if (propertyChangeEventDictionary.ContainsKey(property))
-            propertyChangeEventDictionary[property].action();
+        if (propertyChangeEventDictionary.TryGetValue(property, out notifyAW))
+            notifyAW.action();
     }
 
     public void SetDefaultMoveSpeed() => MoveSpeed = DefaultMoveSpeed;
@@ -310,5 +266,12 @@ public class Stat : MonoEditor, INotifyBindablePropertyChanged
             .sprite;
         dieDissolveEffect.animateObjects[0].spriteRenderer.transform.position = transform.position;
         customMono.deactivate();
+    }
+
+    private void OnValidate()
+    {
+        BaseManaPoint = 100f;
+        ManaPointAdditionModifier = 0;
+        ManaPointMultiplicationModifier = 1;
     }
 }
