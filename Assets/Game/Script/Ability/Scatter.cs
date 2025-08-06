@@ -91,7 +91,7 @@ public class Scatter : SkillBase
 
     public override ActionResult StartAndWait()
     {
-        if (customMono.stat.CurrentManaPoint < manaCost)
+        if (customMono.stat.currentManaPoint.Value < manaCost)
             return failResult;
         else if (canUse && !customMono.actionBlocking)
         {
@@ -102,7 +102,7 @@ public class Scatter : SkillBase
             actionWaitInfo.stillWaiting = true;
             StartCoroutine(actionIE = WaitingCoroutine());
             customMono.currentAction = this;
-            customMono.stat.CurrentManaPoint -= manaCost;
+            customMono.stat.currentManaPoint.Value -= manaCost;
 
             return successResult;
         }

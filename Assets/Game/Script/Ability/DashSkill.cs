@@ -79,7 +79,7 @@ public class DashSkill : SkillBase
 
     public override ActionResult Trigger(Vector2 location = default, Vector2 direction = default)
     {
-        if (customMono.stat.CurrentManaPoint < manaCost)
+        if (customMono.stat.currentManaPoint.Value < manaCost)
             return failResult;
         else if (canUse && !customMono.movementActionBlocking)
         {
@@ -88,7 +88,7 @@ public class DashSkill : SkillBase
             StartCoroutine(actionIE = Dashing(direction));
             StartCoroutine(CooldownCoroutine());
             customMono.currentAction = this;
-            customMono.stat.CurrentManaPoint -= manaCost;
+            customMono.stat.currentManaPoint.Value -= manaCost;
             return successResult;
         }
 

@@ -100,7 +100,7 @@ public partial class GameManager : MonoSingleton<GameManager>
 
             spawnObjectPools[i].handleCachedComponentRefs += (p_poolObject) =>
             {
-                p_poolObject.customMono.stat.currentHealthPointReachZeroEvent.action += () =>
+                p_poolObject.customMono.stat.currentHealthPointReachZeroEvent += () =>
                     t_spawnEnemyInfo.currentSpawn--;
             };
         }

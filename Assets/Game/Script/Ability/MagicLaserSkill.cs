@@ -50,7 +50,7 @@ public class MagicLaserSkill : SkillBase
 
     public override ActionResult Trigger(Vector2 location = default, Vector2 direction = default)
     {
-        if (customMono.stat.CurrentManaPoint < manaCost)
+        if (customMono.stat.currentManaPoint.Value < manaCost)
             return failResult;
         else if (canUse && !customMono.actionBlocking)
         {
@@ -60,7 +60,7 @@ public class MagicLaserSkill : SkillBase
             StartCoroutine(actionIE = TriggerCoroutine(location, direction));
             StartCoroutine(CooldownCoroutine());
             customMono.currentAction = this;
-            customMono.stat.CurrentManaPoint -= manaCost;
+            customMono.stat.currentManaPoint.Value -= manaCost;
             return successResult;
         }
 

@@ -94,21 +94,23 @@ public class Attackable : SkillBase
         base.StatChangeRegister();
         /* Attack speed change => animator_state_speed *= attack_speed
                                => attack_cooldown /= attack_speed */
-        customMono.stat.attackSpeedChangeEvent.action += () =>
+        customMono.stat.attackSpeed.finalValueChangeEvent += () =>
         {
             customMono.AnimatorWrapper.animator.SetFloat(
                 "AttackAnimSpeed",
-                defaultStateSpeed * customMono.stat.AttackSpeed
+                defaultStateSpeed * customMono.stat.attackSpeed.FinalValue
             );
-            cooldown = defaultCooldown / customMono.stat.AttackSpeed;
+            cooldown = defaultCooldown / customMono.stat.attackSpeed.FinalValue;
             botActionManuals[0].doActionParamInfo.nextActionChoosingIntervalProposal =
-                0.5f / customMono.stat.AttackSpeed;
+                0.5f / customMono.stat.attackSpeed.FinalValue;
             botActionManuals[1].doActionParamInfo.nextActionChoosingIntervalProposal =
-                0.5f / customMono.stat.AttackSpeed;
+                0.5f / customMono.stat.attackSpeed.FinalValue;
             botActionManuals[2].doActionParamInfo.nextActionChoosingIntervalProposal =
-                0.5f / customMono.stat.AttackSpeed;
+                0.5f / customMono.stat.attackSpeed.FinalValue;
 
-            botActionManuals[0].actionChanceAjuster = (int)((customMono.stat.AttackSpeed - 1) * 60);
+            botActionManuals[0].actionChanceAjuster = (int)(
+                (customMono.stat.attackSpeed.FinalValue - 1) * 60
+            );
         };
     }
 

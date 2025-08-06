@@ -170,7 +170,7 @@ public class BladeOfMinhKhai : SkillBase
 
     public override void LifeSteal(float damageDealt)
     {
-        customMono.stat.CurrentHealthPoint += damageDealt * lifeStealPercent;
+        customMono.stat.currentHealthPoint.Value += damageDealt * lifeStealPercent;
     }
 
     public override void ActionInterrupt()

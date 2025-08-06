@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -42,7 +43,6 @@ public partial class Stat : MonoEditor, INotifyBindablePropertyChanged
         {
             InitUI();
             StartCoroutine(LateStart());
-            ResetStat();
         };
     }
 
@@ -51,12 +51,13 @@ public partial class Stat : MonoEditor, INotifyBindablePropertyChanged
         yield return null;
         InitProperty();
         ResetStat();
+        StartRegen();
     }
 
     void ResetStat()
     {
-        CurrentHealthPoint = HealthPoint;
-        CurrentManaPoint = ManaPoint;
+        currentHealthPoint.Value = healthPoint.FinalValue;
+        currentManaPoint.Value = manaPoint.FinalValue;
         MoveSpeed = DefaultMoveSpeed;
     }
 
@@ -67,18 +68,10 @@ public partial class Stat : MonoEditor, INotifyBindablePropertyChanged
 
     public void InitProperty()
     {
-        Notify("AttackSpeed");
-        Notify("BaseAttackSpeed");
-        Notify("CurrentHealthPoint");
-        Notify("HealthPoint");
-        Notify("CurrentManaPoint");
-        Notify("ManaPoint");
-        Notify("Might");
-        Notify("BaseMight");
-        Notify("Reflex");
-        Notify("BaseReflex");
-        Notify("Wisdom");
-        Notify("BaseWisdom");
+        might.RecalculateFinalValue();
+        reflex.RecalculateFinalValue();
+        wisdom.RecalculateFinalValue();
+
         Notify("MoveSpeed");
         Notify("DefaultMoveSpeed");
         Notify("ActionMoveSpeedReduceRate");
@@ -87,110 +80,42 @@ public partial class Stat : MonoEditor, INotifyBindablePropertyChanged
 
     void AddPropertyChangeEvent()
     {
-        currentHealthPointChangeEvent.action += () =>
-        {
-            healthBar.healthUIRevamp.SetHealth(CurrentHealthPoint / HealthPoint);
-        };
+        currentHealthPoint.valueChangeEvent += SetCurrentHPOnUI;
+        currentHealthPoint.valueChangeEvent += CheckCurrentHPBelowZero;
+        healthPoint.finalValueChangeEvent += ChangeCurrentHPCap;
+        manaPoint.finalValueChangeEvent += ChangeCurrentMPCap;
 
         actionMoveSpeedReduceRateChangeEvent.action += () =>
             actionMoveSpeedReduced = defaultMoveSpeed * actionMoveSpeedReduceRate;
-        currentHealthPointReachZeroEvent.action += () =>
+        currentHealthPointReachZeroEvent += HealthReachZeroHandler;
+
+        might.referenceModifiers = new List<FloatStatModifier>()
         {
-            customMono.AnimatorWrapper.SetBool(dieBoolHash, true);
-            customMono.combatCollision.SetActive(false);
-            healthBar.worldSpaceUI.deactivate();
-            healthBar = null;
-            StartCoroutine(DissolveCoroutine());
+            new(0, FloatStatModifierType.Additive),
+            new(0, FloatStatModifierType.Additive),
         };
+        healthRegen.modifiers.Add(might.referenceModifiers[0]);
+        healthPoint.modifiers.Add(might.referenceModifiers[1]);
+        might.finalValueChangeEvent += MightChangeHealthPoint;
+        might.finalValueChangeEvent += MightChangeHealthRegen;
 
-        baseAttackSpeedChangeEvent.action += DefaultAttackSpeedChange;
-        attackSpeedAdditionModifierChangeEvent.action += DefaultAttackSpeedChange;
-        attackSpeedMultiplicationModifierChangeEvent.action += DefaultAttackSpeedChange;
-        baseHealthPointChangeEvent.action += DefaultHealthPointChange;
-        healthPointAdditionModifierChangeEvent.action += DefaultHealthPointChange;
-        healthPointMultiplicationModifierChangeEvent.action += DefaultHealthPointChange;
-        baseManaPointChangeEvent.action += DefaultManaPointChange;
-        manaPointAdditionModifierChangeEvent.action += DefaultManaPointChange;
-        manaPointMultiplicationModifierChangeEvent.action += DefaultManaPointChange;
-        baseMightChangeEvent.action += DefaultMightChange;
-        mightAdditionModifierChangeEvent.action += DefaultMightChange;
-        mightMultiplicationModifierChangeEvent.action += DefaultMightChange;
-        baseReflexChangeEvent.action += DefaultReflexChange;
-        reflexAdditionModifierChangeEvent.action += DefaultReflexChange;
-        reflexMultiplicationModifierChangeEvent.action += DefaultReflexChange;
-        baseWisdomChangeEvent.action += DefaultWisdomChange;
-        wisdomAdditionModifierChangeEvent.action += DefaultWisdomChange;
-        wisdomMultiplicationModifierChangeEvent.action += DefaultWisdomChange;
+        reflex.referenceModifiers = new List<FloatStatModifier>()
+        {
+            new(0, FloatStatModifierType.Additive),
+            new(0, FloatStatModifierType.Additive),
+        };
+        attackSpeed.modifiers.Add(might.referenceModifiers[0]);
+        reflex.finalValueChangeEvent += ReflexChangeAttackSpeed;
 
-        mightChangeEvent.action += DefaultHealthPointChange;
-        reflexChangeEvent.action += DefaultAttackSpeedChange;
-        wisdomChangeEvent.action += DefaultManaPointChange;
-
-        propertyChangeEventDictionary.Add("AttackSpeed", attackSpeedChangeEvent);
-        propertyChangeEventDictionary.Add("BaseAttackSpeed", baseAttackSpeedChangeEvent);
-        propertyChangeEventDictionary.Add(
-            "AttackSpeedAdditionModifier",
-            attackSpeedAdditionModifierChangeEvent
-        );
-        propertyChangeEventDictionary.Add(
-            "AttackSpeedMultiplicationModifier",
-            attackSpeedMultiplicationModifierChangeEvent
-        );
-
-        propertyChangeEventDictionary.Add("CurrentHealthPoint", currentHealthPointChangeEvent);
-        propertyChangeEventDictionary.Add("HealthPoint", healthPointChangeEvent);
-        propertyChangeEventDictionary.Add("BaseHealthPoint", baseHealthPointChangeEvent);
-        propertyChangeEventDictionary.Add(
-            "HealthPointAdditionModifier",
-            healthPointAdditionModifierChangeEvent
-        );
-        propertyChangeEventDictionary.Add(
-            "HealthPointMultiplicationModifier",
-            healthPointMultiplicationModifierChangeEvent
-        );
-
-        propertyChangeEventDictionary.Add("CurrentManaPoint", currentManaPointChangeEvent);
-        propertyChangeEventDictionary.Add("ManaPoint", manaPointChangeEvent);
-        propertyChangeEventDictionary.Add("BaseManaPoint", baseManaPointChangeEvent);
-        propertyChangeEventDictionary.Add(
-            "ManaPointAdditionModifier",
-            manaPointAdditionModifierChangeEvent
-        );
-        propertyChangeEventDictionary.Add(
-            "ManaPointMultiplicationModifier",
-            manaPointMultiplicationModifierChangeEvent
-        );
-
-        propertyChangeEventDictionary.Add("Might", mightChangeEvent);
-        propertyChangeEventDictionary.Add("BaseMight", baseMightChangeEvent);
-        propertyChangeEventDictionary.Add(
-            "MightAdditionModifier",
-            mightAdditionModifierChangeEvent
-        );
-        propertyChangeEventDictionary.Add(
-            "MightMultiplicationModifier",
-            mightMultiplicationModifierChangeEvent
-        );
-        propertyChangeEventDictionary.Add("Reflex", reflexChangeEvent);
-        propertyChangeEventDictionary.Add("BaseReflex", baseReflexChangeEvent);
-        propertyChangeEventDictionary.Add(
-            "ReflexAdditionModifier",
-            reflexAdditionModifierChangeEvent
-        );
-        propertyChangeEventDictionary.Add(
-            "ReflexMultiplicationModifier",
-            reflexMultiplicationModifierChangeEvent
-        );
-        propertyChangeEventDictionary.Add("Wisdom", wisdomChangeEvent);
-        propertyChangeEventDictionary.Add("BaseWisdom", baseWisdomChangeEvent);
-        propertyChangeEventDictionary.Add(
-            "WisdomAdditionModifier",
-            wisdomAdditionModifierChangeEvent
-        );
-        propertyChangeEventDictionary.Add(
-            "WisdomMultiplicationModifier",
-            wisdomMultiplicationModifierChangeEvent
-        );
+        wisdom.referenceModifiers = new List<FloatStatModifier>()
+        {
+            new(0, FloatStatModifierType.Additive),
+            new(0, FloatStatModifierType.Additive),
+        };
+        manaRegen.modifiers.Add(wisdom.referenceModifiers[0]);
+        manaPoint.modifiers.Add(wisdom.referenceModifiers[1]);
+        wisdom.finalValueChangeEvent += WisdomChangeManaPoint;
+        wisdom.finalValueChangeEvent += WisdomChangeManaRegen;
 
         propertyChangeEventDictionary.Add("MoveSpeed", moveSpeedChangeEvent);
         propertyChangeEventDictionary.Add("DefaultMoveSpeed", defaultMoveSpeedChangeEvent);
@@ -199,48 +124,87 @@ public partial class Stat : MonoEditor, INotifyBindablePropertyChanged
             actionMoveSpeedReduceRateChangeEvent
         );
         propertyChangeEventDictionary.Add("Size", sizeChangeEvent);
-        propertyChangeEventDictionary.Add("ManaRegen", manaRegenChangeEvent);
     }
 
-    void DefaultAttackSpeedChange()
+    void CheckCurrentHPBelowZero()
     {
-        AttackSpeed =
-            (BaseAttackSpeed + AttackSpeedAdditionModifier + 0.1f * Reflex)
-            * AttackSpeedMultiplicationModifier;
+        if (currentHealthPoint.Value < 0)
+            currentHealthPointReachZeroEvent();
     }
 
-    void DefaultHealthPointChange()
+    void SetCurrentHPOnUI()
     {
-        HealthPoint =
-            (BaseHealthPoint + HealthPointAdditionModifier + 19 * Might)
-            * HealthPointMultiplicationModifier;
+        healthBar.healthUIRevamp.SetHealth(currentHealthPoint.Value / healthPoint.FinalValue);
     }
 
-    void DefaultManaPointChange()
+    void HealthReachZeroHandler()
     {
-        ManaPoint =
-            (BaseManaPoint + ManaPointAdditionModifier + 13 * Wisdom)
-            * ManaPointMultiplicationModifier;
+        currentHealthPoint.valueChangeEvent -= SetCurrentHPOnUI;
+        customMono.AnimatorWrapper.SetBool(dieBoolHash, true);
+        customMono.combatCollision.SetActive(false);
+        healthBar.worldSpaceUI.deactivate();
+        healthBar = null;
+        StopAllCoroutines();
+        StartCoroutine(DissolveCoroutine());
     }
 
-    void DefaultMightChange()
+    void ChangeCurrentHPCap() => currentHealthPoint.cap = healthPoint.FinalValue;
+
+    void ChangeCurrentMPCap() => currentManaPoint.cap = manaPoint.FinalValue;
+
+    /// <summary>
+    /// AttackSpeed =
+    ///    (BaseAttackSpeed + AttackSpeedAdditionModifier + 0.1f * Reflex)
+    ///     * AttackSpeedMultiplicationModifier;
+    /// </summary>
+    void ReflexChangeAttackSpeed()
     {
-        Might = (BaseMight + MightAdditionModifier) * MightMultiplicationModifier;
+        reflex.referenceModifiers[0].value = 0.1f * reflex.FinalValue;
+        attackSpeed.RecalculateFinalValue();
     }
 
-    void DefaultReflexChange()
+    /// <summary>
+    /// HealthPoint =
+    ///    (BaseHealthPoint + HealthPointAdditionModifier + 19 * Might)
+    ///     * HealthPointMultiplicationModifier;
+    /// </summary>
+    void MightChangeHealthPoint()
     {
-        Reflex = (BaseReflex + ReflexAdditionModifier) * ReflexMultiplicationModifier;
+        might.referenceModifiers[1].value = 19 * might.FinalValue;
+        healthPoint.RecalculateFinalValue();
     }
 
-    void DefaultWisdomChange()
+    /// <summary>
+    /// ManaPoint =
+    ///    (BaseManaPoint + ManaPointAdditionModifier + 13 * Wisdom)
+    ///    * ManaPointMultiplicationModifier;
+    /// </summary>
+    void WisdomChangeManaPoint()
     {
-        Wisdom = (BaseWisdom + WisdomAdditionModifier) * WisdomMultiplicationModifier;
+        wisdom.referenceModifiers[1].value = 13 * wisdom.FinalValue;
+        manaPoint.RecalculateFinalValue();
     }
 
-    void RecalculateManaRegen()
+    /// <summary>
+    /// ManaRegen =
+    ///        (BaseManaRegen + ManaRegenAdditionModifier + 0.04f * Wisdom)
+    ///        * ManaRegenMultiplicationModifier;
+    /// </summary>
+    void WisdomChangeManaRegen()
     {
-        ManaRegen = (BaseManaRegen + ManaRegenAdditionModifier) * ManaRegenMultiplicationModifier;
+        wisdom.referenceModifiers[0].value = 0.04f * wisdom.FinalValue;
+        manaRegen.RecalculateFinalValue();
+    }
+
+    /// <summary>
+    /// HealthRegen =
+    ///        (BaseHealthRegen + HealthRegenAdditionModifier + 0.03f * Might)
+    ///        * HealthRegenMultiplicationModifier;
+    /// </summary>
+    void MightChangeHealthRegen()
+    {
+        might.referenceModifiers[0].value = 0.03f * might.FinalValue;
+        healthRegen.RecalculateFinalValue();
     }
 
     void Notify([CallerMemberName] string property = "")
@@ -270,8 +234,28 @@ public partial class Stat : MonoEditor, INotifyBindablePropertyChanged
 
     private void OnValidate()
     {
-        BaseManaPoint = 100f;
-        ManaPointAdditionModifier = 0;
-        ManaPointMultiplicationModifier = 1;
+        // attackSpeed.baseValue = 1;
+        // healthPoint.baseValue = 50;
+        // might.baseValue = 1;
+        // reflex.baseValue = 1;
+        // wisdom.baseValue = 1;
+        // manaPoint.baseValue = 100;
+        // manaRegen.baseValue = 0;
+        // healthRegen.baseValue = 0;
+    }
+
+    void StartRegen()
+    {
+        StartCoroutine(RegenIE());
+    }
+
+    IEnumerator RegenIE()
+    {
+        while (true)
+        {
+            currentManaPoint.Value += manaRegen.FinalValue * Time.deltaTime;
+            currentHealthPoint.Value += healthRegen.FinalValue * Time.deltaTime;
+            yield return null;
+        }
     }
 }
