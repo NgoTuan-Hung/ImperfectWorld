@@ -65,7 +65,7 @@ public class TheCallOfThePack : SkillBase
         {
             canUse = false;
             customMono.actionBlocking = true;
-            customMono.statusEffect.Slow(customMono.stat.ActionMoveSpeedReduceRate);
+            customMono.statusEffect.Slow(customMono.stat.actionSlowModifier);
             ToggleAnim(boolHash, true);
             StartCoroutine(actionIE = TriggerCoroutine());
             StartCoroutine(CooldownCoroutine());
@@ -92,7 +92,7 @@ public class TheCallOfThePack : SkillBase
 
         while (customMono.animationEventFunctionCaller.endSummon)
             yield return new WaitForSeconds(Time.fixedDeltaTime);
-        customMono.statusEffect.RemoveSlow(customMono.stat.ActionMoveSpeedReduceRate);
+        customMono.statusEffect.RemoveSlow(customMono.stat.actionSlowModifier);
         customMono.actionBlocking = false;
         customMono.animationEventFunctionCaller.endSummon = false;
         customMono.currentAction = null;
@@ -137,7 +137,7 @@ public class TheCallOfThePack : SkillBase
         base.ActionInterrupt();
         customMono.actionBlocking = false;
         ToggleAnim(boolHash, false);
-        customMono.statusEffect.RemoveSlow(customMono.stat.ActionMoveSpeedReduceRate);
+        customMono.statusEffect.RemoveSlow(customMono.stat.actionSlowModifier);
         customMono.animationEventFunctionCaller.summon = false;
         customMono.animationEventFunctionCaller.endSummon = false;
         StopCoroutine(actionIE);

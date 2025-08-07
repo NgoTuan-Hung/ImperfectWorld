@@ -7,11 +7,11 @@ public class InfernalTide : SkillBase
     {
         base.Awake();
         cooldown = 5f;
-        damage = defaultDamage = 1f;
         currentAmmo = maxAmmo = 5;
         // maxRange = 2f;
         interval = 0.1f;
         successResult = new(true, ActionResultType.Cooldown, cooldown);
+        manaCost = 30f;
         AddActionManuals();
     }
 
@@ -39,6 +39,19 @@ public class InfernalTide : SkillBase
     public override void Start()
     {
         base.Start();
+        StatChangeRegister();
+    }
+
+    public override void StatChangeRegister()
+    {
+        base.StatChangeRegister();
+        customMono.stat.might.finalValueChangeEvent += RecalculateStat;
+    }
+
+    public override void RecalculateStat()
+    {
+        base.RecalculateStat();
+        damage = customMono.stat.might.FinalValue * 0.25f;
     }
 
     public override void WhileWaiting(Vector2 p_location = default, Vector2 p_direction = default)
@@ -48,15 +61,19 @@ public class InfernalTide : SkillBase
 
     public override ActionResult Trigger(Vector2 location = default, Vector2 direction = default)
     {
-        if (canUse && !customMono.actionBlocking)
+        if (customMono.stat.currentManaPoint.Value < manaCost)
+            return failResult;
+        else if (canUse && !customMono.actionBlocking)
         {
             canUse = false;
             customMono.actionBlocking = true;
-            customMono.statusEffect.Slow(customMono.stat.ActionMoveSpeedReduceRate);
+            customMono.statusEffect.Slow(customMono.stat.actionSlowModifier);
             ToggleAnim(GameManager.Instance.mainSkill3BoolHash, true);
             StartCoroutine(actionIE = WaitSpawnFlame(direction));
             StartCoroutine(CooldownCoroutine());
             customMono.currentAction = this;
+            customMono.stat.currentManaPoint.Value -= manaCost;
+
             return successResult;
         }
 
@@ -97,7 +114,7 @@ public class InfernalTide : SkillBase
         customMono.animationEventFunctionCaller.endMainSkill3 = false;
         ToggleAnim(GameManager.Instance.mainSkill3BoolHash, false);
         customMono.actionBlocking = false;
-        customMono.statusEffect.RemoveSlow(customMono.stat.ActionMoveSpeedReduceRate);
+        customMono.statusEffect.RemoveSlow(customMono.stat.actionSlowModifier);
         customMono.currentAction = null;
     }
 
@@ -148,7 +165,7 @@ public class InfernalTide : SkillBase
     {
         base.ActionInterrupt();
         customMono.actionBlocking = false;
-        customMono.statusEffect.RemoveSlow(customMono.stat.ActionMoveSpeedReduceRate);
+        customMono.statusEffect.RemoveSlow(customMono.stat.actionSlowModifier);
         ToggleAnim(GameManager.Instance.mainSkill3BoolHash, false);
         StopCoroutine(actionIE);
         customMono.animationEventFunctionCaller.mainSkill3Signal = false;

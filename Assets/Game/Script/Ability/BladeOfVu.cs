@@ -17,10 +17,10 @@ public class BladeOfVu : SkillBase
         starPos = GetComponentsInChildren<Transform>()
             .First(x => x.name.Equals("StarPos"))
             .gameObject;
-        damage = defaultDamage = 10f;
         /* Get sprite list from res */
         spriteList = Resources.Load<SpriteList>("BladeOfVuSpriteList");
         successResult = new(true, ActionResultType.Cooldown, cooldown);
+        manaCost = 20f;
         AddActionManuals();
     }
 
@@ -48,11 +48,26 @@ public class BladeOfVu : SkillBase
     public override void Start()
     {
         base.Start();
+        StatChangeRegister();
+    }
+
+    public override void StatChangeRegister()
+    {
+        base.StatChangeRegister();
+        customMono.stat.might.finalValueChangeEvent += RecalculateStat;
+    }
+
+    public override void RecalculateStat()
+    {
+        base.RecalculateStat();
+        damage = customMono.stat.might.FinalValue * 0.2f;
     }
 
     public override ActionResult Trigger(Vector2 location = default, Vector2 direction = default)
     {
-        if (canUse && !customMono.actionBlocking && !customMono.movementActionBlocking)
+        if (customMono.stat.currentManaPoint.Value < manaCost)
+            return failResult;
+        else if (canUse && !customMono.actionBlocking && !customMono.movementActionBlocking)
         {
             canUse = false;
             customMono.actionBlocking = true;
@@ -61,6 +76,7 @@ public class BladeOfVu : SkillBase
             StartCoroutine(actionIE = TriggerIE(location, direction));
             StartCoroutine(CooldownCoroutine());
             customMono.currentAction = this;
+            customMono.stat.currentManaPoint.Value -= manaCost;
             return successResult;
         }
 

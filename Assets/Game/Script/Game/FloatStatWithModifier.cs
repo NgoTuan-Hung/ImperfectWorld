@@ -1,19 +1,39 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
+using Unity.Properties;
+using UnityEngine;
+using UnityEngine.UIElements;
 
 /// <summary>
 /// Final = (Base + Additive) * (1 + Multiplicative)
 /// </summary>
 [Serializable]
-public class FloatStatWithModifier
+public class FloatStatWithModifier : INotifyBindablePropertyChanged
 {
-    public float baseValue;
-    float finalValue;
+    [SerializeField]
+    float baseValue;
+
+    [SerializeField]
+    private float finalValue;
     public float FinalValue
     {
         get => finalValue;
     }
+
+    [CreateProperty]
+    public float BaseValue
+    {
+        get => baseValue;
+        set
+        {
+            baseValue = value;
+            RecalculateFinalValue();
+            Notify();
+        }
+    }
+
     public List<FloatStatModifier> referenceModifiers = new();
     public List<FloatStatModifier> modifiers = new();
     public Action finalValueChangeEvent = () => { };
@@ -34,7 +54,7 @@ public class FloatStatWithModifier
     {
         finalValue =
             (
-                baseValue
+                BaseValue
                 + modifiers.Where(m => m.type == FloatStatModifierType.Additive).Sum(m => m.value)
             )
             * (
@@ -44,5 +64,12 @@ public class FloatStatWithModifier
                     .Sum(m => m.value)
             );
         finalValueChangeEvent();
+    }
+
+    public event EventHandler<BindablePropertyChangedEventArgs> propertyChanged;
+
+    void Notify([CallerMemberName] string property = "")
+    {
+        propertyChanged?.Invoke(this, new BindablePropertyChangedEventArgs(property));
     }
 }

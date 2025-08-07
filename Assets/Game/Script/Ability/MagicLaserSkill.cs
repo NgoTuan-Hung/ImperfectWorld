@@ -1,6 +1,5 @@
 using System.Collections;
 using UnityEngine;
-using Touch = UnityEngine.InputSystem.EnhancedTouch.Touch;
 
 public class MagicLaserSkill : SkillBase
 {

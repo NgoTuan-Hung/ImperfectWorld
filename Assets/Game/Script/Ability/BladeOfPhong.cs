@@ -7,8 +7,8 @@ public class BladeOfPhong : SkillBase
     {
         base.Awake();
         cooldown = 5f;
-        damage = defaultDamage = 1f;
         successResult = new(true, ActionResultType.Cooldown, cooldown);
+        manaCost = 10f;
         AddActionManuals();
     }
 
@@ -36,6 +36,19 @@ public class BladeOfPhong : SkillBase
     public override void Start()
     {
         base.Start();
+        StatChangeRegister();
+    }
+
+    public override void StatChangeRegister()
+    {
+        base.StatChangeRegister();
+        customMono.stat.reflex.finalValueChangeEvent += RecalculateStat;
+    }
+
+    public override void RecalculateStat()
+    {
+        base.RecalculateStat();
+        damage = customMono.stat.reflex.FinalValue * 0.1f;
     }
 
     public override void WhileWaiting(Vector2 p_location = default, Vector2 p_direction = default)
@@ -45,15 +58,18 @@ public class BladeOfPhong : SkillBase
 
     public override ActionResult Trigger(Vector2 location = default, Vector2 direction = default)
     {
-        if (canUse && !customMono.actionBlocking)
+        if (customMono.stat.currentManaPoint.Value < manaCost)
+            return failResult;
+        else if (canUse && !customMono.actionBlocking)
         {
             canUse = false;
             customMono.actionBlocking = true;
-            customMono.statusEffect.Slow(customMono.stat.ActionMoveSpeedReduceRate);
+            customMono.statusEffect.Slow(customMono.stat.actionSlowModifier);
             ToggleAnim(GameManager.Instance.mainSkill2BoolHash, true);
             StartCoroutine(actionIE = WaitSpawnTornadoSignal(direction));
             StartCoroutine(CooldownCoroutine());
             customMono.currentAction = this;
+            customMono.stat.currentManaPoint.Value -= manaCost;
             return successResult;
         }
 
@@ -84,7 +100,7 @@ public class BladeOfPhong : SkillBase
         customMono.animationEventFunctionCaller.endMainSkill2 = false;
         ToggleAnim(GameManager.Instance.mainSkill2BoolHash, false);
         customMono.actionBlocking = false;
-        customMono.statusEffect.RemoveSlow(customMono.stat.ActionMoveSpeedReduceRate);
+        customMono.statusEffect.RemoveSlow(customMono.stat.actionSlowModifier);
         customMono.currentAction = null;
     }
 
@@ -105,7 +121,7 @@ public class BladeOfPhong : SkillBase
     {
         base.ActionInterrupt();
         customMono.actionBlocking = false;
-        customMono.statusEffect.RemoveSlow(customMono.stat.ActionMoveSpeedReduceRate);
+        customMono.statusEffect.RemoveSlow(customMono.stat.actionSlowModifier);
         ToggleAnim(GameManager.Instance.mainSkill2BoolHash, false);
         StopCoroutine(actionIE);
         customMono.animationEventFunctionCaller.mainSkill2Signal = false;

@@ -1744,41 +1744,71 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9500879ad6b6755408f9c787c95fb42c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  attackSpeed: 6
-  baseAttackSpeed: 1
-  attackSpeedAdditionModifier: 0
-  attackSpeedMultiplicationModifier: 1
-  moveSpeed: 2.7
-  defaultMoveSpeed: 2.7
-  actionMoveSpeedReduceRate: 0.9
   actionMoveSpeedReduced: 0
   moveSpeedPerFrame: 0.05399998
   size: 1
-  currentHealthPoint: 100
-  healthPoint: 50
-  baseHealthPoint: 50
-  healthPointAdditionModifier: 0
-  healthPointMultiplicationModifier: 1
-  might: 1
-  baseMight: 40
-  mightAdditionModifier: 0
-  mightMultiplicationModifier: 1
-  reflex: 1
-  baseReflex: 30
-  reflexAdditionModifier: 0
-  reflexMultiplicationModifier: 1
-  wisdom: 1
-  baseWisdom: 1
-  wisdomAdditionModifier: 0
-  wisdomMultiplicationModifier: 1
-  manaPoint: 0
-  baseManaPoint: 100
-  manaPointAdditionModifier: 0
-  manaPointMultiplicationModifier: 1
-  manaRegen: 0.04
-  baseManaRegen: 0
-  manaRegenAdditionModifier: 0
-  manaRegenMultiplicationModifier: 1
+  currentHealthPoint:
+    cap: 0
+  healthPoint:
+    baseValue: 50
+    finalValue: 0
+    referenceModifiers: []
+    modifiers: []
+  healthRegen:
+    baseValue: 0
+    finalValue: 0
+    referenceModifiers: []
+    modifiers: []
+  currentManaPoint:
+    cap: 0
+  manaPoint:
+    baseValue: 100
+    finalValue: 0
+    referenceModifiers: []
+    modifiers: []
+  manaRegen:
+    baseValue: 0
+    finalValue: 0
+    referenceModifiers: []
+    modifiers: []
+  might:
+    baseValue: 1
+    finalValue: 0
+    referenceModifiers: []
+    modifiers: []
+  reflex:
+    baseValue: 1
+    finalValue: 0
+    referenceModifiers: []
+    modifiers: []
+  wisdom:
+    baseValue: 1
+    finalValue: 0
+    referenceModifiers: []
+    modifiers: []
+  attackSpeed:
+    baseValue: 1
+    finalValue: 0
+    referenceModifiers: []
+    modifiers: []
+  armor:
+    baseValue: 0
+    finalValue: 0
+    referenceModifiers: []
+    modifiers: []
+  moveSpeed:
+    baseValue: 2
+    finalValue: 2
+    referenceModifiers: []
+    modifiers: []
+  actionMoveSpeedReduceRate:
+    baseValue: -0.9
+    finalValue: -0.9
+    referenceModifiers: []
+    modifiers: []
+  actionSlowModifier:
+    value: 0
+    type: 1
 --- !u!50 &581064779
 Rigidbody2D:
   serializedVersion: 5
@@ -2705,41 +2735,71 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9500879ad6b6755408f9c787c95fb42c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  attackSpeed: 1
-  baseAttackSpeed: 1
-  attackSpeedAdditionModifier: 0
-  attackSpeedMultiplicationModifier: 1
-  moveSpeed: 2
-  defaultMoveSpeed: 2
-  actionMoveSpeedReduceRate: 0.9
   actionMoveSpeedReduced: 0
   moveSpeedPerFrame: 0.039999984
   size: 1
-  currentHealthPoint: 100
-  healthPoint: 50
-  baseHealthPoint: 50
-  healthPointAdditionModifier: 0
-  healthPointMultiplicationModifier: 1
-  might: 1
-  baseMight: 2
-  mightAdditionModifier: 0
-  mightMultiplicationModifier: 1
-  reflex: 1
-  baseReflex: 1
-  reflexAdditionModifier: 0
-  reflexMultiplicationModifier: 1
-  wisdom: 1
-  baseWisdom: 1
-  wisdomAdditionModifier: 0
-  wisdomMultiplicationModifier: 1
-  manaPoint: 0
-  baseManaPoint: 100
-  manaPointAdditionModifier: 0
-  manaPointMultiplicationModifier: 1
-  manaRegen: 0.04
-  baseManaRegen: 0
-  manaRegenAdditionModifier: 0
-  manaRegenMultiplicationModifier: 1
+  currentHealthPoint:
+    cap: 0
+  healthPoint:
+    baseValue: 1000
+    finalValue: 1000
+    referenceModifiers: []
+    modifiers: []
+  healthRegen:
+    baseValue: 0
+    finalValue: 0
+    referenceModifiers: []
+    modifiers: []
+  currentManaPoint:
+    cap: 0
+  manaPoint:
+    baseValue: 100
+    finalValue: 0
+    referenceModifiers: []
+    modifiers: []
+  manaRegen:
+    baseValue: 0
+    finalValue: 0
+    referenceModifiers: []
+    modifiers: []
+  might:
+    baseValue: 1
+    finalValue: 0
+    referenceModifiers: []
+    modifiers: []
+  reflex:
+    baseValue: 1
+    finalValue: 0
+    referenceModifiers: []
+    modifiers: []
+  wisdom:
+    baseValue: 1
+    finalValue: 0
+    referenceModifiers: []
+    modifiers: []
+  attackSpeed:
+    baseValue: 1
+    finalValue: 0
+    referenceModifiers: []
+    modifiers: []
+  armor:
+    baseValue: 0
+    finalValue: 0
+    referenceModifiers: []
+    modifiers: []
+  moveSpeed:
+    baseValue: 2
+    finalValue: 2
+    referenceModifiers: []
+    modifiers: []
+  actionMoveSpeedReduceRate:
+    baseValue: -0.9
+    finalValue: -0.9
+    referenceModifiers: []
+    modifiers: []
+  actionSlowModifier:
+    value: 0
+    type: 1
 --- !u!114 &889364766
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8898,41 +8958,71 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9500879ad6b6755408f9c787c95fb42c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  attackSpeed: 5.1
-  baseAttackSpeed: 5
-  attackSpeedAdditionModifier: 0
-  attackSpeedMultiplicationModifier: 1
-  moveSpeed: 2.7
-  defaultMoveSpeed: 2.7
-  actionMoveSpeedReduceRate: 0.9
   actionMoveSpeedReduced: 0
   moveSpeedPerFrame: 0.05399998
   size: 1
-  currentHealthPoint: 100
-  healthPoint: 419
-  baseHealthPoint: 400
-  healthPointAdditionModifier: 0
-  healthPointMultiplicationModifier: 1
-  might: 1
-  baseMight: 1
-  mightAdditionModifier: 0
-  mightMultiplicationModifier: 1
-  reflex: 1
-  baseReflex: 1
-  reflexAdditionModifier: 0
-  reflexMultiplicationModifier: 1
-  wisdom: 1
-  baseWisdom: 1
-  wisdomAdditionModifier: 0
-  wisdomMultiplicationModifier: 1
-  manaPoint: 0
-  baseManaPoint: 100
-  manaPointAdditionModifier: 0
-  manaPointMultiplicationModifier: 1
-  manaRegen: 0.04
-  baseManaRegen: 0
-  manaRegenAdditionModifier: 0
-  manaRegenMultiplicationModifier: 1
+  currentHealthPoint:
+    cap: 0
+  healthPoint:
+    baseValue: 400
+    finalValue: 400
+    referenceModifiers: []
+    modifiers: []
+  healthRegen:
+    baseValue: 0
+    finalValue: 0
+    referenceModifiers: []
+    modifiers: []
+  currentManaPoint:
+    cap: 0
+  manaPoint:
+    baseValue: 100
+    finalValue: 0
+    referenceModifiers: []
+    modifiers: []
+  manaRegen:
+    baseValue: 0
+    finalValue: 0
+    referenceModifiers: []
+    modifiers: []
+  might:
+    baseValue: 1
+    finalValue: 0
+    referenceModifiers: []
+    modifiers: []
+  reflex:
+    baseValue: 1
+    finalValue: 0
+    referenceModifiers: []
+    modifiers: []
+  wisdom:
+    baseValue: 1
+    finalValue: 0
+    referenceModifiers: []
+    modifiers: []
+  attackSpeed:
+    baseValue: 1
+    finalValue: 0
+    referenceModifiers: []
+    modifiers: []
+  armor:
+    baseValue: 0
+    finalValue: 0
+    referenceModifiers: []
+    modifiers: []
+  moveSpeed:
+    baseValue: 2
+    finalValue: 2
+    referenceModifiers: []
+    modifiers: []
+  actionMoveSpeedReduceRate:
+    baseValue: -0.9
+    finalValue: -0.9
+    referenceModifiers: []
+    modifiers: []
+  actionSlowModifier:
+    value: 0
+    type: 1
 --- !u!82 &1254232936
 AudioSource:
   m_ObjectHideFlags: 0
@@ -10223,41 +10313,71 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9500879ad6b6755408f9c787c95fb42c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  attackSpeed: 1
-  baseAttackSpeed: 1
-  attackSpeedAdditionModifier: 0
-  attackSpeedMultiplicationModifier: 1
-  moveSpeed: 2
-  defaultMoveSpeed: 2
-  actionMoveSpeedReduceRate: 0.1
   actionMoveSpeedReduced: 0
   moveSpeedPerFrame: 0.039999984
   size: 1
-  currentHealthPoint: 100
-  healthPoint: 50
-  baseHealthPoint: 50
-  healthPointAdditionModifier: 0
-  healthPointMultiplicationModifier: 1
-  might: 1
-  baseMight: 1
-  mightAdditionModifier: 0
-  mightMultiplicationModifier: 1
-  reflex: 1
-  baseReflex: 1
-  reflexAdditionModifier: 0
-  reflexMultiplicationModifier: 1
-  wisdom: 1
-  baseWisdom: 1
-  wisdomAdditionModifier: 0
-  wisdomMultiplicationModifier: 1
-  manaPoint: 0
-  baseManaPoint: 100
-  manaPointAdditionModifier: 0
-  manaPointMultiplicationModifier: 1
-  manaRegen: 0.04
-  baseManaRegen: 0
-  manaRegenAdditionModifier: 0
-  manaRegenMultiplicationModifier: 1
+  currentHealthPoint:
+    cap: 0
+  healthPoint:
+    baseValue: 50
+    finalValue: 0
+    referenceModifiers: []
+    modifiers: []
+  healthRegen:
+    baseValue: 0
+    finalValue: 0
+    referenceModifiers: []
+    modifiers: []
+  currentManaPoint:
+    cap: 0
+  manaPoint:
+    baseValue: 100
+    finalValue: 0
+    referenceModifiers: []
+    modifiers: []
+  manaRegen:
+    baseValue: 0
+    finalValue: 0
+    referenceModifiers: []
+    modifiers: []
+  might:
+    baseValue: 1
+    finalValue: 0
+    referenceModifiers: []
+    modifiers: []
+  reflex:
+    baseValue: 1
+    finalValue: 0
+    referenceModifiers: []
+    modifiers: []
+  wisdom:
+    baseValue: 1
+    finalValue: 0
+    referenceModifiers: []
+    modifiers: []
+  attackSpeed:
+    baseValue: 1
+    finalValue: 0
+    referenceModifiers: []
+    modifiers: []
+  armor:
+    baseValue: 0
+    finalValue: 0
+    referenceModifiers: []
+    modifiers: []
+  moveSpeed:
+    baseValue: 2
+    finalValue: 2
+    referenceModifiers: []
+    modifiers: []
+  actionMoveSpeedReduceRate:
+    baseValue: -0.9
+    finalValue: -0.9
+    referenceModifiers: []
+    modifiers: []
+  actionSlowModifier:
+    value: 0
+    type: 1
 --- !u!114 &1582844851
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -81366,41 +81486,71 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9500879ad6b6755408f9c787c95fb42c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  attackSpeed: 1
-  baseAttackSpeed: 1
-  attackSpeedAdditionModifier: 0
-  attackSpeedMultiplicationModifier: 1
-  moveSpeed: 2
-  defaultMoveSpeed: 2
-  actionMoveSpeedReduceRate: 0.9
   actionMoveSpeedReduced: 0
   moveSpeedPerFrame: 0.039999984
   size: 1
-  currentHealthPoint: 100
-  healthPoint: 50
-  baseHealthPoint: 50
-  healthPointAdditionModifier: 0
-  healthPointMultiplicationModifier: 1
-  might: 1
-  baseMight: 1
-  mightAdditionModifier: 0
-  mightMultiplicationModifier: 1
-  reflex: 1
-  baseReflex: 1
-  reflexAdditionModifier: 0
-  reflexMultiplicationModifier: 1
-  wisdom: 1
-  baseWisdom: 1
-  wisdomAdditionModifier: 0
-  wisdomMultiplicationModifier: 1
-  manaPoint: 0
-  baseManaPoint: 100
-  manaPointAdditionModifier: 0
-  manaPointMultiplicationModifier: 1
-  manaRegen: 0.04
-  baseManaRegen: 0
-  manaRegenAdditionModifier: 0
-  manaRegenMultiplicationModifier: 1
+  currentHealthPoint:
+    cap: 0
+  healthPoint:
+    baseValue: 50
+    finalValue: 0
+    referenceModifiers: []
+    modifiers: []
+  healthRegen:
+    baseValue: 0
+    finalValue: 0
+    referenceModifiers: []
+    modifiers: []
+  currentManaPoint:
+    cap: 0
+  manaPoint:
+    baseValue: 100
+    finalValue: 0
+    referenceModifiers: []
+    modifiers: []
+  manaRegen:
+    baseValue: 0
+    finalValue: 0
+    referenceModifiers: []
+    modifiers: []
+  might:
+    baseValue: 1
+    finalValue: 0
+    referenceModifiers: []
+    modifiers: []
+  reflex:
+    baseValue: 1
+    finalValue: 0
+    referenceModifiers: []
+    modifiers: []
+  wisdom:
+    baseValue: 1
+    finalValue: 0
+    referenceModifiers: []
+    modifiers: []
+  attackSpeed:
+    baseValue: 1
+    finalValue: 0
+    referenceModifiers: []
+    modifiers: []
+  armor:
+    baseValue: 0
+    finalValue: 0
+    referenceModifiers: []
+    modifiers: []
+  moveSpeed:
+    baseValue: 2
+    finalValue: 2
+    referenceModifiers: []
+    modifiers: []
+  actionMoveSpeedReduceRate:
+    baseValue: -0.9
+    finalValue: -0.9
+    referenceModifiers: []
+    modifiers: []
+  actionSlowModifier:
+    value: 0
+    type: 1
 --- !u!114 &2059840848
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -83844,41 +83994,71 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9500879ad6b6755408f9c787c95fb42c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  attackSpeed: 1
-  baseAttackSpeed: 1
-  attackSpeedAdditionModifier: 0
-  attackSpeedMultiplicationModifier: 1
-  moveSpeed: 2.7
-  defaultMoveSpeed: 2.7
-  actionMoveSpeedReduceRate: 0.9
   actionMoveSpeedReduced: 0
   moveSpeedPerFrame: 0.05399998
   size: 1
-  currentHealthPoint: 100
-  healthPoint: 50
-  baseHealthPoint: 50
-  healthPointAdditionModifier: 0
-  healthPointMultiplicationModifier: 1
-  might: 1
-  baseMight: 1
-  mightAdditionModifier: 0
-  mightMultiplicationModifier: 1
-  reflex: 1
-  baseReflex: 1
-  reflexAdditionModifier: 0
-  reflexMultiplicationModifier: 1
-  wisdom: 1
-  baseWisdom: 1
-  wisdomAdditionModifier: 0
-  wisdomMultiplicationModifier: 1
-  manaPoint: 0
-  baseManaPoint: 100
-  manaPointAdditionModifier: 0
-  manaPointMultiplicationModifier: 1
-  manaRegen: 0.04
-  baseManaRegen: 0
-  manaRegenAdditionModifier: 0
-  manaRegenMultiplicationModifier: 1
+  currentHealthPoint:
+    cap: 0
+  healthPoint:
+    baseValue: 50
+    finalValue: 0
+    referenceModifiers: []
+    modifiers: []
+  healthRegen:
+    baseValue: 0
+    finalValue: 0
+    referenceModifiers: []
+    modifiers: []
+  currentManaPoint:
+    cap: 0
+  manaPoint:
+    baseValue: 100
+    finalValue: 0
+    referenceModifiers: []
+    modifiers: []
+  manaRegen:
+    baseValue: 0
+    finalValue: 0
+    referenceModifiers: []
+    modifiers: []
+  might:
+    baseValue: 1
+    finalValue: 0
+    referenceModifiers: []
+    modifiers: []
+  reflex:
+    baseValue: 1
+    finalValue: 0
+    referenceModifiers: []
+    modifiers: []
+  wisdom:
+    baseValue: 1
+    finalValue: 0
+    referenceModifiers: []
+    modifiers: []
+  attackSpeed:
+    baseValue: 1
+    finalValue: 0
+    referenceModifiers: []
+    modifiers: []
+  armor:
+    baseValue: 0
+    finalValue: 0
+    referenceModifiers: []
+    modifiers: []
+  moveSpeed:
+    baseValue: 2
+    finalValue: 2
+    referenceModifiers: []
+    modifiers: []
+  actionMoveSpeedReduceRate:
+    baseValue: -0.9
+    finalValue: -0.9
+    referenceModifiers: []
+    modifiers: []
+  actionSlowModifier:
+    value: 0
+    type: 1
 --- !u!95 &3086580546858740257
 Animator:
   serializedVersion: 7
@@ -84047,41 +84227,71 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9500879ad6b6755408f9c787c95fb42c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  attackSpeed: 5.9
-  baseAttackSpeed: 1
-  attackSpeedAdditionModifier: 0
-  attackSpeedMultiplicationModifier: 1
-  moveSpeed: 2.7
-  defaultMoveSpeed: 2.7
-  actionMoveSpeedReduceRate: 0.9
   actionMoveSpeedReduced: 0
   moveSpeedPerFrame: 0.05399998
   size: 1
-  currentHealthPoint: 100
-  healthPoint: 50
-  baseHealthPoint: 50
-  healthPointAdditionModifier: 0
-  healthPointMultiplicationModifier: 1
-  might: 1
-  baseMight: 1
-  mightAdditionModifier: 0
-  mightMultiplicationModifier: 1
-  reflex: 1
-  baseReflex: 1
-  reflexAdditionModifier: 0
-  reflexMultiplicationModifier: 1
-  wisdom: 1
-  baseWisdom: 1
-  wisdomAdditionModifier: 0
-  wisdomMultiplicationModifier: 1
-  manaPoint: 0
-  baseManaPoint: 100
-  manaPointAdditionModifier: 0
-  manaPointMultiplicationModifier: 1
-  manaRegen: 0.04
-  baseManaRegen: 0
-  manaRegenAdditionModifier: 0
-  manaRegenMultiplicationModifier: 1
+  currentHealthPoint:
+    cap: 0
+  healthPoint:
+    baseValue: 50
+    finalValue: 0
+    referenceModifiers: []
+    modifiers: []
+  healthRegen:
+    baseValue: 0
+    finalValue: 0
+    referenceModifiers: []
+    modifiers: []
+  currentManaPoint:
+    cap: 0
+  manaPoint:
+    baseValue: 100
+    finalValue: 0
+    referenceModifiers: []
+    modifiers: []
+  manaRegen:
+    baseValue: 0
+    finalValue: 0
+    referenceModifiers: []
+    modifiers: []
+  might:
+    baseValue: 1
+    finalValue: 0
+    referenceModifiers: []
+    modifiers: []
+  reflex:
+    baseValue: 1
+    finalValue: 0
+    referenceModifiers: []
+    modifiers: []
+  wisdom:
+    baseValue: 1
+    finalValue: 0
+    referenceModifiers: []
+    modifiers: []
+  attackSpeed:
+    baseValue: 1
+    finalValue: 0
+    referenceModifiers: []
+    modifiers: []
+  armor:
+    baseValue: 0
+    finalValue: 0
+    referenceModifiers: []
+    modifiers: []
+  moveSpeed:
+    baseValue: 2
+    finalValue: 2
+    referenceModifiers: []
+    modifiers: []
+  actionMoveSpeedReduceRate:
+    baseValue: -0.9
+    finalValue: -0.9
+    referenceModifiers: []
+    modifiers: []
+  actionSlowModifier:
+    value: 0
+    type: 1
 --- !u!1001 &3784369558948340409
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -85405,41 +85615,71 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9500879ad6b6755408f9c787c95fb42c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  attackSpeed: 1
-  baseAttackSpeed: 1
-  attackSpeedAdditionModifier: 0
-  attackSpeedMultiplicationModifier: 1
-  moveSpeed: 2.7
-  defaultMoveSpeed: 2.7
-  actionMoveSpeedReduceRate: 0.9
   actionMoveSpeedReduced: 0
   moveSpeedPerFrame: 0.05399998
   size: 1
-  currentHealthPoint: 100
-  healthPoint: 50
-  baseHealthPoint: 50
-  healthPointAdditionModifier: 0
-  healthPointMultiplicationModifier: 1
-  might: 1
-  baseMight: 1
-  mightAdditionModifier: 0
-  mightMultiplicationModifier: 1
-  reflex: 1
-  baseReflex: 1
-  reflexAdditionModifier: 0
-  reflexMultiplicationModifier: 1
-  wisdom: 1
-  baseWisdom: 1
-  wisdomAdditionModifier: 0
-  wisdomMultiplicationModifier: 1
-  manaPoint: 0
-  baseManaPoint: 100
-  manaPointAdditionModifier: 0
-  manaPointMultiplicationModifier: 1
-  manaRegen: 0.04
-  baseManaRegen: 0
-  manaRegenAdditionModifier: 0
-  manaRegenMultiplicationModifier: 1
+  currentHealthPoint:
+    cap: 0
+  healthPoint:
+    baseValue: 50
+    finalValue: 0
+    referenceModifiers: []
+    modifiers: []
+  healthRegen:
+    baseValue: 0
+    finalValue: 0
+    referenceModifiers: []
+    modifiers: []
+  currentManaPoint:
+    cap: 0
+  manaPoint:
+    baseValue: 100
+    finalValue: 0
+    referenceModifiers: []
+    modifiers: []
+  manaRegen:
+    baseValue: 0
+    finalValue: 0
+    referenceModifiers: []
+    modifiers: []
+  might:
+    baseValue: 1
+    finalValue: 0
+    referenceModifiers: []
+    modifiers: []
+  reflex:
+    baseValue: 1
+    finalValue: 0
+    referenceModifiers: []
+    modifiers: []
+  wisdom:
+    baseValue: 1
+    finalValue: 0
+    referenceModifiers: []
+    modifiers: []
+  attackSpeed:
+    baseValue: 1
+    finalValue: 0
+    referenceModifiers: []
+    modifiers: []
+  armor:
+    baseValue: 0
+    finalValue: 0
+    referenceModifiers: []
+    modifiers: []
+  moveSpeed:
+    baseValue: 2
+    finalValue: 2
+    referenceModifiers: []
+    modifiers: []
+  actionMoveSpeedReduceRate:
+    baseValue: -0.9
+    finalValue: -0.9
+    referenceModifiers: []
+    modifiers: []
+  actionSlowModifier:
+    value: 0
+    type: 1
 --- !u!212 &6010868429156375791
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -86301,41 +86541,71 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9500879ad6b6755408f9c787c95fb42c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  attackSpeed: 2
-  baseAttackSpeed: 1
-  attackSpeedAdditionModifier: 0
-  attackSpeedMultiplicationModifier: 1
-  moveSpeed: 2.4
-  defaultMoveSpeed: 2.4
-  actionMoveSpeedReduceRate: 0.9
   actionMoveSpeedReduced: 0
   moveSpeedPerFrame: 0.04799998
   size: 1
-  currentHealthPoint: 100
-  healthPoint: 50
-  baseHealthPoint: 50
-  healthPointAdditionModifier: 0
-  healthPointMultiplicationModifier: 1
-  might: 1
-  baseMight: 1
-  mightAdditionModifier: 0
-  mightMultiplicationModifier: 1
-  reflex: 1
-  baseReflex: 1
-  reflexAdditionModifier: 0
-  reflexMultiplicationModifier: 1
-  wisdom: 1
-  baseWisdom: 1
-  wisdomAdditionModifier: 0
-  wisdomMultiplicationModifier: 1
-  manaPoint: 0
-  baseManaPoint: 100
-  manaPointAdditionModifier: 0
-  manaPointMultiplicationModifier: 1
-  manaRegen: 0.04
-  baseManaRegen: 0
-  manaRegenAdditionModifier: 0
-  manaRegenMultiplicationModifier: 1
+  currentHealthPoint:
+    cap: 0
+  healthPoint:
+    baseValue: 50
+    finalValue: 0
+    referenceModifiers: []
+    modifiers: []
+  healthRegen:
+    baseValue: 0
+    finalValue: 0
+    referenceModifiers: []
+    modifiers: []
+  currentManaPoint:
+    cap: 0
+  manaPoint:
+    baseValue: 100
+    finalValue: 0
+    referenceModifiers: []
+    modifiers: []
+  manaRegen:
+    baseValue: 0
+    finalValue: 0
+    referenceModifiers: []
+    modifiers: []
+  might:
+    baseValue: 1
+    finalValue: 0
+    referenceModifiers: []
+    modifiers: []
+  reflex:
+    baseValue: 1
+    finalValue: 0
+    referenceModifiers: []
+    modifiers: []
+  wisdom:
+    baseValue: 1
+    finalValue: 0
+    referenceModifiers: []
+    modifiers: []
+  attackSpeed:
+    baseValue: 1
+    finalValue: 0
+    referenceModifiers: []
+    modifiers: []
+  armor:
+    baseValue: 0
+    finalValue: 0
+    referenceModifiers: []
+    modifiers: []
+  moveSpeed:
+    baseValue: 2
+    finalValue: 2
+    referenceModifiers: []
+    modifiers: []
+  actionMoveSpeedReduceRate:
+    baseValue: -0.9
+    finalValue: -0.9
+    referenceModifiers: []
+    modifiers: []
+  actionSlowModifier:
+    value: 0
+    type: 1
 --- !u!114 &7285419098741409359
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -87712,41 +87982,71 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9500879ad6b6755408f9c787c95fb42c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  attackSpeed: 1
-  baseAttackSpeed: 1
-  attackSpeedAdditionModifier: 0
-  attackSpeedMultiplicationModifier: 1
-  moveSpeed: 2.7
-  defaultMoveSpeed: 2.7
-  actionMoveSpeedReduceRate: 0.9
   actionMoveSpeedReduced: 0
   moveSpeedPerFrame: 0.05399998
   size: 1
-  currentHealthPoint: 100
-  healthPoint: 50
-  baseHealthPoint: 50
-  healthPointAdditionModifier: 0
-  healthPointMultiplicationModifier: 1
-  might: 1
-  baseMight: 1
-  mightAdditionModifier: 0
-  mightMultiplicationModifier: 1
-  reflex: 1
-  baseReflex: 1
-  reflexAdditionModifier: 0
-  reflexMultiplicationModifier: 1
-  wisdom: 1
-  baseWisdom: 1
-  wisdomAdditionModifier: 0
-  wisdomMultiplicationModifier: 1
-  manaPoint: 0
-  baseManaPoint: 100
-  manaPointAdditionModifier: 0
-  manaPointMultiplicationModifier: 1
-  manaRegen: 0.04
-  baseManaRegen: 0
-  manaRegenAdditionModifier: 0
-  manaRegenMultiplicationModifier: 1
+  currentHealthPoint:
+    cap: 0
+  healthPoint:
+    baseValue: 50
+    finalValue: 0
+    referenceModifiers: []
+    modifiers: []
+  healthRegen:
+    baseValue: 0
+    finalValue: 0
+    referenceModifiers: []
+    modifiers: []
+  currentManaPoint:
+    cap: 0
+  manaPoint:
+    baseValue: 100
+    finalValue: 0
+    referenceModifiers: []
+    modifiers: []
+  manaRegen:
+    baseValue: 0
+    finalValue: 0
+    referenceModifiers: []
+    modifiers: []
+  might:
+    baseValue: 1
+    finalValue: 0
+    referenceModifiers: []
+    modifiers: []
+  reflex:
+    baseValue: 1
+    finalValue: 0
+    referenceModifiers: []
+    modifiers: []
+  wisdom:
+    baseValue: 1
+    finalValue: 0
+    referenceModifiers: []
+    modifiers: []
+  attackSpeed:
+    baseValue: 1
+    finalValue: 0
+    referenceModifiers: []
+    modifiers: []
+  armor:
+    baseValue: 0
+    finalValue: 0
+    referenceModifiers: []
+    modifiers: []
+  moveSpeed:
+    baseValue: 2
+    finalValue: 2
+    referenceModifiers: []
+    modifiers: []
+  actionMoveSpeedReduceRate:
+    baseValue: -0.9
+    finalValue: -0.9
+    referenceModifiers: []
+    modifiers: []
+  actionSlowModifier:
+    value: 0
+    type: 1
 --- !u!114 &9221185469189333116
 MonoBehaviour:
   m_ObjectHideFlags: 0

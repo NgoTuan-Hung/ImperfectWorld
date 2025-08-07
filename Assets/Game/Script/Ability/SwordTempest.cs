@@ -10,6 +10,7 @@ public class SwordTempest : SkillBase
         cooldown = 5f;
         damage = defaultDamage = 20f;
         successResult = new(true, ActionResultType.Cooldown, cooldown);
+        manaCost = 25f;
         // dashSpeed *= Time.deltaTime;
         // boolhash = ...
 
@@ -40,6 +41,19 @@ public class SwordTempest : SkillBase
     public override void Start()
     {
         base.Start();
+        StatChangeRegister();
+    }
+
+    public override void StatChangeRegister()
+    {
+        base.StatChangeRegister();
+        customMono.stat.reflex.finalValueChangeEvent += RecalculateStat;
+    }
+
+    public override void RecalculateStat()
+    {
+        base.RecalculateStat();
+        damage = customMono.stat.reflex.FinalValue * 2.5f;
     }
 
     public override void WhileWaiting(Vector2 p_location = default, Vector2 p_direction = default)
@@ -49,15 +63,18 @@ public class SwordTempest : SkillBase
 
     public override ActionResult Trigger(Vector2 location = default, Vector2 direction = default)
     {
-        if (canUse && !customMono.movementActionBlocking && !customMono.actionBlocking)
+        if (customMono.stat.currentManaPoint.Value < manaCost)
+            return failResult;
+        else if (canUse && !customMono.movementActionBlocking && !customMono.actionBlocking)
         {
             canUse = false;
             customMono.actionBlocking = true;
-            customMono.statusEffect.Slow(customMono.stat.ActionMoveSpeedReduceRate);
+            customMono.statusEffect.Slow(customMono.stat.actionSlowModifier);
             ToggleAnim(GameManager.Instance.mainSkill3BoolHash, true);
             StartCoroutine(actionIE = WaitSpawnSlashSignal(direction));
             StartCoroutine(CooldownCoroutine());
             customMono.currentAction = this;
+            customMono.stat.currentManaPoint.Value -= manaCost;
 
             return successResult;
         }
@@ -174,7 +191,7 @@ public class SwordTempest : SkillBase
         while (!customMono.animationEventFunctionCaller.endMainSkill3)
             yield return new WaitForSeconds(Time.fixedDeltaTime);
 
-        customMono.statusEffect.RemoveSlow(customMono.stat.ActionMoveSpeedReduceRate);
+        customMono.statusEffect.RemoveSlow(customMono.stat.actionSlowModifier);
         customMono.animationEventFunctionCaller.endMainSkill3 = false;
         customMono.actionBlocking = false;
         ToggleAnim(GameManager.Instance.mainSkill3BoolHash, false);
@@ -203,6 +220,6 @@ public class SwordTempest : SkillBase
         customMono.animationEventFunctionCaller.mainSkill3Signal = false;
         customMono.animationEventFunctionCaller.endMainSkill3 = false;
         customMono.currentAction = null;
-        customMono.statusEffect.RemoveSlow(customMono.stat.ActionMoveSpeedReduceRate);
+        customMono.statusEffect.RemoveSlow(customMono.stat.actionSlowModifier);
     }
 }

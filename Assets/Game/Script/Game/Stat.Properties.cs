@@ -7,16 +7,6 @@ public partial class Stat
 {
     CustomMono customMono;
     private PoolObject healthBar;
-    public FloatStatWithModifier attackSpeed = new();
-
-    [SerializeField]
-    float moveSpeed = 1f;
-
-    [SerializeField]
-    private float defaultMoveSpeed;
-
-    [SerializeField]
-    float actionMoveSpeedReduceRate = 0.9f;
     public float actionMoveSpeedReduced;
     public float moveSpeedPerFrame;
 
@@ -26,63 +16,48 @@ public partial class Stat
     int dieBoolHash = Animator.StringToHash("Die");
     Action onEnable = () => { };
 
+    [Header("<color='#D72638'>CURRENT HP")]
     public FloatStatWithCap currentHealthPoint = new();
     public Action currentHealthPointReachZeroEvent = () => { };
+
+    [Header("<color='#C71F37'>HP")]
     public FloatStatWithModifier healthPoint = new();
-    public FloatStatWithModifier might = new();
-    public FloatStatWithModifier reflex = new();
-    public FloatStatWithModifier wisdom = new();
-    public FloatStatWithCap currentManaPoint;
-    public FloatStatWithModifier manaPoint = new();
-    public FloatStatWithModifier manaRegen = new();
+
+    [Header("<color='#FF6B6B'>HP REGEN")]
     public FloatStatWithModifier healthRegen = new();
 
-    [CreateProperty]
-    public float MoveSpeed
-    {
-        get => moveSpeed;
-        set
-        {
-            if (value == moveSpeed)
-                return;
+    [Header("<color='#3E8EDE'>CURRENT MP")]
+    public FloatStatWithCap currentManaPoint;
 
-            moveSpeed = value;
-            moveSpeedPerFrame = moveSpeed * Time.fixedDeltaTime;
-            Notify();
-        }
-    }
-    public ActionWrapper moveSpeedChangeEvent = new();
+    [Header("<color='#2F75C0'>MP")]
+    public FloatStatWithModifier manaPoint = new();
 
-    [CreateProperty]
-    public float DefaultMoveSpeed
-    {
-        get => defaultMoveSpeed;
-        set
-        {
-            if (value == defaultMoveSpeed)
-                return;
+    [Header("<color='#7FDBFF'>MP REGEN")]
+    public FloatStatWithModifier manaRegen = new();
 
-            defaultMoveSpeed = value;
-            MoveSpeed = defaultMoveSpeed;
-            Notify();
-        }
-    }
-    public ActionWrapper defaultMoveSpeedChangeEvent = new();
+    [Header("<color='#F39C12'>MIGHT")]
+    public FloatStatWithModifier might = new();
 
-    [CreateProperty]
-    public float ActionMoveSpeedReduceRate
-    {
-        get => actionMoveSpeedReduceRate;
-        set
-        {
-            if (value == actionMoveSpeedReduceRate)
-                return;
+    [Header("<color='#27AE60'>REFLEX")]
+    public FloatStatWithModifier reflex = new();
 
-            actionMoveSpeedReduceRate = value;
-            Notify();
-        }
-    }
-    public ActionWrapper actionMoveSpeedReduceRateChangeEvent = new();
+    [Header("<color='#9B59B6'>WISDOM")]
+    public FloatStatWithModifier wisdom = new();
+
+    [Header("<color='#E67E22'>ATTACK SPEED")]
+    public FloatStatWithModifier attackSpeed = new();
+
+    [Header("<color='#95A5A6'>ARMOR")]
+    public FloatStatWithModifier armor = new();
+
+    [Header("<color='#1ABC9C'>MOVE SPEED")]
+    public FloatStatWithModifier moveSpeed = new();
+
+    [HideInInspector]
+    public FloatStatWithModifier actionMoveSpeedReduceRate = new();
+
+    [HideInInspector]
+    public FloatStatModifier actionSlowModifier = new(0, FloatStatModifierType.Multiplicative);
 
     [CreateProperty]
     public float Size

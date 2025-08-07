@@ -49,7 +49,7 @@ public class NuclearBomb : SkillBase
         {
             canUse = false;
             customMono.actionBlocking = true;
-            customMono.statusEffect.Slow(customMono.stat.ActionMoveSpeedReduceRate);
+            customMono.statusEffect.Slow(customMono.stat.actionSlowModifier);
             ToggleAnim(GameManager.Instance.mainSkill3BoolHash, true);
             StartCoroutine(actionIE = WaitSpawnExplosion(location));
             StartCoroutine(CooldownCoroutine());
@@ -80,7 +80,7 @@ public class NuclearBomb : SkillBase
         customMono.animationEventFunctionCaller.endMainSkill3 = false;
         ToggleAnim(GameManager.Instance.mainSkill3BoolHash, false);
         customMono.actionBlocking = false;
-        customMono.statusEffect.RemoveSlow(customMono.stat.ActionMoveSpeedReduceRate);
+        customMono.statusEffect.RemoveSlow(customMono.stat.actionSlowModifier);
         customMono.currentAction = null;
     }
 
@@ -101,7 +101,7 @@ public class NuclearBomb : SkillBase
     {
         base.ActionInterrupt();
         customMono.actionBlocking = false;
-        customMono.statusEffect.RemoveSlow(customMono.stat.ActionMoveSpeedReduceRate);
+        customMono.statusEffect.RemoveSlow(customMono.stat.actionSlowModifier);
         ToggleAnim(GameManager.Instance.mainSkill3BoolHash, false);
         StopCoroutine(actionIE);
         customMono.animationEventFunctionCaller.mainSkill3Signal = false;

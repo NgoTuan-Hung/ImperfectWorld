@@ -129,7 +129,6 @@ MonoBehaviour:
   endCastingMagic: 0
   summon: 0
   endSummon: 0
-  endSlaughter: 0
   endRelease: 0
   mainSkill1Signal: 0
   endMainSkill1: 0
@@ -367,17 +366,71 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9500879ad6b6755408f9c787c95fb42c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  health: 40
-  defaultHealth: 40
-  attackSpeed: 1
-  moveSpeed: 2.7
-  defaultMoveSpeed: 2.7
-  actionMoveSpeedReduceRate: 0.9
   actionMoveSpeedReduced: 0
-  moveSpeedPerFrame: 0.05399998
-  magicka: 0
-  defaultMagicka: 0
+  moveSpeedPerFrame: 0
   size: 1
+  currentHealthPoint:
+    cap: 0
+  healthPoint:
+    baseValue: 50
+    finalValue: 50
+    referenceModifiers: []
+    modifiers: []
+  healthRegen:
+    baseValue: 0
+    finalValue: 0
+    referenceModifiers: []
+    modifiers: []
+  currentManaPoint:
+    cap: 0
+  manaPoint:
+    baseValue: 100
+    finalValue: 100
+    referenceModifiers: []
+    modifiers: []
+  manaRegen:
+    baseValue: 0
+    finalValue: 0
+    referenceModifiers: []
+    modifiers: []
+  might:
+    baseValue: 1
+    finalValue: 1
+    referenceModifiers: []
+    modifiers: []
+  reflex:
+    baseValue: 1
+    finalValue: 1
+    referenceModifiers: []
+    modifiers: []
+  wisdom:
+    baseValue: 1
+    finalValue: 1
+    referenceModifiers: []
+    modifiers: []
+  attackSpeed:
+    baseValue: 1
+    finalValue: 1
+    referenceModifiers: []
+    modifiers: []
+  armor:
+    baseValue: 0
+    finalValue: 0
+    referenceModifiers: []
+    modifiers: []
+  moveSpeed:
+    baseValue: 2
+    finalValue: 2
+    referenceModifiers: []
+    modifiers: []
+  actionMoveSpeedReduceRate:
+    baseValue: -0.9
+    finalValue: -0.9
+    referenceModifiers: []
+    modifiers: []
+  actionSlowModifier:
+    value: 0
+    type: 1
 --- !u!114 &2064893532750167186
 MonoBehaviour:
   m_ObjectHideFlags: 0

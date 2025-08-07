@@ -48,7 +48,7 @@ public class GetOverThere : SkillBase
         {
             canUse = false;
             customMono.actionBlocking = true;
-            customMono.statusEffect.Slow(customMono.stat.ActionMoveSpeedReduceRate);
+            customMono.statusEffect.Slow(customMono.stat.actionSlowModifier);
             ToggleAnim(GameManager.Instance.mainSkill2BoolHash, true);
             StartCoroutine(actionIE = WaitSpawnBlueHole(location));
             StartCoroutine(CooldownCoroutine());
@@ -78,7 +78,7 @@ public class GetOverThere : SkillBase
         customMono.animationEventFunctionCaller.endMainSkill2 = false;
         ToggleAnim(GameManager.Instance.mainSkill2BoolHash, false);
         customMono.actionBlocking = false;
-        customMono.statusEffect.RemoveSlow(customMono.stat.ActionMoveSpeedReduceRate);
+        customMono.statusEffect.RemoveSlow(customMono.stat.actionSlowModifier);
         customMono.currentAction = null;
     }
 
@@ -99,7 +99,7 @@ public class GetOverThere : SkillBase
     {
         base.ActionInterrupt();
         customMono.actionBlocking = false;
-        customMono.statusEffect.RemoveSlow(customMono.stat.ActionMoveSpeedReduceRate);
+        customMono.statusEffect.RemoveSlow(customMono.stat.actionSlowModifier);
         ToggleAnim(GameManager.Instance.mainSkill2BoolHash, false);
         StopCoroutine(actionIE);
         customMono.animationEventFunctionCaller.mainSkill2Signal = false;

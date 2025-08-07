@@ -44,7 +44,7 @@ public class RayOfJungle : SkillBase
         {
             canUse = false;
             customMono.actionBlocking = true;
-            customMono.statusEffect.Slow(customMono.stat.ActionMoveSpeedReduceRate);
+            customMono.statusEffect.Slow(customMono.stat.actionSlowModifier);
             ToggleAnim(GameManager.Instance.mainSkill1BoolHash, true);
             StartCoroutine(actionIE = TriggerIE(location, direction));
             StartCoroutine(CooldownCoroutine());
@@ -97,7 +97,7 @@ public class RayOfJungle : SkillBase
         customMono.animationEventFunctionCaller.endMainSkill1 = false;
         customMono.actionBlocking = false;
         ToggleAnim(GameManager.Instance.mainSkill1BoolHash, false);
-        customMono.statusEffect.RemoveSlow(customMono.stat.ActionMoveSpeedReduceRate);
+        customMono.statusEffect.RemoveSlow(customMono.stat.actionSlowModifier);
         customMono.currentAction = null;
     }
 
@@ -122,7 +122,7 @@ public class RayOfJungle : SkillBase
         StopCoroutine(actionIE);
         customMono.animationEventFunctionCaller.mainSkill1Signal = false;
         customMono.animationEventFunctionCaller.endMainSkill1 = false;
-        customMono.statusEffect.RemoveSlow(customMono.stat.ActionMoveSpeedReduceRate);
+        customMono.statusEffect.RemoveSlow(customMono.stat.actionSlowModifier);
         customMono.currentAction = null;
     }
 }

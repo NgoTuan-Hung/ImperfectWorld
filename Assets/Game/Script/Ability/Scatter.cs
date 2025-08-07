@@ -97,7 +97,7 @@ public class Scatter : SkillBase
         {
             canUse = false;
             customMono.actionBlocking = true;
-            customMono.statusEffect.Slow(customMono.stat.ActionMoveSpeedReduceRate);
+            customMono.statusEffect.Slow(customMono.stat.actionSlowModifier);
             ToggleAnim(boolHash, true);
             actionWaitInfo.stillWaiting = true;
             StartCoroutine(actionIE = WaitingCoroutine());
@@ -185,13 +185,13 @@ public class Scatter : SkillBase
             customMono.actionBlocking = false;
             ToggleAnim(actionWaitInfo.releaseBoolHash, false);
             customMono.animationEventFunctionCaller.endRelease = false;
-            customMono.statusEffect.RemoveSlow(customMono.stat.ActionMoveSpeedReduceRate);
+            customMono.statusEffect.RemoveSlow(customMono.stat.actionSlowModifier);
         }
         else
         {
             customMono.actionBlocking = false;
             ToggleAnim(boolHash, false);
-            customMono.statusEffect.RemoveSlow(customMono.stat.ActionMoveSpeedReduceRate);
+            customMono.statusEffect.RemoveSlow(customMono.stat.actionSlowModifier);
         }
 
         customMono.currentAction = null;
@@ -261,7 +261,7 @@ public class Scatter : SkillBase
     {
         base.ActionInterrupt();
         customMono.actionBlocking = false;
-        customMono.statusEffect.RemoveSlow(customMono.stat.ActionMoveSpeedReduceRate);
+        customMono.statusEffect.RemoveSlow(customMono.stat.actionSlowModifier);
         ToggleAnim(boolHash, false);
         ToggleAnim(actionWaitInfo.releaseBoolHash, false);
         StopCoroutine(actionIE);

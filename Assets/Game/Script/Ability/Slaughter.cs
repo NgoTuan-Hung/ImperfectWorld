@@ -8,8 +8,8 @@ public class Slaughter : SkillBase
         base.Awake();
         audioClip = Resources.Load<AudioClip>("AudioClip/slaughter");
         cooldown = defaultCooldown = 1f;
-        damage = 5f;
         maxAmmo = 10;
+        manaCost = 5f;
 
         AddActionManuals();
     }
@@ -47,6 +47,19 @@ public class Slaughter : SkillBase
     public override void Start()
     {
         base.Start();
+        StatChangeRegister();
+    }
+
+    public override void StatChangeRegister()
+    {
+        base.StatChangeRegister();
+        customMono.stat.might.finalValueChangeEvent += RecalculateStat;
+    }
+
+    public override void RecalculateStat()
+    {
+        base.RecalculateStat();
+        damage = customMono.stat.might.FinalValue;
     }
 
     public override void AddActionManuals()
@@ -62,16 +75,19 @@ public class Slaughter : SkillBase
     automatically (RefillAmmo coroutine). */
     public override ActionResult Trigger(Vector2 location = default, Vector2 direction = default)
     {
-        if (canUse && !customMono.actionBlocking && currentAmmo > 0)
+        if (customMono.stat.currentManaPoint.Value < manaCost)
+            return failResult;
+        else if (canUse && !customMono.actionBlocking && currentAmmo > 0)
         {
             canUse = false;
             customMono.actionBlocking = true;
-            customMono.statusEffect.Slow(customMono.stat.ActionMoveSpeedReduceRate);
+            customMono.statusEffect.Slow(customMono.stat.actionSlowModifier);
             customMono.audioSource.PlayOneShot(audioClip);
             AddAmmo(-1);
             ToggleAnim(GameManager.Instance.mainSkill1BoolHash, true);
             StartCoroutine(actionIE = EndAnimWaitCoroutine());
             customMono.currentAction = this;
+            customMono.stat.currentManaPoint.Value -= manaCost;
 
             customMono.SetUpdateDirectionIndicator(direction, UpdateDirectionIndicatorPriority.Low);
             GameEffect t_projectileEffect = GameManager
@@ -115,7 +131,7 @@ public class Slaughter : SkillBase
             yield return new WaitForSeconds(Time.fixedDeltaTime);
 
         ToggleAnim(GameManager.Instance.mainSkill1BoolHash, false);
-        customMono.statusEffect.RemoveSlow(customMono.stat.ActionMoveSpeedReduceRate);
+        customMono.statusEffect.RemoveSlow(customMono.stat.actionSlowModifier);
         customMono.actionBlocking = false;
         customMono.animationEventFunctionCaller.endMainSkill1 = false;
         canUse = true;
@@ -132,7 +148,7 @@ public class Slaughter : SkillBase
         base.ActionInterrupt();
         canUse = true;
         customMono.actionBlocking = false;
-        customMono.statusEffect.RemoveSlow(customMono.stat.ActionMoveSpeedReduceRate);
+        customMono.statusEffect.RemoveSlow(customMono.stat.actionSlowModifier);
         ToggleAnim(GameManager.Instance.mainSkill1BoolHash, false);
         StopCoroutine(actionIE);
         customMono.animationEventFunctionCaller.endMainSkill1 = false;

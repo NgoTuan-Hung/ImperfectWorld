@@ -125,7 +125,7 @@ public class Attackable : SkillBase
         {
             canUse = false;
             customMono.actionBlocking = true;
-            customMono.statusEffect.Slow(customMono.stat.ActionMoveSpeedReduceRate);
+            customMono.statusEffect.Slow(customMono.stat.actionSlowModifier);
             ToggleAnim(boolHash, true);
             StartCoroutine(actionIE = MeleeAttackCoroutine(attackDirection));
             StartCoroutine(CooldownCoroutine());
@@ -165,7 +165,7 @@ public class Attackable : SkillBase
             yield return new WaitForSeconds(Time.fixedDeltaTime);
 
         customMono.animationEventFunctionCaller.endAttack = false;
-        customMono.statusEffect.RemoveSlow(customMono.stat.ActionMoveSpeedReduceRate);
+        customMono.statusEffect.RemoveSlow(customMono.stat.actionSlowModifier);
         customMono.actionBlocking = false;
         ToggleAnim(boolHash, false);
         customMono.currentAction = null;
@@ -177,7 +177,7 @@ public class Attackable : SkillBase
         {
             canUse = false;
             customMono.actionBlocking = true;
-            customMono.statusEffect.Slow(customMono.stat.ActionMoveSpeedReduceRate);
+            customMono.statusEffect.Slow(customMono.stat.actionSlowModifier);
             ToggleAnim(boolHash, true);
             StartCoroutine(actionIE = RangedAttackCoroutine(attackDirection));
             StartCoroutine(CooldownCoroutine());
@@ -221,7 +221,7 @@ public class Attackable : SkillBase
             yield return new WaitForSeconds(Time.fixedDeltaTime);
 
         customMono.animationEventFunctionCaller.endAttack = false;
-        customMono.statusEffect.RemoveSlow(customMono.stat.ActionMoveSpeedReduceRate);
+        customMono.statusEffect.RemoveSlow(customMono.stat.actionSlowModifier);
         customMono.actionBlocking = false;
         ToggleAnim(boolHash, false);
         customMono.currentAction = null;
@@ -257,7 +257,7 @@ public class Attackable : SkillBase
     public override void ActionInterrupt()
     {
         base.ActionInterrupt();
-        customMono.statusEffect.RemoveSlow(customMono.stat.ActionMoveSpeedReduceRate);
+        customMono.statusEffect.RemoveSlow(customMono.stat.actionSlowModifier);
         customMono.actionBlocking = false;
         ToggleAnim(boolHash, false);
         StopCoroutine(actionIE);

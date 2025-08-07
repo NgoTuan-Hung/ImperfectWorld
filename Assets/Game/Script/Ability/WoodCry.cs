@@ -53,7 +53,7 @@ public class WoodCry : SkillBase
         {
             canUse = false;
             customMono.actionBlocking = true;
-            customMono.statusEffect.Slow(customMono.stat.ActionMoveSpeedReduceRate);
+            customMono.statusEffect.Slow(customMono.stat.actionSlowModifier);
             ToggleAnim(GameManager.Instance.mainSkill2BoolHash, true);
             StartCoroutine(actionIE = TriggerCoroutine(location, direction));
             StartCoroutine(CooldownCoroutine());
@@ -86,7 +86,7 @@ public class WoodCry : SkillBase
             yield return new WaitForSeconds(Time.fixedDeltaTime);
 
         customMono.actionBlocking = false;
-        customMono.statusEffect.RemoveSlow(customMono.stat.ActionMoveSpeedReduceRate);
+        customMono.statusEffect.RemoveSlow(customMono.stat.actionSlowModifier);
         customMono.animationEventFunctionCaller.endMainSkill2 = false;
         ToggleAnim(GameManager.Instance.mainSkill2BoolHash, false);
         customMono.currentAction = null;
@@ -110,7 +110,7 @@ public class WoodCry : SkillBase
     {
         base.ActionInterrupt();
         customMono.actionBlocking = false;
-        customMono.statusEffect.RemoveSlow(customMono.stat.ActionMoveSpeedReduceRate);
+        customMono.statusEffect.RemoveSlow(customMono.stat.actionSlowModifier);
         ToggleAnim(GameManager.Instance.mainSkill2BoolHash, false);
         StopCoroutine(actionIE);
         customMono.animationEventFunctionCaller.mainSkill2Signal = false;

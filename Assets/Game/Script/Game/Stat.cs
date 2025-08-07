@@ -58,7 +58,6 @@ public partial class Stat : MonoEditor, INotifyBindablePropertyChanged
     {
         currentHealthPoint.Value = healthPoint.FinalValue;
         currentManaPoint.Value = manaPoint.FinalValue;
-        MoveSpeed = DefaultMoveSpeed;
     }
 
     void InitUI()
@@ -71,10 +70,8 @@ public partial class Stat : MonoEditor, INotifyBindablePropertyChanged
         might.RecalculateFinalValue();
         reflex.RecalculateFinalValue();
         wisdom.RecalculateFinalValue();
+        actionMoveSpeedReduceRate.RecalculateFinalValue();
 
-        Notify("MoveSpeed");
-        Notify("DefaultMoveSpeed");
-        Notify("ActionMoveSpeedReduceRate");
         Notify("Size");
     }
 
@@ -85,8 +82,6 @@ public partial class Stat : MonoEditor, INotifyBindablePropertyChanged
         healthPoint.finalValueChangeEvent += ChangeCurrentHPCap;
         manaPoint.finalValueChangeEvent += ChangeCurrentMPCap;
 
-        actionMoveSpeedReduceRateChangeEvent.action += () =>
-            actionMoveSpeedReduced = defaultMoveSpeed * actionMoveSpeedReduceRate;
         currentHealthPointReachZeroEvent += HealthReachZeroHandler;
 
         might.referenceModifiers = new List<FloatStatModifier>()
@@ -104,8 +99,10 @@ public partial class Stat : MonoEditor, INotifyBindablePropertyChanged
             new(0, FloatStatModifierType.Additive),
             new(0, FloatStatModifierType.Additive),
         };
-        attackSpeed.modifiers.Add(might.referenceModifiers[0]);
+        attackSpeed.modifiers.Add(reflex.referenceModifiers[0]);
+        armor.modifiers.Add(reflex.referenceModifiers[1]);
         reflex.finalValueChangeEvent += ReflexChangeAttackSpeed;
+        reflex.finalValueChangeEvent += ReflexChangeArmor;
 
         wisdom.referenceModifiers = new List<FloatStatModifier>()
         {
@@ -117,13 +114,8 @@ public partial class Stat : MonoEditor, INotifyBindablePropertyChanged
         wisdom.finalValueChangeEvent += WisdomChangeManaPoint;
         wisdom.finalValueChangeEvent += WisdomChangeManaRegen;
 
-        propertyChangeEventDictionary.Add("MoveSpeed", moveSpeedChangeEvent);
-        propertyChangeEventDictionary.Add("DefaultMoveSpeed", defaultMoveSpeedChangeEvent);
-        propertyChangeEventDictionary.Add(
-            "ActionMoveSpeedReduceRate",
-            actionMoveSpeedReduceRateChangeEvent
-        );
-        propertyChangeEventDictionary.Add("Size", sizeChangeEvent);
+        moveSpeed.finalValueChangeEvent += MoveSpeedChangeMoveSpeedPerFrame;
+        actionMoveSpeedReduceRate.finalValueChangeEvent += ChangeActionSlow;
     }
 
     void CheckCurrentHPBelowZero()
@@ -153,6 +145,28 @@ public partial class Stat : MonoEditor, INotifyBindablePropertyChanged
     void ChangeCurrentMPCap() => currentManaPoint.cap = manaPoint.FinalValue;
 
     /// <summary>
+    /// HealthPoint =
+    ///    (BaseHealthPoint + HealthPointAdditionModifier + 19 * Might)
+    ///     * HealthPointMultiplicationModifier;
+    /// </summary>
+    void MightChangeHealthPoint()
+    {
+        might.referenceModifiers[1].value = 19 * might.FinalValue;
+        healthPoint.RecalculateFinalValue();
+    }
+
+    /// <summary>
+    /// HealthRegen =
+    ///        (BaseHealthRegen + HealthRegenAdditionModifier + 0.03f * Might)
+    ///        * HealthRegenMultiplicationModifier;
+    /// </summary>
+    void MightChangeHealthRegen()
+    {
+        might.referenceModifiers[0].value = 0.03f * might.FinalValue;
+        healthRegen.RecalculateFinalValue();
+    }
+
+    /// <summary>
     /// AttackSpeed =
     ///    (BaseAttackSpeed + AttackSpeedAdditionModifier + 0.1f * Reflex)
     ///     * AttackSpeedMultiplicationModifier;
@@ -164,14 +178,14 @@ public partial class Stat : MonoEditor, INotifyBindablePropertyChanged
     }
 
     /// <summary>
-    /// HealthPoint =
-    ///    (BaseHealthPoint + HealthPointAdditionModifier + 19 * Might)
-    ///     * HealthPointMultiplicationModifier;
+    /// Armor =
+    ///    (BaseArmor + ArmorAdditionModifier + 0.1f * Reflex)
+    ///     * ArmorMultiplicationModifier;
     /// </summary>
-    void MightChangeHealthPoint()
+    void ReflexChangeArmor()
     {
-        might.referenceModifiers[1].value = 19 * might.FinalValue;
-        healthPoint.RecalculateFinalValue();
+        reflex.referenceModifiers[1].value = 0.1f * reflex.FinalValue;
+        armor.RecalculateFinalValue();
     }
 
     /// <summary>
@@ -196,16 +210,10 @@ public partial class Stat : MonoEditor, INotifyBindablePropertyChanged
         manaRegen.RecalculateFinalValue();
     }
 
-    /// <summary>
-    /// HealthRegen =
-    ///        (BaseHealthRegen + HealthRegenAdditionModifier + 0.03f * Might)
-    ///        * HealthRegenMultiplicationModifier;
-    /// </summary>
-    void MightChangeHealthRegen()
-    {
-        might.referenceModifiers[0].value = 0.03f * might.FinalValue;
-        healthRegen.RecalculateFinalValue();
-    }
+    void MoveSpeedChangeMoveSpeedPerFrame() =>
+        moveSpeedPerFrame = moveSpeed.FinalValue * Time.fixedDeltaTime;
+
+    void ChangeActionSlow() => actionSlowModifier.value = actionMoveSpeedReduceRate.FinalValue;
 
     void Notify([CallerMemberName] string property = "")
     {
@@ -213,8 +221,6 @@ public partial class Stat : MonoEditor, INotifyBindablePropertyChanged
         if (propertyChangeEventDictionary.TryGetValue(property, out notifyAW))
             notifyAW.action();
     }
-
-    public void SetDefaultMoveSpeed() => MoveSpeed = DefaultMoveSpeed;
 
     IEnumerator DissolveCoroutine()
     {
@@ -242,6 +248,26 @@ public partial class Stat : MonoEditor, INotifyBindablePropertyChanged
         // manaPoint.baseValue = 100;
         // manaRegen.baseValue = 0;
         // healthRegen.baseValue = 0;
+        // armor.baseValue = 0;
+
+        // moveSpeed.BaseValue = 2f;
+        // actionMoveSpeedReduceRate.BaseValue = -0.9f;
+    }
+
+    private void Reset()
+    {
+        // attackSpeed.BaseValue = 1;
+        // healthPoint.BaseValue = 50;
+        // might.BaseValue = 1;
+        // reflex.BaseValue = 1;
+        // wisdom.BaseValue = 1;
+        // manaPoint.BaseValue = 100;
+        // manaRegen.BaseValue = 0;
+        // healthRegen.BaseValue = 0;
+        // armor.BaseValue = 0;
+
+        // moveSpeed.BaseValue = 2f;
+        // actionMoveSpeedReduceRate.BaseValue = -0.9f; //
     }
 
     void StartRegen()

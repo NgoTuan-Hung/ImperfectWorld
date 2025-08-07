@@ -12,7 +12,7 @@ public class DoubleKill : SkillBase
         cooldown = 1f;
         damage = defaultDamage = 10f;
         poisonInfo = new(5, 10);
-        slowInfo = new(0.3f, 1f);
+        slowInfo = new(new(-0.3f, FloatStatModifierType.Multiplicative), 1f);
         successResult = new(true, ActionResultType.Cooldown, cooldown);
         AddActionManuals();
     }
@@ -54,7 +54,7 @@ public class DoubleKill : SkillBase
         {
             canUse = false;
             customMono.actionBlocking = true;
-            customMono.statusEffect.Slow(customMono.stat.ActionMoveSpeedReduceRate);
+            customMono.statusEffect.Slow(customMono.stat.actionSlowModifier);
             ToggleAnim(GameManager.Instance.attackBoolHash, true);
             StartCoroutine(actionIE = WaitSpawnArrow(direction));
             StartCoroutine(CooldownCoroutine());
@@ -105,7 +105,7 @@ public class DoubleKill : SkillBase
         customMono.animationEventFunctionCaller.endAttack = false;
         ToggleAnim(GameManager.Instance.attackBoolHash, false);
         customMono.actionBlocking = false;
-        customMono.statusEffect.RemoveSlow(customMono.stat.ActionMoveSpeedReduceRate);
+        customMono.statusEffect.RemoveSlow(customMono.stat.actionSlowModifier);
         customMono.currentAction = null;
     }
 
@@ -126,7 +126,7 @@ public class DoubleKill : SkillBase
     {
         base.ActionInterrupt();
         customMono.actionBlocking = false;
-        customMono.statusEffect.RemoveSlow(customMono.stat.ActionMoveSpeedReduceRate);
+        customMono.statusEffect.RemoveSlow(customMono.stat.actionSlowModifier);
         ToggleAnim(GameManager.Instance.attackBoolHash, false);
         StopCoroutine(actionIE);
         customMono.animationEventFunctionCaller.attack = false;

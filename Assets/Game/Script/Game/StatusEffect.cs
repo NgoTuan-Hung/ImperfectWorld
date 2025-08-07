@@ -66,7 +66,7 @@ public class StatusEffect : CustomMonoPal
 
     public void GetHit(float p_damage)
     {
-        customMono.stat.currentHealthPoint.Value -= p_damage;
+        customMono.stat.currentHealthPoint.Value -= p_damage - customMono.stat.armor.FinalValue;
         if (damageInEffect)
             currentDamageTime = 0;
         else
@@ -224,14 +224,14 @@ public class StatusEffect : CustomMonoPal
         totalPoison = 0;
     }
 
-    public void Slow(float p_slowAmmount)
+    public void Slow(FloatStatModifier p_floatStatModifier)
     {
-        customMono.stat.MoveSpeed -= customMono.stat.DefaultMoveSpeed * p_slowAmmount;
+        customMono.stat.moveSpeed.AddModifier(p_floatStatModifier);
     }
 
-    public void RemoveSlow(float p_slowAmmount)
+    public void RemoveSlow(FloatStatModifier p_floatStatModifier)
     {
-        customMono.stat.MoveSpeed += customMono.stat.DefaultMoveSpeed * p_slowAmmount;
+        customMono.stat.moveSpeed.RemoveModifier(p_floatStatModifier);
     }
 
     public void Slow(SlowInfo p_slowInfo)
@@ -241,10 +241,10 @@ public class StatusEffect : CustomMonoPal
 
     IEnumerator SlowIE(SlowInfo p_slowInfo)
     {
-        customMono.stat.MoveSpeed -= customMono.stat.DefaultMoveSpeed * p_slowInfo.totalSlow;
+        Slow(p_slowInfo.totalSlow);
         yield return new WaitForSeconds(p_slowInfo.slowDuration);
 
-        customMono.stat.MoveSpeed += customMono.stat.DefaultMoveSpeed * p_slowInfo.totalSlow;
+        RemoveSlow(p_slowInfo.totalSlow);
     }
 
     bool CheckEffect(StatusEffectState p_statusEffectState) =>

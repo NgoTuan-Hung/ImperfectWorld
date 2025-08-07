@@ -11,9 +11,9 @@ public class BladeOfMinhKhai : SkillBase
         base.Awake();
         duration = 0.203f;
         cooldown = 5f;
-        damage = defaultDamage = 50f;
         lifeStealPercent = 0.25f;
         successResult = new(true, ActionResultType.Cooldown, cooldown);
+        manaCost = 10f;
         // dashSpeed *= Time.deltaTime;
         // boolhash = ...
 
@@ -59,6 +59,19 @@ public class BladeOfMinhKhai : SkillBase
     public override void Start()
     {
         base.Start();
+        StatChangeRegister();
+    }
+
+    public override void StatChangeRegister()
+    {
+        base.StatChangeRegister();
+        customMono.stat.reflex.finalValueChangeEvent += RecalculateStat;
+    }
+
+    public override void RecalculateStat()
+    {
+        base.RecalculateStat();
+        damage = customMono.stat.reflex.FinalValue * 2f;
     }
 
     public override void WhileWaiting(Vector2 p_location = default, Vector2 p_direction = default)
@@ -68,7 +81,9 @@ public class BladeOfMinhKhai : SkillBase
 
     public override ActionResult Trigger(Vector2 location = default, Vector2 direction = default)
     {
-        if (canUse && !customMono.movementActionBlocking && !customMono.actionBlocking)
+        if (customMono.stat.currentManaPoint.Value < manaCost)
+            return failResult;
+        else if (canUse && !customMono.movementActionBlocking && !customMono.actionBlocking)
         {
             canUse = false;
             customMono.actionBlocking = true;
@@ -77,6 +92,7 @@ public class BladeOfMinhKhai : SkillBase
             StartCoroutine(actionIE = StartDash(direction));
             StartCoroutine(CooldownCoroutine());
             customMono.currentAction = this;
+            customMono.stat.currentManaPoint.Value -= manaCost;
             return successResult;
         }
 

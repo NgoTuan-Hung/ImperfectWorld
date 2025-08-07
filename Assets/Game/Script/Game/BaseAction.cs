@@ -66,9 +66,6 @@ public class BaseAction : MonoEditor
         canUse = true;
     }
 
-    /// <summary>
-    /// Only one child should call this
-    /// </summary>
     public override void Start()
     {
         base.Start();
@@ -124,6 +121,11 @@ public class BaseAction : MonoEditor
     }
 
     public virtual void StatChangeRegister() { }
+
+    /// <summary>
+    /// Should be called when any stat change (might change => more damage for skill, etc.)
+    /// </summary>
+    public virtual void RecalculateStat() { }
 
     public virtual void StopAndDisable()
     {
