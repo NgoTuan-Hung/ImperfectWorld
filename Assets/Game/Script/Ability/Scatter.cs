@@ -57,10 +57,23 @@ public class Scatter : SkillBase
 
     public override void Start()
     {
+        base.Start();
 #if UNITY_EDITOR
         onExitPlayModeEvent += () => arrowAnglesAtPhases = null;
 #endif
-        base.Start();
+        StatChangeRegister();
+    }
+
+    public override void StatChangeRegister()
+    {
+        base.StatChangeRegister();
+        customMono.stat.wisdom.finalValueChangeEvent += RecalculateStat;
+    }
+
+    public override void RecalculateStat()
+    {
+        base.RecalculateStat();
+        damage = customMono.stat.wisdom.FinalValue * 1.5f;
     }
 
     public override void AddActionManuals()

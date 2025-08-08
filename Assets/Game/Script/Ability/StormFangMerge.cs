@@ -10,8 +10,8 @@ public class StormFangMerge : SkillBase
         base.Awake();
         duration = 2f;
         cooldown = 5f;
-        damage = defaultDamage = 2f;
         successResult = new(true, ActionResultType.Cooldown, cooldown);
+        manaCost = 30f;
         // dashSpeed *= Time.deltaTime;
         // boolhash = ...
 
@@ -42,6 +42,19 @@ public class StormFangMerge : SkillBase
     public override void Start()
     {
         base.Start();
+        StatChangeRegister();
+    }
+
+    public override void StatChangeRegister()
+    {
+        base.StatChangeRegister();
+        customMono.stat.reflex.finalValueChangeEvent += RecalculateStat;
+    }
+
+    public override void RecalculateStat()
+    {
+        base.RecalculateStat();
+        damage = customMono.stat.reflex.FinalValue * 0.25f;
     }
 
     public override void WhileWaiting(Vector2 p_location = default, Vector2 p_direction = default)
@@ -51,7 +64,9 @@ public class StormFangMerge : SkillBase
 
     public override ActionResult Trigger(Vector2 location = default, Vector2 direction = default)
     {
-        if (canUse && !customMono.movementActionBlocking && !customMono.actionBlocking)
+        if (customMono.stat.currentManaPoint.Value < manaCost)
+            return failResult;
+        else if (canUse && !customMono.movementActionBlocking && !customMono.actionBlocking)
         {
             canUse = false;
             customMono.actionBlocking = true;
@@ -60,6 +75,7 @@ public class StormFangMerge : SkillBase
             StartCoroutine(actionIE = StartSpinning(direction));
             StartCoroutine(CooldownCoroutine());
             customMono.currentAction = this;
+            customMono.stat.currentManaPoint.Value -= manaCost;
             return successResult;
         }
 

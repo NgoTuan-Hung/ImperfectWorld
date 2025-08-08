@@ -10,10 +10,10 @@ public class DoubleKill : SkillBase
     {
         base.Awake();
         cooldown = 1f;
-        damage = defaultDamage = 10f;
-        poisonInfo = new(5, 10);
+        poisonInfo = new(5, 0);
         slowInfo = new(new(-0.3f, FloatStatModifierType.Multiplicative), 1f);
         successResult = new(true, ActionResultType.Cooldown, cooldown);
+        manaCost = 5f;
         AddActionManuals();
     }
 
@@ -41,6 +41,21 @@ public class DoubleKill : SkillBase
     public override void Start()
     {
         base.Start();
+        StatChangeRegister();
+    }
+
+    public override void StatChangeRegister()
+    {
+        base.StatChangeRegister();
+        customMono.stat.wisdom.finalValueChangeEvent += RecalculateStat;
+    }
+
+    public override void RecalculateStat()
+    {
+        base.RecalculateStat();
+        damage = customMono.stat.wisdom.FinalValue * 1.1f;
+        poisonInfo.poisonDamage = customMono.stat.wisdom.FinalValue * 0.25f;
+        slowInfo.totalSlow.value = -(customMono.stat.wisdom.FinalValue * 0.01f + 0.3f);
     }
 
     public override void WhileWaiting(Vector2 p_location = default, Vector2 p_direction = default)
@@ -50,7 +65,9 @@ public class DoubleKill : SkillBase
 
     public override ActionResult Trigger(Vector2 location = default, Vector2 direction = default)
     {
-        if (canUse && !customMono.actionBlocking)
+        if (customMono.stat.currentManaPoint.Value < manaCost)
+            return failResult;
+        else if (canUse && !customMono.actionBlocking)
         {
             canUse = false;
             customMono.actionBlocking = true;
@@ -59,6 +76,7 @@ public class DoubleKill : SkillBase
             StartCoroutine(actionIE = WaitSpawnArrow(direction));
             StartCoroutine(CooldownCoroutine());
             customMono.currentAction = this;
+            customMono.stat.currentManaPoint.Value -= manaCost;
             return successResult;
         }
 

@@ -9,7 +9,6 @@ public class SteelCyclone : SkillBase
         base.Awake();
         maxAmmo = 16;
         cooldown = 1f;
-        damage = defaultDamage = 5f;
         /* Get sprite list from res */
         successResult = new(true, ActionResultType.Cooldown, cooldown);
         modifiedAngle = (45f / 2).DegToRad();
@@ -40,6 +39,19 @@ public class SteelCyclone : SkillBase
     public override void Start()
     {
         base.Start();
+        StatChangeRegister();
+    }
+
+    public override void StatChangeRegister()
+    {
+        base.StatChangeRegister();
+        customMono.stat.wisdom.finalValueChangeEvent += RecalculateStat;
+    }
+
+    public override void RecalculateStat()
+    {
+        base.RecalculateStat();
+        damage = customMono.stat.wisdom.FinalValue;
     }
 
     public override ActionResult Trigger(Vector2 location = default, Vector2 direction = default)

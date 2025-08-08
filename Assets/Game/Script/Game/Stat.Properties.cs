@@ -6,7 +6,7 @@ using UnityEngine;
 public partial class Stat
 {
     CustomMono customMono;
-    private PoolObject healthBar;
+    private PoolObject healthAndManaIndicatorPO;
     public float actionMoveSpeedReduced;
     public float moveSpeedPerFrame;
 

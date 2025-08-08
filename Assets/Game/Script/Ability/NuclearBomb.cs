@@ -7,8 +7,8 @@ public class NuclearBomb : SkillBase
     {
         base.Awake();
         cooldown = 5f;
-        damage = defaultDamage = 200f;
         successResult = new(true, ActionResultType.Cooldown, cooldown);
+        manaCost = 30f;
         AddActionManuals();
     }
 
@@ -36,6 +36,19 @@ public class NuclearBomb : SkillBase
     public override void Start()
     {
         base.Start();
+        StatChangeRegister();
+    }
+
+    public override void StatChangeRegister()
+    {
+        base.StatChangeRegister();
+        customMono.stat.wisdom.finalValueChangeEvent += RecalculateStat;
+    }
+
+    public override void RecalculateStat()
+    {
+        base.RecalculateStat();
+        damage = customMono.stat.wisdom.FinalValue * 4.25f;
     }
 
     public override void WhileWaiting(Vector2 p_location = default, Vector2 p_direction = default)
@@ -45,7 +58,9 @@ public class NuclearBomb : SkillBase
 
     public override ActionResult Trigger(Vector2 location = default, Vector2 direction = default)
     {
-        if (canUse && !customMono.actionBlocking)
+        if (customMono.stat.currentManaPoint.Value < manaCost)
+            return failResult;
+        else if (canUse && !customMono.actionBlocking)
         {
             canUse = false;
             customMono.actionBlocking = true;
@@ -54,6 +69,7 @@ public class NuclearBomb : SkillBase
             StartCoroutine(actionIE = WaitSpawnExplosion(location));
             StartCoroutine(CooldownCoroutine());
             customMono.currentAction = this;
+            customMono.stat.currentManaPoint.Value -= manaCost;
             return successResult;
         }
 

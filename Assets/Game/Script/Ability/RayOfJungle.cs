@@ -7,8 +7,8 @@ public class RayOfJungle : SkillBase
     {
         base.Awake();
         cooldown = 5f;
-        damage = defaultDamage = 20f;
         successResult = new(true, ActionResultType.Cooldown, cooldown);
+        manaCost = 15f;
         AddActionManuals();
     }
 
@@ -36,11 +36,26 @@ public class RayOfJungle : SkillBase
     public override void Start()
     {
         base.Start();
+        StatChangeRegister();
+    }
+
+    public override void StatChangeRegister()
+    {
+        base.StatChangeRegister();
+        customMono.stat.reflex.finalValueChangeEvent += RecalculateStat;
+    }
+
+    public override void RecalculateStat()
+    {
+        base.RecalculateStat();
+        damage = customMono.stat.reflex.FinalValue * 0.11f;
     }
 
     public override ActionResult Trigger(Vector2 location = default, Vector2 direction = default)
     {
-        if (canUse && !customMono.actionBlocking)
+        if (customMono.stat.currentManaPoint.Value < manaCost)
+            return failResult;
+        else if (canUse && !customMono.actionBlocking)
         {
             canUse = false;
             customMono.actionBlocking = true;
@@ -49,6 +64,7 @@ public class RayOfJungle : SkillBase
             StartCoroutine(actionIE = TriggerIE(location, direction));
             StartCoroutine(CooldownCoroutine());
             customMono.currentAction = this;
+            customMono.stat.currentManaPoint.Value -= manaCost;
             return successResult;
         }
 

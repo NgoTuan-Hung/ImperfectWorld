@@ -52,12 +52,12 @@ public class ObjectPool
             /* Set corresponding cached property based on what component we want to get. */
             switch (poolArgument.componentType)
             {
-                case ComponentType.HealthUIRevamp:
+                case ComponentType.HealthAndManaIndicator:
                     handleCachedComponentRefs += (poolObject) =>
                     {
-                        poolObject.healthUIRevamp =
-                            getComponentInLocation(typeof(HealthUIRevamp), poolObject)
-                            as HealthUIRevamp;
+                        poolObject.healthAndManaIndicator =
+                            getComponentInLocation(typeof(HealthAndManaIndicator), poolObject)
+                            as HealthAndManaIndicator;
                     };
                     break;
                 case ComponentType.GameEffect:

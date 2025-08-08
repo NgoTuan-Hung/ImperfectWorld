@@ -10,13 +10,13 @@ public class MoonSlash : SkillBase
     {
         base.Awake();
         cooldown = 5f;
-        damage = defaultDamage = 30f;
         currentAmmo = 1;
         modifiedAngle = 30f.DegToRad();
         boolHash = Animator.StringToHash("Charge");
         audioClip = Resources.Load<AudioClip>("AudioClip/moon-slash");
         actionWaitInfo.releaseBoolHash = Animator.StringToHash("Release");
         actionWaitInfo.requiredWaitTime = 0.3f;
+        manaCost = 13f;
 
         AddActionManuals();
     }
@@ -30,6 +30,19 @@ public class MoonSlash : SkillBase
     public override void Start()
     {
         base.Start();
+        StatChangeRegister();
+    }
+
+    public override void StatChangeRegister()
+    {
+        base.StatChangeRegister();
+        customMono.stat.might.finalValueChangeEvent += RecalculateStat;
+    }
+
+    public override void RecalculateStat()
+    {
+        base.RecalculateStat();
+        damage = customMono.stat.might.FinalValue * 2.3f;
     }
 
     public override void AddActionManuals()
@@ -55,7 +68,9 @@ public class MoonSlash : SkillBase
 
     public override ActionResult StartAndWait()
     {
-        if (canUse && !customMono.actionBlocking)
+        if (customMono.stat.currentManaPoint.Value < manaCost)
+            return failResult;
+        else if (canUse && !customMono.actionBlocking)
         {
             canUse = false;
             customMono.actionBlocking = true;
@@ -64,6 +79,7 @@ public class MoonSlash : SkillBase
             actionWaitInfo.stillWaiting = true;
             StartCoroutine(actionIE = WaitingCoroutine());
             customMono.currentAction = this;
+            customMono.stat.currentManaPoint.Value -= manaCost;
             return successResult;
         }
 

@@ -17,7 +17,7 @@ public class GameUIManagerRevamp : MonoEditorSingleton<GameUIManagerRevamp>
         characterPartyNodePrefab,
         joystickZone,
         joystickPrefab,
-        healthBarPrefab,
+        healthAndManaIndicatorPrefab,
         worldSpaceCanvas,
         tooltips,
         itemSkillTooltipPrefab,
@@ -26,7 +26,7 @@ public class GameUIManagerRevamp : MonoEditorSingleton<GameUIManagerRevamp>
     public RectTransform partyMenu;
     Dictionary<int, CharacterInfoUI> characterInfoUIDict = new();
     public CustomMono currentActiveCustomMono;
-    ObjectPool healthBarPool;
+    ObjectPool healthAndManaIndicator;
     Vector2 screenTooltipRectSize;
 
     private void Awake()
@@ -38,13 +38,16 @@ public class GameUIManagerRevamp : MonoEditorSingleton<GameUIManagerRevamp>
         });
         characterScreenExitButton.onClick.AddListener(() => characterScreen.SetActive(false));
 
-        healthBarPrefab = Resources.Load("HealthBar") as GameObject;
-        healthBarPool = new(
-            healthBarPrefab,
-            new PoolArgument(ComponentType.HealthUIRevamp, PoolArgument.WhereComponent.Self),
+        healthAndManaIndicatorPrefab = Resources.Load("HealthAndManaIndicator") as GameObject;
+        healthAndManaIndicator = new(
+            healthAndManaIndicatorPrefab,
+            new PoolArgument(
+                ComponentType.HealthAndManaIndicator,
+                PoolArgument.WhereComponent.Self
+            ),
             new PoolArgument(ComponentType.WorldSpaceUI, PoolArgument.WhereComponent.Self)
         );
-        healthBarPool.handleCachedComponentRefs += (p_poolObject) =>
+        healthAndManaIndicator.handleCachedComponentRefs += (p_poolObject) =>
         {
             p_poolObject.gameObject.transform.SetParent(worldSpaceCanvas.transform, false);
         };
@@ -374,10 +377,10 @@ public class GameUIManagerRevamp : MonoEditorSingleton<GameUIManagerRevamp>
         #endregion
     }
 
-    public PoolObject CreateAndHandleRadialProgressFollowing(Transform transform)
+    public PoolObject CreateAndHandleHPAndMPUIWithFollowing(Transform transform)
     {
-        PoolObject healthBarObject = healthBarPool.PickOne();
-        healthBarObject.worldSpaceUI.FollowSlowly(transform);
-        return healthBarObject;
+        PoolObject healthAndManaIndicatorObj = healthAndManaIndicator.PickOne();
+        healthAndManaIndicatorObj.worldSpaceUI.FollowSlowly(transform);
+        return healthAndManaIndicatorObj;
     }
 }

@@ -17,6 +17,7 @@ public class DashSkill : SkillBase
 
         spawnEffectInterval = duration / totalEffect;
         successResult = new(true, ActionResultType.Cooldown, cooldown);
+        manaCost = 15f;
         AddActionManuals();
     }
 

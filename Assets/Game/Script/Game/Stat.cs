@@ -62,7 +62,8 @@ public partial class Stat : MonoEditor, INotifyBindablePropertyChanged
 
     void InitUI()
     {
-        healthBar = GameUIManagerRevamp.Instance.CreateAndHandleRadialProgressFollowing(transform);
+        healthAndManaIndicatorPO =
+            GameUIManagerRevamp.Instance.CreateAndHandleHPAndMPUIWithFollowing(transform);
     }
 
     public void InitProperty()
@@ -77,7 +78,8 @@ public partial class Stat : MonoEditor, INotifyBindablePropertyChanged
 
     void AddPropertyChangeEvent()
     {
-        currentHealthPoint.valueChangeEvent += SetCurrentHPOnUI;
+        currentHealthPoint.valueChangeEvent += SetHPOnUI;
+        currentManaPoint.valueChangeEvent += SetMPOnUI;
         currentHealthPoint.valueChangeEvent += CheckCurrentHPBelowZero;
         healthPoint.finalValueChangeEvent += ChangeCurrentHPCap;
         manaPoint.finalValueChangeEvent += ChangeCurrentMPCap;
@@ -124,18 +126,24 @@ public partial class Stat : MonoEditor, INotifyBindablePropertyChanged
             currentHealthPointReachZeroEvent();
     }
 
-    void SetCurrentHPOnUI()
-    {
-        healthBar.healthUIRevamp.SetHealth(currentHealthPoint.Value / healthPoint.FinalValue);
-    }
+    void SetHPOnUI() =>
+        healthAndManaIndicatorPO.healthAndManaIndicator.SetHealth(
+            currentHealthPoint.Value / healthPoint.FinalValue
+        );
+
+    void SetMPOnUI() =>
+        healthAndManaIndicatorPO.healthAndManaIndicator.SetMana(
+            currentManaPoint.Value / manaPoint.FinalValue
+        );
 
     void HealthReachZeroHandler()
     {
-        currentHealthPoint.valueChangeEvent -= SetCurrentHPOnUI;
+        currentHealthPoint.valueChangeEvent -= SetHPOnUI;
+        currentManaPoint.valueChangeEvent -= SetMPOnUI;
         customMono.AnimatorWrapper.SetBool(dieBoolHash, true);
         customMono.combatCollision.SetActive(false);
-        healthBar.worldSpaceUI.deactivate();
-        healthBar = null;
+        healthAndManaIndicatorPO.worldSpaceUI.deactivate();
+        healthAndManaIndicatorPO = null;
         StopAllCoroutines();
         StartCoroutine(DissolveCoroutine());
     }
@@ -241,7 +249,7 @@ public partial class Stat : MonoEditor, INotifyBindablePropertyChanged
     private void OnValidate()
     {
         // attackSpeed.baseValue = 1;
-        // healthPoint.baseValue = 50;
+        // healthPoint.BaseValue = 20;
         // might.baseValue = 1;
         // reflex.baseValue = 1;
         // wisdom.baseValue = 1;
@@ -257,7 +265,7 @@ public partial class Stat : MonoEditor, INotifyBindablePropertyChanged
     private void Reset()
     {
         // attackSpeed.BaseValue = 1;
-        // healthPoint.BaseValue = 50;
+        // healthPoint.BaseValue = 20;
         // might.BaseValue = 1;
         // reflex.BaseValue = 1;
         // wisdom.BaseValue = 1;

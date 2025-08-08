@@ -3,14 +3,14 @@ using UnityEngine;
 
 public class WoodCry : SkillBase
 {
-    float healAmmount = 50f;
+    float healAmmount;
 
     public override void Awake()
     {
         base.Awake();
         cooldown = 10f;
-        damage = defaultDamage = 10f;
         successResult = new(true, ActionResultType.Cooldown, cooldown);
+        manaCost = 20f;
 
         AddActionManuals();
     }
@@ -29,6 +29,14 @@ public class WoodCry : SkillBase
     public override void StatChangeRegister()
     {
         base.StatChangeRegister();
+        customMono.stat.wisdom.finalValueChangeEvent += RecalculateStat;
+    }
+
+    public override void RecalculateStat()
+    {
+        base.RecalculateStat();
+        damage = customMono.stat.wisdom.FinalValue * 0.15f;
+        healAmmount = customMono.stat.wisdom.FinalValue * 0.07f;
     }
 
     public override void AddActionManuals()
@@ -49,7 +57,9 @@ public class WoodCry : SkillBase
 
     public override ActionResult Trigger(Vector2 location = default, Vector2 direction = default)
     {
-        if (canUse && !customMono.actionBlocking)
+        if (customMono.stat.currentManaPoint.Value < manaCost)
+            return failResult;
+        else if (canUse && !customMono.actionBlocking)
         {
             canUse = false;
             customMono.actionBlocking = true;
@@ -58,6 +68,7 @@ public class WoodCry : SkillBase
             StartCoroutine(actionIE = TriggerCoroutine(location, direction));
             StartCoroutine(CooldownCoroutine());
             customMono.currentAction = this;
+            customMono.stat.currentManaPoint.Value -= manaCost;
             return successResult;
         }
 
