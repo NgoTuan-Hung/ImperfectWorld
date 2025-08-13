@@ -17,8 +17,6 @@ public class MoonSlash : SkillBase
         actionWaitInfo.releaseBoolHash = Animator.StringToHash("Release");
         actionWaitInfo.requiredWaitTime = 0.3f;
         manaCost = 13f;
-
-        AddActionManuals();
     }
 
     public override void OnEnable()

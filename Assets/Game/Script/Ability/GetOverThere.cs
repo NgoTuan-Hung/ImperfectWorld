@@ -8,7 +8,6 @@ public class GetOverThere : SkillBase
         base.Awake();
         cooldown = 5f;
         successResult = new(true, ActionResultType.Cooldown, cooldown);
-        AddActionManuals();
     }
 
     public override void OnEnable()

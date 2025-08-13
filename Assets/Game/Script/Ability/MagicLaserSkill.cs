@@ -11,7 +11,6 @@ public class MagicLaserSkill : SkillBase
         boolHash = Animator.StringToHash("CastingMagic");
         successResult = new(true, ActionResultType.Cooldown, cooldown);
         manaCost = 20f;
-        AddActionManuals();
     }
 
     public override void OnEnable()

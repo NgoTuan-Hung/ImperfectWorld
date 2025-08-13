@@ -45,8 +45,6 @@ public class Scatter : SkillBase
         elasticity = 0;
         vibrato = 10;
         manaCost = 30f;
-
-        AddActionManuals();
     }
 
     public override void OnEnable()

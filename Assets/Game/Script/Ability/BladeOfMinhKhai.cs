@@ -16,8 +16,6 @@ public class BladeOfMinhKhai : SkillBase
         manaCost = 10f;
         // dashSpeed *= Time.deltaTime;
         // boolhash = ...
-
-        AddActionManuals();
     }
 
     public override void OnEnable()

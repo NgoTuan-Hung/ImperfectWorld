@@ -10,8 +10,6 @@ public class Slaughter : SkillBase
         cooldown = defaultCooldown = 1f;
         maxAmmo = 10;
         manaCost = 5f;
-
-        AddActionManuals();
     }
 
     IEnumerator RefillAmmo()

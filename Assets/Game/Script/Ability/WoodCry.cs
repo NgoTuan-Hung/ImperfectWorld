@@ -11,8 +11,6 @@ public class WoodCry : SkillBase
         cooldown = 10f;
         successResult = new(true, ActionResultType.Cooldown, cooldown);
         manaCost = 20f;
-
-        AddActionManuals();
     }
 
     public override void OnEnable()

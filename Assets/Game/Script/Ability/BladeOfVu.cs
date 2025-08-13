@@ -21,7 +21,6 @@ public class BladeOfVu : SkillBase
         spriteList = Resources.Load<SpriteList>("BladeOfVuSpriteList");
         successResult = new(true, ActionResultType.Cooldown, cooldown);
         manaCost = 20f;
-        AddActionManuals();
     }
 
     public override void OnEnable()

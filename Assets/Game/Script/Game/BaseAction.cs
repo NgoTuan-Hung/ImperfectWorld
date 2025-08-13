@@ -161,4 +161,9 @@ public class BaseAction : MonoEditor
     {
         customMono.currentAction = null;
     }
+
+    public virtual void Unlock()
+    {
+        AddActionManuals();
+    }
 }

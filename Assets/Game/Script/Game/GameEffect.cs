@@ -182,7 +182,7 @@ public class GameEffect : MonoSelfAware
         }
 
         transform.localScale = transform.localScale.WithY(
-            p_direction.x > 0 ? transform.localScale.y : -transform.localScale.y
+            p_direction.x > 0 ? Math.Abs(transform.localScale.y) : -Math.Abs(transform.localScale.y)
         );
         p_direction = p_direction.normalized * gameEffectSO.flyAtSpeed;
         float currentTime = 0;

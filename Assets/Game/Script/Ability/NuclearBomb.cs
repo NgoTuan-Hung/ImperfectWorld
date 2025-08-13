@@ -9,7 +9,6 @@ public class NuclearBomb : SkillBase
         cooldown = 5f;
         successResult = new(true, ActionResultType.Cooldown, cooldown);
         manaCost = 30f;
-        AddActionManuals();
     }
 
     public override void OnEnable()

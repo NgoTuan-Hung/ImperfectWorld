@@ -11,7 +11,6 @@ public class DeepBlade : SkillBase
         stunDuration = 1f;
         successResult = new(true, ActionResultType.Cooldown, cooldown);
         manaCost = 10f;
-        AddActionManuals();
     }
 
     public override void OnEnable()

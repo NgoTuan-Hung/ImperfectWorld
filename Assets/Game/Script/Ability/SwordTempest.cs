@@ -13,8 +13,6 @@ public class SwordTempest : SkillBase
         manaCost = 25f;
         // dashSpeed *= Time.deltaTime;
         // boolhash = ...
-
-        AddActionManuals();
     }
 
     public override void OnEnable()

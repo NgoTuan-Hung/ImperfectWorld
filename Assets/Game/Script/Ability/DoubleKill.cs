@@ -14,7 +14,6 @@ public class DoubleKill : SkillBase
         slowInfo = new(new(-0.3f, FloatStatModifierType.Multiplicative), 1f);
         successResult = new(true, ActionResultType.Cooldown, cooldown);
         manaCost = 5f;
-        AddActionManuals();
     }
 
     public override void OnEnable()

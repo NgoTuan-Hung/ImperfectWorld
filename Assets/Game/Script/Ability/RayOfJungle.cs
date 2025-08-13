@@ -9,7 +9,6 @@ public class RayOfJungle : SkillBase
         cooldown = 5f;
         successResult = new(true, ActionResultType.Cooldown, cooldown);
         manaCost = 15f;
-        AddActionManuals();
     }
 
     public override void OnEnable()

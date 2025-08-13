@@ -25,8 +25,6 @@ public class AirRollSkill : SkillBase
         landBoolHash = Animator.StringToHash("Land");
         audioClip = Resources.Load<AudioClip>("AudioClip/air-roll-landing");
         cooldown = 0f;
-
-        AddActionManuals();
     }
 
     public override void OnEnable()

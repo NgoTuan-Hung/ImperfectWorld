@@ -12,7 +12,6 @@ public class SteelCyclone : SkillBase
         /* Get sprite list from res */
         successResult = new(true, ActionResultType.Cooldown, cooldown);
         modifiedAngle = (45f / 2).DegToRad();
-        AddActionManuals();
     }
 
     public override void OnEnable()

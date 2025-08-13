@@ -11,19 +11,22 @@ public partial class GameManager : MonoSingleton<GameManager>
     public readonly int attackButtonIndex = 0;
     Dictionary<int, CustomMono> customMonos = new();
     List<CustomMono> playerAllies = new();
-    int wave = 0;
+    public int currentSpawn = 0;
+    public float maxSpawn = 3;
+    public float spawnInterval = 1f;
+    int round = 0;
     public List<SpawnEnemyInfo> spawnEnemyInfos = new();
     public List<int> spawnChances = new();
     public List<float> spawnCumulativeDistribution = new();
     List<ObjectPool> spawnObjectPools = new();
-    float rand;
-    SpawnEnemyInfo pickedSpawnEnemyInfo;
-    int pickedSpawnEnemyIndex = 0;
-    bool newWave = false;
-    public float waveInterval = 30f;
+    Dictionary<CustomMono, SpawnedPawnInfo> spawnedPawnsThisRound = new();
+    ObjectPool pickedObjectPool;
+    int rand;
+    bool newRound = false;
+    public float nextRoundInterval = 5f;
     public SpriteRenderer spawnRangeObject;
     Stopwatch stopwatch = new();
-    public float waveDuration = 60f;
+    public float roundDuration = 15f;
     public new Camera camera;
     public CinemachineCamera cinemachineCamera;
     public Dictionary<GameEffectSO, ObjectPool> poolLink = new();
@@ -33,6 +36,7 @@ public partial class GameManager : MonoSingleton<GameManager>
         mainSkill3BoolHash = Animator.StringToHash("MainSkill3"),
         mainSkill2BlendHash = Animator.StringToHash("MainSkill2Blend");
     public Dictionary<int, GameObject> colliderOwner = new();
+    IEnumerator roundTimerCountDownIE;
 
     public void InitializeControllableCharacter(CustomMono p_customMono)
     {
@@ -77,9 +81,6 @@ public partial class GameManager : MonoSingleton<GameManager>
                     new PoolArgument(ComponentType.CustomMono, PoolArgument.WhereComponent.Self)
                 )
             );
-
-            spawnChances.Add(0);
-            spawnCumulativeDistribution.Add(0);
         }
 
         InitAllEffectPools();
@@ -101,88 +102,125 @@ public partial class GameManager : MonoSingleton<GameManager>
             spawnObjectPools[i].handleCachedComponentRefs += (p_poolObject) =>
             {
                 p_poolObject.customMono.stat.currentHealthPointReachZeroEvent += () =>
-                    t_spawnEnemyInfo.currentSpawn--;
+                    PawnDeathHandler(p_poolObject.customMono);
             };
         }
 
-        stopwatch.Restart();
-        NewWavePreparation();
-        StartCoroutine(HandleWave());
+        InitRound();
     }
 
-    IEnumerator HandleWave()
+    void InitRound()
+    {
+        roundTimerCountDownIE = RoundTimerCountdown();
+        stopwatch.Restart();
+        StartCoroutine(roundTimerCountDownIE);
+        StartCoroutine(HandleRound());
+    }
+
+    IEnumerator HandleRound()
     {
         while (true)
         {
-            if (newWave)
+            if (newRound)
             {
-                newWave = false;
-                wave++;
-                NewWavePreparation();
-                yield return new WaitForSeconds(waveInterval);
+                newRound = false;
+                round++;
 
-                stopwatch.Restart();
+                HandleEndRound();
+                StopCoroutine(roundTimerCountDownIE);
+                yield return NewRoundIE();
+                StartCoroutine(roundTimerCountDownIE);
             }
 
-            rand = Random.Range(0, 1f);
-            pickedSpawnEnemyIndex = spawnCumulativeDistribution.CumulativeDistributionBinarySearch(
-                0,
-                spawnCumulativeDistribution.Count - 1,
-                rand
-            );
-            pickedSpawnEnemyInfo = spawnEnemyInfos[pickedSpawnEnemyIndex];
+            rand = Random.Range(0, spawnObjectPools.Count);
+            pickedObjectPool = spawnObjectPools[rand];
 
-            if (pickedSpawnEnemyInfo.currentSpawn < pickedSpawnEnemyInfo.maxSpawnCount)
+            if (currentSpawn < (int)maxSpawn)
             {
-                CustomMono customMono = spawnObjectPools[pickedSpawnEnemyIndex]
-                    .PickOne()
-                    .customMono;
-                customMono.transform.position = new Vector3(
+                CustomMono p_customMono = pickedObjectPool.PickOne().customMono;
+                p_customMono.transform.position = new Vector3(
                     Random.Range(spawnRangeObject.bounds.min.x, spawnRangeObject.bounds.max.x),
                     Random.Range(spawnRangeObject.bounds.min.y, spawnRangeObject.bounds.max.y)
                 );
+                HandlePawnStatThisRound(p_customMono);
 
-                pickedSpawnEnemyInfo.currentSpawn++;
+                currentSpawn++;
 
-                yield return new WaitForSeconds(pickedSpawnEnemyInfo.spawnInterval);
+                if (spawnedPawnsThisRound.TryGetValue(p_customMono, out var t_spawnedPawnInfo))
+                {
+                    t_spawnedPawnInfo.alive = true;
+                }
+                else
+                    spawnedPawnsThisRound.Add(p_customMono, new(p_customMono));
+
+                yield return new WaitForSeconds(spawnInterval);
             }
             else
                 yield return new WaitForSeconds(Time.fixedDeltaTime);
 
-            if (stopwatch.Elapsed.TotalSeconds > waveDuration)
-                newWave = true;
+            if (stopwatch.Elapsed.TotalSeconds > roundDuration)
+                newRound = true;
         }
     }
 
-    void NewWavePreparation()
-    {
-        for (int i = 0; i < spawnEnemyInfos.Count; i++)
-        {
-            spawnEnemyInfos[i].currentSpawn = 0;
+    BasicSpawnSchemeEnemyStat basicSpawnSchemeEnemyStat = new();
 
-            switch (spawnEnemyInfos[i].spawnType)
-            {
-                case SpawnType.Forever:
-                    spawnChances[i] = spawnEnemyInfos[i].spawnChance;
-                    break;
-                default:
-                    break;
-            }
+    private void HandleEndRound()
+    {
+        foreach (var pawn in spawnedPawnsThisRound.Values)
+        {
+            if (pawn.alive)
+                pawn.customMono.stat.currentHealthPoint.Value = 0;
         }
 
-        CalculateSpawnCumulativeDistribution();
+        currentSpawn = 0;
+        spawnedPawnsThisRound.Clear();
+
+        basicSpawnSchemeEnemyStat.currentMight += 0.5f;
+        basicSpawnSchemeEnemyStat.currentReflex += 0.5f;
+        basicSpawnSchemeEnemyStat.currentWisdom += 0.5f;
+        basicSpawnSchemeEnemyStat.currentMoveSpeed += 0.5f;
     }
 
-    void CalculateSpawnCumulativeDistribution()
+    void HandlePawnStatThisRound(CustomMono p_customMono)
     {
-        float t_total = spawnChances.Sum();
+        p_customMono.stat.might.BaseValue = basicSpawnSchemeEnemyStat.currentMight;
+        p_customMono.stat.reflex.BaseValue = basicSpawnSchemeEnemyStat.currentReflex;
+        p_customMono.stat.wisdom.BaseValue = basicSpawnSchemeEnemyStat.currentWisdom;
+        p_customMono.stat.moveSpeed.BaseValue = basicSpawnSchemeEnemyStat.currentMoveSpeed;
+    }
 
-        spawnCumulativeDistribution[0] = spawnChances[0] / t_total;
-        for (int i = 1; i < spawnCumulativeDistribution.Count; i++)
+    void PawnDeathHandler(CustomMono p_customMono)
+    {
+        currentSpawn--;
+        spawnedPawnsThisRound[p_customMono].alive = false;
+    }
+
+    IEnumerator RoundTimerCountdown()
+    {
+        while (true)
         {
-            spawnCumulativeDistribution[i] =
-                spawnCumulativeDistribution[i - 1] + spawnChances[i] / t_total;
+            GameUIManagerRevamp.Instance.roundTimer.text = (
+                (int)(roundDuration - stopwatch.Elapsed.TotalSeconds)
+            ).ToString();
+            yield return new WaitForSeconds(Time.fixedDeltaTime);
         }
+    }
+
+    IEnumerator NewRoundIE()
+    {
+        GameUIManagerRevamp.Instance.roundText.text = "NEXT ROUND IN";
+        stopwatch.Restart();
+        while (stopwatch.Elapsed.TotalSeconds < nextRoundInterval)
+        {
+            GameUIManagerRevamp.Instance.roundTimer.text = (
+                (int)(nextRoundInterval - stopwatch.Elapsed.TotalSeconds)
+            ).ToString();
+            yield return null;
+        }
+
+        GameUIManagerRevamp.Instance.roundText.text = "ROUND " + round;
+        stopwatch.Restart();
     }
 
     public void AddCustomMono(CustomMono customMono)

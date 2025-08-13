@@ -122,9 +122,18 @@ public partial class Stat : MonoEditor, INotifyBindablePropertyChanged
 
     void CheckCurrentHPBelowZero()
     {
-        if (currentHealthPoint.Value < 0)
+        if (currentHealthPoint.Value <= 0)
             currentHealthPointReachZeroEvent();
     }
+
+#if false
+        AddPropChange
+            currentHealthPoint.valueChangeEvent += SetHPOnUI;
+            currentManaPoint.valueChangeEvent += SetMPOnUI;
+            currentHealthPoint.valueChangeEvent += CheckCurrentHPBelowZero;
+
+        
+#endif
 
     void SetHPOnUI() =>
         healthAndManaIndicatorPO.healthAndManaIndicator.SetHealth(
@@ -138,14 +147,15 @@ public partial class Stat : MonoEditor, INotifyBindablePropertyChanged
 
     void HealthReachZeroHandler()
     {
-        currentHealthPoint.valueChangeEvent -= SetHPOnUI;
-        currentManaPoint.valueChangeEvent -= SetMPOnUI;
-        customMono.AnimatorWrapper.SetBool(dieBoolHash, true);
-        customMono.combatCollision.SetActive(false);
-        healthAndManaIndicatorPO.worldSpaceUI.deactivate();
-        healthAndManaIndicatorPO = null;
-        StopAllCoroutines();
-        StartCoroutine(DissolveCoroutine());
+        if (currentHealthPoint.Value <= 0)
+        {
+            customMono.AnimatorWrapper.SetBool(dieBoolHash, true);
+            customMono.combatCollision.SetActive(false);
+            healthAndManaIndicatorPO.worldSpaceUI.deactivate();
+            healthAndManaIndicatorPO = null;
+            StopAllCoroutines();
+            StartCoroutine(DissolveCoroutine());
+        }
     }
 
     void ChangeCurrentHPCap() => currentHealthPoint.cap = healthPoint.FinalValue;

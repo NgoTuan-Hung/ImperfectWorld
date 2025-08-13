@@ -14,8 +14,6 @@ public class StormFangMerge : SkillBase
         manaCost = 30f;
         // dashSpeed *= Time.deltaTime;
         // boolhash = ...
-
-        AddActionManuals();
     }
 
     public override void OnEnable()

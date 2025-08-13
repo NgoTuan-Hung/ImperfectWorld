@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3092021381188236074}
   - component: {fileID: 2784137046529488015}
+  - component: {fileID: 345384229882720334}
   m_Layer: 7
   m_Name: CircleCollider2D
   m_TagString: Untagged
@@ -68,6 +69,28 @@ CircleCollider2D:
   m_CompositeOrder: 0
   m_Offset: {x: 0, y: 0}
   m_Radius: 2.1400003
+--- !u!95 &345384229882720334
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 549382834181799250}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 0}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &1248790974748057265
 GameObject:
   m_ObjectHideFlags: 0
@@ -280,7 +303,7 @@ PlayableDirector:
   m_InitialTime: 0
   m_SceneBindings:
   - key: {fileID: -4517490004894248937, guid: 578e143ab647d884186db72fc768dddd, type: 2}
-    value: {fileID: 3593065570005592893}
+    value: {fileID: 345384229882720334}
   - key: {fileID: 1973955819892523214, guid: 578e143ab647d884186db72fc768dddd, type: 2}
     value: {fileID: 9084826914316997242}
   m_ExposedReferences:

@@ -15,7 +15,7 @@ public class HealthAndManaIndicator : MonoBehaviour
 
     public void SetHealth(float p_progress)
     {
-        healthImage.color = Color.Lerp(Color.green, Color.red, p_progress);
+        healthImage.color = Color.Lerp(Color.red, Color.green, p_progress);
         healthImage.fillAmount = p_progress;
     }
 
@@ -24,7 +24,7 @@ public class HealthAndManaIndicator : MonoBehaviour
 
     public void SetMana(float p_progress)
     {
-        manaImage.color = Color.Lerp(manaMax, manaMin, p_progress);
+        manaImage.color = Color.Lerp(manaMin, manaMax, p_progress);
         manaImage.fillAmount = p_progress;
     }
 }

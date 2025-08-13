@@ -18,7 +18,7 @@ public enum AttackType
     Ranged,
 }
 
-public class CustomMono : MonoSelfAware, IComparable<CustomMono>
+public class CustomMono : MonoSelfAware
 {
     public CharUIData charUIData;
     public bool isControllable = true;
@@ -217,11 +217,6 @@ public class CustomMono : MonoSelfAware, IComparable<CustomMono>
     {
         multipleCollideTimersList.Add(new MultipleCollideTimer(time));
         multipleCollideTimersDict.Add(key, multipleCollideTimersList[^1]);
-    }
-
-    public int CompareTo(CustomMono other)
-    {
-        return gameObject.GetHashCode().CompareTo(other.gameObject.GetHashCode());
     }
 
     /// <summary>

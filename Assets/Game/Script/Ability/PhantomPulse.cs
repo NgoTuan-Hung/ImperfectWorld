@@ -17,7 +17,6 @@ public class PhantomPulse : SkillBase
         modifiedAngle = 1f / (maxAmmo - 1);
         successResult = new(true, ActionResultType.Cooldown, cooldown);
         manaCost = 10f;
-        AddActionManuals();
     }
 
     public override void OnEnable()

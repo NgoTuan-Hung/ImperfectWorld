@@ -12,7 +12,6 @@ public class InfernalTide : SkillBase
         interval = 0.1f;
         successResult = new(true, ActionResultType.Cooldown, cooldown);
         manaCost = 30f;
-        AddActionManuals();
     }
 
     public override void OnEnable()

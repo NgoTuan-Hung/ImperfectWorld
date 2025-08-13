@@ -30,7 +30,6 @@ public class PierceStrike : SkillBase
         );
         successResult = new(true, ActionResultType.Cooldown, cooldown);
         manaCost = 20f;
-        AddActionManuals();
     }
 
     public override void OnEnable()
