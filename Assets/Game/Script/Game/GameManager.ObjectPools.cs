@@ -53,7 +53,12 @@ public partial class GameManager
         stormFangMergeBladesPool,
         stormFangMergeProgressPool,
         kunaiPool,
-        kunaiHitPool;
+        kunaiHitPool,
+        arcaneSwarmSlash1Pool,
+        arcaneSwarmSlash2Pool,
+        arcaneSwarmSlash3Pool,
+        arcaneSwarmSlash4Pool,
+        arcaneSwarmSlash5Pool;
 
     void InitAllEffectPools()
     {
@@ -274,6 +279,26 @@ public partial class GameManager
             kunaiHit,
             new PoolArgument(ComponentType.GameEffect, PoolArgument.WhereComponent.Self)
         );
+        arcaneSwarmSlash1Pool = new(
+            arcaneSwarmSlash1,
+            new PoolArgument(ComponentType.GameEffect, PoolArgument.WhereComponent.Self)
+        );
+        arcaneSwarmSlash2Pool = new(
+            arcaneSwarmSlash2,
+            new PoolArgument(ComponentType.GameEffect, PoolArgument.WhereComponent.Self)
+        );
+        arcaneSwarmSlash3Pool = new(
+            arcaneSwarmSlash3,
+            new PoolArgument(ComponentType.GameEffect, PoolArgument.WhereComponent.Self)
+        );
+        arcaneSwarmSlash4Pool = new(
+            arcaneSwarmSlash4,
+            new PoolArgument(ComponentType.GameEffect, PoolArgument.WhereComponent.Self)
+        );
+        arcaneSwarmSlash5Pool = new(
+            arcaneSwarmSlash5,
+            new PoolArgument(ComponentType.GameEffect, PoolArgument.WhereComponent.Self)
+        );
         LinkPoolWithScriptableObject();
     }
 
@@ -411,5 +436,25 @@ public partial class GameManager
         );
         poolLink.Add(kunai.GetComponent<GameEffect>().gameEffectSO, kunaiPool);
         poolLink.Add(kunaiHit.GetComponent<GameEffect>().gameEffectSO, kunaiHitPool);
+        poolLink.Add(
+            arcaneSwarmSlash1.GetComponent<GameEffect>().gameEffectSO,
+            arcaneSwarmSlash1Pool
+        );
+        poolLink.Add(
+            arcaneSwarmSlash2.GetComponent<GameEffect>().gameEffectSO,
+            arcaneSwarmSlash2Pool
+        );
+        poolLink.Add(
+            arcaneSwarmSlash3.GetComponent<GameEffect>().gameEffectSO,
+            arcaneSwarmSlash3Pool
+        );
+        poolLink.Add(
+            arcaneSwarmSlash4.GetComponent<GameEffect>().gameEffectSO,
+            arcaneSwarmSlash4Pool
+        );
+        poolLink.Add(
+            arcaneSwarmSlash5.GetComponent<GameEffect>().gameEffectSO,
+            arcaneSwarmSlash5Pool
+        );
     }
 }

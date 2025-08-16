@@ -55,7 +55,12 @@ public partial class GameManager
         stormFangMergeBlades,
         stormFangMergeProgress,
         kunai,
-        kunaiHit;
+        kunaiHit,
+        arcaneSwarmSlash1,
+        arcaneSwarmSlash2,
+        arcaneSwarmSlash3,
+        arcaneSwarmSlash4,
+        arcaneSwarmSlash5;
 
     void LoadGameEffectPrefabs()
     {
@@ -119,5 +124,10 @@ public partial class GameManager
         stormFangMergeProgress = Resources.Load<GameObject>("StormFangMergeProgress");
         kunai = Resources.Load<GameObject>("Kunai");
         kunaiHit = Resources.Load<GameObject>("KunaiHit");
+        arcaneSwarmSlash1 = Resources.Load<GameObject>("ArcaneSwarmSlash1");
+        arcaneSwarmSlash2 = Resources.Load<GameObject>("ArcaneSwarmSlash2");
+        arcaneSwarmSlash3 = Resources.Load<GameObject>("ArcaneSwarmSlash3");
+        arcaneSwarmSlash4 = Resources.Load<GameObject>("ArcaneSwarmSlash4");
+        arcaneSwarmSlash5 = Resources.Load<GameObject>("ArcaneSwarmSlash5");
     }
 }
