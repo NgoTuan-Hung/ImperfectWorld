@@ -205,4 +205,20 @@ public class GameEffect : MonoSelfAware
             yield return new WaitForSeconds(Time.fixedDeltaTime);
         }
     }
+
+    public void PlaceAndLookAt(Vector3 p_position, Vector3 p_lookDir)
+    {
+        transform.SetPositionAndRotation(
+            p_position,
+            Quaternion.Euler(
+                transform.rotation.eulerAngles.WithZ(Vector2.SignedAngle(Vector2.right, p_lookDir))
+            )
+        );
+        animateObjects[0].transform.localScale = animateObjects[0]
+            .transform.localScale.WithY(
+                p_lookDir.x > 0
+                    ? Math.Abs(animateObjects[0].transform.localScale.y)
+                    : -Math.Abs(animateObjects[0].transform.localScale.y)
+            );
+    }
 }

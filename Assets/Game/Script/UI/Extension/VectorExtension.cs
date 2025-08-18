@@ -14,6 +14,16 @@ public static class VectorExtension
         );
     }
 
+    public static Vector2 WithY(this Vector2 vector2, float y)
+    {
+        return new Vector2(vector2.x, y);
+    }
+
+    public static Vector2 WithX(this Vector2 vector2, float x)
+    {
+        return new Vector2(x, vector2.y);
+    }
+
     public static Vector3 WithY(this Vector3 vector3, float y)
     {
         return new Vector3(vector3.x, y, vector3.z);
@@ -35,6 +45,9 @@ public static class VectorExtension
     }
 
     public static Vector3 AsVector3(this Vector2 vector2) => (Vector3)vector2;
+
+    public static Vector3 Mul(this Vector3 source, Vector3 dest) =>
+        new(source.x * dest.x, source.y * dest.y, source.z * dest.z);
 
     public static Vector4 WithW(this Vector4 vector, float w) =>
         new Vector4(vector.x, vector.y, vector.z, w);

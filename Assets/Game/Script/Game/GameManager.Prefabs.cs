@@ -60,7 +60,8 @@ public partial class GameManager
         arcaneSwarmSlash2,
         arcaneSwarmSlash3,
         arcaneSwarmSlash4,
-        arcaneSwarmSlash5;
+        arcaneSwarmSlash5,
+        orbitalNemesisDash;
 
     void LoadGameEffectPrefabs()
     {
@@ -129,5 +130,6 @@ public partial class GameManager
         arcaneSwarmSlash3 = Resources.Load<GameObject>("ArcaneSwarmSlash3");
         arcaneSwarmSlash4 = Resources.Load<GameObject>("ArcaneSwarmSlash4");
         arcaneSwarmSlash5 = Resources.Load<GameObject>("ArcaneSwarmSlash5");
+        orbitalNemesisDash = Resources.Load<GameObject>("OrbitalNemesisDash");
     }
 }

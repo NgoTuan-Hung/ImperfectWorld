@@ -34,7 +34,8 @@ public partial class GameManager : MonoSingleton<GameManager>
         mainSkill1BoolHash = Animator.StringToHash("MainSkill1"),
         mainSkill2BoolHash = Animator.StringToHash("MainSkill2"),
         mainSkill3BoolHash = Animator.StringToHash("MainSkill3"),
-        mainSkill2BlendHash = Animator.StringToHash("MainSkill2Blend");
+        mainSkill2BlendHash = Animator.StringToHash("MainSkill2Blend"),
+        mainSkill2TriggerHash = Animator.StringToHash("MainSkill2Trigger");
     public Dictionary<int, GameObject> colliderOwner = new();
     IEnumerator roundTimerCountDownIE;
 
