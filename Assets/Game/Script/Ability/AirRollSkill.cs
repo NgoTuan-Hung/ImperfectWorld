@@ -133,6 +133,5 @@ public class AirRollSkill : SkillBase
         customMono.movementActionBlocking = false;
         ToggleAnim(boolHash, false);
         StopCoroutine(actionIE);
-        customMono.currentAction = null;
     }
 }

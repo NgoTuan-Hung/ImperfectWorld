@@ -139,6 +139,5 @@ public class TheCallOfThePack : SkillBase
         customMono.animationEventFunctionCaller.summon = false;
         customMono.animationEventFunctionCaller.endSummon = false;
         StopCoroutine(actionIE);
-        customMono.currentAction = null;
     }
 }

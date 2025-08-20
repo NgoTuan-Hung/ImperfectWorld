@@ -24,6 +24,7 @@ public partial class Stat : MonoEditor, INotifyBindablePropertyChanged
     private void OnEnable()
     {
         onEnable();
+        ReviveHandler();
     }
 
     private void OnDisable()
@@ -39,6 +40,7 @@ public partial class Stat : MonoEditor, INotifyBindablePropertyChanged
     {
         InitUI();
         StartCoroutine(LateStart());
+        StartCoroutine(AddLatePropertyChangeEvent());
         onEnable += () =>
         {
             InitUI();
@@ -52,6 +54,29 @@ public partial class Stat : MonoEditor, INotifyBindablePropertyChanged
         InitProperty();
         ResetStat();
         StartRegen();
+    }
+
+    /// <summary>
+    /// Since we cripple the entity on death, we need to
+    /// reset it state when it's re initialized.
+    /// </summary>
+    public void ReviveHandler()
+    {
+        customMono.actionBlocking = false;
+        customMono.actionInterval = false;
+        customMono.movementActionInterval = false;
+        customMono.movementActionBlocking = false;
+    }
+
+    /// <summary>
+    /// HealthReachZeroHandler should run after other registered events
+    /// in BaseAction.
+    /// </summary>
+    /// <returns></returns>
+    IEnumerator AddLatePropertyChangeEvent()
+    {
+        yield return null;
+        currentHealthPointReachZeroEvent += HealthReachZeroHandler;
     }
 
     void ResetStat()
@@ -83,8 +108,6 @@ public partial class Stat : MonoEditor, INotifyBindablePropertyChanged
         currentHealthPoint.valueChangeEvent += CheckCurrentHPBelowZero;
         healthPoint.finalValueChangeEvent += ChangeCurrentHPCap;
         manaPoint.finalValueChangeEvent += ChangeCurrentMPCap;
-
-        currentHealthPointReachZeroEvent += HealthReachZeroHandler;
 
         might.referenceModifiers = new List<FloatStatModifier>()
         {
@@ -126,15 +149,6 @@ public partial class Stat : MonoEditor, INotifyBindablePropertyChanged
             currentHealthPointReachZeroEvent();
     }
 
-#if false
-        AddPropChange
-            currentHealthPoint.valueChangeEvent += SetHPOnUI;
-            currentManaPoint.valueChangeEvent += SetMPOnUI;
-            currentHealthPoint.valueChangeEvent += CheckCurrentHPBelowZero;
-
-        
-#endif
-
     void SetHPOnUI() =>
         healthAndManaIndicatorPO.healthAndManaIndicator.SetHealth(
             currentHealthPoint.Value / healthPoint.FinalValue
@@ -149,6 +163,8 @@ public partial class Stat : MonoEditor, INotifyBindablePropertyChanged
     {
         if (currentHealthPoint.Value <= 0)
         {
+            customMono.actionBlocking = true;
+            customMono.movementActionBlocking = true;
             customMono.AnimatorWrapper.SetBool(dieBoolHash, true);
             customMono.combatCollision.SetActive(false);
             healthAndManaIndicatorPO.worldSpaceUI.deactivate();

@@ -157,6 +157,5 @@ public class BladeOfVu : SkillBase
         customMono.movementActionBlocking = false;
         ToggleAnim(GameManager.Instance.mainSkill3BoolHash, false);
         StopCoroutine(actionIE);
-        customMono.currentAction = null;
     }
 }

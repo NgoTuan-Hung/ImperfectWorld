@@ -18,6 +18,7 @@ public enum AttackType
     Ranged,
 }
 
+[RequireComponent(typeof(BotSensor))]
 public class CustomMono : MonoSelfAware
 {
     public CharUIData charUIData;
@@ -31,6 +32,7 @@ public class CustomMono : MonoSelfAware
     public MovementIntelligence movementIntelligence;
     public ActionIntelligence actionIntelligence;
     public MyBotPersonality myBotPersonality;
+    public BotSensor botSensor;
     public Stat stat;
     GameObject directionIndicator;
     float directionIndicatorAngle;
@@ -67,7 +69,6 @@ public class CustomMono : MonoSelfAware
     public GameObject fieldOfView,
         combatCollision,
         firePoint;
-    public List<CustomMono> enemiesWeSee = new();
     public BoxCollider2D boxCollider2D,
         combatCollider2D;
     float boxColliderDefaultXSize,
@@ -76,11 +77,7 @@ public class CustomMono : MonoSelfAware
     Vector2 combatCollisionDefaultSize,
         combatCollisionDefaultOffset;
     public AudioSource audioSource;
-    public Action<CustomMono> someOneExitView = (person) => { };
-    float currentNearestEnemySqrDistance = Mathf.Infinity;
-    public CustomMono currentNearestEnemy = null;
     public new Rigidbody2D rigidbody2D;
-    public Action<CustomMono> nearestEnemyChanged = (person) => { };
     public Action startPhase1 = () => { };
     public AudioClip attackAudioClip;
     public GameEffectSO meleeCollisionEffectSO,
@@ -111,10 +108,6 @@ public class CustomMono : MonoSelfAware
 
     private void OnEnable()
     {
-        actionBlocking = false;
-        actionInterval = false;
-        movementActionInterval = false;
-        movementActionBlocking = false;
         combatCollision.SetActive(true);
     }
 
@@ -130,6 +123,7 @@ public class CustomMono : MonoSelfAware
         rigidbody2D = GetComponent<Rigidbody2D>();
         statusEffect = GetComponent<StatusEffect>();
         skill = GetComponent<Skill>();
+        botSensor = GetComponent<BotSensor>();
 
         /* Bot components */
         movementIntelligence = GetComponent<MovementIntelligence>();
@@ -261,74 +255,6 @@ public class CustomMono : MonoSelfAware
 
         for (int i = 0; i < updateDirectionIndicatorQueue.Length; i++)
             updateDirectionIndicatorQueue[i] = Vector2.zero;
-    }
-
-    private void OnTriggerEnter2D(Collider2D other)
-    {
-        if (
-            (onTriggerCM = GameManager.Instance.GetCustomMono(other.transform.parent.gameObject))
-            != null
-        )
-        {
-            /* if we see a new enemy, remember him. */
-            if (!allyTags.Contains(onTriggerCM.tag))
-                enemiesWeSee.Add(onTriggerCM);
-        }
-    }
-
-    CustomMono onTriggerCM;
-
-    private void OnTriggerExit2D(Collider2D other)
-    {
-        if (
-            (onTriggerCM = GameManager.Instance.GetCustomMono(other.transform.parent.gameObject))
-            != null
-        )
-        {
-            someOneExitView(onTriggerCM);
-
-            /* Check if we saw this enemy before. If we did, erase him. */
-            if (enemiesWeSee.Contains(onTriggerCM))
-            {
-                enemiesWeSee.Remove(onTriggerCM);
-
-                /* If the current nearest enemy is this one, erase it as well. */
-                if (onTriggerCM.Equals(currentNearestEnemy))
-                {
-                    currentNearestEnemy = null;
-                    currentNearestEnemySqrDistance = float.MaxValue;
-                }
-            }
-        }
-    }
-
-    private void OnTriggerStay2D(Collider2D other)
-    {
-        if (
-            (onTriggerCM = GameManager.Instance.GetCustomMono(other.transform.parent.gameObject))
-            != null
-        )
-        {
-            if (!allyTags.Contains(onTriggerCM.transform.tag))
-            {
-                /* We can compare squared distance instead of distance because it's faster yet
-                still gives the same result. */
-                float t_enemySqrDistance = (
-                    transform.position - onTriggerCM.transform.position
-                ).sqrMagnitude;
-
-                /* if we see a closer enemy, put him as the nearest. Else, update the distance of
-                the nearest enemy instead. */
-                if (t_enemySqrDistance < currentNearestEnemySqrDistance)
-                {
-                    currentNearestEnemySqrDistance = t_enemySqrDistance;
-                    currentNearestEnemy = onTriggerCM;
-                    nearestEnemyChanged(currentNearestEnemy);
-                }
-                else if (onTriggerCM.Equals(currentNearestEnemy))
-                    currentNearestEnemySqrDistance = t_enemySqrDistance;
-            }
-        }
     }
 
     private void OnDestroy()

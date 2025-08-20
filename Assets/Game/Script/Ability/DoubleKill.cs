@@ -148,6 +148,5 @@ public class DoubleKill : SkillBase
         StopCoroutine(actionIE);
         customMono.animationEventFunctionCaller.attack = false;
         customMono.animationEventFunctionCaller.endAttack = false;
-        customMono.currentAction = null;
     }
 }

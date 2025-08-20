@@ -169,6 +169,5 @@ public class InfernalTide : SkillBase
         StopCoroutine(actionIE);
         customMono.animationEventFunctionCaller.mainSkill3Signal = false;
         customMono.animationEventFunctionCaller.endMainSkill3 = false;
-        customMono.currentAction = null;
     }
 }

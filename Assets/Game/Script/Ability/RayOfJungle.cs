@@ -138,6 +138,5 @@ public class RayOfJungle : SkillBase
         customMono.animationEventFunctionCaller.mainSkill1Signal = false;
         customMono.animationEventFunctionCaller.endMainSkill1 = false;
         customMono.statusEffect.RemoveSlow(customMono.stat.actionSlowModifier);
-        customMono.currentAction = null;
     }
 }

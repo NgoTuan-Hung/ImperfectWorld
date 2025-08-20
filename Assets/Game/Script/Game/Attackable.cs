@@ -58,28 +58,6 @@ public class Attackable : SkillBase
     public override void AddActionManuals()
     {
         base.AddActionManuals();
-        botActionManuals.Add(
-            new BotActionManual(
-                ActionUse.Passive,
-                (p_doActionParamInfo) =>
-                    Idle(
-                        p_doActionParamInfo.centerToTargetCenterDirection,
-                        p_doActionParamInfo.nextActionChoosingIntervalProposal
-                    ),
-                new(nextActionChoosingIntervalProposal: 0.5f)
-            )
-        );
-        botActionManuals.Add(
-            new(
-                ActionUse.Roam,
-                (p_doActionParamInfo) =>
-                    Idle(
-                        p_doActionParamInfo.centerToTargetCenterDirection,
-                        p_doActionParamInfo.nextActionChoosingIntervalProposal
-                    ),
-                new(nextActionChoosingIntervalProposal: 1)
-            )
-        );
     }
 
     public override void Start()
@@ -102,10 +80,6 @@ public class Attackable : SkillBase
             );
             cooldown = defaultCooldown / customMono.stat.attackSpeed.FinalValue;
             botActionManuals[0].doActionParamInfo.nextActionChoosingIntervalProposal =
-                0.5f / customMono.stat.attackSpeed.FinalValue;
-            botActionManuals[1].doActionParamInfo.nextActionChoosingIntervalProposal =
-                0.5f / customMono.stat.attackSpeed.FinalValue;
-            botActionManuals[2].doActionParamInfo.nextActionChoosingIntervalProposal =
                 0.5f / customMono.stat.attackSpeed.FinalValue;
 
             botActionManuals[0].actionChanceAjuster = (int)(
@@ -263,6 +237,5 @@ public class Attackable : SkillBase
         StopCoroutine(actionIE);
         customMono.animationEventFunctionCaller.endAttack = false;
         customMono.animationEventFunctionCaller.attack = false;
-        customMono.currentAction = null;
     }
 }

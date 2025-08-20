@@ -70,7 +70,7 @@ public class BaseAction : MonoEditor
     {
         base.Start();
         /* Stop action when we die */
-        customMono.stat.currentHealthPointReachZeroEvent += () => StopAndDisable();
+        customMono.stat.currentHealthPointReachZeroEvent += StopAndDisable;
     }
 
     public virtual void ToggleAnim(int boolHash, bool value)
@@ -133,7 +133,7 @@ public class BaseAction : MonoEditor
         {
             ActionInterrupt();
         }
-        StopAllCoroutines();
+        // StopAllCoroutines();
     }
 
     public virtual ActionResult Trigger(Vector2 p_location = default, Vector2 p_direction = default)

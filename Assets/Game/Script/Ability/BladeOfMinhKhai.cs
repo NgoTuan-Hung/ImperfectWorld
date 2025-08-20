@@ -197,6 +197,5 @@ public class BladeOfMinhKhai : SkillBase
         StopCoroutine(actionIE1);
         customMono.animationEventFunctionCaller.mainSkill1Signal = false;
         customMono.animationEventFunctionCaller.endMainSkill1 = false;
-        customMono.currentAction = null;
     }
 }

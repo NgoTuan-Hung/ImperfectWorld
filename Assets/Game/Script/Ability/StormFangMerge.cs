@@ -149,6 +149,5 @@ public class StormFangMerge : SkillBase
         customMono.movementActionBlocking = false;
         ToggleAnim(GameManager.Instance.mainSkill2BoolHash, false);
         StopCoroutine(actionIE);
-        customMono.currentAction = null;
     }
 }

@@ -190,6 +190,5 @@ public class MoonSlash : SkillBase
         actionWaitInfo.stillWaiting = false;
         stopwatch.Stop();
         customMono.animationEventFunctionCaller.endRelease = false;
-        customMono.currentAction = null;
     }
 }

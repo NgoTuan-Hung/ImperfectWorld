@@ -122,6 +122,5 @@ public class MagicLaserSkill : SkillBase
         StopCoroutine(actionIE);
         customMono.animationEventFunctionCaller.castingMagic = false;
         customMono.animationEventFunctionCaller.endCastingMagic = false;
-        customMono.currentAction = null;
     }
 }

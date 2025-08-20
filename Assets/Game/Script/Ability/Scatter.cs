@@ -282,7 +282,7 @@ public class Scatter : SkillBase
         if (scatterChargeGameEffect.gameObject.activeSelf)
             scatterChargeGameEffect.deactivate();
         customMono.animationEventFunctionCaller.endRelease = false;
-        customMono.currentAction = null;
+
         scatterArrowPhaseIcon.gameObject.SetActive(false);
         iconTweener?.Kill();
     }

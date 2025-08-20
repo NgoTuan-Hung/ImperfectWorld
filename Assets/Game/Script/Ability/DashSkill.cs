@@ -147,6 +147,5 @@ public class DashSkill : SkillBase
         base.ActionInterrupt();
         customMono.movementActionBlocking = true;
         StopCoroutine(actionIE);
-        customMono.currentAction = null;
     }
 }

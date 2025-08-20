@@ -104,6 +104,5 @@ public class SteelCyclone : SkillBase
     {
         base.ActionInterrupt();
         customMono.actionBlocking = false;
-        customMono.currentAction = null;
     }
 }

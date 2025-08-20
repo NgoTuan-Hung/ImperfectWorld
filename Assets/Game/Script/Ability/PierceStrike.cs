@@ -273,7 +273,7 @@ public class PierceStrike : SkillBase
         customMono.animationEventFunctionCaller.mainSkill1Signal = false;
         customMono.animationEventFunctionCaller.endMainSkill1 = false;
         customMono.statusEffect.RemoveSlow(customMono.stat.actionSlowModifier);
-        customMono.currentAction = null;
+
         botActionManuals[0].actionUse = ActionUse.RangedDamage;
     }
 }

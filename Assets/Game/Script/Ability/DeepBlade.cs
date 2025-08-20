@@ -147,7 +147,6 @@ public class DeepBlade : SkillBase
         StopCoroutine(actionIE);
         customMono.animationEventFunctionCaller.mainSkill2Signal = false;
         customMono.animationEventFunctionCaller.endMainSkill2 = false;
-        customMono.currentAction = null;
         customMono.statusEffect.RemoveSlow(customMono.stat.actionSlowModifier);
     }
 }

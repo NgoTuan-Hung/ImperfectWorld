@@ -150,6 +150,5 @@ public class Slaughter : SkillBase
         ToggleAnim(GameManager.Instance.mainSkill1BoolHash, false);
         StopCoroutine(actionIE);
         customMono.animationEventFunctionCaller.endMainSkill1 = false;
-        customMono.currentAction = null;
     }
 }

@@ -19,41 +19,17 @@ public enum ModificationPriority
 }
 
 /// <summary>
-/// Basically just a sensor manager for bot, so the bot can detect enemy, see how
-/// far away is the enemy, and so on. Also it is an ai decision maker base on the
-/// environment/situtation.
+/// Bot brain, execute actions based on various factors like sensors, conditions,...
+/// Should run after BotSensor.cs .
 /// </summary>
+[DefaultExecutionOrder(0)]
 public class MyBotPersonality : CustomMonoPal
 {
-    /// <summary>
-    /// Origin is the position of a CustomMono
-    /// </summary>
-    public Vector2 originToTargetOriginDirection,
-        /* Center is the position of RotationAndCenterObject of a CustomMono */
-        centerToTargetCenterDirection,
-        firePointToTargetCenterDirection;
-    public Vector3 targetOriginPosition,
-        targetCenterPosition;
-
-    /// <summary>
-    /// OTTOD = Origin To Target Origin Direction, CTTCD = Center To Target Center Direction,
-    /// FPTTCD = Fire Point To Target Center Direction, ...
-    /// </summary>
-    public int current_OTTOD_ChangePriority = (int)ModificationPriority.VeryLow,
-        current_CTTCD_ChangePriority = (int)ModificationPriority.VeryLow,
-        current_FPTTCD_ChangePriority = (int)ModificationPriority.VeryLow,
-        current_TOP_ChangePriority = (int)ModificationPriority.VeryLow,
-        current_TCP_ChangePriority = (int)ModificationPriority.VeryLow;
-    public float distanceToTarget;
     public float logicalAttackRange = 1f;
     public float targetTooCloseRange = 1f;
     public MyBotCombatBehaviour myBotCombatBehaviour;
     Action combatThinking;
 
-    /* Target enemy is the enemy we are currently seeing and targeting, detect enemy is the unknown
-    enemy we detected from the radar (GameManager) and not yet been seen. */
-    CustomMono targetEnemy,
-        detectEnemy;
     Action forceUsingAction = () => { };
     public PausableScript pausableScript = new();
 
@@ -65,30 +41,32 @@ public class MyBotPersonality : CustomMonoPal
         else
             combatThinking = RangedThinking;
 
-        customMono.someOneExitView += (person) =>
-        {
-            if (targetEnemy != null)
-            {
-                if (targetEnemy.Equals(person))
-                {
-                    targetEnemy = null;
-                    SetOriginToTargetOriginDirection(Vector2.one, ModificationPriority.VeryLow);
-                    SetCenterToTargetCenterDirection(Vector2.one, ModificationPriority.VeryLow);
-                    SetTargetOriginPosition(Vector3.zero, ModificationPriority.VeryLow);
-                    SetTargetCenterPosition(Vector3.zero, ModificationPriority.VeryLow);
-                }
-            }
-        };
-
-        customMono.nearestEnemyChanged += (person) => targetEnemy = person;
-    }
-
-    private void OnEnable()
-    {
-        originToTargetOriginDirection = Vector2.zero;
-        centerToTargetCenterDirection = Vector2.zero;
-        targetOriginPosition = Vector3.zero;
-        targetCenterPosition = Vector3.zero;
+        // customMono.botSensor.someOneExitView += (person) =>
+        // {
+        //     if (targetEnemy != null)
+        //     {
+        //         if (targetEnemy.Equals(person))
+        //         {
+        //             targetEnemy = null;
+        //             customMono.botSensor.SetOriginToTargetOriginDirection(
+        //                 Vector2.one,
+        //                 ModificationPriority.VeryLow
+        //             );
+        //             customMono.botSensor.SetCenterToTargetCenterDirection(
+        //                 Vector2.one,
+        //                 ModificationPriority.VeryLow
+        //             );
+        //             customMono.botSensor.SetTargetOriginPosition(
+        //                 Vector3.zero,
+        //                 ModificationPriority.VeryLow
+        //             );
+        //             customMono.botSensor.SetTargetCenterPosition(
+        //                 Vector3.zero,
+        //                 ModificationPriority.VeryLow
+        //             );
+        //         }
+        //     }
+        // };
     }
 
     public override void Start()
@@ -116,98 +94,20 @@ public class MyBotPersonality : CustomMonoPal
         DoAction();
     }
 
-    void ResetField()
-    {
-        current_CTTCD_ChangePriority = (int)ModificationPriority.VeryLow;
-        current_OTTOD_ChangePriority = (int)ModificationPriority.VeryLow;
-        current_TCP_ChangePriority = (int)ModificationPriority.VeryLow;
-        current_TOP_ChangePriority = (int)ModificationPriority.VeryLow;
-    }
-
-    public void SetOriginToTargetOriginDirection(
-        Vector2 p_direction,
-        ModificationPriority p_priority
-    )
-    {
-        if ((int)p_priority <= current_OTTOD_ChangePriority)
-        {
-            originToTargetOriginDirection = p_direction == Vector2.zero ? Vector2.one : p_direction;
-            current_OTTOD_ChangePriority = (int)p_priority;
-        }
-    }
-
-    public void SetCenterToTargetCenterDirection(
-        Vector2 p_direction,
-        ModificationPriority p_priority
-    )
-    {
-        if ((int)p_priority <= current_CTTCD_ChangePriority)
-        {
-            centerToTargetCenterDirection = p_direction == Vector2.zero ? Vector2.one : p_direction;
-            current_CTTCD_ChangePriority = (int)p_priority;
-        }
-    }
-
-    public void SetFirePointToTargetCenterDirection(
-        Vector2 p_direction,
-        ModificationPriority p_priority
-    )
-    {
-        if ((int)p_priority <= current_FPTTCD_ChangePriority)
-        {
-            firePointToTargetCenterDirection =
-                p_direction == Vector2.zero ? Vector2.one : p_direction;
-            current_FPTTCD_ChangePriority = (int)p_priority;
-        }
-    }
-
-    public void SetTargetOriginPosition(Vector3 p_position, ModificationPriority p_priority)
-    {
-        if ((int)p_priority <= current_TOP_ChangePriority)
-        {
-            targetOriginPosition = p_position;
-            current_TOP_ChangePriority = (int)p_priority;
-        }
-    }
-
-    public void SetTargetCenterPosition(Vector3 p_position, ModificationPriority p_priority)
-    {
-        if ((int)p_priority <= current_TCP_ChangePriority)
-        {
-            targetCenterPosition = p_position;
-            current_TCP_ChangePriority = (int)p_priority;
-        }
-    }
-
     void ThinkAndPrepare()
     {
-        ResetField();
+        /* Here you can add maximum chance for any action you wish to execute,
+        however, remember to reset delegate afterward.*/
         forceUsingAction();
-        if (targetEnemy == null)
-        {
-            if (detectEnemy == null)
-                detectEnemy = GameManager.Instance.GetRandomPlayerAlly();
-            SetOriginToTargetOriginDirection(
-                detectEnemy.transform.position - transform.position,
-                ModificationPriority.VeryLow
-            );
-            SetCenterToTargetCenterDirection(
-                detectEnemy.rotationAndCenterObject.transform.position
-                    - customMono.rotationAndCenterObject.transform.position,
-                ModificationPriority.VeryLow
-            );
-        }
-        else
-        {
-            ThinkAboutNumbers();
-        }
 
-        if (targetEnemy == null)
+        /* If there is no nearest enemy, move to the enemy detected on radar,
+        or roam instead. */
+        if (customMono.botSensor.currentNearestEnemy == null)
         {
-            customMono.movementIntelligence.PreSumActionChance(ActionUse.Roam, 1);
-            customMono.actionIntelligence.PreSumActionChance(ActionUse.Roam, 1);
-            customMono.movementIntelligence.PreSumActionChance(ActionUse.GetCloser, 5);
-            customMono.actionIntelligence.PreSumActionChance(ActionUse.GetCloser, 5);
+            customMono.movementIntelligence.PreSumActionChance(ActionUse.Roam, 5);
+            customMono.actionIntelligence.PreSumActionChance(ActionUse.Roam, 50000);
+            customMono.movementIntelligence.PreSumActionChance(ActionUse.GetCloser, 30);
+            customMono.actionIntelligence.PreSumActionChance(ActionUse.GetCloser, 50000);
         }
         else
         {
@@ -217,11 +117,11 @@ public class MyBotPersonality : CustomMonoPal
 
     void MeleeThinking()
     {
-        if (distanceToTarget > logicalAttackRange)
+        if (customMono.botSensor.distanceToNearestEnemy > logicalAttackRange)
         {
             customMono.movementIntelligence.PreSumActionChance(ActionUse.GetCloser, 30);
             customMono.movementIntelligence.PreSumActionChance(ActionUse.Dodge, 5);
-            customMono.actionIntelligence.PreSumActionChance(ActionUse.GetCloser, 30);
+            customMono.actionIntelligence.PreSumActionChance(ActionUse.Roam, 50000);
             customMono.actionIntelligence.PreSumActionChance(ActionUse.Dodge, 5);
             customMono.actionIntelligence.PreSumActionChance(ActionUse.RangedDamage, 30);
         }
@@ -253,47 +153,24 @@ public class MyBotPersonality : CustomMonoPal
         /* IMPORTANT */
         customMono.movementIntelligence.ExecuteAnyActionThisFrame(
             customMono.movementActionInterval,
-            p_originToTargetOriginDirection: originToTargetOriginDirection,
-            p_centerToTargetCenterDirection: centerToTargetCenterDirection,
-            p_firePointToTargetCenterDirection: firePointToTargetCenterDirection,
-            p_targetOriginPosition: targetOriginPosition,
-            p_targetCenterPosition: targetCenterPosition
+            p_originToTargetOriginDirection: customMono.botSensor.originToTargetOriginDirection,
+            p_centerToTargetCenterDirection: customMono.botSensor.centerToTargetCenterDirection,
+            p_firePointToTargetCenterDirection: customMono
+                .botSensor
+                .firePointToTargetCenterDirection,
+            p_targetOriginPosition: customMono.botSensor.targetOriginPosition,
+            p_targetCenterPosition: customMono.botSensor.targetCenterPosition
         );
         customMono.actionIntelligence.ExecuteAnyActionThisFrame(
             customMono.actionInterval,
-            p_originToTargetOriginDirection: originToTargetOriginDirection,
-            p_centerToTargetCenterDirection: centerToTargetCenterDirection,
-            p_firePointToTargetCenterDirection: firePointToTargetCenterDirection,
-            p_targetOriginPosition: targetOriginPosition,
-            p_targetCenterPosition: targetCenterPosition
+            p_originToTargetOriginDirection: customMono.botSensor.originToTargetOriginDirection,
+            p_centerToTargetCenterDirection: customMono.botSensor.centerToTargetCenterDirection,
+            p_firePointToTargetCenterDirection: customMono
+                .botSensor
+                .firePointToTargetCenterDirection,
+            p_targetOriginPosition: customMono.botSensor.targetOriginPosition,
+            p_targetCenterPosition: customMono.botSensor.targetCenterPosition
         );
-    }
-
-    void ThinkAboutNumbers()
-    {
-        /* IMPORTANT */
-        SetOriginToTargetOriginDirection(
-            targetEnemy.transform.position - transform.position,
-            ModificationPriority.VeryLow
-        );
-        SetCenterToTargetCenterDirection(
-            targetEnemy.rotationAndCenterObject.transform.position
-                - customMono.rotationAndCenterObject.transform.position,
-            ModificationPriority.VeryLow
-        );
-        SetFirePointToTargetCenterDirection(
-            targetEnemy.rotationAndCenterObject.transform.position
-                - customMono.firePoint.transform.position,
-            ModificationPriority.VeryLow
-        );
-        SetTargetOriginPosition(targetEnemy.transform.position, ModificationPriority.VeryLow);
-        SetTargetCenterPosition(
-            targetEnemy.rotationAndCenterObject.transform.position,
-            ModificationPriority.VeryLow
-        );
-
-        /* IMPORTANT */
-        distanceToTarget = originToTargetOriginDirection.magnitude;
     }
 
     void RangedThinking()
@@ -316,9 +193,9 @@ public class MyBotPersonality : CustomMonoPal
         // 	customMono.actionIntelligence.PreSumActionChance(ActionUse.GetAway, 15);
         // }
 
-        if (distanceToTarget > targetTooCloseRange)
+        if (customMono.botSensor.distanceToNearestEnemy > targetTooCloseRange)
         {
-            if (distanceToTarget < logicalAttackRange)
+            if (customMono.botSensor.distanceToNearestEnemy < logicalAttackRange)
             {
                 customMono.actionIntelligence.PreSumActionChance(ActionUse.RangedDamage, 30);
                 customMono.movementIntelligence.PreSumActionChance(ActionUse.Passive, 1);
@@ -344,24 +221,27 @@ public class MyBotPersonality : CustomMonoPal
 
     public void ForceUsingAction(ActionUse actionUse, Vector3 targetPositionParam, float duration)
     {
-        Action t_forceUsingAction = () =>
+        void t_forceUsingAction()
         {
-            SetOriginToTargetOriginDirection(
-                targetEnemy.transform.position - transform.position,
+            customMono.botSensor.SetOriginToTargetOriginDirection(
+                customMono.botSensor.currentNearestEnemy.transform.position - transform.position,
                 ModificationPriority.VeryHigh
             );
-            SetCenterToTargetCenterDirection(
-                targetEnemy.rotationAndCenterObject.transform.position
+            customMono.botSensor.SetCenterToTargetCenterDirection(
+                customMono.botSensor.currentNearestEnemy.rotationAndCenterObject.transform.position
                     - customMono.rotationAndCenterObject.transform.position,
                 ModificationPriority.VeryHigh
             );
-            SetTargetOriginPosition(targetPositionParam, ModificationPriority.VeryHigh);
-            SetTargetCenterPosition(
-                targetEnemy.rotationAndCenterObject.transform.position,
+            customMono.botSensor.SetTargetOriginPosition(
+                targetPositionParam,
+                ModificationPriority.VeryHigh
+            );
+            customMono.botSensor.SetTargetCenterPosition(
+                customMono.botSensor.currentNearestEnemy.rotationAndCenterObject.transform.position,
                 ModificationPriority.VeryHigh
             );
             customMono.actionIntelligence.PreSumActionChance(actionUse, 9999);
-        };
+        }
 
         forceUsingAction += t_forceUsingAction;
         StartCoroutine(ForceUsingActionCoroutine(t_forceUsingAction, duration));

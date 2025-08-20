@@ -85,7 +85,7 @@ public class ArcaneSwarm : SkillBase
         t_collideAndDamage.allyTags = customMono.allyTags;
         t_collideAndDamage.collideDamage = damage;
 
-        if (customMono.currentNearestEnemy == null)
+        if (customMono.botSensor.currentNearestEnemy == null)
         {
             t_collideAndDamage.transform.position =
                 customMono.transform.position
@@ -97,6 +97,7 @@ public class ArcaneSwarm : SkillBase
         }
         else
             t_collideAndDamage.transform.position = customMono
+                .botSensor
                 .currentNearestEnemy
                 .rotationAndCenterObject
                 .transform
@@ -132,6 +133,5 @@ public class ArcaneSwarm : SkillBase
     public override void ActionInterrupt()
     {
         base.ActionInterrupt();
-        customMono.currentAction = null;
     }
 }

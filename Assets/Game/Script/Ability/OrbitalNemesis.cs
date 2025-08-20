@@ -93,7 +93,7 @@ public class OrbitalNemesis : SkillBase
 
     IEnumerator StartDash()
     {
-        if (customMono.currentNearestEnemy == null)
+        if (customMono.botSensor.currentNearestEnemy == null)
         {
             int t_variation = Random.Range(0, maxAmmo);
             enemyDirection = GetRandomVariation(t_variation).normalized;
@@ -102,7 +102,7 @@ public class OrbitalNemesis : SkillBase
         else
         {
             enemyDirection =
-                customMono.currentNearestEnemy.rotationAndCenterObject.transform.position
+                customMono.botSensor.currentNearestEnemy.rotationAndCenterObject.transform.position
                 - customMono.rotationAndCenterObject.transform.position;
 
             /* If we are too far from the enemy, dash closer */
@@ -120,7 +120,13 @@ public class OrbitalNemesis : SkillBase
                 /* If we are above the enemy, dash down else dash up */
                 if (
                     customMono.rotationAndCenterObject.transform.position.y
-                    > customMono.currentNearestEnemy.rotationAndCenterObject.transform.position.y
+                    > customMono
+                        .botSensor
+                        .currentNearestEnemy
+                        .rotationAndCenterObject
+                        .transform
+                        .position
+                        .y
                 )
                 {
                     // enemyDirection = enemyDirection
@@ -207,6 +213,5 @@ public class OrbitalNemesis : SkillBase
         ToggleAnim(GameManager.Instance.mainSkill2BoolHash, false);
         StopCoroutine(actionIE);
         customMono.animationEventFunctionCaller.mainSkill2Signal = false;
-        customMono.currentAction = null;
     }
 }

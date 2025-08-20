@@ -784,7 +784,7 @@ MonoBehaviour:
   spawnCumulativeDistribution: []
   nextRoundInterval: 5
   spawnRangeObject: {fileID: 1306131072}
-  roundDuration: 10
+  roundDuration: 20
   camera: {fileID: 0}
   cinemachineCamera: {fileID: 893338232}
   attackBoolHash: 1080829965
@@ -876,13 +876,14 @@ GameObject:
   - component: {fileID: 153210374}
   - component: {fileID: 153210373}
   - component: {fileID: 153210372}
+  - component: {fileID: 153210385}
   m_Layer: 0
   m_Name: Ruhmleyna
   m_TagString: GameBot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &153210372
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -923,17 +924,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   customMono: {fileID: 0}
-  originToTargetOriginDirection: {x: 0, y: 0}
-  centerToTargetCenterDirection: {x: 0, y: 0}
-  firePointToTargetCenterDirection: {x: 0, y: 0}
-  targetOriginPosition: {x: 0, y: 0, z: 0}
-  targetCenterPosition: {x: 0, y: 0, z: 0}
-  current_OTTOD_ChangePriority: 4
-  current_CTTCD_ChangePriority: 4
-  current_FPTTCD_ChangePriority: 4
-  current_TOP_ChangePriority: 4
-  current_TCP_ChangePriority: 4
-  distanceToTarget: 0
   logicalAttackRange: 1.5
   targetTooCloseRange: 0.5
   myBotCombatBehaviour: 0
@@ -957,6 +947,7 @@ MonoBehaviour:
   movementIntelligence: {fileID: 0}
   actionIntelligence: {fileID: 0}
   myBotPersonality: {fileID: 0}
+  botSensor: {fileID: 0}
   stat: {fileID: 0}
   actionInterval: 0
   movementActionInterval: 0
@@ -965,11 +956,9 @@ MonoBehaviour:
   fieldOfView: {fileID: 0}
   combatCollision: {fileID: 0}
   firePoint: {fileID: 0}
-  enemiesWeSee: []
   boxCollider2D: {fileID: 0}
   combatCollider2D: {fileID: 0}
   audioSource: {fileID: 0}
-  currentNearestEnemy: {fileID: 0}
   rigidbody2D: {fileID: 0}
   attackAudioClip: {fileID: 8300000, guid: 1614f5e1bf42b054ca0b933399c6264e, type: 3}
   meleeCollisionEffectSO: {fileID: 11400000, guid: 951c4fdc46f88fd49a84b52e6f745a48, type: 2}
@@ -1336,6 +1325,33 @@ Transform:
   - {fileID: 461821715}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &153210385
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 153210371}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6337cb9bacfc4834382883b026f7b941, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  customMono: {fileID: 0}
+  currentNearestEnemy: {fileID: 0}
+  detectEnemy: {fileID: 0}
+  enemiesWeSee: []
+  originToTargetOriginDirection: {x: 0, y: 0}
+  centerToTargetCenterDirection: {x: 0, y: 0}
+  firePointToTargetCenterDirection: {x: 0, y: 0}
+  targetOriginPosition: {x: 0, y: 0, z: 0}
+  targetCenterPosition: {x: 0, y: 0, z: 0}
+  current_OTTOD_ChangePriority: 4
+  current_CTTCD_ChangePriority: 4
+  current_FPTTCD_ChangePriority: 4
+  current_TOP_ChangePriority: 4
+  current_TCP_ChangePriority: 4
+  distanceToNearestEnemy: 0
 --- !u!1001 &160649309
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3110,10 +3126,10 @@ RectTransform:
   - {fileID: 38622209}
   m_Father: {fileID: 1874200017}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 380, y: -70}
+  m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &546532736
 MonoBehaviour:
@@ -3338,6 +3354,7 @@ GameObject:
   - component: {fileID: 581064784}
   - component: {fileID: 581064781}
   - component: {fileID: 581064786}
+  - component: {fileID: 581064787}
   m_Layer: 0
   m_Name: BotArcher
   m_TagString: Archer
@@ -3399,6 +3416,7 @@ MonoBehaviour:
   movementIntelligence: {fileID: 0}
   actionIntelligence: {fileID: 0}
   myBotPersonality: {fileID: 0}
+  botSensor: {fileID: 0}
   stat: {fileID: 0}
   actionInterval: 0
   movementActionInterval: 0
@@ -3407,11 +3425,9 @@ MonoBehaviour:
   fieldOfView: {fileID: 0}
   combatCollision: {fileID: 0}
   firePoint: {fileID: 0}
-  enemiesWeSee: []
   boxCollider2D: {fileID: 0}
   combatCollider2D: {fileID: 0}
   audioSource: {fileID: 0}
-  currentNearestEnemy: {fileID: 0}
   rigidbody2D: {fileID: 0}
   attackAudioClip: {fileID: 8300000, guid: 1831f3e85531e554081da581aac0d078, type: 3}
   meleeCollisionEffectSO: {fileID: 0}
@@ -3616,17 +3632,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   customMono: {fileID: 0}
-  originToTargetOriginDirection: {x: 0, y: 0}
-  centerToTargetCenterDirection: {x: 0, y: 0}
-  firePointToTargetCenterDirection: {x: 0, y: 0}
-  targetOriginPosition: {x: 0, y: 0, z: 0}
-  targetCenterPosition: {x: 0, y: 0, z: 0}
-  current_OTTOD_ChangePriority: 4
-  current_CTTCD_ChangePriority: 4
-  current_FPTTCD_ChangePriority: 4
-  current_TOP_ChangePriority: 4
-  current_TCP_ChangePriority: 4
-  distanceToTarget: 0
   logicalAttackRange: 7
   targetTooCloseRange: 3
   myBotCombatBehaviour: 1
@@ -3801,6 +3806,33 @@ MonoBehaviour:
   knockUpVelocity: 0
   knockUpAcceleration: -10
   stunTime: 0
+--- !u!114 &581064787
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 581064772}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6337cb9bacfc4834382883b026f7b941, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  customMono: {fileID: 0}
+  currentNearestEnemy: {fileID: 0}
+  detectEnemy: {fileID: 0}
+  enemiesWeSee: []
+  originToTargetOriginDirection: {x: 0, y: 0}
+  centerToTargetCenterDirection: {x: 0, y: 0}
+  firePointToTargetCenterDirection: {x: 0, y: 0}
+  targetOriginPosition: {x: 0, y: 0, z: 0}
+  targetCenterPosition: {x: 0, y: 0, z: 0}
+  current_OTTOD_ChangePriority: 4
+  current_CTTCD_ChangePriority: 4
+  current_FPTTCD_ChangePriority: 4
+  current_TOP_ChangePriority: 4
+  current_TCP_ChangePriority: 4
+  distanceToNearestEnemy: 0
 --- !u!4 &601017308 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5794198503007716251, guid: 5050206fee006f94a9d0125e20c69398, type: 3}
@@ -4613,13 +4645,14 @@ GameObject:
   - component: {fileID: 889364760}
   - component: {fileID: 889364772}
   - component: {fileID: 889364773}
+  - component: {fileID: 889364774}
   m_Layer: 0
   m_Name: Player
   m_TagString: GamePlayer
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &889364758
 Transform:
   m_ObjectHideFlags: 0
@@ -4660,6 +4693,7 @@ MonoBehaviour:
   movementIntelligence: {fileID: 0}
   actionIntelligence: {fileID: 0}
   myBotPersonality: {fileID: 0}
+  botSensor: {fileID: 0}
   stat: {fileID: 0}
   actionInterval: 0
   movementActionInterval: 0
@@ -4668,11 +4702,9 @@ MonoBehaviour:
   fieldOfView: {fileID: 0}
   combatCollision: {fileID: 0}
   firePoint: {fileID: 0}
-  enemiesWeSee: []
   boxCollider2D: {fileID: 0}
   combatCollider2D: {fileID: 0}
   audioSource: {fileID: 0}
-  currentNearestEnemy: {fileID: 0}
   rigidbody2D: {fileID: 0}
   attackAudioClip: {fileID: 8300000, guid: 1614f5e1bf42b054ca0b933399c6264e, type: 3}
   meleeCollisionEffectSO: {fileID: 11400000, guid: 951c4fdc46f88fd49a84b52e6f745a48, type: 2}
@@ -5035,17 +5067,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   customMono: {fileID: 0}
-  originToTargetOriginDirection: {x: 0, y: 0}
-  centerToTargetCenterDirection: {x: 0, y: 0}
-  firePointToTargetCenterDirection: {x: 0, y: 0}
-  targetOriginPosition: {x: 0, y: 0, z: 0}
-  targetCenterPosition: {x: 0, y: 0, z: 0}
-  current_OTTOD_ChangePriority: 4
-  current_CTTCD_ChangePriority: 4
-  current_FPTTCD_ChangePriority: 4
-  current_TOP_ChangePriority: 4
-  current_TCP_ChangePriority: 4
-  distanceToTarget: 0
   logicalAttackRange: 1.5
   targetTooCloseRange: 0.5
   myBotCombatBehaviour: 0
@@ -5076,6 +5097,33 @@ MonoBehaviour:
   knockUpVelocity: 0
   knockUpAcceleration: -10
   stunTime: 0
+--- !u!114 &889364774
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 889364757}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6337cb9bacfc4834382883b026f7b941, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  customMono: {fileID: 0}
+  currentNearestEnemy: {fileID: 0}
+  detectEnemy: {fileID: 0}
+  enemiesWeSee: []
+  originToTargetOriginDirection: {x: 0, y: 0}
+  centerToTargetCenterDirection: {x: 0, y: 0}
+  firePointToTargetCenterDirection: {x: 0, y: 0}
+  targetOriginPosition: {x: 0, y: 0, z: 0}
+  targetCenterPosition: {x: 0, y: 0, z: 0}
+  current_OTTOD_ChangePriority: 4
+  current_CTTCD_ChangePriority: 4
+  current_FPTTCD_ChangePriority: 4
+  current_TOP_ChangePriority: 4
+  current_TCP_ChangePriority: 4
+  distanceToNearestEnemy: 0
 --- !u!4 &892392505 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5794198503007716251, guid: 5050206fee006f94a9d0125e20c69398, type: 3}
@@ -5396,10 +5444,10 @@ RectTransform:
   - {fileID: 1032758556}
   m_Father: {fileID: 1874200017}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 270, y: -70}
+  m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1012798519
 MonoBehaviour:
@@ -10593,10 +10641,10 @@ RectTransform:
   - {fileID: 1638319142}
   m_Father: {fileID: 1874200017}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 50, y: -70}
+  m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1122076159
 MonoBehaviour:
@@ -10832,6 +10880,7 @@ GameObject:
   - component: {fileID: 1254232929}
   - component: {fileID: 1254232928}
   - component: {fileID: 1254232927}
+  - component: {fileID: 1254232939}
   m_Layer: 0
   m_Name: BotArcher (1)
   m_TagString: GamePlayer
@@ -10900,17 +10949,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   customMono: {fileID: 0}
-  originToTargetOriginDirection: {x: 0, y: 0}
-  centerToTargetCenterDirection: {x: 0, y: 0}
-  firePointToTargetCenterDirection: {x: 0, y: 0}
-  targetOriginPosition: {x: 0, y: 0, z: 0}
-  targetCenterPosition: {x: 0, y: 0, z: 0}
-  current_OTTOD_ChangePriority: 4
-  current_CTTCD_ChangePriority: 4
-  current_FPTTCD_ChangePriority: 4
-  current_TOP_ChangePriority: 4
-  current_TCP_ChangePriority: 4
-  distanceToTarget: 0
   logicalAttackRange: 7
   targetTooCloseRange: 3
   myBotCombatBehaviour: 1
@@ -11011,6 +11049,7 @@ MonoBehaviour:
   movementIntelligence: {fileID: 0}
   actionIntelligence: {fileID: 0}
   myBotPersonality: {fileID: 0}
+  botSensor: {fileID: 0}
   stat: {fileID: 0}
   actionInterval: 0
   movementActionInterval: 0
@@ -11019,11 +11058,9 @@ MonoBehaviour:
   fieldOfView: {fileID: 0}
   combatCollision: {fileID: 0}
   firePoint: {fileID: 0}
-  enemiesWeSee: []
   boxCollider2D: {fileID: 0}
   combatCollider2D: {fileID: 0}
   audioSource: {fileID: 0}
-  currentNearestEnemy: {fileID: 0}
   rigidbody2D: {fileID: 0}
   attackAudioClip: {fileID: 8300000, guid: 1831f3e85531e554081da581aac0d078, type: 3}
   meleeCollisionEffectSO: {fileID: 0}
@@ -11295,6 +11332,33 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 0.39608383, y: 0.30376625}
   m_EdgeRadius: 0
+--- !u!114 &1254232939
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1254232925}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6337cb9bacfc4834382883b026f7b941, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  customMono: {fileID: 0}
+  currentNearestEnemy: {fileID: 0}
+  detectEnemy: {fileID: 0}
+  enemiesWeSee: []
+  originToTargetOriginDirection: {x: 0, y: 0}
+  centerToTargetCenterDirection: {x: 0, y: 0}
+  firePointToTargetCenterDirection: {x: 0, y: 0}
+  targetOriginPosition: {x: 0, y: 0, z: 0}
+  targetCenterPosition: {x: 0, y: 0, z: 0}
+  current_OTTOD_ChangePriority: 4
+  current_CTTCD_ChangePriority: 4
+  current_FPTTCD_ChangePriority: 4
+  current_TOP_ChangePriority: 4
+  current_TCP_ChangePriority: 4
+  distanceToNearestEnemy: 0
 --- !u!4 &1257068772 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7957823160304584893, guid: 85f0845151e1f8f4bbd1a0b18ba9eadb, type: 3}
@@ -13685,6 +13749,7 @@ GameObject:
   - component: {fileID: 1582844850}
   - component: {fileID: 1582844851}
   - component: {fileID: 1582844856}
+  - component: {fileID: 1582844857}
   m_Layer: 0
   m_Name: Bot
   m_TagString: Scavenger
@@ -13747,6 +13812,7 @@ MonoBehaviour:
   movementIntelligence: {fileID: 0}
   actionIntelligence: {fileID: 0}
   myBotPersonality: {fileID: 0}
+  botSensor: {fileID: 0}
   stat: {fileID: 0}
   actionInterval: 0
   movementActionInterval: 0
@@ -13755,11 +13821,9 @@ MonoBehaviour:
   fieldOfView: {fileID: 0}
   combatCollision: {fileID: 0}
   firePoint: {fileID: 0}
-  enemiesWeSee: []
   boxCollider2D: {fileID: 0}
   combatCollider2D: {fileID: 0}
   audioSource: {fileID: 0}
-  currentNearestEnemy: {fileID: 0}
   rigidbody2D: {fileID: 0}
   attackAudioClip: {fileID: 0}
   meleeCollisionEffectSO: {fileID: 0}
@@ -13962,17 +14026,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   customMono: {fileID: 0}
-  originToTargetOriginDirection: {x: 0, y: 0}
-  centerToTargetCenterDirection: {x: 0, y: 0}
-  firePointToTargetCenterDirection: {x: 0, y: 0}
-  targetOriginPosition: {x: 0, y: 0, z: 0}
-  targetCenterPosition: {x: 0, y: 0, z: 0}
-  current_OTTOD_ChangePriority: 4
-  current_CTTCD_ChangePriority: 4
-  current_FPTTCD_ChangePriority: 4
-  current_TOP_ChangePriority: 4
-  current_TCP_ChangePriority: 4
-  distanceToTarget: 0
   logicalAttackRange: 1.5
   targetTooCloseRange: 1
   myBotCombatBehaviour: 0
@@ -14176,6 +14229,33 @@ MonoBehaviour:
   knockUpVelocity: 0
   knockUpAcceleration: -10
   stunTime: 0
+--- !u!114 &1582844857
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1582844842}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6337cb9bacfc4834382883b026f7b941, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  customMono: {fileID: 0}
+  currentNearestEnemy: {fileID: 0}
+  detectEnemy: {fileID: 0}
+  enemiesWeSee: []
+  originToTargetOriginDirection: {x: 0, y: 0}
+  centerToTargetCenterDirection: {x: 0, y: 0}
+  firePointToTargetCenterDirection: {x: 0, y: 0}
+  targetOriginPosition: {x: 0, y: 0, z: 0}
+  targetCenterPosition: {x: 0, y: 0, z: 0}
+  current_OTTOD_ChangePriority: 4
+  current_CTTCD_ChangePriority: 4
+  current_FPTTCD_ChangePriority: 4
+  current_TOP_ChangePriority: 4
+  current_TCP_ChangePriority: 4
+  distanceToNearestEnemy: 0
 --- !u!1001 &1587974730
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -15306,10 +15386,10 @@ RectTransform:
   - {fileID: 1415293675}
   m_Father: {fileID: 1874200017}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 160, y: -70}
+  m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1872287108
 MonoBehaviour:
@@ -24832,6 +24912,7 @@ GameObject:
   - component: {fileID: 2059840846}
   - component: {fileID: 2059840848}
   - component: {fileID: 2059840859}
+  - component: {fileID: 2059840860}
   m_Layer: 0
   m_Name: PlayerAlly
   m_TagString: GamePlayer
@@ -24852,17 +24933,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   customMono: {fileID: 0}
-  originToTargetOriginDirection: {x: 0, y: 0}
-  centerToTargetCenterDirection: {x: 0, y: 0}
-  firePointToTargetCenterDirection: {x: 0, y: 0}
-  targetOriginPosition: {x: 0, y: 0, z: 0}
-  targetCenterPosition: {x: 0, y: 0, z: 0}
-  current_OTTOD_ChangePriority: 4
-  current_CTTCD_ChangePriority: 4
-  current_FPTTCD_ChangePriority: 4
-  current_TOP_ChangePriority: 4
-  current_TCP_ChangePriority: 4
-  distanceToTarget: 0
   logicalAttackRange: 1.5
   targetTooCloseRange: 1
   myBotCombatBehaviour: 0
@@ -24963,6 +25033,7 @@ MonoBehaviour:
   movementIntelligence: {fileID: 0}
   actionIntelligence: {fileID: 0}
   myBotPersonality: {fileID: 0}
+  botSensor: {fileID: 0}
   stat: {fileID: 0}
   actionInterval: 0
   movementActionInterval: 0
@@ -24971,11 +25042,9 @@ MonoBehaviour:
   fieldOfView: {fileID: 0}
   combatCollision: {fileID: 0}
   firePoint: {fileID: 0}
-  enemiesWeSee: []
   boxCollider2D: {fileID: 0}
   combatCollider2D: {fileID: 0}
   audioSource: {fileID: 0}
-  currentNearestEnemy: {fileID: 0}
   rigidbody2D: {fileID: 0}
   attackAudioClip: {fileID: 8300000, guid: 118b9b5bd2015ec4abe7777d825907c5, type: 3}
   meleeCollisionEffectSO: {fileID: 11400000, guid: 57f5a5216cc7363438a755be830c78a9, type: 2}
@@ -25295,6 +25364,33 @@ MonoBehaviour:
   knockUpVelocity: 0
   knockUpAcceleration: -10
   stunTime: 0
+--- !u!114 &2059840860
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2059840845}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6337cb9bacfc4834382883b026f7b941, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  customMono: {fileID: 0}
+  currentNearestEnemy: {fileID: 0}
+  detectEnemy: {fileID: 0}
+  enemiesWeSee: []
+  originToTargetOriginDirection: {x: 0, y: 0}
+  centerToTargetCenterDirection: {x: 0, y: 0}
+  firePointToTargetCenterDirection: {x: 0, y: 0}
+  targetOriginPosition: {x: 0, y: 0, z: 0}
+  targetCenterPosition: {x: 0, y: 0, z: 0}
+  current_OTTOD_ChangePriority: 4
+  current_CTTCD_ChangePriority: 4
+  current_FPTTCD_ChangePriority: 4
+  current_TOP_ChangePriority: 4
+  current_TCP_ChangePriority: 4
+  distanceToNearestEnemy: 0
 --- !u!1 &2091394286
 GameObject:
   m_ObjectHideFlags: 0
@@ -25732,6 +25828,7 @@ MonoBehaviour:
   movementIntelligence: {fileID: 0}
   actionIntelligence: {fileID: 0}
   myBotPersonality: {fileID: 0}
+  botSensor: {fileID: 0}
   stat: {fileID: 0}
   actionInterval: 0
   movementActionInterval: 0
@@ -25740,11 +25837,9 @@ MonoBehaviour:
   fieldOfView: {fileID: 0}
   combatCollision: {fileID: 0}
   firePoint: {fileID: 0}
-  enemiesWeSee: []
   boxCollider2D: {fileID: 0}
   combatCollider2D: {fileID: 0}
   audioSource: {fileID: 0}
-  currentNearestEnemy: {fileID: 0}
   rigidbody2D: {fileID: 0}
   attackAudioClip: {fileID: 8300000, guid: 1831f3e85531e554081da581aac0d078, type: 3}
   meleeCollisionEffectSO: {fileID: 0}
@@ -25991,6 +26086,7 @@ GameObject:
   - component: {fileID: 7028258660338255090}
   - component: {fileID: 7212583098159646421}
   - component: {fileID: 6863881112168804162}
+  - component: {fileID: 7212583098159646422}
   m_Layer: 0
   m_Name: JapaneseSamurai
   m_TagString: GamePlayer
@@ -26839,17 +26935,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   customMono: {fileID: 0}
-  originToTargetOriginDirection: {x: 0, y: 0}
-  centerToTargetCenterDirection: {x: 0, y: 0}
-  firePointToTargetCenterDirection: {x: 0, y: 0}
-  targetOriginPosition: {x: 0, y: 0, z: 0}
-  targetCenterPosition: {x: 0, y: 0, z: 0}
-  current_OTTOD_ChangePriority: 4
-  current_CTTCD_ChangePriority: 4
-  current_FPTTCD_ChangePriority: 4
-  current_TOP_ChangePriority: 4
-  current_TCP_ChangePriority: 4
-  distanceToTarget: 0
   logicalAttackRange: 1.5
   targetTooCloseRange: 1
   myBotCombatBehaviour: 0
@@ -27099,6 +27184,7 @@ MonoBehaviour:
   movementIntelligence: {fileID: 0}
   actionIntelligence: {fileID: 0}
   myBotPersonality: {fileID: 0}
+  botSensor: {fileID: 0}
   stat: {fileID: 0}
   actionInterval: 0
   movementActionInterval: 0
@@ -27107,11 +27193,9 @@ MonoBehaviour:
   fieldOfView: {fileID: 0}
   combatCollision: {fileID: 0}
   firePoint: {fileID: 0}
-  enemiesWeSee: []
   boxCollider2D: {fileID: 0}
   combatCollider2D: {fileID: 0}
   audioSource: {fileID: 0}
-  currentNearestEnemy: {fileID: 0}
   rigidbody2D: {fileID: 0}
   attackAudioClip: {fileID: 8300000, guid: 4a4b48223eddcde4ca98850c4a405077, type: 3}
   meleeCollisionEffectSO: {fileID: 0}
@@ -27269,17 +27353,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   customMono: {fileID: 0}
-  originToTargetOriginDirection: {x: 0, y: 0}
-  centerToTargetCenterDirection: {x: 0, y: 0}
-  firePointToTargetCenterDirection: {x: 0, y: 0}
-  targetOriginPosition: {x: 0, y: 0, z: 0}
-  targetCenterPosition: {x: 0, y: 0, z: 0}
-  current_OTTOD_ChangePriority: 4
-  current_CTTCD_ChangePriority: 4
-  current_FPTTCD_ChangePriority: 4
-  current_TOP_ChangePriority: 4
-  current_TCP_ChangePriority: 4
-  distanceToTarget: 0
   logicalAttackRange: 7
   targetTooCloseRange: 3
   myBotCombatBehaviour: 1
@@ -27776,6 +27849,7 @@ MonoBehaviour:
   movementIntelligence: {fileID: 0}
   actionIntelligence: {fileID: 0}
   myBotPersonality: {fileID: 0}
+  botSensor: {fileID: 0}
   stat: {fileID: 0}
   actionInterval: 0
   movementActionInterval: 0
@@ -27784,11 +27858,9 @@ MonoBehaviour:
   fieldOfView: {fileID: 0}
   combatCollision: {fileID: 0}
   firePoint: {fileID: 0}
-  enemiesWeSee: []
   boxCollider2D: {fileID: 0}
   combatCollider2D: {fileID: 0}
   audioSource: {fileID: 0}
-  currentNearestEnemy: {fileID: 0}
   rigidbody2D: {fileID: 0}
   attackAudioClip: {fileID: 8300000, guid: 4a4b48223eddcde4ca98850c4a405077, type: 3}
   meleeCollisionEffectSO: {fileID: 11400000, guid: 57f5a5216cc7363438a755be830c78a9, type: 2}
@@ -27821,6 +27893,7 @@ GameObject:
   - component: {fileID: 7285419098741409358}
   - component: {fileID: 7285419098741409359}
   - component: {fileID: 7285419098741409368}
+  - component: {fileID: 7285419098741409369}
   m_Layer: 0
   m_Name: Werewolf
   m_TagString: Werewolf
@@ -28124,6 +28197,7 @@ MonoBehaviour:
   movementIntelligence: {fileID: 0}
   actionIntelligence: {fileID: 0}
   myBotPersonality: {fileID: 0}
+  botSensor: {fileID: 0}
   stat: {fileID: 0}
   actionInterval: 0
   movementActionInterval: 0
@@ -28132,11 +28206,9 @@ MonoBehaviour:
   fieldOfView: {fileID: 0}
   combatCollision: {fileID: 0}
   firePoint: {fileID: 0}
-  enemiesWeSee: []
   boxCollider2D: {fileID: 0}
   combatCollider2D: {fileID: 0}
   audioSource: {fileID: 0}
-  currentNearestEnemy: {fileID: 0}
   rigidbody2D: {fileID: 0}
   attackAudioClip: {fileID: 8300000, guid: 1831f3e85531e554081da581aac0d078, type: 3}
   meleeCollisionEffectSO: {fileID: 0}
@@ -28523,6 +28595,7 @@ GameObject:
   - component: {fileID: 3042840930093703328}
   - component: {fileID: 2848225704881704751}
   - component: {fileID: 4367571609359430946}
+  - component: {fileID: 8070049564861433552}
   m_Layer: 0
   m_Name: WanderMagician
   m_TagString: GameBot
@@ -28551,6 +28624,7 @@ GameObject:
   - component: {fileID: 2597847510446235222}
   - component: {fileID: 2306699622056602688}
   - component: {fileID: 7793941371951403471}
+  - component: {fileID: 9153309042642479707}
   m_Layer: 0
   m_Name: SamuraiArcher
   m_TagString: GamePlayer
@@ -28777,6 +28851,7 @@ GameObject:
   - component: {fileID: 4334772538567328567}
   - component: {fileID: 8041115113768167741}
   - component: {fileID: 9221185469189333116}
+  - component: {fileID: 9221185469189333117}
   m_Layer: 0
   m_Name: ElementalLeafRanger
   m_TagString: GamePlayer
@@ -29834,6 +29909,25 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   customMono: {fileID: 0}
+  logicalAttackRange: 1.5
+  targetTooCloseRange: 1
+  myBotCombatBehaviour: 0
+--- !u!114 &7212583098159646422
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1179677922863569399}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6337cb9bacfc4834382883b026f7b941, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  customMono: {fileID: 0}
+  currentNearestEnemy: {fileID: 0}
+  detectEnemy: {fileID: 0}
+  enemiesWeSee: []
   originToTargetOriginDirection: {x: 0, y: 0}
   centerToTargetCenterDirection: {x: 0, y: 0}
   firePointToTargetCenterDirection: {x: 0, y: 0}
@@ -29844,10 +29938,7 @@ MonoBehaviour:
   current_FPTTCD_ChangePriority: 4
   current_TOP_ChangePriority: 4
   current_TCP_ChangePriority: 4
-  distanceToTarget: 0
-  logicalAttackRange: 1.5
-  targetTooCloseRange: 1
-  myBotCombatBehaviour: 0
+  distanceToNearestEnemy: 0
 --- !u!61 &7285419098741409356
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -30011,17 +30102,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   customMono: {fileID: 0}
-  originToTargetOriginDirection: {x: 0, y: 0}
-  centerToTargetCenterDirection: {x: 0, y: 0}
-  firePointToTargetCenterDirection: {x: 0, y: 0}
-  targetOriginPosition: {x: 0, y: 0, z: 0}
-  targetCenterPosition: {x: 0, y: 0, z: 0}
-  current_OTTOD_ChangePriority: 4
-  current_CTTCD_ChangePriority: 4
-  current_FPTTCD_ChangePriority: 4
-  current_TOP_ChangePriority: 4
-  current_TCP_ChangePriority: 4
-  distanceToTarget: 0
   logicalAttackRange: 1.5
   targetTooCloseRange: 1
   myBotCombatBehaviour: 0
@@ -30133,6 +30213,7 @@ MonoBehaviour:
   movementIntelligence: {fileID: 0}
   actionIntelligence: {fileID: 0}
   myBotPersonality: {fileID: 0}
+  botSensor: {fileID: 0}
   stat: {fileID: 0}
   actionInterval: 0
   movementActionInterval: 0
@@ -30141,11 +30222,9 @@ MonoBehaviour:
   fieldOfView: {fileID: 0}
   combatCollision: {fileID: 0}
   firePoint: {fileID: 0}
-  enemiesWeSee: []
   boxCollider2D: {fileID: 0}
   combatCollider2D: {fileID: 0}
   audioSource: {fileID: 0}
-  currentNearestEnemy: {fileID: 0}
   rigidbody2D: {fileID: 0}
   attackAudioClip: {fileID: 8300000, guid: 6eb5c4290eb5f1e45a1f6b9581ca1351, type: 3}
   meleeCollisionEffectSO: {fileID: 0}
@@ -30281,6 +30360,33 @@ MonoBehaviour:
   knockUpVelocity: 0
   knockUpAcceleration: -10
   stunTime: 0
+--- !u!114 &7285419098741409369
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4032437442510897607}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6337cb9bacfc4834382883b026f7b941, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  customMono: {fileID: 0}
+  currentNearestEnemy: {fileID: 0}
+  detectEnemy: {fileID: 0}
+  enemiesWeSee: []
+  originToTargetOriginDirection: {x: 0, y: 0}
+  centerToTargetCenterDirection: {x: 0, y: 0}
+  firePointToTargetCenterDirection: {x: 0, y: 0}
+  targetOriginPosition: {x: 0, y: 0, z: 0}
+  targetCenterPosition: {x: 0, y: 0, z: 0}
+  current_OTTOD_ChangePriority: 4
+  current_CTTCD_ChangePriority: 4
+  current_FPTTCD_ChangePriority: 4
+  current_TOP_ChangePriority: 4
+  current_TCP_ChangePriority: 4
+  distanceToNearestEnemy: 0
 --- !u!4 &7344357894127853722
 Transform:
   m_ObjectHideFlags: 0
@@ -30680,17 +30786,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   customMono: {fileID: 0}
-  originToTargetOriginDirection: {x: 0, y: 0}
-  centerToTargetCenterDirection: {x: 0, y: 0}
-  firePointToTargetCenterDirection: {x: 0, y: 0}
-  targetOriginPosition: {x: 0, y: 0, z: 0}
-  targetCenterPosition: {x: 0, y: 0, z: 0}
-  current_OTTOD_ChangePriority: 4
-  current_CTTCD_ChangePriority: 4
-  current_FPTTCD_ChangePriority: 4
-  current_TOP_ChangePriority: 4
-  current_TCP_ChangePriority: 4
-  distanceToTarget: 0
   logicalAttackRange: 7
   targetTooCloseRange: 3
   myBotCombatBehaviour: 1
@@ -30714,6 +30809,33 @@ Transform:
   - {fileID: 288448578}
   m_Father: {fileID: 1337881330}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &8070049564861433552
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5561924055775535404}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6337cb9bacfc4834382883b026f7b941, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  customMono: {fileID: 0}
+  currentNearestEnemy: {fileID: 0}
+  detectEnemy: {fileID: 0}
+  enemiesWeSee: []
+  originToTargetOriginDirection: {x: 0, y: 0}
+  centerToTargetCenterDirection: {x: 0, y: 0}
+  firePointToTargetCenterDirection: {x: 0, y: 0}
+  targetOriginPosition: {x: 0, y: 0, z: 0}
+  targetCenterPosition: {x: 0, y: 0, z: 0}
+  current_OTTOD_ChangePriority: 4
+  current_CTTCD_ChangePriority: 4
+  current_FPTTCD_ChangePriority: 4
+  current_TOP_ChangePriority: 4
+  current_TCP_ChangePriority: 4
+  distanceToNearestEnemy: 0
 --- !u!114 &8104172695302564981
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -31439,6 +31561,33 @@ MonoBehaviour:
   actionSlowModifier:
     value: 0
     type: 1
+--- !u!114 &9153309042642479707
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5622364884123885498}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6337cb9bacfc4834382883b026f7b941, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  customMono: {fileID: 0}
+  currentNearestEnemy: {fileID: 0}
+  detectEnemy: {fileID: 0}
+  enemiesWeSee: []
+  originToTargetOriginDirection: {x: 0, y: 0}
+  centerToTargetCenterDirection: {x: 0, y: 0}
+  firePointToTargetCenterDirection: {x: 0, y: 0}
+  targetOriginPosition: {x: 0, y: 0, z: 0}
+  targetCenterPosition: {x: 0, y: 0, z: 0}
+  current_OTTOD_ChangePriority: 4
+  current_CTTCD_ChangePriority: 4
+  current_FPTTCD_ChangePriority: 4
+  current_TOP_ChangePriority: 4
+  current_TCP_ChangePriority: 4
+  distanceToNearestEnemy: 0
 --- !u!114 &9221185469189333116
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -31466,6 +31615,33 @@ MonoBehaviour:
   knockUpVelocity: 0
   knockUpAcceleration: -10
   stunTime: 0
+--- !u!114 &9221185469189333117
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5800095604526065803}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6337cb9bacfc4834382883b026f7b941, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  customMono: {fileID: 0}
+  currentNearestEnemy: {fileID: 0}
+  detectEnemy: {fileID: 0}
+  enemiesWeSee: []
+  originToTargetOriginDirection: {x: 0, y: 0}
+  centerToTargetCenterDirection: {x: 0, y: 0}
+  firePointToTargetCenterDirection: {x: 0, y: 0}
+  targetOriginPosition: {x: 0, y: 0, z: 0}
+  targetCenterPosition: {x: 0, y: 0, z: 0}
+  current_OTTOD_ChangePriority: 4
+  current_CTTCD_ChangePriority: 4
+  current_FPTTCD_ChangePriority: 4
+  current_TOP_ChangePriority: 4
+  current_TCP_ChangePriority: 4
+  distanceToNearestEnemy: 0
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

@@ -217,7 +217,7 @@ public class SwordTempest : SkillBase
         StopCoroutine(actionIE);
         customMono.animationEventFunctionCaller.mainSkill3Signal = false;
         customMono.animationEventFunctionCaller.endMainSkill3 = false;
-        customMono.currentAction = null;
+
         customMono.statusEffect.RemoveSlow(customMono.stat.actionSlowModifier);
     }
 }

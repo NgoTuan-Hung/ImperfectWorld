@@ -86,7 +86,7 @@ public class PhantomPulse : SkillBase
 
     IEnumerator TriggerIE(Vector3 p_direction)
     {
-        if (customMono.currentNearestEnemy == null)
+        if (customMono.botSensor.currentNearestEnemy == null)
         {
             customMono.SetUpdateDirectionIndicator(
                 new(Random.Range(-1f, 1f), Random.Range(-1f, 1f)),
@@ -104,7 +104,7 @@ public class PhantomPulse : SkillBase
         {
             #region Skill variant
             /* In this skill, this will be the selected skill variation */
-            targetEnemy = customMono.currentNearestEnemy;
+            targetEnemy = customMono.botSensor.currentNearestEnemy;
             currentAmmo = Random.Range(1, maxAmmo);
             SetBlend(GameManager.Instance.mainSkill2BlendHash, modifiedAngle * currentAmmo);
             transform.position =
@@ -313,6 +313,5 @@ public class PhantomPulse : SkillBase
         StopCoroutine(actionIE);
         customMono.animationEventFunctionCaller.mainSkill2Signal = false;
         customMono.animationEventFunctionCaller.endMainSkill2 = false;
-        customMono.currentAction = null;
     }
 }
