@@ -109,7 +109,7 @@ public class TheCallOfThePack : SkillBase
         );
         customMono.transform.position = transform.position + new Vector3(summonX, summonY, 0);
         yield return new WaitForSeconds(Random.Range(0, 0.3f));
-        customMono.myBotPersonality.ForceUsingAction(
+        customMono.botAIManager.aiBehavior.ForceUsingAction(
             ActionUse.AirRoll,
             transform.position + new Vector3(Random.Range(-1, 1), Random.Range(-1, 1)),
             2f

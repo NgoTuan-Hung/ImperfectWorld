@@ -2,6 +2,15 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum ModificationPriority
+{
+    VeryLow = 4,
+    Low = 3,
+    Medium = 2,
+    High = 1,
+    VeryHigh = 0,
+}
+
 /// <summary>
 /// A sensor system for bot, bot can see nearby enemies (field of view), select nearest one,
 /// and so on.
@@ -59,6 +68,9 @@ public class BotSensor : CustomMonoPal
         EnemySensing();
     }
 
+    /// <summary>
+    /// Update info about currentNearestEnemy, if there is none, get detectEnemy from GM.
+    /// </summary>
     void EnemySensing()
     {
         if (currentNearestEnemy == null)

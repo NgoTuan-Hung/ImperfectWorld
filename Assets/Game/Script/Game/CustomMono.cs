@@ -18,7 +18,7 @@ public enum AttackType
     Ranged,
 }
 
-[RequireComponent(typeof(BotSensor))]
+[RequireComponent(typeof(BotSensor), typeof(BotAIManager))]
 public class CustomMono : MonoSelfAware
 {
     public CharUIData charUIData;
@@ -31,8 +31,8 @@ public class CustomMono : MonoSelfAware
     public Movable movable;
     public MovementIntelligence movementIntelligence;
     public ActionIntelligence actionIntelligence;
-    public MyBotPersonality myBotPersonality;
     public BotSensor botSensor;
+    public BotAIManager botAIManager;
     public Stat stat;
     GameObject directionIndicator;
     float directionIndicatorAngle;
@@ -124,11 +124,11 @@ public class CustomMono : MonoSelfAware
         statusEffect = GetComponent<StatusEffect>();
         skill = GetComponent<Skill>();
         botSensor = GetComponent<BotSensor>();
+        botAIManager = GetComponent<BotAIManager>();
 
         /* Bot components */
         movementIntelligence = GetComponent<MovementIntelligence>();
         actionIntelligence = GetComponent<ActionIntelligence>();
-        myBotPersonality = GetComponent<MyBotPersonality>();
     }
 
     void GetAllChildObject()
@@ -188,13 +188,13 @@ public class CustomMono : MonoSelfAware
 
     public void PauseBot()
     {
-        myBotPersonality.pausableScript.pauseFixedUpdate();
+        botAIManager.aiBehavior.pausableScript.pauseFixedUpdate();
         movable.pausableScript.resumeFixedUpdate();
     }
 
     public void ResumeBot()
     {
-        myBotPersonality.pausableScript.resumeFixedUpdate();
+        botAIManager.aiBehavior.pausableScript.resumeFixedUpdate();
         movable.pausableScript.pauseFixedUpdate();
     }
 

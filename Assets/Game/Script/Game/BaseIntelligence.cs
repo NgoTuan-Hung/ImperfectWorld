@@ -57,13 +57,23 @@ public class BaseIntelligence : MonoEditor
     }
 
     /// <summary>
-    /// So you have cumulativeDistribution of 0.3 0.9 1, that means 0-0.3 is the distribution of
-    /// action 0 and it has 30% chance, 0.3-0.9 is the distribution of action 1 and it has 60% chance
-    /// and so on. To pick a random action, we can search if our random value is less than any
-    /// cumulative distribution while we iterate from left to right, or we can do a binary search.
+    /// Executes the most favorable action based on roulette wheel selection (also known as fitness proportionate selection).
+    ///
+    /// This method selects an action randomly, but actions with higher probability are more likely to be chosen.
+    /// The selection uses a cumulative distribution array. For example:
+    ///
+    /// - cumulativeDistribution = [0.3, 0.9, 1.0]
+    /// - This means:
+    ///     - Action 0 has a 30% chance (range 0.0 - 0.3)
+    ///     - Action 1 has a 60% chance (range 0.3 - 0.9)
+    ///     - Action 2 has a 10% chance (range 0.9 - 1.0)
+    /// To choose an action:
+    /// - Generate a random number between 0 and 1
+    /// - Find the first index where random is less or equal to cumulativeDistribution[i] (can use linear or binary search)
+    /// This method handles waiting actions, sets action parameters, and refreshes action chances after execution.
     /// </summary>
     /// <returns></returns>
-    public void ExecuteAnyActionThisFrame(
+    public void ExecuteTheMostFavorableAction(
         bool actionInterval,
         Vector2 p_originToTargetOriginDirection = default,
         Vector2 p_centerToTargetCenterDirection = default,

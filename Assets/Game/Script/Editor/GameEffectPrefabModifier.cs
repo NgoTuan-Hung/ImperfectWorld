@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Unity.VisualScripting;
 using UnityEditor;
 using UnityEditor.UIElements;
 using UnityEngine;
@@ -88,7 +87,7 @@ public class GameEffectPrefabModifier : EditorWindow
         SpriteRenderer spriteRenderer = p_gameObject.GetComponentInChildren<SpriteRenderer>();
         if (spriteRenderer.GetComponent<Animator>() == null)
         {
-            spriteRenderer.AddComponent<Animator>();
+            spriteRenderer.gameObject.AddComponent<Animator>();
             spriteRenderer.gameObject.GetComponent<AnimateObject>().Reset();
         }
     }

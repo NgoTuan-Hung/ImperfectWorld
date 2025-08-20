@@ -1,3 +1,4 @@
+using Unity.Properties;
 using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
@@ -23,7 +24,7 @@ public class FloatStatWithCapInspector : PropertyDrawer
             "value",
             new DataBinding()
             {
-                dataSourcePath = new Unity.Properties.PropertyPath(nameof(FloatStatWithCap.Value)),
+                dataSourcePath = new PropertyPath(nameof(FloatStatWithCap.Value)),
                 bindingMode = BindingMode.TwoWay,
             }
         );

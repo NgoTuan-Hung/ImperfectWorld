@@ -1,3 +1,4 @@
+using Unity.Properties;
 using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
@@ -23,9 +24,7 @@ public class FloatStatWithModifierInspector : PropertyDrawer
             "value",
             new DataBinding()
             {
-                dataSourcePath = new Unity.Properties.PropertyPath(
-                    nameof(FloatStatWithModifier.BaseValue)
-                ),
+                dataSourcePath = new PropertyPath(nameof(FloatStatWithModifier.BaseValue)),
                 bindingMode = BindingMode.TwoWay,
             }
         );
