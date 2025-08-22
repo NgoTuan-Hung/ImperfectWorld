@@ -16,6 +16,7 @@ public enum ActionUse
     AirRoll,
     SummonShortRange,
     PushAway,
+    KeepDistance,
 }
 
 [RequireComponent(typeof(CustomMono))]

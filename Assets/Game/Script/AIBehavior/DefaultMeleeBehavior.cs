@@ -1,8 +1,3 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
 public class DefaultMeleeBehavior : BaseAIBehavior
 {
     public float logicalAttackRange = 1.5f; //
@@ -106,51 +101,5 @@ public class DefaultMeleeBehavior : BaseAIBehavior
 
         customMono.movementIntelligence.PreSumActionChance(ActionUse.Passive, 5);
         customMono.actionIntelligence.PreSumActionChance(ActionUse.Passive, 5);
-    }
-
-    void RangedThinking()
-    {
-        customMono.movementIntelligence.PreSumActionChance(ActionUse.Dodge, 1);
-        customMono.movementIntelligence.PreSumActionChance(ActionUse.GetCloser, 1);
-        customMono.movementIntelligence.PreSumActionChance(ActionUse.GetAway, 1);
-        customMono.movementIntelligence.PreSumActionChance(ActionUse.Passive, 1);
-        customMono.actionIntelligence.PreSumActionChance(ActionUse.Dodge, 1);
-        customMono.actionIntelligence.PreSumActionChance(ActionUse.GetCloser, 1);
-        customMono.actionIntelligence.PreSumActionChance(ActionUse.GetAway, 1);
-        customMono.actionIntelligence.PreSumActionChance(ActionUse.Passive, 1);
-        customMono.actionIntelligence.PreSumActionChance(ActionUse.RangedDamage, 1);
-
-        // if (customMono.attackable.onCooldown)
-        // {
-        // 	customMono.movementIntelligence.PreSumActionChance(ActionUse.Dodge, 3);
-        // 	customMono.movementIntelligence.PreSumActionChance(ActionUse.GetAway, 15);
-        // 	customMono.actionIntelligence.PreSumActionChance(ActionUse.Dodge, 3);
-        // 	customMono.actionIntelligence.PreSumActionChance(ActionUse.GetAway, 15);
-        // }
-
-        if (customMono.botSensor.distanceToNearestEnemy > targetTooCloseRange)
-        {
-            if (customMono.botSensor.distanceToNearestEnemy < logicalAttackRange)
-            {
-                customMono.actionIntelligence.PreSumActionChance(ActionUse.RangedDamage, 30);
-                customMono.movementIntelligence.PreSumActionChance(ActionUse.Passive, 1);
-                customMono.actionIntelligence.PreSumActionChance(ActionUse.Passive, 1);
-            }
-            else
-            {
-                customMono.movementIntelligence.PreSumActionChance(ActionUse.GetCloser, 30);
-                customMono.actionIntelligence.PreSumActionChance(ActionUse.GetCloser, 30);
-                customMono.actionIntelligence.PreSumActionChance(ActionUse.RangedDamage, 30);
-            }
-        }
-        else
-        {
-            customMono.movementIntelligence.PreSumActionChance(ActionUse.Dodge, 6);
-            customMono.movementIntelligence.PreSumActionChance(ActionUse.GetAway, 10);
-            customMono.actionIntelligence.PreSumActionChance(ActionUse.Dodge, 6);
-            customMono.actionIntelligence.PreSumActionChance(ActionUse.GetAway, 10);
-            customMono.actionIntelligence.PreSumActionChance(ActionUse.RangedDamage, 30);
-            customMono.actionIntelligence.PreSumActionChance(ActionUse.PushAway, 10);
-        }
     }
 }

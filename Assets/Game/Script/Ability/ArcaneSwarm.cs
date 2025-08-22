@@ -28,7 +28,7 @@ public class ArcaneSwarm : SkillBase
                 ActionUse.RangedDamage,
                 (p_doActionParamInfo) =>
                     BotTrigger(p_doActionParamInfo.nextActionChoosingIntervalProposal),
-                new(nextActionChoosingIntervalProposal: 0.5f)
+                new(nextActionChoosingIntervalProposal: Time.fixedDeltaTime)
             )
         );
     }
@@ -60,7 +60,7 @@ public class ArcaneSwarm : SkillBase
     {
         if (customMono.stat.currentManaPoint.Value < manaCost)
             return failResult;
-        else if (canUse && !customMono.actionBlocking)
+        else if (canUse)
         {
             canUse = false;
             FireHoming();

@@ -42,6 +42,9 @@ public class RuhmleynaBehavior : BaseAIBehavior
 
     void Think()
     {
-        //
+        customMono.movementIntelligence.PreSumActionChance(ActionUse.GetCloser, 30);
+        customMono.movementIntelligence.PreSumActionChance(ActionUse.GetAway, 30);
+        customMono.actionIntelligence.PreSumActionChance(ActionUse.RangedDamage, 30);
+        customMono.actionIntelligence.PreSumActionChance(ActionUse.KeepDistance, 30);
     }
 }

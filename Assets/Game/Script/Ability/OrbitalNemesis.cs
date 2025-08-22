@@ -22,6 +22,7 @@ public class OrbitalNemesis : SkillBase
         interval = 1f / (maxAmmo - 1);
         // dashSpeed *= Time.deltaTime;
         // boolhash = ...
+        AddActionManuals();
     }
 
     public override void OnEnable()
@@ -34,13 +35,13 @@ public class OrbitalNemesis : SkillBase
         base.AddActionManuals();
         botActionManuals.Add(
             new BotActionManual(
-                ActionUse.GetCloser,
+                ActionUse.KeepDistance,
                 (p_doActionParamInfo) =>
                     BotTrigger(
                         p_doActionParamInfo.centerToTargetCenterDirection,
                         p_doActionParamInfo.nextActionChoosingIntervalProposal
                     ),
-                new(nextActionChoosingIntervalProposal: 0.5f)
+                new(nextActionChoosingIntervalProposal: Time.fixedDeltaTime)
             )
         );
     }
@@ -70,10 +71,11 @@ public class OrbitalNemesis : SkillBase
     {
         if (customMono.stat.currentManaPoint.Value < manaCost)
             return failResult;
-        else if (canUse && !customMono.movementActionBlocking)
+        else if (canUse && !customMono.movementActionBlocking && !customMono.actionBlocking)
         {
             canUse = false;
             customMono.movementActionBlocking = true;
+            customMono.actionBlocking = true;
             ToggleAnim(GameManager.Instance.mainSkill2BoolHash, true);
             customMono.AnimatorWrapper.animator.SetTrigger(
                 GameManager.Instance.mainSkill2TriggerHash
@@ -164,6 +166,7 @@ public class OrbitalNemesis : SkillBase
         yield return DashTo(enemyDirection);
         ToggleAnim(GameManager.Instance.mainSkill2BoolHash, false);
         customMono.movementActionBlocking = false;
+        customMono.actionBlocking = false;
         customMono.currentAction = null;
     }
 
@@ -210,6 +213,7 @@ public class OrbitalNemesis : SkillBase
     {
         base.ActionInterrupt();
         customMono.movementActionBlocking = false;
+        customMono.actionBlocking = false;
         ToggleAnim(GameManager.Instance.mainSkill2BoolHash, false);
         StopCoroutine(actionIE);
         customMono.animationEventFunctionCaller.mainSkill2Signal = false;

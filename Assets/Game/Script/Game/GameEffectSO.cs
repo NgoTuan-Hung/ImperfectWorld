@@ -1,7 +1,5 @@
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Audio;
-using UnityEngine.Timeline;
 
 [CreateAssetMenu(fileName = "ScriptableObject", menuName = "GameEffectSO", order = 0)]
 public class GameEffectSO : ScriptableObject

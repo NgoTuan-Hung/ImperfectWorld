@@ -54,6 +54,8 @@ SpriteRenderer:
   m_RayTracingAccelStructBuildFlagsOverride: 0
   m_RayTracingAccelStructBuildFlags: 1
   m_SmallMeshCulling: 1
+  m_ForceMeshLod: -1
+  m_MeshLodSelectionBias: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -75,6 +77,7 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
+  m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 1774004605
   m_SortingLayer: 1
   m_SortingOrder: 1
@@ -157,6 +160,8 @@ GameObject:
   - component: {fileID: 8041115113237304025}
   - component: {fileID: 9221185469736541080}
   - component: {fileID: 5932531251206287754}
+  - component: {fileID: 8778075788479322044}
+  - component: {fileID: 3261071202894945024}
   m_Layer: 0
   m_Name: ElementalLeafRanger
   m_TagString: GameBot
@@ -417,7 +422,8 @@ MonoBehaviour:
   movable: {fileID: 0}
   movementIntelligence: {fileID: 0}
   actionIntelligence: {fileID: 0}
-  myBotPersonality: {fileID: 0}
+  botSensor: {fileID: 0}
+  botAIManager: {fileID: 0}
   stat: {fileID: 0}
   actionInterval: 0
   movementActionInterval: 0
@@ -426,11 +432,9 @@ MonoBehaviour:
   fieldOfView: {fileID: 0}
   combatCollision: {fileID: 0}
   firePoint: {fileID: 0}
-  enemiesWeSee: []
   boxCollider2D: {fileID: 0}
   combatCollider2D: {fileID: 0}
   audioSource: {fileID: 0}
-  currentNearestEnemy: {fileID: 0}
   rigidbody2D: {fileID: 0}
   attackAudioClip: {fileID: 8300000, guid: 1831f3e85531e554081da581aac0d078, type: 3}
   meleeCollisionEffectSO: {fileID: 0}
@@ -532,20 +536,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   customMono: {fileID: 0}
-  originToTargetOriginDirection: {x: 0, y: 0}
-  centerToTargetCenterDirection: {x: 0, y: 0}
-  firePointToTargetCenterDirection: {x: 0, y: 0}
-  targetOriginPosition: {x: 0, y: 0, z: 0}
-  targetCenterPosition: {x: 0, y: 0, z: 0}
-  current_OTTOD_ChangePriority: 4
-  current_CTTCD_ChangePriority: 4
-  current_FPTTCD_ChangePriority: 4
-  current_TOP_ChangePriority: 4
-  current_TCP_ChangePriority: 4
-  distanceToTarget: 0
   logicalAttackRange: 7
   targetTooCloseRange: 3
-  myBotCombatBehaviour: 1
 --- !u!114 &9221185469736541080
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -619,6 +611,48 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 0.9151375, y: 0.30376625}
   m_EdgeRadius: 0
+--- !u!114 &8778075788479322044
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5800095605073204079}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6337cb9bacfc4834382883b026f7b941, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::BotSensor
+  customMono: {fileID: 0}
+  currentNearestEnemy: {fileID: 0}
+  detectEnemy: {fileID: 0}
+  enemiesWeSee: []
+  originToTargetOriginDirection: {x: 0, y: 0}
+  centerToTargetCenterDirection: {x: 0, y: 0}
+  firePointToTargetCenterDirection: {x: 0, y: 0}
+  targetOriginPosition: {x: 0, y: 0, z: 0}
+  targetCenterPosition: {x: 0, y: 0, z: 0}
+  current_OTTOD_ChangePriority: 4
+  current_CTTCD_ChangePriority: 4
+  current_FPTTCD_ChangePriority: 4
+  current_TOP_ChangePriority: 4
+  current_TCP_ChangePriority: 4
+  distanceToNearestEnemy: 0
+--- !u!114 &3261071202894945024
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5800095605073204079}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b4a7ef3c47e0b2b47a24af0646489921, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::BotAIManager
+  customMono: {fileID: 0}
+  useBotAIBehavior: 1
+  aiBehavior: {fileID: 0}
 --- !u!1 &8816088761046860172
 GameObject:
   m_ObjectHideFlags: 0
