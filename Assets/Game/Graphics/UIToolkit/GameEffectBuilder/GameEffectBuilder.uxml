@@ -1,19 +1,29 @@
 <ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="True">
-    <ui:TextField label="Effect Name" placeholder-text="filler text" name="name-tf" />
-    <ui:Toggle label="Is Deactivated After Time" name="deactivate-after-time-t" />
-    <ui:FloatField label="Deactivate Time" value="42.2" name="deactivate-time-ff" />
-    <ui:Toggle label="Is Timeline" name="is-timeline-t" />
-    <ui:Toggle label="Random Rotation" name="random-rotation-t" />
-    <ui:FloatField label="Fly At Speed" value="42.2" name="fly-at-speed-ff" />
-    <ui:Vector3Field label="Follow Offset" name="follow-offset-v3f" />
-    <ui:FloatField label="Follow Slowly Position Lerp Time" value="42.2" name="follow-slowly-position-lerp-time-ff" />
-    <ui:Toggle label="Play Sound" name="play-sound-t" />
-    <ui:Vector3Field label="Effect Local Position" name="effect-local-position-v3f" />
-    <ui:Vector3Field label="Effect Local Rotation" name="effect-local-rotation-v3f" />
-    <ui:Toggle label="Is Colored Over Lifetime" name="is-colored-over-lifetime-t" />
-    <uie:GradientField label="Color Over Lifetime" name="color-over-lifetime-gf" />
-    <ui:TextField label="Tag" placeholder-text="filler text" name="tag-tf" />
-    <uie:LayerMaskField label="Collision Exclude LayerMask" name="collision-exclude-layer-mask-lmf" value="247" />
-    <ui:Toggle label="Use Particle System" name="use-particle-system-t" />
-    <ui:Button text="Build" name="build-b" />
+    <ui:ScrollView touch-scroll-type="Elastic">
+        <ui:VisualElement name="scroll-view-content" style="flex-grow: 1; flex-wrap: wrap;">
+            <ui:TextField label="Effect Name" placeholder-text="filler text" name="name-tf" />
+            <ui:Toggle label="Is Deactivated After Time" name="deactivate-after-time-t" />
+            <ui:FloatField label="Deactivate Time" name="deactivate-time-ff" />
+            <ui:Toggle label="Is Timeline" name="is-timeline-t" />
+            <ui:Toggle label="Random Rotation" name="random-rotation-t" />
+            <ui:FloatField label="Fly At Speed" name="fly-at-speed-ff" />
+            <ui:Vector3Field label="Follow Offset" name="follow-offset-v3f" />
+            <ui:FloatField label="Follow Slowly Position Lerp Time" name="follow-slowly-position-lerp-time-ff" />
+            <ui:Toggle label="Play Sound" name="play-sound-t" />
+            <ui:Vector3Field label="Effect Local Position" name="effect-local-position-v3f" />
+            <ui:Vector3Field label="Effect Local Rotation" name="effect-local-rotation-v3f" />
+            <ui:Toggle label="Is Colored Over Lifetime" name="is-colored-over-lifetime-t" />
+            <uie:GradientField label="Color Over Lifetime" name="color-over-lifetime-gf" />
+            <ui:TextField label="Tag" placeholder-text="filler text" name="tag-tf" value="Untagged" />
+            <uie:LayerMaskField label="Collision Exclude LayerMask" name="collision-exclude-layer-mask-lmf" value="247" />
+            <ui:Toggle label="Use Particle System" name="use-particle-system-t" />
+            <ui:VisualElement name="seperator-1" style="background-color: rgb(255, 0, 0); height: 1px;" />
+            <ui:VisualElement name="seperator-2" style="background-color: rgb(0, 255, 28); height: 1px;" />
+            <ui:VisualElement style="flex-direction: row;">
+                <ui:DropdownField label="Add Collider" name="add-collider-df" choices="BoxCollider2D,CircleCollider2D,PolygonCollider2D" index="0" />
+                <ui:Button text="ADD" name="add-collider-b" />
+            </ui:VisualElement>
+            <ui:Button text="Build" name="build-b" />
+        </ui:VisualElement>
+    </ui:ScrollView>
 </ui:UXML>

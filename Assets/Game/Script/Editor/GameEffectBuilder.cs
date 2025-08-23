@@ -3,6 +3,9 @@ using UnityEngine;
 using UnityEditor;
 using UnityEngine.UIElements;
 using UnityEditor.UIElements;
+using UnityEngine.Playables;
+using UnityEngine.Timeline;
+using System;
 
 public class GameEffectBuilder : EditorWindow
 {
@@ -21,11 +24,23 @@ public class GameEffectBuilder : EditorWindow
         effectLocalPositionVector3Field,
         effectLocalRotationVector3Field;
     GradientField colorOverLifetimeGradientField;
-    Button buildButton;
+    Button buildButton,
+        addColliderButton;
     TextField nameTextField,
         tagTextField;
     LayerMaskField collisionExcludeLayerMaskLayerMaskField;
     ListGameEffectBehavior listGameEffectBehavior;
+    CollideAndDamageSO collideAndDamageSO;
+    VisualElement scrollViewContent,
+        seperator1;
+    DropdownField addColliderDropdownField;
+    GameObject build;
+    int combatColliderLayer;
+
+    private void OnEnable()
+    {
+        combatColliderLayer = LayerMask.NameToLayer("CombatCollider");
+    }
 
     [MenuItem("Tools/GameEffectBuilder")]
     private static void ShowWindow()
@@ -38,59 +53,187 @@ public class GameEffectBuilder : EditorWindow
     void CreateGUI()
     {
         GetVisualElements();
-        buildButton.RegisterCallbackOnce<ClickEvent>(e =>
-        {
-            GameObject t_build = Instantiate(basePrefab);
-            t_build.name = nameTextField.text;
+        BuildButtonHandler();
+        AddColliderButtonHandler();
+    }
 
-            GameEffectSO t_buildSO = CreateInstance<GameEffectSO>();
-            t_buildSO.name = nameTextField.text + "SO";
-            AssetDatabase.CreateAsset(
-                t_buildSO,
-                "Assets/Game/Resources/" + t_buildSO.name + ".asset"
-            );
-            AssetDatabase.SaveAssets();
-        });
+    private void AddColliderButtonHandler()
+    {
+        addColliderButton.clicked += OnAddColliderButtonClicked;
+    }
+
+    private void OnAddColliderButtonClicked()
+    {
+        if (build == null)
+            return;
+
+        GameObject t_collider = new();
+        t_collider.layer = combatColliderLayer;
+        t_collider.transform.parent = build.transform.Find("Colliders");
+        Collider2D t_collider2D = default;
+
+        switch (addColliderDropdownField.value)
+        {
+            case "BoxCollider2D":
+            {
+                t_collider.name = "BoxCollider2D";
+                t_collider2D = t_collider.AddComponent<BoxCollider2D>();
+                break;
+            }
+            case "CircleCollider2D":
+            {
+                t_collider.name = "CircleCollider2D";
+                t_collider2D = t_collider.AddComponent<CircleCollider2D>();
+                break;
+            }
+            case "PolygonCollider2D":
+            {
+                t_collider.name = "PolygonCollider2D";
+                t_collider2D = t_collider.AddComponent<PolygonCollider2D>();
+                break;
+            }
+        }
+
+        t_collider2D.isTrigger = true;
     }
 
     void GetVisualElements()
     {
         vTA.CloneTree(rootVisualElement);
 
-        buildButton = rootVisualElement.Q<Button>("build-b");
-        nameTextField = rootVisualElement.Q<TextField>("name-tf");
-        isDeactivateAterTimeToggle = rootVisualElement.Q<Toggle>("deactivate-after-time-t");
-        deactivateTimeFloatField = rootVisualElement.Q<FloatField>("deactivate-time-ff");
-        isTimelineToggle = rootVisualElement.Q<Toggle>("is-timeline-t");
-        randomRotationToggle = rootVisualElement.Q<Toggle>("random-rotation-tg");
-        playSoundToggle = rootVisualElement.Q<Toggle>("play-sound-t");
-        isColoredOverLifetimeToggle = rootVisualElement.Q<Toggle>("is-colored-over-lifetime-t");
-        colorOverLifetimeGradientField = rootVisualElement.Q<GradientField>(
+        scrollViewContent = rootVisualElement.Q("scroll-view-content");
+        buildButton = scrollViewContent.Q<Button>("build-b");
+        nameTextField = scrollViewContent.Q<TextField>("name-tf");
+        isDeactivateAterTimeToggle = scrollViewContent.Q<Toggle>("deactivate-after-time-t");
+        deactivateTimeFloatField = scrollViewContent.Q<FloatField>("deactivate-time-ff");
+        isTimelineToggle = scrollViewContent.Q<Toggle>("is-timeline-t");
+        randomRotationToggle = scrollViewContent.Q<Toggle>("random-rotation-t");
+        playSoundToggle = scrollViewContent.Q<Toggle>("play-sound-t");
+        isColoredOverLifetimeToggle = scrollViewContent.Q<Toggle>("is-colored-over-lifetime-t");
+        colorOverLifetimeGradientField = scrollViewContent.Q<GradientField>(
             "color-over-lifetime-gf"
         );
-        useParticleSystemToggle = rootVisualElement.Q<Toggle>("use-particle-system-t");
-        flyAtSpeedFloatField = rootVisualElement.Q<FloatField>("fly-at-speed-ff");
-        followSlowlyPositionLerpTimeFloatField = rootVisualElement.Q<FloatField>(
+        useParticleSystemToggle = scrollViewContent.Q<Toggle>("use-particle-system-t");
+        flyAtSpeedFloatField = scrollViewContent.Q<FloatField>("fly-at-speed-ff");
+        followSlowlyPositionLerpTimeFloatField = scrollViewContent.Q<FloatField>(
             "follow-slowly-position-lerp-time-ff"
         );
-        followOffsetVector3Field = rootVisualElement.Q<Vector3Field>("follow-offset-v3f");
-        effectLocalPositionVector3Field = rootVisualElement.Q<Vector3Field>(
+        followOffsetVector3Field = scrollViewContent.Q<Vector3Field>("follow-offset-v3f");
+        effectLocalPositionVector3Field = scrollViewContent.Q<Vector3Field>(
             "effect-local-position-v3f"
         );
-        effectLocalRotationVector3Field = rootVisualElement.Q<Vector3Field>(
+        effectLocalRotationVector3Field = scrollViewContent.Q<Vector3Field>(
             "effect-local-rotation-v3f"
         );
-        tagTextField = rootVisualElement.Q<TextField>("tag-tf");
-        collisionExcludeLayerMaskLayerMaskField = rootVisualElement.Q<LayerMaskField>(
+        tagTextField = scrollViewContent.Q<TextField>("tag-tf");
+        collisionExcludeLayerMaskLayerMaskField = scrollViewContent.Q<LayerMaskField>(
             "collision-exclude-layer-mask-lmf"
         );
+        seperator1 = scrollViewContent.Q("seperator-1");
 
         var gameEffectBehavioursIE = new InspectorElement();
+        gameEffectBehavioursIE.style.flexGrow = 0;
         listGameEffectBehavior = CreateInstance<ListGameEffectBehavior>();
         gameEffectBehavioursIE.Bind(new SerializedObject(listGameEffectBehavior));
-        rootVisualElement.Add(gameEffectBehavioursIE);
-        gameEffectBehavioursIE.PlaceBehind(collisionExcludeLayerMaskLayerMaskField);
-        rootVisualElement.Add(buildButton);
+        scrollViewContent.Add(gameEffectBehavioursIE);
+        gameEffectBehavioursIE.PlaceInFront(collisionExcludeLayerMaskLayerMaskField);
+
+        collideAndDamageSO = CreateInstance<CollideAndDamageSO>();
+        var collideAndDamageIE = new InspectorElement();
+        collideAndDamageIE.style.flexGrow = 0;
+        collideAndDamageIE.Bind(new SerializedObject(collideAndDamageSO));
+        scrollViewContent.Add(collideAndDamageIE);
+
+        addColliderButton = scrollViewContent.Q<Button>("add-collider-b");
+        addColliderDropdownField = scrollViewContent.Q<DropdownField>("add-collider-df");
+
+        scrollViewContent.Add(buildButton);
+        collideAndDamageIE.PlaceInFront(seperator1);
+    }
+
+    void BuildButtonHandler()
+    {
+        buildButton.RegisterCallback<ClickEvent>(e =>
+        {
+            GameEffectSO t_buildSO = CreateInstance<GameEffectSO>();
+            t_buildSO.name = nameTextField.text + "SO";
+            t_buildSO.isDeactivateAfterTime = isDeactivateAterTimeToggle.value;
+            t_buildSO.deactivateTime = deactivateTimeFloatField.value;
+            t_buildSO.isTimeline = isTimelineToggle.value;
+            t_buildSO.randomRotation = randomRotationToggle.value;
+            t_buildSO.flyAtSpeed = flyAtSpeedFloatField.value;
+            t_buildSO.followOffset = followOffsetVector3Field.value;
+            t_buildSO.followSlowlyPositionLerpTime = followSlowlyPositionLerpTimeFloatField.value;
+            t_buildSO.playSound = playSoundToggle.value;
+            t_buildSO.effectLocalPosition = effectLocalPositionVector3Field.value;
+            t_buildSO.effectLocalRotation = effectLocalRotationVector3Field.value;
+            t_buildSO.isColoredOverLifetime = isColoredOverLifetimeToggle.value;
+            t_buildSO.colorOverLifetimeGrad = colorOverLifetimeGradientField.value;
+            t_buildSO.tag = tagTextField.text;
+            t_buildSO.collisionExcludeLayerMask = collisionExcludeLayerMaskLayerMaskField.value;
+            t_buildSO.gameEffectBehaviours = listGameEffectBehavior.effectBehaviours;
+            t_buildSO.useParticleSystem = useParticleSystemToggle.value;
+            AssetDatabase.CreateAsset(
+                t_buildSO,
+                "Assets/Game/Resources/" + t_buildSO.name + ".asset"
+            );
+            AssetDatabase.SaveAssets();
+
+            build = Instantiate(basePrefab);
+            build.name = nameTextField.text;
+            PlayableDirector t_pD;
+            Animator t_animator;
+            if (t_buildSO.isTimeline)
+            {
+                t_pD = build.AddComponent<PlayableDirector>();
+                t_pD.playOnAwake = false;
+                var t_tA = CreateInstance<TimelineAsset>();
+                t_tA.name = nameTextField.text + "Timeline";
+                AssetDatabase.CreateAsset(t_tA, "Assets/Game/Timeline/" + t_tA.name + ".asset");
+                AssetDatabase.SaveAssets();
+                t_pD.playableAsset = t_tA;
+                t_animator = build.AddComponent<Animator>();
+            }
+            GameEffect t_gE = build.GetComponent<GameEffect>();
+            t_gE.gameEffectSO = t_buildSO;
+
+            t_buildSO.gameEffectBehaviours?.ForEach(behaviour =>
+            {
+                switch (behaviour)
+                {
+                    case EGameEffectBehaviour.CollideAndDamage:
+                    {
+                        build.AddComponent<CollideAndDamage>();
+                        collideAndDamageSO.name = nameTextField.text + "CADSO";
+                        AssetDatabase.CreateAsset(
+                            collideAndDamageSO,
+                            "Assets/Game/Resources/" + collideAndDamageSO.name + ".asset"
+                        );
+                        AssetDatabase.SaveAssets();
+                        t_buildSO.collideAndDamageSO = collideAndDamageSO;
+                        break;
+                    }
+                    case EGameEffectBehaviour.BlueHole:
+                    {
+                        build.AddComponent<BlueHole>();
+                        break;
+                    }
+                    case EGameEffectBehaviour.InfernalTideFanReceiver:
+                    {
+                        build.AddComponent<InfernalTideFanReceiver>();
+                        break;
+                    }
+                    default:
+                        break;
+                }
+            });
+
+            PrefabUtility.SaveAsPrefabAssetAndConnect(
+                build,
+                "Assets/Game/Resources/" + build.name + ".prefab",
+                InteractionMode.UserAction
+            );
+        });
     }
 }
 #endif

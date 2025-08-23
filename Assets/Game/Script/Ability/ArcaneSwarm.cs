@@ -51,11 +51,6 @@ public class ArcaneSwarm : SkillBase
         damage = customMono.stat.wisdom.FinalValue * 3f;
     }
 
-    public override void WhileWaiting(Vector2 p_location = default, Vector2 p_direction = default)
-    {
-        base.WhileWaiting(p_direction);
-    }
-
     public override ActionResult Trigger(Vector2 location = default, Vector2 direction = default)
     {
         if (customMono.stat.currentManaPoint.Value < manaCost)

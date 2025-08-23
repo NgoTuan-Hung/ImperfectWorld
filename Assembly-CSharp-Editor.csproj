@@ -42,7 +42,7 @@
     <UnityVersion>6000.2.0f1</UnityVersion>
   </PropertyGroup>
   <ItemGroup>
-    <Analyzer Include="C:\Users\ADMIN88\.vscode\extensions\visualstudiotoolsforunity.vstuc-1.1.2\Analyzers\Microsoft.Unity.Analyzers.dll" />
+    <Analyzer Include="C:\Users\ADMIN88\.vscode\extensions\visualstudiotoolsforunity.vstuc-1.1.3\Analyzers\Microsoft.Unity.Analyzers.dll" />
     <Analyzer Include="D:\Program\unity\Editor\6000.2.0f1\Editor\Data\Tools\Unity.SourceGenerators\Unity.SourceGenerators.dll" />
     <Analyzer Include="D:\Program\unity\Editor\6000.2.0f1\Editor\Data\Tools\Unity.SourceGenerators\Unity.Properties.SourceGenerator.dll" />
     <Analyzer Include="D:\Program\unity\Editor\6000.2.0f1\Editor\Data\Tools\Unity.SourceGenerators\Unity.UIToolkit.SourceGenerator.dll" />
@@ -53,11 +53,13 @@
     <Compile Include="Assets\TutorialInfo\Scripts\Editor\ReadmeEditor.cs" />
     <Compile Include="Assets\Game\Script\Other\Editor\ListGameEffectSO.cs" />
     <Compile Include="Assets\Game\Script\Editor\GameEffectPrefabModifier.cs" />
+    <Compile Include="Assets\Game\Script\Other\Editor\ListSpriteSO.cs" />
     <Compile Include="Assets\Game\Script\Editor\BotAttackInspector.cs" />
     <Compile Include="Assets\Game\Script\Editor\WavUtility.cs" />
     <Compile Include="Assets\Game\Script\Editor\GameEffectSOModifier.cs" />
     <Compile Include="Assets\Game\Script\Editor\AudioEditor.cs" />
     <Compile Include="Assets\Game\Script\Editor\StatInspector.cs" />
+    <Compile Include="Assets\Game\Script\Editor\AddSpriteToParticleSystem.cs" />
     <Compile Include="Assets\Game\Script\Other\Editor\ListGameObject.cs" />
     <Compile Include="Assets\Game\Script\Editor\FloatStatWithCapInspector.cs" />
     <Compile Include="Assets\Game\Script\Editor\GameEffectBuilder.cs" />
