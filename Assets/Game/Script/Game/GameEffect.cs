@@ -221,4 +221,46 @@ public class GameEffect : MonoSelfAware
                     : -Math.Abs(animateObjects[0].transform.localScale.y)
             );
     }
+
+    public void SetUpCollideAndDamage(
+        HashSet<string> p_allyTags,
+        float p_damage,
+        Action<float> p_dealDamageEvent = null
+    )
+    {
+        var t_collideAndDamage = (CollideAndDamage)GetBehaviour(
+            EGameEffectBehaviour.CollideAndDamage
+        );
+        t_collideAndDamage.allyTags = p_allyTags;
+        t_collideAndDamage.collideDamage = p_damage;
+        t_collideAndDamage.dealDamageEvent = p_dealDamageEvent ?? DefaultDealtDamageEvent;
+    }
+
+    void DefaultDealtDamageEvent(float p_damage) { }
+
+    public void PlaceAndLookAt(Vector3 p_position, Transform p_transform, float p_delay)
+    {
+        transform.position = p_position;
+        StartCoroutine(LookAtIE(p_transform, p_delay));
+    }
+
+    IEnumerator LookAtIE(Transform p_transform, float p_delay)
+    {
+        Vector2 t_lookDir;
+        while (true)
+        {
+            t_lookDir = p_transform.position - transform.position;
+
+            yield return new WaitForSeconds(p_delay);
+
+            transform.rotation = Quaternion.Euler(
+                transform.rotation.eulerAngles.WithZ(Vector2.SignedAngle(Vector2.right, t_lookDir))
+            );
+            transform.localScale = transform.localScale.WithY(
+                t_lookDir.x > 0
+                    ? Math.Abs(transform.localScale.y)
+                    : -Math.Abs(transform.localScale.y)
+            );
+        }
+    }
 }

@@ -48,10 +48,51 @@ public class BotSensor : CustomMonoPal
         current_TOP_ChangePriority = (int)ModificationPriority.VeryLow,
         current_TCP_ChangePriority = (int)ModificationPriority.VeryLow;
     public float distanceToNearestEnemy;
+    Action senseDefault = () => { };
 
     public override void Awake()
     {
         base.Awake();
+        SetDefaultSense();
+    }
+
+    /// <summary>
+    /// If bot is player minions, default the target toward center,
+    /// else default target toward any player minion.
+    /// </summary>
+    private void SetDefaultSense()
+    {
+        if (customMono.isControllable)
+            senseDefault = SetTargetToCenterMap;
+        else
+            senseDefault = SetTargetToDetectEnemy;
+    }
+
+    void SetTargetToCenterMap()
+    {
+        SetOriginToTargetOriginDirection(
+            Vector3.zero - transform.position,
+            ModificationPriority.VeryLow
+        );
+        SetCenterToTargetCenterDirection(
+            Vector3.zero - customMono.rotationAndCenterObject.transform.position,
+            ModificationPriority.VeryLow
+        );
+    }
+
+    void SetTargetToDetectEnemy()
+    {
+        if (detectEnemy == null)
+            detectEnemy = GameManager.Instance.GetRandomPlayerAlly();
+        SetOriginToTargetOriginDirection(
+            detectEnemy.transform.position - transform.position,
+            ModificationPriority.VeryLow
+        );
+        SetCenterToTargetCenterDirection(
+            detectEnemy.rotationAndCenterObject.transform.position
+                - customMono.rotationAndCenterObject.transform.position,
+            ModificationPriority.VeryLow
+        );
     }
 
     private void OnEnable()
@@ -69,23 +110,13 @@ public class BotSensor : CustomMonoPal
     }
 
     /// <summary>
-    /// Update info about currentNearestEnemy, if there is none, get detectEnemy from GM.
+    /// Update info about currentNearestEnemy, if there is none, apply default sense.
     /// </summary>
     void EnemySensing()
     {
         if (currentNearestEnemy == null)
         {
-            if (detectEnemy == null)
-                detectEnemy = GameManager.Instance.GetRandomPlayerAlly();
-            SetOriginToTargetOriginDirection(
-                detectEnemy.transform.position - transform.position,
-                ModificationPriority.VeryLow
-            );
-            SetCenterToTargetCenterDirection(
-                detectEnemy.rotationAndCenterObject.transform.position
-                    - customMono.rotationAndCenterObject.transform.position,
-                ModificationPriority.VeryLow
-            );
+            senseDefault();
         }
         else
         {

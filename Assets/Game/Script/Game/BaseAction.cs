@@ -55,6 +55,7 @@ public class BaseAction : MonoEditor
         botIE;
     public static ActionResult failResult = new();
     public ActionResult successResult = new(true, ActionResultType.Cooldown, default);
+    Dictionary<ActionFieldName, ActionField> actionFields = new();
 
     public virtual void Awake()
     {
@@ -72,7 +73,29 @@ public class BaseAction : MonoEditor
         base.Start();
         /* Stop action when we die */
         customMono.stat.currentHealthPointReachZeroEvent += StopAndDisable;
+        /* Test */
+        if (this is ArcaneSwarm || this is HeliosGaze)
+            LoadActionFields();
+        Config();
     }
+
+    private void LoadActionFields()
+    {
+        ActionFieldInfo t_aFI = GameManager.Instance.GetActionFieldInfo(GetType().Name);
+        t_aFI.actionFieldNames.ForEach(aFN =>
+        {
+            actionFields.Add(
+                aFN,
+                Activator.CreateInstance(GameManager.Instance.GetActionFieldTypeFromName(aFN))
+                    as ActionField
+            );
+        });
+    }
+
+    public T GetActionField<T>(ActionFieldName p_actionFieldName)
+        where T : ActionField => actionFields[p_actionFieldName] as T;
+
+    public virtual void Config() { }
 
     public virtual void ToggleAnim(int boolHash, bool value)
     {

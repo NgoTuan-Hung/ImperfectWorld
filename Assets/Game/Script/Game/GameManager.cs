@@ -1,9 +1,11 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using Unity.Cinemachine;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public partial class GameManager : MonoSingleton<GameManager>
 {
@@ -38,6 +40,9 @@ public partial class GameManager : MonoSingleton<GameManager>
         mainSkill2TriggerHash = Animator.StringToHash("MainSkill2Trigger");
     public Dictionary<int, GameObject> colliderOwner = new();
     IEnumerator roundTimerCountDownIE;
+    public List<ActionFieldInfo> actionFieldInfos = new();
+    Dictionary<string, ActionFieldInfo> actionFieldInfoDict = new();
+    Dictionary<ActionFieldName, Type> actionFieldMapper = new();
 
     public void InitializeControllableCharacter(CustomMono p_customMono)
     {
@@ -86,9 +91,68 @@ public partial class GameManager : MonoSingleton<GameManager>
 
         InitAllEffectPools();
         LoadOtherResources();
+        ConstructActionFieldInfoDict();
+        MapActionFieldName();
     }
 
     void LoadOtherResources() { }
+
+    void ConstructActionFieldInfoDict()
+    {
+        actionFieldInfos.ForEach(aFI =>
+        {
+            actionFieldInfoDict.Add(aFI.actionType, aFI);
+        });
+    }
+
+    public ActionFieldInfo GetActionFieldInfo(string p_actionType) =>
+        actionFieldInfoDict[p_actionType];
+
+    private void MapActionFieldName()
+    {
+        List<ActionFieldName> allAFN = Enum.GetValues(typeof(ActionFieldName))
+            .Cast<ActionFieldName>()
+            .ToList();
+        allAFN.ForEach(aFN =>
+        {
+            actionFieldMapper.Add(
+                aFN,
+                aFN switch
+                {
+                    ActionFieldName.Cooldown => typeof(ActionFloatField),
+                    ActionFieldName.Duration => typeof(ActionFloatField),
+                    ActionFieldName.Range => typeof(ActionFloatField),
+                    ActionFieldName.Damage => typeof(ActionFloatField),
+                    ActionFieldName.Variants => typeof(ActionIntField),
+                    ActionFieldName.ManaCost => typeof(ActionFloatField),
+                    ActionFieldName.LifeStealPercent => typeof(ActionFloatField),
+                    ActionFieldName.CurrentTime => typeof(ActionFloatField),
+                    ActionFieldName.Speed => typeof(ActionFloatField),
+                    ActionFieldName.ActionIE => typeof(ActionIEnumeratorField),
+                    ActionFieldName.ActionIE1 => typeof(ActionIEnumeratorField),
+                    ActionFieldName.ActionIE2 => typeof(ActionIEnumeratorField),
+                    ActionFieldName.EffectCount => typeof(ActionIntField),
+                    ActionFieldName.EffectDuration => typeof(ActionFloatField),
+                    ActionFieldName.Interval => typeof(ActionFloatField),
+                    ActionFieldName.CustomGameObject => typeof(ActionGameObjectField),
+                    ActionFieldName.PoisonInfo => typeof(ActionPoisonInfoField),
+                    ActionFieldName.SlowInfo => typeof(ActionSlowInfoField),
+                    ActionFieldName.GameEffect => typeof(ActionGameEffectField),
+                    ActionFieldName.Origin => typeof(ActionVector3Field),
+                    ActionFieldName.StopWatch => typeof(ActionStopWatchField),
+                    ActionFieldName.Angle => typeof(ActionFloatField),
+                    ActionFieldName.Direction => typeof(ActionVector3Field),
+                    ActionFieldName.Blend => typeof(ActionFloatField),
+                    ActionFieldName.Target => typeof(ActionCustomMonoField),
+                    ActionFieldName.IsNextPhase => typeof(ActionBoolField),
+                    _ => null,
+                }
+            );
+        });
+    }
+
+    public Type GetActionFieldTypeFromName(ActionFieldName p_actionFieldName) =>
+        actionFieldMapper[p_actionFieldName];
 
     private void Start()
     {

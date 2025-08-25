@@ -192,7 +192,6 @@ GameObject:
   - component: {fileID: 834792069889194963}
   - component: {fileID: 8358491539568613821}
   - component: {fileID: 513280056857668141}
-  - component: {fileID: 766510213671306658}
   - component: {fileID: 1277164082142199727}
   - component: {fileID: 7978585790228963272}
   - component: {fileID: 2732926531096220209}
@@ -603,21 +602,6 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 435fce547d318d94f838c9c3f2cf2fa9, type: 2}
   - {fileID: 11400000, guid: d433e8152bc56e147a7e5edd86d7fde5, type: 2}
   skillBases: []
---- !u!114 &766510213671306658
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6920399575831899041}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6f79454b4f09ead4aaf327a0a868de1b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  customMono: {fileID: 0}
-  logicalAttackRange: 7
-  targetTooCloseRange: 3
 --- !u!114 &1277164082142199727
 MonoBehaviour:
   m_ObjectHideFlags: 0

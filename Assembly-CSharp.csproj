@@ -67,6 +67,7 @@
     <Compile Include="Assets\Test\TestExecutionOrder\TestExecutionOrder3.cs" />
     <Compile Include="Assets\Test\ResetParticleSystemState\ResetParticleSystemState.cs" />
     <Compile Include="Assets\Game\Script\UI\Revamp\PointerDownUI.cs" />
+    <Compile Include="Assets\Game\Script\ActionField\ActionCustomMonoField.cs" />
     <Compile Include="Assets\Test\TestColliderWhenDie\TestColliderWhenDie.cs" />
     <Compile Include="Assets\Game\Script\UI\UIRenderer\TestVisualElement.cs" />
     <Compile Include="Assets\Game\Script\UI\Revamp\CharacterPartyNode.cs" />
@@ -80,6 +81,7 @@
     <Compile Include="Assets\Game\Script\Ability\DoubleKill.cs" />
     <Compile Include="Assets\Game\Script\UI\Extension\TouchExtension.cs" />
     <Compile Include="Assets\Game\Script\Other\PoolArgument.cs" />
+    <Compile Include="Assets\Game\Script\Game\ActionFieldInfo.cs" />
     <Compile Include="Assets\Game\Script\Game\Testing.cs" />
     <Compile Include="Assets\Game\Script\UI\Revamp\SkillNodeUI.cs" />
     <Compile Include="Assets\Game\Script\UI\Model\CharUIData.cs" />
@@ -94,6 +96,7 @@
     <Compile Include="Assets\CustomPackage\Dotween\Modules\DOTweenModulePhysics2D.cs" />
     <Compile Include="Assets\Game\Script\Game\BotSensor.cs" />
     <Compile Include="Assets\Game\Script\AIBehavior\BaseAIBehavior.cs" />
+    <Compile Include="Assets\Game\Script\ActionField\ActionStopWatchField.cs" />
     <Compile Include="Assets\Game\Script\UI\Revamp\EnhancedOnScreenStickEditor.cs" />
     <Compile Include="Assets\Game\Script\Other\CollideAndDamage.cs" />
     <Compile Include="Assets\CustomPackage\Dotween\Modules\DOTweenModuleSprite.cs" />
@@ -117,7 +120,9 @@
     <Compile Include="Assets\Game\Script\ScriptableObject\SkillDataSO.cs" />
     <Compile Include="Assets\Game\Script\Other\ActionResult.cs" />
     <Compile Include="Assets\CustomPackage\Cainos\Pixel Art Top Down - Basic\Script\TopDownCharacterController.cs" />
+    <Compile Include="Assets\Game\Script\ActionField\ActionFloatField.cs" />
     <Compile Include="Assets\Game\Script\Game\FloatStatWithModifier.cs" />
+    <Compile Include="Assets\Game\Script\ActionField\ActionIEnumeratorField.cs" />
     <Compile Include="Assets\Game\Script\Other\ListExtension.cs" />
     <Compile Include="Assets\Game\Script\Game\BaseIntelligence.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\VertexJitter.cs" />
@@ -135,6 +140,7 @@
     <Compile Include="Assets\Game\Script\Other\MonoEditorSingleton.cs" />
     <Compile Include="Assets\Test\TimelineSerializeTest\PrefabTest.cs" />
     <Compile Include="Assets\Game\Script\Game\SpawnEnemyInfo.cs" />
+    <Compile Include="Assets\Game\Script\ActionField\ActionPoisonInfoField.cs" />
     <Compile Include="Assets\Game\Script\Other\CollideAndDamageSO.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\SkewTextExample.cs" />
     <Compile Include="Assets\Test\PrefabGetComponentTest\PrefabGetComponentTest2.cs" />
@@ -184,6 +190,7 @@
     <Compile Include="Assets\Game\Script\Other\ObjectPool.cs" />
     <Compile Include="Assets\Game\Script\Other\CustomMonoPal.cs" />
     <Compile Include="Assets\Game\Script\Game\AnimatorWrapper.cs" />
+    <Compile Include="Assets\Game\Script\ActionField\ActionGameObjectField.cs" />
     <Compile Include="Assets\Game\Script\UI\Other\TouchInfo.cs" />
     <Compile Include="Assets\Game\Script\Other\MonoSingleton.cs" />
     <Compile Include="Assets\Test\JapaneseSamuraiDash\EasingFunctions.cs" />
@@ -206,6 +213,7 @@
     <Compile Include="Assets\Game\Script\UI\Other\UsableSlotUIInfo.cs" />
     <Compile Include="Assets\Test\BladeOfVu\BladeOfVuTest.cs" />
     <Compile Include="Assets\Game\Script\Game\AnimationEventFunctionCaller.cs" />
+    <Compile Include="Assets\Game\Script\ActionField\ActionBoolField.cs" />
     <Compile Include="Assets\Test\MultipleColliderOnOneObject\MultipleColliderOnOneObjectTest.cs" />
     <Compile Include="Assets\Game\Script\UI\Revamp\SkillSlotUI.cs" />
     <Compile Include="Assets\CustomPackage\Dotween\Modules\DOTweenModuleUnityVersion.cs" />
@@ -216,12 +224,14 @@
     <Compile Include="Assets\Test\JapaneseSamuraiDash\JSD.cs" />
     <Compile Include="Assets\Bot.cs" />
     <Compile Include="Assets\Test\TimelineSerializeTest\ReferencePrefabTest.cs" />
+    <Compile Include="Assets\Game\Script\Ability\HeliosGaze.cs" />
     <Compile Include="Assets\Game\Script\Game\GameEffectPrefab.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\Benchmark03.cs" />
     <Compile Include="Assets\Game\Script\Game\GameEffectSO.cs" />
     <Compile Include="Assets\Game\Script\Game\WorldSpaceUI.cs" />
     <Compile Include="Assets\Test\TimelineSerializeTest\BoxCollider2.cs" />
     <Compile Include="Assets\Game\Script\Ability\LightingForward.cs" />
+    <Compile Include="Assets\Game\Script\ActionField\ActionVector3Field.cs" />
     <Compile Include="Assets\Game\Script\Other\InfernalTideFanReceiver.cs" />
     <Compile Include="Assets\Game\Script\Game\FloatStat.cs" />
     <Compile Include="Assets\CustomPackage\Cainos\Pixel Art Top Down - Basic\Script\SpriteColorAnimation.cs" />
@@ -235,6 +245,7 @@
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\VertexColorCycler.cs" />
     <Compile Include="Assets\Game\Script\Game\Stat.cs" />
     <Compile Include="Assets\Game\Script\Ability\ArcaneSwarm.cs" />
+    <Compile Include="Assets\Game\Script\ActionField\ActionField.cs" />
     <Compile Include="Assets\Test\TimelineSerializeTest\TimelineSerializeSO.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\ObjectSpin.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_PhoneNumberValidator.cs" />
@@ -253,6 +264,7 @@
     <Compile Include="Assets\Test\UIRevamp\RectTransformSizePrinter.cs" />
     <Compile Include="Assets\Test\ScatterArrowIcon\ScatterArrowIconTest.cs" />
     <Compile Include="Assets\Game\Script\UI\Model\MainViewOptionData.cs" />
+    <Compile Include="Assets\Game\Script\ActionField\ActionGameEffectField.cs" />
     <Compile Include="Assets\Game\Script\Other\Interface\IGameEffectBehaviour.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TextMeshProFloatingText.cs" />
     <Compile Include="Assets\Game\Script\UI\Model\ConfigMenuItem.cs" />
@@ -260,8 +272,10 @@
     <Compile Include="Assets\Game\Script\Other\MonoEditor.cs" />
     <Compile Include="Assets\CustomPackage\Dotween\Modules\DOTweenModuleAudio.cs" />
     <Compile Include="Assets\Test\TestExecutionOrder\TestExecutionOrder1.cs" />
+    <Compile Include="Assets\Game\Script\ActionField\ActionIntField.cs" />
     <Compile Include="Assets\CustomPackage\Dotween\Modules\DOTweenModuleUI.cs" />
     <Compile Include="Assets\Test\TestObjectPoolRevamp\TestObjectPoolRevamp.cs" />
+    <Compile Include="Assets\Game\Script\ActionField\ActionSlowInfoField.cs" />
     <Compile Include="Assets\Test\TimelineSerializeTest\ColliderCopier.cs" />
     <Compile Include="Assets\Game\Script\Other\PoisonInfo.cs" />
     <Compile Include="Assets\Game\Script\UI\Model\ConfigData.cs" />
@@ -300,6 +314,7 @@
     <None Include="Assets\TextMesh Pro\Shaders\SDFFunctions.hlsl" />
     <None Include="Assets\Game\Script\Other\Misc\note1.txt" />
     <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF-Surface.shader" />
+    <None Include="Assets\Game\Script\Other\Misc\OrbitalNemesis-old.txt" />
     <None Include="Assets\TextMesh Pro\Sprites\EmojiOne Attribution.txt" />
     <None Include="Assets\TextMesh Pro\Shaders\TMP_Bitmap-Custom-Atlas.shader" />
     <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF.shader" />

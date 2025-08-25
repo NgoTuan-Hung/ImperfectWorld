@@ -119,32 +119,10 @@ public class OrbitalNemesis : SkillBase
                     .WithY(0)
                     .RotateZ(modifiedAngle * Random.Range(0, 2) == 0 ? 1 : -1)
                     .normalized;
-                /* If we are above the enemy, dash down else dash up */
-                if (
-                    customMono.rotationAndCenterObject.transform.position.y
-                    > customMono
-                        .botSensor
-                        .currentNearestEnemy
-                        .rotationAndCenterObject
-                        .transform
-                        .position
-                        .y
-                )
-                {
-                    // enemyDirection = enemyDirection
-                    //     .WithY(0)
-                    //     .RotateZ(modifiedAngle * (enemyDirection.x > 0 ? -1 : 1))
-                    //     .normalized;
+                if (enemyDirection.y < 0)
                     SetBlend(GameManager.Instance.mainSkill2BlendHash, interval * 2);
-                }
                 else
-                {
-                    // enemyDirection = enemyDirection
-                    //     .WithY(0)
-                    //     .RotateZ(modifiedAngle * (enemyDirection.x > 0 ? 1 : -1))
-                    //     .normalized;
                     SetBlend(GameManager.Instance.mainSkill2BlendHash, interval);
-                }
             }
         }
 

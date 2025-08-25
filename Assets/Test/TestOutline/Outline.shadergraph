@@ -970,12 +970,15 @@
     "overrideHLSLDeclaration": false,
     "hlslDeclarationOverride": 2,
     "m_Hidden": false,
+    "m_PerRendererData": false,
+    "m_customAttributes": [],
     "m_Value": {
         "m_SerializedTexture": "",
         "m_Guid": ""
     },
     "isMainTexture": true,
     "useTilingAndOffset": false,
+    "useTexelSize": true,
     "m_Modifiable": true,
     "m_DefaultType": 2
 }
@@ -2498,8 +2501,8 @@
     "m_ObjectId": "6c5f35929e0147969099f669db4a4cb1",
     "m_Title": "Dilated Alpha",
     "m_Position": {
-        "x": -615.2000732421875,
-        "y": 431.20001220703127
+        "x": -615.199951171875,
+        "y": 431.1999816894531
     }
 }
 
@@ -2659,6 +2662,8 @@
     "overrideHLSLDeclaration": false,
     "hlslDeclarationOverride": 0,
     "m_Hidden": false,
+    "m_PerRendererData": false,
+    "m_customAttributes": [],
     "m_Value": {
         "r": 0.0,
         "g": 1.0,
@@ -2988,7 +2993,7 @@
     "m_Title": "UV Offset",
     "m_Position": {
         "x": -1785.60009765625,
-        "y": 543.199951171875
+        "y": 543.1998901367188
     }
 }
 
@@ -4113,12 +4118,24 @@
     "overrideHLSLDeclaration": false,
     "hlslDeclarationOverride": 0,
     "m_Hidden": false,
+    "m_PerRendererData": false,
+    "m_customAttributes": [],
     "m_Value": 2.0,
     "m_FloatType": 0,
     "m_RangeValues": {
         "x": 0.0,
         "y": 1.0
-    }
+    },
+    "m_SliderType": 0,
+    "m_SliderPower": 3.0,
+    "m_EnumType": 0,
+    "m_CSharpEnumString": "",
+    "m_EnumNames": [
+        "Default"
+    ],
+    "m_EnumValues": [
+        0
+    ]
 }
 
 {

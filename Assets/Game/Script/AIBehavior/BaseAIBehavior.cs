@@ -2,14 +2,6 @@ using System;
 using System.Collections;
 using UnityEngine;
 
-#if false
-    logicalAttackRange 1.5
-    tooCloseRange 0.5
-
-    ally: 1.5 1
-    else: 7 3
-#endif
-
 /// <summary>
 /// Bot brain, execute actions based on various factors like sensors, conditions,...
 /// Should run after BotSensor.cs .

@@ -6,11 +6,8 @@ public class ArcaneSwarm : SkillBase
     public override void Awake()
     {
         base.Awake();
-        cooldown = 0.5f;
-        /* In this skill, this will be the number of projectile variant we select - 1*/
-        maxAmmo = 6;
         successResult = new(true, ActionResultType.Cooldown, cooldown);
-        manaCost = 5f;
+        cooldown = .5f;
 
         AddActionManuals();
     }
@@ -39,6 +36,13 @@ public class ArcaneSwarm : SkillBase
         StatChangeRegister();
     }
 
+    public override void Config()
+    {
+        GetActionField<ActionFloatField>(ActionFieldName.Cooldown).value = 0.5f;
+        GetActionField<ActionIntField>(ActionFieldName.Variants).value = 6;
+        GetActionField<ActionFloatField>(ActionFieldName.ManaCost).value = 5f;
+    }
+
     public override void StatChangeRegister()
     {
         base.StatChangeRegister();
@@ -48,12 +52,16 @@ public class ArcaneSwarm : SkillBase
     public override void RecalculateStat()
     {
         base.RecalculateStat();
-        damage = customMono.stat.wisdom.FinalValue * 3f;
+        GetActionField<ActionFloatField>(ActionFieldName.Damage).value =
+            customMono.stat.wisdom.FinalValue * 3f;
     }
 
     public override ActionResult Trigger(Vector2 location = default, Vector2 direction = default)
     {
-        if (customMono.stat.currentManaPoint.Value < manaCost)
+        if (
+            customMono.stat.currentManaPoint.Value
+            < GetActionField<ActionFloatField>(ActionFieldName.ManaCost).value
+        )
             return failResult;
         else if (canUse)
         {
@@ -61,7 +69,9 @@ public class ArcaneSwarm : SkillBase
             FireHoming();
             StartCoroutine(CooldownCoroutine());
             customMono.currentAction = this;
-            customMono.stat.currentManaPoint.Value -= manaCost;
+            customMono.stat.currentManaPoint.Value -= GetActionField<ActionFloatField>(
+                ActionFieldName.ManaCost
+            ).value;
 
             return successResult;
         }
@@ -72,17 +82,20 @@ public class ArcaneSwarm : SkillBase
     void FireHoming()
     {
         GameEffect t_projectile;
-        CollideAndDamage t_collideAndDamage;
 
-        t_projectile = ChooseProjectile(Random.Range(1, maxAmmo)).PickOne().gameEffect;
-        t_collideAndDamage = (CollideAndDamage)
-            t_projectile.GetBehaviour(EGameEffectBehaviour.CollideAndDamage);
-        t_collideAndDamage.allyTags = customMono.allyTags;
-        t_collideAndDamage.collideDamage = damage;
+        t_projectile = ChooseProjectile(
+                Random.Range(1, GetActionField<ActionIntField>(ActionFieldName.Variants).value)
+            )
+            .PickOne()
+            .gameEffect;
+        t_projectile.SetUpCollideAndDamage(
+            customMono.allyTags,
+            GetActionField<ActionFloatField>(ActionFieldName.Damage).value
+        );
 
         if (customMono.botSensor.currentNearestEnemy == null)
         {
-            t_collideAndDamage.transform.position =
+            t_projectile.transform.position =
                 customMono.transform.position
                 + new Vector3(
                     Random.Range(-0.5f, .5f) * customMono.fieldOfView.transform.localScale.x,
@@ -91,7 +104,7 @@ public class ArcaneSwarm : SkillBase
                 );
         }
         else
-            t_collideAndDamage.transform.position = customMono
+            t_projectile.transform.position = customMono
                 .botSensor
                 .currentNearestEnemy
                 .rotationAndCenterObject

@@ -59,7 +59,8 @@ public partial class GameManager
         arcaneSwarmSlash3Pool,
         arcaneSwarmSlash4Pool,
         arcaneSwarmSlash5Pool,
-        orbitalNemesisDashPool;
+        orbitalNemesisDashPool,
+        heliosGazeRayPool;
 
     void InitAllEffectPools()
     {
@@ -304,6 +305,10 @@ public partial class GameManager
             orbitalNemesisDash,
             new PoolArgument(ComponentType.GameEffect, PoolArgument.WhereComponent.Self)
         );
+        heliosGazeRayPool = new(
+            heliosGazeRay,
+            new PoolArgument(ComponentType.GameEffect, PoolArgument.WhereComponent.Self)
+        );
         LinkPoolWithScriptableObject();
     }
 
@@ -465,5 +470,6 @@ public partial class GameManager
             orbitalNemesisDash.GetComponent<GameEffect>().gameEffectSO,
             orbitalNemesisDashPool
         );
+        poolLink.Add(heliosGazeRay.GetComponent<GameEffect>().gameEffectSO, heliosGazeRayPool);
     }
 }

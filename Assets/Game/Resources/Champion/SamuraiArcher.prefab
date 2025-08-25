@@ -54,6 +54,8 @@ SpriteRenderer:
   m_RayTracingAccelStructBuildFlagsOverride: 0
   m_RayTracingAccelStructBuildFlags: 1
   m_SmallMeshCulling: 1
+  m_ForceMeshLod: -1
+  m_MeshLodSelectionBias: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -75,6 +77,7 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
+  m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 1774004605
   m_SortingLayer: 1
   m_SortingOrder: 1
@@ -155,8 +158,9 @@ GameObject:
   - component: {fileID: 6604901035267016073}
   - component: {fileID: 3627049645906622430}
   - component: {fileID: 1140524323545118634}
-  - component: {fileID: 855005848796693948}
   - component: {fileID: 5185675333155485747}
+  - component: {fileID: 3281443010373902934}
+  - component: {fileID: 3811522754736894706}
   m_Layer: 0
   m_Name: SamuraiArcher
   m_TagString: GameBot
@@ -450,7 +454,8 @@ MonoBehaviour:
   movable: {fileID: 0}
   movementIntelligence: {fileID: 0}
   actionIntelligence: {fileID: 0}
-  myBotPersonality: {fileID: 0}
+  botSensor: {fileID: 0}
+  botAIManager: {fileID: 0}
   stat: {fileID: 0}
   actionInterval: 0
   movementActionInterval: 0
@@ -459,11 +464,9 @@ MonoBehaviour:
   fieldOfView: {fileID: 0}
   combatCollision: {fileID: 0}
   firePoint: {fileID: 0}
-  enemiesWeSee: []
   boxCollider2D: {fileID: 0}
   combatCollider2D: {fileID: 0}
   audioSource: {fileID: 0}
-  currentNearestEnemy: {fileID: 0}
   rigidbody2D: {fileID: 0}
   attackAudioClip: {fileID: 8300000, guid: 4a4b48223eddcde4ca98850c4a405077, type: 3}
   meleeCollisionEffectSO: {fileID: 11400000, guid: 57f5a5216cc7363438a755be830c78a9, type: 2}
@@ -565,33 +568,6 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 12c3bbff2d3f2e3419f4d641e25e2f4c, type: 2}
   - {fileID: 11400000, guid: ade0fd0865441524d95440e8055cf34a, type: 2}
   skillBases: []
---- !u!114 &855005848796693948
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7338680796603692614}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6f79454b4f09ead4aaf327a0a868de1b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  customMono: {fileID: 0}
-  originToTargetOriginDirection: {x: 0, y: 0}
-  centerToTargetCenterDirection: {x: 0, y: 0}
-  firePointToTargetCenterDirection: {x: 0, y: 0}
-  targetOriginPosition: {x: 0, y: 0, z: 0}
-  targetCenterPosition: {x: 0, y: 0, z: 0}
-  current_OTTOD_ChangePriority: 4
-  current_CTTCD_ChangePriority: 4
-  current_FPTTCD_ChangePriority: 4
-  current_TOP_ChangePriority: 4
-  current_TCP_ChangePriority: 4
-  distanceToTarget: 0
-  logicalAttackRange: 1.5
-  targetTooCloseRange: 1
-  myBotCombatBehaviour: 0
 --- !u!114 &5185675333155485747
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -619,6 +595,48 @@ MonoBehaviour:
   knockUpVelocity: 0
   knockUpAcceleration: -10
   stunTime: 0
+--- !u!114 &3281443010373902934
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7338680796603692614}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6337cb9bacfc4834382883b026f7b941, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::BotSensor
+  customMono: {fileID: 0}
+  currentNearestEnemy: {fileID: 0}
+  detectEnemy: {fileID: 0}
+  enemiesWeSee: []
+  originToTargetOriginDirection: {x: 0, y: 0}
+  centerToTargetCenterDirection: {x: 0, y: 0}
+  firePointToTargetCenterDirection: {x: 0, y: 0}
+  targetOriginPosition: {x: 0, y: 0, z: 0}
+  targetCenterPosition: {x: 0, y: 0, z: 0}
+  current_OTTOD_ChangePriority: 4
+  current_CTTCD_ChangePriority: 4
+  current_FPTTCD_ChangePriority: 4
+  current_TOP_ChangePriority: 4
+  current_TCP_ChangePriority: 4
+  distanceToNearestEnemy: 0
+--- !u!114 &3811522754736894706
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7338680796603692614}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b4a7ef3c47e0b2b47a24af0646489921, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::BotAIManager
+  customMono: {fileID: 0}
+  useBotAIBehavior: 0
+  aiBehavior: {fileID: 0}
 --- !u!1 &9096228470570579079
 GameObject:
   m_ObjectHideFlags: 0
