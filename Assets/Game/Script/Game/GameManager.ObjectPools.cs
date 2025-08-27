@@ -60,7 +60,9 @@ public partial class GameManager
         arcaneSwarmSlash4Pool,
         arcaneSwarmSlash5Pool,
         orbitalNemesisDashPool,
-        heliosGazeRayPool;
+        heliosGazeRayPool,
+        rimuruCombo2SlashAPool,
+        rimuruCombo2SlashBPool;
 
     void InitAllEffectPools()
     {
@@ -309,6 +311,14 @@ public partial class GameManager
             heliosGazeRay,
             new PoolArgument(ComponentType.GameEffect, PoolArgument.WhereComponent.Self)
         );
+        rimuruCombo2SlashAPool = new(
+            rimuruCombo2SlashA,
+            new PoolArgument(ComponentType.GameEffect, PoolArgument.WhereComponent.Self)
+        );
+        rimuruCombo2SlashBPool = new(
+            rimuruCombo2SlashB,
+            new PoolArgument(ComponentType.GameEffect, PoolArgument.WhereComponent.Self)
+        );
         LinkPoolWithScriptableObject();
     }
 
@@ -471,5 +481,13 @@ public partial class GameManager
             orbitalNemesisDashPool
         );
         poolLink.Add(heliosGazeRay.GetComponent<GameEffect>().gameEffectSO, heliosGazeRayPool);
+        poolLink.Add(
+            rimuruCombo2SlashA.GetComponent<GameEffect>().gameEffectSO,
+            rimuruCombo2SlashAPool
+        );
+        poolLink.Add(
+            rimuruCombo2SlashB.GetComponent<GameEffect>().gameEffectSO,
+            rimuruCombo2SlashBPool
+        );
     }
 }

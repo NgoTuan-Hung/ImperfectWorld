@@ -263,4 +263,15 @@ public class GameEffect : MonoSelfAware
             );
         }
     }
+
+    public void SetParentAndLocalPosAndRot(
+        Transform p_parent,
+        Vector3 p_localPos,
+        Vector3 p_localRot
+    )
+    {
+        transform.parent = p_parent;
+        transform.localScale = Vector3.one;
+        transform.SetLocalPositionAndRotation(p_localPos, Quaternion.Euler(p_localRot));
+    }
 }

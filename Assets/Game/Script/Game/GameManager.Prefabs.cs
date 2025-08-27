@@ -62,7 +62,9 @@ public partial class GameManager
         arcaneSwarmSlash4,
         arcaneSwarmSlash5,
         orbitalNemesisDash,
-        heliosGazeRay;
+        heliosGazeRay,
+        rimuruCombo2SlashA,
+        rimuruCombo2SlashB;
 
     void LoadGameEffectPrefabs()
     {
@@ -133,5 +135,7 @@ public partial class GameManager
         arcaneSwarmSlash5 = Resources.Load<GameObject>("ArcaneSwarmSlash5");
         orbitalNemesisDash = Resources.Load<GameObject>("OrbitalNemesisDash");
         heliosGazeRay = Resources.Load<GameObject>("HeliosGazeRay");
+        rimuruCombo2SlashA = Resources.Load<GameObject>("RimuruCombo2SlashA");
+        rimuruCombo2SlashB = Resources.Load<GameObject>("RimuruCombo2SlashB");
     }
 }

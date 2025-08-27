@@ -261,4 +261,6 @@ public class CustomMono : MonoSelfAware
     {
         GameManager.Instance.RemoveCustomMono(gameObject);
     }
+
+    public Vector2 GetDirection() => directionIndicator.transform.right;
 }

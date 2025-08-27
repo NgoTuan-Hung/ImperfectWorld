@@ -74,7 +74,7 @@ public class BaseAction : MonoEditor
         /* Stop action when we die */
         customMono.stat.currentHealthPointReachZeroEvent += StopAndDisable;
         /* Test */
-        if (this is ArcaneSwarm || this is HeliosGaze)
+        if (this is ArcaneSwarm || this is HeliosGaze || this is RimuruCombo2)
             LoadActionFields();
         Config();
     }
