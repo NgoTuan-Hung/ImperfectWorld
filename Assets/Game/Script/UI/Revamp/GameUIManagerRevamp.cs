@@ -231,6 +231,10 @@ public class GameUIManagerRevamp : MonoEditorSingleton<GameUIManagerRevamp>
                                 p_centerToPointerDir
                             ) =>
                             {
+                                t_skillSlotUI.skillNodeUI.skillBase.WhileWaiting(
+                                    p_pointerPosition,
+                                    p_centerToPointerDir
+                                );
                                 actionResult = t_skillSlotUI.skillNodeUI.skillBase.Trigger(
                                     p_location: p_pointerPosition,
                                     p_direction: p_centerToPointerDir

@@ -29,6 +29,8 @@ public enum ActionFieldName
     Blend,
     Target,
     IsNextPhase,
+    ComboActions,
+    ComboEffects,
 }
 
 [CreateAssetMenu(fileName = "ActionFieldInfo", menuName = "ScriptableObjects/ActionFieldInfo")]

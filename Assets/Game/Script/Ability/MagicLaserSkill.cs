@@ -8,7 +8,6 @@ public class MagicLaserSkill : SkillBase
         base.Awake();
         cooldown = 10f;
         damage = defaultDamage = 1f;
-        boolHash = Animator.StringToHash("CastingMagic");
         successResult = new(true, ActionResultType.Cooldown, cooldown);
         manaCost = 20f;
     }
@@ -21,7 +20,6 @@ public class MagicLaserSkill : SkillBase
     public override void Start()
     {
         base.Start();
-        actionClip = customMono.AnimatorWrapper.GetAnimationClip("CastingMagic");
         StatChangeRegister();
     }
 
@@ -54,7 +52,7 @@ public class MagicLaserSkill : SkillBase
         {
             canUse = false;
             customMono.actionBlocking = true;
-            ToggleAnim(boolHash, true);
+            ToggleAnim(GameManager.Instance.mainSkill1BoolHash, true);
             StartCoroutine(actionIE = TriggerCoroutine(location, direction));
             StartCoroutine(CooldownCoroutine());
             customMono.currentAction = this;
@@ -67,10 +65,10 @@ public class MagicLaserSkill : SkillBase
 
     IEnumerator TriggerCoroutine(Vector2 location = default, Vector2 direction = default)
     {
-        while (!customMono.animationEventFunctionCaller.castingMagic)
+        while (!customMono.animationEventFunctionCaller.mainSkill1Signal)
             yield return new WaitForSeconds(Time.fixedDeltaTime);
 
-        customMono.animationEventFunctionCaller.castingMagic = false;
+        customMono.animationEventFunctionCaller.mainSkill1Signal = false;
         bool t_animatorLocalScale = customMono.AnimatorWrapper.animator.transform.localScale.x > 0;
 
         CollideAndDamage gameEffect =
@@ -91,12 +89,12 @@ public class MagicLaserSkill : SkillBase
                 Quaternion.Euler(0, 180, 0)
             );
 
-        while (!customMono.animationEventFunctionCaller.endCastingMagic)
+        while (!customMono.animationEventFunctionCaller.endMainSkill1)
             yield return new WaitForSeconds(Time.fixedDeltaTime);
 
         customMono.actionBlocking = false;
-        customMono.animationEventFunctionCaller.endCastingMagic = false;
-        ToggleAnim(boolHash, false);
+        customMono.animationEventFunctionCaller.endMainSkill1 = false;
+        ToggleAnim(GameManager.Instance.mainSkill1BoolHash, false);
         customMono.currentAction = null;
     }
 
@@ -118,9 +116,9 @@ public class MagicLaserSkill : SkillBase
     {
         base.ActionInterrupt();
         customMono.actionBlocking = false;
-        ToggleAnim(boolHash, false);
+        ToggleAnim(GameManager.Instance.mainSkill1BoolHash, false);
         StopCoroutine(actionIE);
-        customMono.animationEventFunctionCaller.castingMagic = false;
-        customMono.animationEventFunctionCaller.endCastingMagic = false;
+        customMono.animationEventFunctionCaller.mainSkill1Signal = false;
+        customMono.animationEventFunctionCaller.endMainSkill1 = false;
     }
 }

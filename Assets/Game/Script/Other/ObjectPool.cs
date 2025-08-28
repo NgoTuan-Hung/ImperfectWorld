@@ -229,4 +229,6 @@ public class ObjectPool
         for (int i = 0; i < pool.Count; i++)
             action(pool[i]);
     }
+
+    public GameEffect PickOneGameEffect() => PickOne().gameEffect;
 }

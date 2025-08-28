@@ -37,7 +37,8 @@ public partial class GameManager : MonoSingleton<GameManager>
         mainSkill2BoolHash = Animator.StringToHash("MainSkill2"),
         mainSkill3BoolHash = Animator.StringToHash("MainSkill3"),
         mainSkill2BlendHash = Animator.StringToHash("MainSkill2Blend"),
-        mainSkill2TriggerHash = Animator.StringToHash("MainSkill2Trigger");
+        mainSkill2TriggerHash = Animator.StringToHash("MainSkill2Trigger"),
+        combo2BoolHash = Animator.StringToHash("Combo2");
     public Dictionary<int, GameObject> colliderOwner = new();
     IEnumerator roundTimerCountDownIE;
     public List<ActionFieldInfo> actionFieldInfos = new();
@@ -133,6 +134,7 @@ public partial class GameManager : MonoSingleton<GameManager>
                     ActionFieldName.ActionIE2 => typeof(ActionIEnumeratorField),
                     ActionFieldName.EffectCount => typeof(ActionIntField),
                     ActionFieldName.EffectDuration => typeof(ActionFloatField),
+                    ActionFieldName.ComboEffects => typeof(ActionListComboEffectField),
                     ActionFieldName.Interval => typeof(ActionFloatField),
                     ActionFieldName.CustomGameObject => typeof(ActionGameObjectField),
                     ActionFieldName.PoisonInfo => typeof(ActionPoisonInfoField),
@@ -145,6 +147,7 @@ public partial class GameManager : MonoSingleton<GameManager>
                     ActionFieldName.Blend => typeof(ActionFloatField),
                     ActionFieldName.Target => typeof(ActionCustomMonoField),
                     ActionFieldName.IsNextPhase => typeof(ActionBoolField),
+                    ActionFieldName.ComboActions => typeof(ActionListComboActionField),
                     _ => null,
                 }
             );

@@ -20,7 +20,7 @@ public enum ActionUse
 }
 
 [RequireComponent(typeof(CustomMono))]
-public class BaseAction : MonoEditor
+public partial class BaseAction : MonoEditor
 {
     protected CustomMono customMono;
     public float cooldown;

@@ -111,7 +111,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: CastingMagic
+  m_Name: MainSkill1
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions:
@@ -338,7 +338,7 @@ AnimatorController:
     m_DefaultInt: 0
     m_DefaultBool: 0
     m_Controller: {fileID: 9100000}
-  - m_Name: CastingMagic
+  - m_Name: MainSkill1
     m_Type: 4
     m_DefaultFloat: 0
     m_DefaultInt: 0
@@ -384,7 +384,7 @@ AnimatorStateTransition:
   m_Name: 
   m_Conditions:
   - m_ConditionMode: 2
-    m_ConditionEvent: CastingMagic
+    m_ConditionEvent: MainSkill1
     m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: -734747391209258260}
@@ -620,7 +620,7 @@ AnimatorStateTransition:
   m_Name: 
   m_Conditions:
   - m_ConditionMode: 1
-    m_ConditionEvent: CastingMagic
+    m_ConditionEvent: MainSkill1
     m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: -5325884669378551868}

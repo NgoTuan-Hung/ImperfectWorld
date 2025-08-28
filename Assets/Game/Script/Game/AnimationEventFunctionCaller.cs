@@ -15,8 +15,8 @@ public class AnimationEventFunctionCaller : MonoBehaviour
 {
     public bool attack;
     public bool endAttack;
-    public bool castingMagic;
-    public bool endCastingMagic;
+    public bool combo2Signal;
+    public bool endCombo2;
     public bool summon;
     public bool endSummon;
     public bool endRelease;
@@ -31,9 +31,9 @@ public class AnimationEventFunctionCaller : MonoBehaviour
 
     public void EndAttack() => endAttack = true;
 
-    public void CastingMagic() => castingMagic = true;
+    public void Combo2Signal() => combo2Signal = true;
 
-    public void EndCastingMagic() => endCastingMagic = true;
+    public void EndCombo2() => endCombo2 = true;
 
     public void Summon() => summon = true;
 
@@ -57,8 +57,8 @@ public class AnimationEventFunctionCaller : MonoBehaviour
     {
         attack = false;
         endAttack = false;
-        castingMagic = false;
-        endCastingMagic = false;
+        combo2Signal = false;
+        endCombo2 = false;
         summon = false;
         endSummon = false;
         endRelease = false;

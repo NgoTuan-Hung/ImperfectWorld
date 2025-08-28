@@ -262,5 +262,9 @@ public class CustomMono : MonoSelfAware
         GameManager.Instance.RemoveCustomMono(gameObject);
     }
 
+    /// <summary>
+    /// Get the direction (of the arrow with the circle around characters)
+    /// </summary>
+    /// <returns></returns>
     public Vector2 GetDirection() => directionIndicator.transform.right;
 }

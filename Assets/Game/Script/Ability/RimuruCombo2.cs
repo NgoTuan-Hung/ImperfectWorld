@@ -4,8 +4,6 @@ using UnityEngine;
 
 public class RimuruCombo2 : SkillBase
 {
-    public static List<ObjectPool> effectPools;
-
     public override void Awake()
     {
         base.Awake();
@@ -43,14 +41,15 @@ public class RimuruCombo2 : SkillBase
 
     public override void Config()
     {
-        effectPools = new()
+        GetActionField<ActionListComboEffectField>(ActionFieldName.ComboEffects).value = new()
         {
-            GameManager.Instance.rimuruCombo2SlashAPool,
-            GameManager.Instance.rimuruCombo2SlashBPool,
+            new(GameManager.Instance.rimuruCombo2SlashAPool, SpawnEffectAsChild),
+            new(GameManager.Instance.rimuruCombo2SlashBPool, SpawnEffectAsChild),
         };
         GetActionField<ActionFloatField>(ActionFieldName.Cooldown).value = 0f;
         GetActionField<ActionFloatField>(ActionFieldName.ManaCost).value = 0f;
         GetActionField<ActionIntField>(ActionFieldName.Variants).value = 2;
+        ConfigCombo2();
     }
 
     public override void StatChangeRegister()
@@ -78,8 +77,8 @@ public class RimuruCombo2 : SkillBase
             canUse = false;
             customMono.actionBlocking = true;
             customMono.statusEffect.Slow(customMono.stat.actionSlowModifier);
-            ToggleAnim(GameManager.Instance.mainSkill1BoolHash, true);
-            StartCoroutine(actionIE = WaitCombo(direction));
+            ToggleAnim(GameManager.Instance.combo2BoolHash, true);
+            StartCoroutine(actionIE = WaitCombo2(direction));
             StartCoroutine(CooldownCoroutine());
             customMono.currentAction = this;
             customMono.stat.currentManaPoint.Value -= manaCost;
@@ -90,56 +89,12 @@ public class RimuruCombo2 : SkillBase
         return failResult;
     }
 
-    IEnumerator WaitCombo(Vector3 p_direction)
+    public override void Combo2End()
     {
-        for (int i = 0; i < GetActionField<ActionIntField>(ActionFieldName.Variants).value; i++)
-        {
-            while (!customMono.animationEventFunctionCaller.mainSkill1Signal)
-                yield return new WaitForSeconds(Time.fixedDeltaTime);
-
-            customMono.animationEventFunctionCaller.mainSkill1Signal = false;
-
-            customMono.rotationAndCenterObject.transform.localRotation = Quaternion.identity;
-            GetActionField<ActionGameEffectField>(ActionFieldName.GameEffect).value = effectPools[i]
-                .PickOne()
-                .gameEffect;
-            GetActionField<ActionGameEffectField>(ActionFieldName.GameEffect)
-                .value.SetParentAndLocalPosAndRot(
-                    customMono.rotationAndCenterObject.transform,
-                    GetActionField<ActionGameEffectField>(
-                        ActionFieldName.GameEffect
-                    ).value.gameEffectSO.effectLocalPosition,
-                    GetActionField<ActionGameEffectField>(
-                        ActionFieldName.GameEffect
-                    ).value.gameEffectSO.effectLocalRotation
-                );
-            GetActionField<ActionGameEffectField>(ActionFieldName.GameEffect)
-                .value.SetUpCollideAndDamage(
-                    customMono.allyTags,
-                    GetActionField<ActionFloatField>(ActionFieldName.Damage).value
-                );
-
-            customMono.rotationAndCenterObject.transform.localScale = new(
-                customMono.directionModifier.transform.localScale.x > 0 ? 1 : -1,
-                1,
-                1
-            );
-            customMono.rotationAndCenterObject.transform.Rotate(
-                Vector3.forward,
-                Vector2.SignedAngle(
-                    customMono.rotationAndCenterObject.transform.localScale,
-                    customMono.GetDirection()
-                )
-            );
-        }
-
-        while (!customMono.animationEventFunctionCaller.endMainSkill1)
-            yield return new WaitForSeconds(Time.fixedDeltaTime);
-
         customMono.statusEffect.RemoveSlow(customMono.stat.actionSlowModifier);
-        customMono.animationEventFunctionCaller.endMainSkill1 = false;
+        customMono.animationEventFunctionCaller.endCombo2 = false;
         customMono.actionBlocking = false;
-        ToggleAnim(GameManager.Instance.mainSkill1BoolHash, false);
+        ToggleAnim(GameManager.Instance.combo2BoolHash, false);
         customMono.currentAction = null;
     }
 
@@ -160,10 +115,10 @@ public class RimuruCombo2 : SkillBase
     {
         base.ActionInterrupt();
         customMono.actionBlocking = false;
-        ToggleAnim(GameManager.Instance.mainSkill1BoolHash, false);
+        ToggleAnim(GameManager.Instance.combo2BoolHash, false);
         StopCoroutine(actionIE);
-        customMono.animationEventFunctionCaller.mainSkill1Signal = false;
-        customMono.animationEventFunctionCaller.endMainSkill1 = false;
+        customMono.animationEventFunctionCaller.combo2Signal = false;
+        customMono.animationEventFunctionCaller.endCombo2 = false;
 
         customMono.statusEffect.RemoveSlow(customMono.stat.actionSlowModifier);
     }
