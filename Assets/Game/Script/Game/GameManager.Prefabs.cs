@@ -63,6 +63,9 @@ public partial class GameManager
         arcaneSwarmSlash5,
         orbitalNemesisDash,
         heliosGazeRay,
+        rimuruCombo1SlashA,
+        rimuruCombo1SlashB,
+        rimuruCombo1Dash,
         rimuruCombo2SlashA,
         rimuruCombo2SlashB;
 
@@ -137,5 +140,8 @@ public partial class GameManager
         heliosGazeRay = Resources.Load<GameObject>("HeliosGazeRay");
         rimuruCombo2SlashA = Resources.Load<GameObject>("RimuruCombo2SlashA");
         rimuruCombo2SlashB = Resources.Load<GameObject>("RimuruCombo2SlashB");
+        rimuruCombo1SlashA = Resources.Load<GameObject>("RimuruCombo1SlashA");
+        rimuruCombo1SlashB = Resources.Load<GameObject>("RimuruCombo1SlashB");
+        rimuruCombo1Dash = Resources.Load<GameObject>("RimuruCombo1Dash");
     }
 }

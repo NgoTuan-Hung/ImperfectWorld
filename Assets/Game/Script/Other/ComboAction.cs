@@ -4,16 +4,19 @@ using UnityEngine;
 
 public class ComboAction
 {
-    public Action<Vector2, Vector2> action = NoAction;
-    public IEnumerator iEnumerator;
+    public Func<Vector2, Vector2, IEnumerator> actionMethod = NoActionIE;
+
+    public ComboAction(Func<Vector2, Vector2, IEnumerator> actionMethod)
+    {
+        this.actionMethod = actionMethod;
+    }
+
+    public IEnumerator actionIE = NoActionIE(Vector2.zero, Vector2.zero);
 
     public ComboAction() { }
 
-    public ComboAction(Action<Vector2, Vector2> action, IEnumerator iEnumerator)
+    static IEnumerator NoActionIE(Vector2 p_pos, Vector2 p_dir)
     {
-        this.action = action;
-        this.iEnumerator = iEnumerator;
+        yield break;
     }
-
-    static void NoAction(Vector2 p_pos, Vector2 p_dir) { }
 }

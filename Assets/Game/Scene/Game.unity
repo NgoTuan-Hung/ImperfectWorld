@@ -863,11 +863,13 @@ MonoBehaviour:
   mainSkill3BoolHash: -1032319268
   mainSkill2BlendHash: -1359682362
   mainSkill2TriggerHash: 1525920669
+  combo1BoolHash: 315129407
   combo2BoolHash: -1950273659
   actionFieldInfos:
   - {fileID: 11400000, guid: cf4257d1db5a5144a953e4ea2d26a311, type: 2}
   - {fileID: 11400000, guid: d95c1bf4cd7dde14183b032968e49163, type: 2}
   - {fileID: 11400000, guid: b11fb0043ed901b4aaf0ed355ff5da47, type: 2}
+  - {fileID: 11400000, guid: c0606c23dffa3c24792119226867a6df, type: 2}
 --- !u!1001 &141657759
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -958,7 +960,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &153210372
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2808,6 +2810,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   attack: 0
   endAttack: 0
+  combo1Signal: 0
+  endCombo1: 0
   combo2Signal: 0
   endCombo2: 0
   summon: 0
@@ -3296,10 +3300,10 @@ RectTransform:
   - {fileID: 38622209}
   m_Father: {fileID: 1874200017}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 380, y: -70}
-  m_SizeDelta: {x: 100, y: 100}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &546532736
 MonoBehaviour:
@@ -4112,6 +4116,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   attack: 0
   endAttack: 0
+  combo1Signal: 0
+  endCombo1: 0
   combo2Signal: 0
   endCombo2: 0
   summon: 0
@@ -4877,7 +4883,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &889364758
 Transform:
   m_ObjectHideFlags: 0
@@ -5588,6 +5594,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   attack: 0
   endAttack: 0
+  combo1Signal: 0
+  endCombo1: 0
   combo2Signal: 0
   endCombo2: 0
   summon: 0
@@ -5681,6 +5689,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   attack: 0
   endAttack: 0
+  combo1Signal: 0
+  endCombo1: 0
   combo2Signal: 0
   endCombo2: 0
   summon: 0
@@ -5805,10 +5815,10 @@ RectTransform:
   - {fileID: 1032758556}
   m_Father: {fileID: 1874200017}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 270, y: -70}
-  m_SizeDelta: {x: 100, y: 100}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1012798519
 MonoBehaviour:
@@ -6050,6 +6060,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1507028190}
     m_Modifications:
+    - target: {fileID: 2963950236747058838, guid: a52b6edf4fe9b2947871eef3be9ff52a, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2963950236747058838, guid: a52b6edf4fe9b2947871eef3be9ff52a, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -11073,10 +11087,10 @@ RectTransform:
   - {fileID: 1638319142}
   m_Father: {fileID: 1874200017}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 50, y: -70}
-  m_SizeDelta: {x: 100, y: 100}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1122076159
 MonoBehaviour:
@@ -12700,6 +12714,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   customMono: {fileID: 0}
   skillDataSOs:
+  - {fileID: 11400000, guid: 807560864a8d25f42b5680b634406268, type: 2}
   - {fileID: 11400000, guid: ded016d3e640a7e4caf2cf44060326ba, type: 2}
   skillBases: []
 --- !u!114 &1507028184
@@ -14296,6 +14311,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   attack: 0
   endAttack: 0
+  combo1Signal: 0
+  endCombo1: 0
   combo2Signal: 0
   endCombo2: 0
   summon: 0
@@ -15440,6 +15457,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   attack: 0
   endAttack: 0
+  combo1Signal: 0
+  endCombo1: 0
   combo2Signal: 0
   endCombo2: 0
   summon: 0
@@ -15918,6 +15937,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   attack: 0
   endAttack: 0
+  combo1Signal: 0
+  endCombo1: 0
   combo2Signal: 0
   endCombo2: 0
   summon: 0
@@ -16541,10 +16562,10 @@ RectTransform:
   - {fileID: 1415293675}
   m_Father: {fileID: 1874200017}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 160, y: -70}
-  m_SizeDelta: {x: 100, y: 100}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1872287108
 MonoBehaviour:
@@ -16977,6 +16998,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   attack: 0
   endAttack: 0
+  combo1Signal: 0
+  endCombo1: 0
   combo2Signal: 0
   endCombo2: 0
   summon: 0
@@ -29292,63 +29315,6 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!1001 &8601814079080936143
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 7586023478995204868, guid: f6a5d9f8f0c73154db9315ed12cf9e4d, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7586023478995204868, guid: f6a5d9f8f0c73154db9315ed12cf9e4d, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7586023478995204868, guid: f6a5d9f8f0c73154db9315ed12cf9e4d, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7586023478995204868, guid: f6a5d9f8f0c73154db9315ed12cf9e4d, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 7586023478995204868, guid: f6a5d9f8f0c73154db9315ed12cf9e4d, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7586023478995204868, guid: f6a5d9f8f0c73154db9315ed12cf9e4d, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7586023478995204868, guid: f6a5d9f8f0c73154db9315ed12cf9e4d, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7586023478995204868, guid: f6a5d9f8f0c73154db9315ed12cf9e4d, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7586023478995204868, guid: f6a5d9f8f0c73154db9315ed12cf9e4d, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7586023478995204868, guid: f6a5d9f8f0c73154db9315ed12cf9e4d, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 9133146855185748239, guid: f6a5d9f8f0c73154db9315ed12cf9e4d, type: 3}
-      propertyPath: m_Name
-      value: RimuruCombo1Dash
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: f6a5d9f8f0c73154db9315ed12cf9e4d, type: 3}
 --- !u!212 &8796382655747551782
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -29604,4 +29570,3 @@ SceneRoots:
   - {fileID: 7878350319890228438}
   - {fileID: 7878350319468862158}
   - {fileID: 7878350319485692410}
-  - {fileID: 8601814079080936143}

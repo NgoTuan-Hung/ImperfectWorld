@@ -173,11 +173,6 @@ public class GameEffectBuilder : EditorWindow
             t_buildSO.collisionExcludeLayerMask = collisionExcludeLayerMaskLayerMaskField.value;
             t_buildSO.gameEffectBehaviours = listGameEffectBehavior.effectBehaviours;
             t_buildSO.useParticleSystem = useParticleSystemToggle.value;
-            AssetDatabase.CreateAsset(
-                t_buildSO,
-                "Assets/Game/Resources/" + t_buildSO.name + ".asset"
-            );
-            AssetDatabase.SaveAssets();
 
             build = Instantiate(basePrefab);
             build.name = nameTextField.text;
@@ -227,6 +222,12 @@ public class GameEffectBuilder : EditorWindow
                         break;
                 }
             });
+
+            AssetDatabase.CreateAsset(
+                t_buildSO,
+                "Assets/Game/Resources/" + t_buildSO.name + ".asset"
+            );
+            AssetDatabase.SaveAssets();
 
             PrefabUtility.SaveAsPrefabAssetAndConnect(
                 build,

@@ -1,5 +1,5 @@
 using System.Collections;
-using System.Collections.Generic;
+using Kryz.Tweening;
 using UnityEngine;
 
 public class RimuruCombo1 : SkillBase
@@ -43,13 +43,22 @@ public class RimuruCombo1 : SkillBase
     {
         GetActionField<ActionListComboEffectField>(ActionFieldName.ComboEffects).value = new()
         {
-            new(GameManager.Instance.rimuruCombo2SlashAPool, SpawnEffectAsChild),
-            new(GameManager.Instance.rimuruCombo2SlashBPool, SpawnEffectAsChild),
+            new(GameManager.Instance.rimuruCombo1SlashAPool, SpawnEffectAsChild),
+            new(GameManager.Instance.rimuruCombo1SlashBPool, SpawnEffectAsChild),
+            new(GameManager.Instance.rimuruCombo1DashPool, SpawnEffectRelative),
         };
         GetActionField<ActionFloatField>(ActionFieldName.Cooldown).value = 0f;
         GetActionField<ActionFloatField>(ActionFieldName.ManaCost).value = 0f;
-        GetActionField<ActionIntField>(ActionFieldName.Variants).value = 2;
-        ConfigCombo2();
+        GetActionField<ActionIntField>(ActionFieldName.Variants).value = 3;
+        GetActionField<ActionFloatField>(ActionFieldName.Speed).value = 0.25f;
+        GetActionField<ActionFloatField>(ActionFieldName.CurrentTime).value = 0f;
+        GetActionField<ActionFloatField>(ActionFieldName.Duration).value = 0.1f;
+        GetActionField<ActionListComboActionField>(ActionFieldName.ComboActions).value = new()
+        {
+            new(DashSmall),
+            new(DashSmall),
+            new(FlashSmall),
+        };
     }
 
     public override void StatChangeRegister()
@@ -72,13 +81,14 @@ public class RimuruCombo1 : SkillBase
 
     public override ActionResult Trigger(Vector2 location = default, Vector2 direction = default)
     {
-        if (canUse && !customMono.actionBlocking)
+        if (canUse && !customMono.actionBlocking && !customMono.movementActionBlocking)
         {
             canUse = false;
             customMono.actionBlocking = true;
+            customMono.movementActionBlocking = true;
             customMono.statusEffect.Slow(customMono.stat.actionSlowModifier);
-            ToggleAnim(GameManager.Instance.combo2BoolHash, true);
-            StartCoroutine(actionIE = WaitCombo2(direction));
+            ToggleAnim(GameManager.Instance.combo1BoolHash, true);
+            StartCoroutine(actionIE = WaitCombo1(direction));
             StartCoroutine(CooldownCoroutine());
             customMono.currentAction = this;
             customMono.stat.currentManaPoint.Value -= manaCost;
@@ -89,12 +99,13 @@ public class RimuruCombo1 : SkillBase
         return failResult;
     }
 
-    public override void Combo2End()
+    public override void Combo1End()
     {
         customMono.statusEffect.RemoveSlow(customMono.stat.actionSlowModifier);
-        customMono.animationEventFunctionCaller.endCombo2 = false;
+        customMono.animationEventFunctionCaller.endCombo1 = false;
         customMono.actionBlocking = false;
-        ToggleAnim(GameManager.Instance.combo2BoolHash, false);
+        customMono.movementActionBlocking = false;
+        ToggleAnim(GameManager.Instance.combo1BoolHash, false);
         customMono.currentAction = null;
     }
 
@@ -115,11 +126,27 @@ public class RimuruCombo1 : SkillBase
     {
         base.ActionInterrupt();
         customMono.actionBlocking = false;
-        ToggleAnim(GameManager.Instance.combo2BoolHash, false);
+        customMono.movementActionBlocking = false;
+        ToggleAnim(GameManager.Instance.combo1BoolHash, false);
         StopCoroutine(actionIE);
-        customMono.animationEventFunctionCaller.combo2Signal = false;
-        customMono.animationEventFunctionCaller.endCombo2 = false;
+        customMono.animationEventFunctionCaller.combo1Signal = false;
+        customMono.animationEventFunctionCaller.endCombo1 = false;
 
         customMono.statusEffect.RemoveSlow(customMono.stat.actionSlowModifier);
+    }
+
+    IEnumerator DashSmall(Vector2 p_pos, Vector2 p_dir)
+    {
+        yield return Dash(
+            p_dir,
+            GetActionField<ActionFloatField>(ActionFieldName.Speed).value,
+            GetActionField<ActionFloatField>(ActionFieldName.Duration).value,
+            EasingFunctions.OutQuint
+        );
+    }
+
+    IEnumerator FlashSmall(Vector2 p_pos, Vector2 p_dir)
+    {
+        yield return Flash(p_dir, 2, 0.08f);
     }
 }

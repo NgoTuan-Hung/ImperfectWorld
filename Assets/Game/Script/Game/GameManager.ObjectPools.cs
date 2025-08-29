@@ -61,6 +61,9 @@ public partial class GameManager
         arcaneSwarmSlash5Pool,
         orbitalNemesisDashPool,
         heliosGazeRayPool,
+        rimuruCombo1SlashAPool,
+        rimuruCombo1SlashBPool,
+        rimuruCombo1DashPool,
         rimuruCombo2SlashAPool,
         rimuruCombo2SlashBPool;
 
@@ -319,6 +322,18 @@ public partial class GameManager
             rimuruCombo2SlashB,
             new PoolArgument(ComponentType.GameEffect, PoolArgument.WhereComponent.Self)
         );
+        rimuruCombo1SlashAPool = new(
+            rimuruCombo1SlashA,
+            new PoolArgument(ComponentType.GameEffect, PoolArgument.WhereComponent.Self)
+        );
+        rimuruCombo1SlashBPool = new(
+            rimuruCombo1SlashB,
+            new PoolArgument(ComponentType.GameEffect, PoolArgument.WhereComponent.Self)
+        );
+        rimuruCombo1DashPool = new(
+            rimuruCombo1Dash,
+            new PoolArgument(ComponentType.GameEffect, PoolArgument.WhereComponent.Self)
+        );
         LinkPoolWithScriptableObject();
     }
 
@@ -488,6 +503,18 @@ public partial class GameManager
         poolLink.Add(
             rimuruCombo2SlashB.GetComponent<GameEffect>().gameEffectSO,
             rimuruCombo2SlashBPool
+        );
+        poolLink.Add(
+            rimuruCombo1SlashA.GetComponent<GameEffect>().gameEffectSO,
+            rimuruCombo1SlashAPool
+        );
+        poolLink.Add(
+            rimuruCombo1SlashB.GetComponent<GameEffect>().gameEffectSO,
+            rimuruCombo1SlashBPool
+        );
+        poolLink.Add(
+            rimuruCombo1Dash.GetComponent<GameEffect>().gameEffectSO,
+            rimuruCombo1DashPool
         );
     }
 }
