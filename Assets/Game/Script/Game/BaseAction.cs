@@ -20,9 +20,9 @@ public enum ActionUse
 }
 
 [RequireComponent(typeof(CustomMono))]
-public partial class BaseAction : MonoEditor
+public class BaseAction : MonoEditor
 {
-    protected CustomMono customMono;
+    public CustomMono customMono;
     public float cooldown;
     public bool onCooldown;
     public float defaultCooldown;
@@ -79,9 +79,12 @@ public partial class BaseAction : MonoEditor
             || this is HeliosGaze
             || this is RimuruCombo2
             || this is RimuruCombo1
+            || this is BladeOfMinhKhai
         )
+        {
             LoadActionFields();
-        Config();
+            Config();
+        }
     }
 
     private void LoadActionFields()

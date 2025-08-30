@@ -870,6 +870,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: d95c1bf4cd7dde14183b032968e49163, type: 2}
   - {fileID: 11400000, guid: b11fb0043ed901b4aaf0ed355ff5da47, type: 2}
   - {fileID: 11400000, guid: c0606c23dffa3c24792119226867a6df, type: 2}
+  - {fileID: 11400000, guid: a75cdbf9b832af1428e55b386e60f7cc, type: 2}
 --- !u!1001 &141657759
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1091,6 +1092,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d3345c1ae0ed9ea41b86f2a3c634c06a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  customMono: {fileID: 0}
   cooldown: 0
   onCooldown: 0
   defaultCooldown: 0
@@ -2817,8 +2819,6 @@ MonoBehaviour:
   summon: 0
   endSummon: 0
   endRelease: 0
-  mainSkill1Signal: 0
-  endMainSkill1: 0
   mainSkill2Signal: 0
   endMainSkill2: 0
   mainSkill3Signal: 0
@@ -3300,10 +3300,10 @@ RectTransform:
   - {fileID: 38622209}
   m_Father: {fileID: 1874200017}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 380, y: -70}
+  m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &546532736
 MonoBehaviour:
@@ -3805,6 +3805,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d3345c1ae0ed9ea41b86f2a3c634c06a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  customMono: {fileID: 0}
   cooldown: 0
   onCooldown: 0
   defaultCooldown: 0
@@ -4123,8 +4124,6 @@ MonoBehaviour:
   summon: 0
   endSummon: 0
   endRelease: 0
-  mainSkill1Signal: 0
-  endMainSkill1: 0
   mainSkill2Signal: 0
   endMainSkill2: 0
   mainSkill3Signal: 0
@@ -5269,6 +5268,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d3345c1ae0ed9ea41b86f2a3c634c06a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  customMono: {fileID: 0}
   cooldown: 0
   onCooldown: 0
   defaultCooldown: 0
@@ -5601,8 +5601,6 @@ MonoBehaviour:
   summon: 0
   endSummon: 0
   endRelease: 0
-  mainSkill1Signal: 0
-  endMainSkill1: 0
   mainSkill2Signal: 0
   endMainSkill2: 0
   mainSkill3Signal: 0
@@ -5696,8 +5694,6 @@ MonoBehaviour:
   summon: 0
   endSummon: 0
   endRelease: 0
-  mainSkill1Signal: 0
-  endMainSkill1: 0
   mainSkill2Signal: 0
   endMainSkill2: 0
   mainSkill3Signal: 0
@@ -5815,10 +5811,10 @@ RectTransform:
   - {fileID: 1032758556}
   m_Father: {fileID: 1874200017}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 270, y: -70}
+  m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1012798519
 MonoBehaviour:
@@ -11087,10 +11083,10 @@ RectTransform:
   - {fileID: 1638319142}
   m_Father: {fileID: 1874200017}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 50, y: -70}
+  m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1122076159
 MonoBehaviour:
@@ -11443,6 +11439,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d3345c1ae0ed9ea41b86f2a3c634c06a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  customMono: {fileID: 0}
   cooldown: 0
   onCooldown: 0
   defaultCooldown: 0
@@ -12729,6 +12726,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d3345c1ae0ed9ea41b86f2a3c634c06a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  customMono: {fileID: 0}
   cooldown: 0
   onCooldown: 0
   defaultCooldown: 0
@@ -14318,8 +14316,6 @@ MonoBehaviour:
   summon: 0
   endSummon: 0
   endRelease: 0
-  mainSkill1Signal: 0
-  endMainSkill1: 0
   mainSkill2Signal: 0
   endMainSkill2: 0
   mainSkill3Signal: 0
@@ -15023,6 +15019,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d3345c1ae0ed9ea41b86f2a3c634c06a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  customMono: {fileID: 0}
   cooldown: 0
   onCooldown: 0
   defaultCooldown: 0
@@ -15051,6 +15048,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0ba1f425456de1441860bb9e90ad5230, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  customMono: {fileID: 0}
   cooldown: 0
   onCooldown: 0
   defaultCooldown: 0
@@ -15464,8 +15462,6 @@ MonoBehaviour:
   summon: 0
   endSummon: 0
   endRelease: 0
-  mainSkill1Signal: 0
-  endMainSkill1: 0
   mainSkill2Signal: 0
   endMainSkill2: 0
   mainSkill3Signal: 0
@@ -15944,8 +15940,6 @@ MonoBehaviour:
   summon: 0
   endSummon: 0
   endRelease: 0
-  mainSkill1Signal: 0
-  endMainSkill1: 0
   mainSkill2Signal: 0
   endMainSkill2: 0
   mainSkill3Signal: 0
@@ -16562,10 +16556,10 @@ RectTransform:
   - {fileID: 1415293675}
   m_Father: {fileID: 1874200017}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 160, y: -70}
+  m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1872287108
 MonoBehaviour:
@@ -17005,8 +16999,6 @@ MonoBehaviour:
   summon: 0
   endSummon: 0
   endRelease: 0
-  mainSkill1Signal: 0
-  endMainSkill1: 0
   mainSkill2Signal: 0
   endMainSkill2: 0
   mainSkill3Signal: 0
@@ -26323,6 +26315,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d3345c1ae0ed9ea41b86f2a3c634c06a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  customMono: {fileID: 0}
   cooldown: 0
   onCooldown: 0
   defaultCooldown: 0
@@ -28434,7 +28427,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!1 &6969460406125330847
 GameObject:
   m_ObjectHideFlags: 0
@@ -28507,7 +28500,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &7057996245471521679
 Transform:
   m_ObjectHideFlags: 0
@@ -28783,6 +28776,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d3345c1ae0ed9ea41b86f2a3c634c06a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  customMono: {fileID: 0}
   cooldown: 0
   onCooldown: 0
   defaultCooldown: 0

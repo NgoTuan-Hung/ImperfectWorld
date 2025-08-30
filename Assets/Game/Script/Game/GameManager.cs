@@ -149,6 +149,11 @@ public partial class GameManager : MonoSingleton<GameManager>
                     ActionFieldName.Target => typeof(ActionCustomMonoField),
                     ActionFieldName.IsNextPhase => typeof(ActionBoolField),
                     ActionFieldName.ComboActions => typeof(ActionListComboActionField),
+                    ActionFieldName.Combo1Logic => typeof(ActionCombo1LogicField),
+                    ActionFieldName.Combo2Logic => typeof(ActionCombo2LogicField),
+                    ActionFieldName.DashLogic => typeof(ActionDashLogicField),
+                    ActionFieldName.FlashLogic => typeof(ActionFlashLogicField),
+                    ActionFieldName.SpawnEffectLogic => typeof(ActionSpawnEffectLogicField),
                     _ => null,
                 }
             );

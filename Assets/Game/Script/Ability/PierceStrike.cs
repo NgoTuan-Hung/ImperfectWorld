@@ -120,10 +120,10 @@ public class PierceStrike : SkillBase
     {
         customMono.SetUpdateDirectionIndicator(p_direction, UpdateDirectionIndicatorPriority.Low);
 
-        while (!customMono.animationEventFunctionCaller.mainSkill1Signal)
+        while (!customMono.animationEventFunctionCaller.mainSkill1AS.signal)
             yield return new WaitForSeconds(Time.fixedDeltaTime);
 
-        customMono.animationEventFunctionCaller.mainSkill1Signal = false;
+        customMono.animationEventFunctionCaller.mainSkill1AS.signal = false;
         customMono.rotationAndCenterObject.transform.localRotation = Quaternion.identity;
         GameEffect t_pierceStrikeEffect = GameManager
             .Instance.pierceStrikePool.PickOne()
@@ -153,10 +153,10 @@ public class PierceStrike : SkillBase
             )
         );
 
-        while (!customMono.animationEventFunctionCaller.endMainSkill1)
+        while (!customMono.animationEventFunctionCaller.mainSkill1AS.end)
             yield return new WaitForSeconds(Time.fixedDeltaTime);
 
-        customMono.animationEventFunctionCaller.endMainSkill1 = false;
+        customMono.animationEventFunctionCaller.mainSkill1AS.end = false;
         customMono.actionBlocking = false;
         ToggleAnim(GameManager.Instance.mainSkill1BoolHash, false);
         customMono.statusEffect.RemoveSlow(customMono.stat.actionSlowModifier);
@@ -186,10 +186,10 @@ public class PierceStrike : SkillBase
 
     IEnumerator SecondPhaseTriggerIE(Vector2 p_location = default, Vector2 p_direction = default)
     {
-        while (!customMono.animationEventFunctionCaller.mainSkill1Signal)
+        while (!customMono.animationEventFunctionCaller.mainSkill1AS.signal)
             yield return new WaitForSeconds(Time.fixedDeltaTime);
 
-        customMono.animationEventFunctionCaller.mainSkill1Signal = false;
+        customMono.animationEventFunctionCaller.mainSkill1AS.signal = false;
 
         customMono.rotationAndCenterObject.transform.localRotation = Quaternion.identity;
         GameEffect t_pierceStrikeSecondPhase = GameManager
@@ -219,10 +219,10 @@ public class PierceStrike : SkillBase
             )
         );
 
-        while (!customMono.animationEventFunctionCaller.endMainSkill1)
+        while (!customMono.animationEventFunctionCaller.mainSkill1AS.end)
             yield return new WaitForSeconds(Time.fixedDeltaTime);
 
-        customMono.animationEventFunctionCaller.endMainSkill1 = false;
+        customMono.animationEventFunctionCaller.mainSkill1AS.end = false;
         customMono.actionBlocking = false;
         customMono.movementActionBlocking = false;
         ToggleAnim(GameManager.Instance.mainSkill1BoolHash, false);
@@ -270,8 +270,8 @@ public class PierceStrike : SkillBase
         StopCoroutine(actionIE);
         if (actionIE1 != null)
             StopCoroutine(actionIE1);
-        customMono.animationEventFunctionCaller.mainSkill1Signal = false;
-        customMono.animationEventFunctionCaller.endMainSkill1 = false;
+        customMono.animationEventFunctionCaller.mainSkill1AS.signal = false;
+        customMono.animationEventFunctionCaller.mainSkill1AS.end = false;
         customMono.statusEffect.RemoveSlow(customMono.stat.actionSlowModifier);
 
         botActionManuals[0].actionUse = ActionUse.RangedDamage;

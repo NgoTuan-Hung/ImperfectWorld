@@ -31,6 +31,11 @@ public enum ActionFieldName
     IsNextPhase,
     ComboActions,
     ComboEffects,
+    Combo1Logic,
+    Combo2Logic,
+    DashLogic,
+    FlashLogic,
+    SpawnEffectLogic,
 }
 
 [CreateAssetMenu(fileName = "ActionFieldInfo", menuName = "ScriptableObjects/ActionFieldInfo")]

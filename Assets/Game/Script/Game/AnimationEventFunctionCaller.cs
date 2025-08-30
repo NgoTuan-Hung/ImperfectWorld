@@ -22,8 +22,7 @@ public class AnimationEventFunctionCaller : MonoBehaviour
     public bool summon;
     public bool endSummon;
     public bool endRelease;
-    public bool mainSkill1Signal;
-    public bool endMainSkill1;
+    public AnimationSignal mainSkill1AS = new();
     public bool mainSkill2Signal;
     public bool endMainSkill2;
     public bool mainSkill3Signal;
@@ -47,9 +46,9 @@ public class AnimationEventFunctionCaller : MonoBehaviour
 
     public void EndRelease() => endRelease = true;
 
-    public void MainSkill1Signal() => mainSkill1Signal = true;
+    public void MainSkill1Signal() => mainSkill1AS.signal = true;
 
-    public void EndMainSkill1() => endMainSkill1 = true;
+    public void EndMainSkill1() => mainSkill1AS.end = true;
 
     public void MainSkill2Signal() => mainSkill2Signal = true;
 
@@ -70,8 +69,8 @@ public class AnimationEventFunctionCaller : MonoBehaviour
         summon = false;
         endSummon = false;
         endRelease = false;
-        mainSkill1Signal = false;
-        endMainSkill1 = false;
+        mainSkill1AS.signal = false;
+        mainSkill1AS.end = false;
         mainSkill2Signal = false;
         endMainSkill2 = false;
         mainSkill3Signal = false;

@@ -65,10 +65,10 @@ public class MagicLaserSkill : SkillBase
 
     IEnumerator TriggerCoroutine(Vector2 location = default, Vector2 direction = default)
     {
-        while (!customMono.animationEventFunctionCaller.mainSkill1Signal)
+        while (!customMono.animationEventFunctionCaller.mainSkill1AS.signal)
             yield return new WaitForSeconds(Time.fixedDeltaTime);
 
-        customMono.animationEventFunctionCaller.mainSkill1Signal = false;
+        customMono.animationEventFunctionCaller.mainSkill1AS.signal = false;
         bool t_animatorLocalScale = customMono.AnimatorWrapper.animator.transform.localScale.x > 0;
 
         CollideAndDamage gameEffect =
@@ -89,11 +89,11 @@ public class MagicLaserSkill : SkillBase
                 Quaternion.Euler(0, 180, 0)
             );
 
-        while (!customMono.animationEventFunctionCaller.endMainSkill1)
+        while (!customMono.animationEventFunctionCaller.mainSkill1AS.end)
             yield return new WaitForSeconds(Time.fixedDeltaTime);
 
         customMono.actionBlocking = false;
-        customMono.animationEventFunctionCaller.endMainSkill1 = false;
+        customMono.animationEventFunctionCaller.mainSkill1AS.end = false;
         ToggleAnim(GameManager.Instance.mainSkill1BoolHash, false);
         customMono.currentAction = null;
     }
@@ -118,7 +118,7 @@ public class MagicLaserSkill : SkillBase
         customMono.actionBlocking = false;
         ToggleAnim(GameManager.Instance.mainSkill1BoolHash, false);
         StopCoroutine(actionIE);
-        customMono.animationEventFunctionCaller.mainSkill1Signal = false;
-        customMono.animationEventFunctionCaller.endMainSkill1 = false;
+        customMono.animationEventFunctionCaller.mainSkill1AS.signal = false;
+        customMono.animationEventFunctionCaller.mainSkill1AS.end = false;
     }
 }

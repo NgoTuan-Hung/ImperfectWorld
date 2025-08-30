@@ -82,16 +82,16 @@ public class LightingForward : SkillBase
     {
         customMono.SetUpdateDirectionIndicator(p_direction, UpdateDirectionIndicatorPriority.Low);
 
-        while (!customMono.animationEventFunctionCaller.mainSkill1Signal)
+        while (!customMono.animationEventFunctionCaller.mainSkill1AS.signal)
             yield return new WaitForSeconds(Time.fixedDeltaTime);
 
-        customMono.animationEventFunctionCaller.mainSkill1Signal = false;
+        customMono.animationEventFunctionCaller.mainSkill1AS.signal = false;
         StartCoroutine(SpawnLightingIE(p_direction));
 
-        while (!customMono.animationEventFunctionCaller.endMainSkill1)
+        while (!customMono.animationEventFunctionCaller.mainSkill1AS.end)
             yield return new WaitForSeconds(Time.fixedDeltaTime);
 
-        customMono.animationEventFunctionCaller.endMainSkill1 = false;
+        customMono.animationEventFunctionCaller.mainSkill1AS.end = false;
         ToggleAnim(GameManager.Instance.mainSkill1BoolHash, false);
         customMono.actionBlocking = false;
         customMono.statusEffect.RemoveSlow(customMono.stat.actionSlowModifier);
@@ -139,7 +139,7 @@ public class LightingForward : SkillBase
         customMono.statusEffect.RemoveSlow(customMono.stat.actionSlowModifier);
         ToggleAnim(GameManager.Instance.mainSkill1BoolHash, false);
         StopCoroutine(actionIE);
-        customMono.animationEventFunctionCaller.mainSkill1Signal = false;
-        customMono.animationEventFunctionCaller.endMainSkill1 = false;
+        customMono.animationEventFunctionCaller.mainSkill1AS.signal = false;
+        customMono.animationEventFunctionCaller.mainSkill1AS.end = false;
     }
 }

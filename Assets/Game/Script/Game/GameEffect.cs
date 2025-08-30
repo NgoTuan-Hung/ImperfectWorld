@@ -236,7 +236,7 @@ public class GameEffect : MonoSelfAware
         t_collideAndDamage.dealDamageEvent = p_dealDamageEvent ?? DefaultDealtDamageEvent;
     }
 
-    void DefaultDealtDamageEvent(float p_damage) { }
+    static void DefaultDealtDamageEvent(float p_damage) { }
 
     public void PlaceAndLookAt(Vector3 p_position, Transform p_transform, float p_delay)
     {
