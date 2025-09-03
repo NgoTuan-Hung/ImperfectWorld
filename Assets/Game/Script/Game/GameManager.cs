@@ -45,6 +45,7 @@ public partial class GameManager : MonoSingleton<GameManager>
     public List<ActionFieldInfo> actionFieldInfos = new();
     Dictionary<string, ActionFieldInfo> actionFieldInfoDict = new();
     Dictionary<ActionFieldName, Type> actionFieldMapper = new();
+    public ActionLogicDataBase actionLogicDataBase;
 
     public void InitializeControllableCharacter(CustomMono p_customMono)
     {
@@ -81,6 +82,7 @@ public partial class GameManager : MonoSingleton<GameManager>
     private void Awake()
     {
         camera = Camera.main;
+        actionLogicDataBase = gameObject.AddComponent<ActionLogicDataBase>();
         foreach (SpawnEnemyInfo spawnEnemyInfo in spawnEnemyInfos)
         {
             spawnObjectPools.Add(
@@ -149,11 +151,7 @@ public partial class GameManager : MonoSingleton<GameManager>
                     ActionFieldName.Target => typeof(ActionCustomMonoField),
                     ActionFieldName.IsNextPhase => typeof(ActionBoolField),
                     ActionFieldName.ComboActions => typeof(ActionListComboActionField),
-                    ActionFieldName.Combo1Logic => typeof(ActionCombo1LogicField),
-                    ActionFieldName.Combo2Logic => typeof(ActionCombo2LogicField),
-                    ActionFieldName.DashLogic => typeof(ActionDashLogicField),
-                    ActionFieldName.FlashLogic => typeof(ActionFlashLogicField),
-                    ActionFieldName.SpawnEffectLogic => typeof(ActionSpawnEffectLogicField),
+                    ActionFieldName.ComboEndAction => typeof(ActionActionField),
                     _ => null,
                 }
             );

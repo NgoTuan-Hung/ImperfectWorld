@@ -41,34 +41,20 @@ public class RimuruCombo1 : SkillBase
 
     public override void Config()
     {
-        GetActionField<ActionCombo1LogicField>(ActionFieldName.Combo1Logic).value = new(
-            this,
-            Combo1End
-        );
-        GetActionField<ActionDashLogicField>(ActionFieldName.DashLogic).value = new(this);
-        GetActionField<ActionFlashLogicField>(ActionFieldName.FlashLogic).value = new(this);
-        GetActionField<ActionSpawnEffectLogicField>(ActionFieldName.SpawnEffectLogic).value = new(
-            this
-        );
+        GetActionField<ActionActionField>(ActionFieldName.ComboEndAction).value = Combo1End;
         GetActionField<ActionListComboEffectField>(ActionFieldName.ComboEffects).value = new()
         {
             new(
                 GameManager.Instance.rimuruCombo1SlashAPool,
-                GetActionField<ActionSpawnEffectLogicField>(
-                    ActionFieldName.SpawnEffectLogic
-                ).value.SpawnEffectAsChild
+                GameManager.Instance.actionLogicDataBase.SpawnEffectAsChild
             ),
             new(
                 GameManager.Instance.rimuruCombo1SlashBPool,
-                GetActionField<ActionSpawnEffectLogicField>(
-                    ActionFieldName.SpawnEffectLogic
-                ).value.SpawnEffectAsChild
+                GameManager.Instance.actionLogicDataBase.SpawnEffectAsChild
             ),
             new(
                 GameManager.Instance.rimuruCombo1DashPool,
-                GetActionField<ActionSpawnEffectLogicField>(
-                    ActionFieldName.SpawnEffectLogic
-                ).value.SpawnEffectRelative
+                GameManager.Instance.actionLogicDataBase.SpawnEffectRelative
             ),
         };
         GetActionField<ActionFloatField>(ActionFieldName.Cooldown).value = 0f;
@@ -113,8 +99,7 @@ public class RimuruCombo1 : SkillBase
             customMono.statusEffect.Slow(customMono.stat.actionSlowModifier);
             ToggleAnim(GameManager.Instance.combo1BoolHash, true);
             StartCoroutine(
-                actionIE = GetActionField<ActionCombo1LogicField>(ActionFieldName.Combo1Logic)
-                    .value.WaitCombo1(direction)
+                actionIE = GameManager.Instance.actionLogicDataBase.WaitCombo1(this, direction)
             );
             StartCoroutine(CooldownCoroutine());
             customMono.currentAction = this;
@@ -164,18 +149,17 @@ public class RimuruCombo1 : SkillBase
 
     IEnumerator DashSmall(Vector2 p_pos, Vector2 p_dir)
     {
-        yield return GetActionField<ActionDashLogicField>(ActionFieldName.DashLogic)
-            .value.Dash(
-                p_dir,
-                GetActionField<ActionFloatField>(ActionFieldName.Speed).value,
-                GetActionField<ActionFloatField>(ActionFieldName.Duration).value,
-                EasingFunctions.OutQuint
-            );
+        yield return GameManager.Instance.actionLogicDataBase.Dash(
+            this,
+            p_dir,
+            GetActionField<ActionFloatField>(ActionFieldName.Speed).value,
+            GetActionField<ActionFloatField>(ActionFieldName.Duration).value,
+            EasingFunctions.OutQuint
+        );
     }
 
     IEnumerator FlashSmall(Vector2 p_pos, Vector2 p_dir)
     {
-        yield return GetActionField<ActionFlashLogicField>(ActionFieldName.FlashLogic)
-            .value.Flash(p_dir, 2, 0.08f);
+        yield return GameManager.Instance.actionLogicDataBase.Flash(this, p_dir, 2, 0.08f);
     }
 }

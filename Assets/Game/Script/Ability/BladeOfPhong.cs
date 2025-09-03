@@ -6,9 +6,8 @@ public class BladeOfPhong : SkillBase
     public override void Awake()
     {
         base.Awake();
-        cooldown = 5f;
         successResult = new(true, ActionResultType.Cooldown, cooldown);
-        manaCost = 10f;
+        AddActionManuals();
     }
 
     public override void OnEnable()
@@ -38,6 +37,12 @@ public class BladeOfPhong : SkillBase
         StatChangeRegister();
     }
 
+    public override void Config()
+    {
+        GetActionField<ActionFloatField>(ActionFieldName.Cooldown).value = 5f;
+        GetActionField<ActionFloatField>(ActionFieldName.ManaCost).value = 10f;
+    }
+
     public override void StatChangeRegister()
     {
         base.StatChangeRegister();
@@ -47,7 +52,8 @@ public class BladeOfPhong : SkillBase
     public override void RecalculateStat()
     {
         base.RecalculateStat();
-        damage = customMono.stat.reflex.FinalValue * 0.1f;
+        GetActionField<ActionFloatField>(ActionFieldName.Damage).value =
+            customMono.stat.reflex.FinalValue * 0.1f;
     }
 
     public override void WhileWaiting(Vector2 p_location = default, Vector2 p_direction = default)
@@ -57,7 +63,10 @@ public class BladeOfPhong : SkillBase
 
     public override ActionResult Trigger(Vector2 location = default, Vector2 direction = default)
     {
-        if (customMono.stat.currentManaPoint.Value < manaCost)
+        if (
+            customMono.stat.currentManaPoint.Value
+            < GetActionField<ActionFloatField>(ActionFieldName.ManaCost).value
+        )
             return failResult;
         else if (canUse && !customMono.actionBlocking)
         {
@@ -68,7 +77,9 @@ public class BladeOfPhong : SkillBase
             StartCoroutine(actionIE = WaitSpawnTornadoSignal(direction));
             StartCoroutine(CooldownCoroutine());
             customMono.currentAction = this;
-            customMono.stat.currentManaPoint.Value -= manaCost;
+            customMono.stat.currentManaPoint.Value -= GetActionField<ActionFloatField>(
+                ActionFieldName.ManaCost
+            ).value;
             return successResult;
         }
 
@@ -83,15 +94,12 @@ public class BladeOfPhong : SkillBase
             yield return new WaitForSeconds(Time.fixedDeltaTime);
 
         customMono.animationEventFunctionCaller.mainSkill2Signal = false;
-        GameEffect t_tornado = GameManager
-            .Instance.bladeOfPhongTornadoEffectPool.PickOne()
-            .gameEffect;
-        var t_collideAndDamage = (CollideAndDamage)
-            t_tornado.GetBehaviour(EGameEffectBehaviour.CollideAndDamage);
-        t_collideAndDamage.allyTags = customMono.allyTags;
-        t_collideAndDamage.collideDamage = damage;
-        t_tornado.transform.position = transform.position;
-        t_tornado.KeepFlyingAt(p_direction);
+        GameManager.Instance.actionLogicDataBase.SpawnNormalEffect(
+            this,
+            GameManager.Instance.bladeOfPhongTornadoEffectPool.PickOneGameEffect(),
+            transform.position,
+            p_direction
+        );
 
         while (!customMono.animationEventFunctionCaller.endMainSkill2)
             yield return new WaitForSeconds(Time.fixedDeltaTime);

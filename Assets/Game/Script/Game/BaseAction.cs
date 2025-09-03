@@ -80,6 +80,9 @@ public class BaseAction : MonoEditor
             || this is RimuruCombo2
             || this is RimuruCombo1
             || this is BladeOfMinhKhai
+            || this is BladeOfPhong
+            || this is BladeOfVu
+            || this is DashSkill
         )
         {
             LoadActionFields();

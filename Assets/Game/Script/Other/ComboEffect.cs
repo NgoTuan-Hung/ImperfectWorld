@@ -10,15 +10,22 @@ public class ComboEffect
     /// <summary>
     /// Use this to do something with the effect inside combo
     /// </summary>
-    public Action<GameEffect, Action<float>> effectAction = NoAction;
+    public Action<BaseAction, GameEffect, Action<float>> effectAction = NoAction;
 
     public ComboEffect() { }
 
-    public ComboEffect(ObjectPool effectPool, Action<GameEffect, Action<float>> effectAction)
+    public ComboEffect(
+        ObjectPool effectPool,
+        Action<BaseAction, GameEffect, Action<float>> effectAction
+    )
     {
         this.effectPool = effectPool;
         this.effectAction = effectAction;
     }
 
-    static void NoAction(GameEffect p_gameEffect, Action<float> p_dealDamageEvent) { }
+    static void NoAction(
+        BaseAction p_baseAction,
+        GameEffect p_gameEffect,
+        Action<float> p_dealDamageEvent
+    ) { }
 }

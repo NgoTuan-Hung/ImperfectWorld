@@ -31,3 +31,43 @@ public class Child : Parent{
     public override void Refee() {print("Child");}
 }
     
+---------------------------------
+public class BaseLogic{
+    public void SomeLogicA() {...}
+    ...
+    public void SomeLogicX() {...}
+}
+
+public class A : BaseLogic{
+    public void DoA(){
+        SomeLogicA();
+        ...A Custom Logics
+    }
+}
+
+public class B : BaseLogic{
+    public void DoB(){
+        SomeLogicB();
+        ...B Custom Logics
+    }
+}
+
+... many other class
+
+compare to this
+
+public class A{
+    public void DoA(){
+        GlobalSingleton.SomeLogicA(this);
+        ...A Custom Logics
+    }
+}
+
+public class B{
+    public void DoB(){
+        GlobalSingleton.SomeLogicB(this);
+        ...B Custom Logics
+    }
+}
+
+... many other class

@@ -57,10 +57,6 @@ public class BladeOfMinhKhai : SkillBase
 
     public override void Config()
     {
-        GetActionField<ActionDashLogicField>(ActionFieldName.DashLogic).value = new(this);
-        GetActionField<ActionSpawnEffectLogicField>(ActionFieldName.SpawnEffectLogic).value = new(
-            this
-        );
         GetActionField<ActionFloatField>(ActionFieldName.Duration).value = 0.203f;
         GetActionField<ActionFloatField>(ActionFieldName.Cooldown).value = 5f;
         GetActionField<ActionFloatField>(ActionFieldName.LifeStealPercent).value = 0.25f;
@@ -79,7 +75,8 @@ public class BladeOfMinhKhai : SkillBase
     public override void RecalculateStat()
     {
         base.RecalculateStat();
-        damage = customMono.stat.reflex.FinalValue * 2f;
+        GetActionField<ActionFloatField>(ActionFieldName.Damage).value =
+            customMono.stat.reflex.FinalValue * 2f;
     }
 
     public override void WhileWaiting(Vector2 p_location = default, Vector2 p_direction = default)
@@ -92,7 +89,10 @@ public class BladeOfMinhKhai : SkillBase
         Vector2 p_direction = default
     )
     {
-        if (customMono.stat.currentManaPoint.Value < manaCost)
+        if (
+            customMono.stat.currentManaPoint.Value
+            < GetActionField<ActionFloatField>(ActionFieldName.ManaCost).value
+        )
             return failResult;
         else if (canUse && !customMono.movementActionBlocking && !customMono.actionBlocking)
         {
@@ -111,7 +111,9 @@ public class BladeOfMinhKhai : SkillBase
             );
             StartCoroutine(CooldownCoroutine());
             customMono.currentAction = this;
-            customMono.stat.currentManaPoint.Value -= manaCost;
+            customMono.stat.currentManaPoint.Value -= GetActionField<ActionFloatField>(
+                ActionFieldName.ManaCost
+            ).value;
             return successResult;
         }
 
@@ -124,13 +126,13 @@ public class BladeOfMinhKhai : SkillBase
         GameEffect vanishEffect = GameManager.Instance.vanishEffectPool.PickOne().gameEffect;
         vanishEffect.transform.position = transform.position;
 
-        yield return GetActionField<ActionDashLogicField>(ActionFieldName.DashLogic)
-            .value.Dash(
-                p_direction,
-                GetActionField<ActionFloatField>(ActionFieldName.Speed).value,
-                GetActionField<ActionFloatField>(ActionFieldName.Duration).value,
-                EasingFunctions.OutQuint
-            );
+        yield return GameManager.Instance.actionLogicDataBase.Dash(
+            this,
+            p_direction,
+            GetActionField<ActionFloatField>(ActionFieldName.Speed).value,
+            GetActionField<ActionFloatField>(ActionFieldName.Duration).value,
+            EasingFunctions.OutQuint
+        );
     }
 
     IEnumerator WaitSpawnSlashSignal(Vector3 p_direction)
@@ -140,12 +142,12 @@ public class BladeOfMinhKhai : SkillBase
 
         customMono.animationEventFunctionCaller.mainSkill1AS.signal = false;
 
-        GetActionField<ActionSpawnEffectLogicField>(ActionFieldName.SpawnEffectLogic)
-            .value.SpawnEffectAsChild(
-                p_direction,
-                GameManager.Instance.bladeOfMinhKhaiSlashEffectPool.PickOneGameEffect(),
-                LifeSteal
-            );
+        GameManager.Instance.actionLogicDataBase.SpawnEffectAsChild(
+            this,
+            p_direction,
+            GameManager.Instance.bladeOfMinhKhaiSlashEffectPool.PickOneGameEffect(),
+            LifeSteal
+        );
 
         while (!customMono.animationEventFunctionCaller.mainSkill1AS.end)
             yield return new WaitForSeconds(Time.fixedDeltaTime);
@@ -172,7 +174,8 @@ public class BladeOfMinhKhai : SkillBase
 
     public override void LifeSteal(float damageDealt)
     {
-        customMono.stat.currentHealthPoint.Value += damageDealt * lifeStealPercent;
+        customMono.stat.currentHealthPoint.Value +=
+            damageDealt * GetActionField<ActionFloatField>(ActionFieldName.LifeStealPercent).value;
     }
 
     public override void ActionInterrupt()

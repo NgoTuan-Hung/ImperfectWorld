@@ -41,32 +41,22 @@ public class RimuruCombo2 : SkillBase
 
     public override void Config()
     {
-        GetActionField<ActionCombo2LogicField>(ActionFieldName.Combo2Logic).value = new(
-            this,
-            Combo2End
-        );
-        GetActionField<ActionSpawnEffectLogicField>(ActionFieldName.SpawnEffectLogic).value = new(
-            this
-        );
+        GetActionField<ActionActionField>(ActionFieldName.ComboEndAction).value = Combo2End;
         GetActionField<ActionListComboEffectField>(ActionFieldName.ComboEffects).value = new()
         {
             new(
                 GameManager.Instance.rimuruCombo2SlashAPool,
-                GetActionField<ActionSpawnEffectLogicField>(
-                    ActionFieldName.SpawnEffectLogic
-                ).value.SpawnEffectAsChild
+                GameManager.Instance.actionLogicDataBase.SpawnEffectAsChild
             ),
             new(
                 GameManager.Instance.rimuruCombo2SlashBPool,
-                GetActionField<ActionSpawnEffectLogicField>(
-                    ActionFieldName.SpawnEffectLogic
-                ).value.SpawnEffectAsChild
+                GameManager.Instance.actionLogicDataBase.SpawnEffectAsChild
             ),
         };
         GetActionField<ActionFloatField>(ActionFieldName.Cooldown).value = 0f;
         GetActionField<ActionFloatField>(ActionFieldName.ManaCost).value = 0f;
         GetActionField<ActionIntField>(ActionFieldName.Variants).value = 2;
-        GetActionField<ActionCombo2LogicField>(ActionFieldName.Combo2Logic).value.ConfigCombo2();
+        GameManager.Instance.actionLogicDataBase.ConfigCombo2(this);
     }
 
     public override void StatChangeRegister()
@@ -96,8 +86,7 @@ public class RimuruCombo2 : SkillBase
             customMono.statusEffect.Slow(customMono.stat.actionSlowModifier);
             ToggleAnim(GameManager.Instance.combo2BoolHash, true);
             StartCoroutine(
-                actionIE = GetActionField<ActionCombo2LogicField>(ActionFieldName.Combo2Logic)
-                    .value.WaitCombo2(direction)
+                actionIE = GameManager.Instance.actionLogicDataBase.WaitCombo2(this, direction)
             );
             StartCoroutine(CooldownCoroutine());
             customMono.currentAction = this;

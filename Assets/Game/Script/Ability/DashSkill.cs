@@ -6,7 +6,6 @@ public class DashSkill : SkillBase
 {
     public int totalEffect = 10;
     public float dashSpeed = 2f;
-    public float effectLifeTime = 0.5f;
     public float spawnEffectInterval;
 
     public override void Awake()
@@ -72,6 +71,18 @@ public class DashSkill : SkillBase
         base.Start();
     }
 
+    public override void Config()
+    {
+        GetActionField<ActionIntField>(ActionFieldName.EffectCount).value = 10;
+        GetActionField<ActionFloatField>(ActionFieldName.Speed).value = 2f;
+        GetActionField<ActionFloatField>(ActionFieldName.Duration).value = 0.3f;
+        GetActionField<ActionFloatField>(ActionFieldName.Cooldown).value = 8f;
+        GetActionField<ActionFloatField>(ActionFieldName.Interval).value =
+            GetActionField<ActionFloatField>(ActionFieldName.Duration).value
+            / GetActionField<ActionIntField>(ActionFieldName.EffectCount).value;
+        GetActionField<ActionFloatField>(ActionFieldName.ManaCost).value = 15f;
+    }
+
     public override void WhileWaiting(Vector2 p_location = default, Vector2 p_direction = default)
     {
         customMono.SetUpdateDirectionIndicator(p_direction, UpdateDirectionIndicatorPriority.Low);
@@ -79,7 +90,10 @@ public class DashSkill : SkillBase
 
     public override ActionResult Trigger(Vector2 location = default, Vector2 direction = default)
     {
-        if (customMono.stat.currentManaPoint.Value < manaCost)
+        if (
+            customMono.stat.currentManaPoint.Value
+            < GetActionField<ActionFloatField>(ActionFieldName.ManaCost).value
+        )
             return failResult;
         else if (canUse && !customMono.movementActionBlocking)
         {
@@ -88,7 +102,9 @@ public class DashSkill : SkillBase
             StartCoroutine(actionIE = Dashing(direction));
             StartCoroutine(CooldownCoroutine());
             customMono.currentAction = this;
-            customMono.stat.currentManaPoint.Value -= manaCost;
+            customMono.stat.currentManaPoint.Value -= GetActionField<ActionFloatField>(
+                ActionFieldName.ManaCost
+            ).value;
             return successResult;
         }
 
