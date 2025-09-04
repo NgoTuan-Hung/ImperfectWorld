@@ -20,7 +20,7 @@ public enum ActionUse
 }
 
 [RequireComponent(typeof(CustomMono))]
-public class BaseAction : MonoEditor
+public partial class BaseAction : MonoEditor
 {
     public CustomMono customMono;
     public float cooldown;
@@ -83,6 +83,11 @@ public class BaseAction : MonoEditor
             || this is BladeOfPhong
             || this is BladeOfVu
             || this is DashSkill
+            || this is DeepBlade
+            || this is DoubleKill
+            || this is GetOverThere
+            || this is InfernalTide
+            || this is LightingForward
         )
         {
             LoadActionFields();

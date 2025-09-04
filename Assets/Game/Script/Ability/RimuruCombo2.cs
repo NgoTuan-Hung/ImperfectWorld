@@ -44,19 +44,13 @@ public class RimuruCombo2 : SkillBase
         GetActionField<ActionActionField>(ActionFieldName.ComboEndAction).value = Combo2End;
         GetActionField<ActionListComboEffectField>(ActionFieldName.ComboEffects).value = new()
         {
-            new(
-                GameManager.Instance.rimuruCombo2SlashAPool,
-                GameManager.Instance.actionLogicDataBase.SpawnEffectAsChild
-            ),
-            new(
-                GameManager.Instance.rimuruCombo2SlashBPool,
-                GameManager.Instance.actionLogicDataBase.SpawnEffectAsChild
-            ),
+            new(GameManager.Instance.rimuruCombo2SlashAPool, SpawnEffectAsChild),
+            new(GameManager.Instance.rimuruCombo2SlashBPool, SpawnEffectAsChild),
         };
         GetActionField<ActionFloatField>(ActionFieldName.Cooldown).value = 0f;
         GetActionField<ActionFloatField>(ActionFieldName.ManaCost).value = 0f;
         GetActionField<ActionIntField>(ActionFieldName.Variants).value = 2;
-        GameManager.Instance.actionLogicDataBase.ConfigCombo2(this);
+        ConfigCombo2();
     }
 
     public override void StatChangeRegister()
@@ -85,9 +79,7 @@ public class RimuruCombo2 : SkillBase
             customMono.actionBlocking = true;
             customMono.statusEffect.Slow(customMono.stat.actionSlowModifier);
             ToggleAnim(GameManager.Instance.combo2BoolHash, true);
-            StartCoroutine(
-                actionIE = GameManager.Instance.actionLogicDataBase.WaitCombo2(this, direction)
-            );
+            StartCoroutine(actionIE = WaitCombo2(direction));
             StartCoroutine(CooldownCoroutine());
             customMono.currentAction = this;
             customMono.stat.currentManaPoint.Value -= manaCost;

@@ -4,19 +4,11 @@ using UnityEngine;
 
 public class DashSkill : SkillBase
 {
-    public int totalEffect = 10;
-    public float dashSpeed = 2f;
-    public float spawnEffectInterval;
-
     public override void Awake()
     {
         base.Awake();
-        duration = 0.3f;
-        cooldown = 8f;
 
-        spawnEffectInterval = duration / totalEffect;
         successResult = new(true, ActionResultType.Cooldown, cooldown);
-        manaCost = 15f;
     }
 
     public override void OnEnable()
@@ -74,13 +66,14 @@ public class DashSkill : SkillBase
     public override void Config()
     {
         GetActionField<ActionIntField>(ActionFieldName.EffectCount).value = 10;
-        GetActionField<ActionFloatField>(ActionFieldName.Speed).value = 2f;
+        GetActionField<ActionFloatField>(ActionFieldName.Speed).value = 0.5f;
         GetActionField<ActionFloatField>(ActionFieldName.Duration).value = 0.3f;
         GetActionField<ActionFloatField>(ActionFieldName.Cooldown).value = 8f;
         GetActionField<ActionFloatField>(ActionFieldName.Interval).value =
             GetActionField<ActionFloatField>(ActionFieldName.Duration).value
             / GetActionField<ActionIntField>(ActionFieldName.EffectCount).value;
         GetActionField<ActionFloatField>(ActionFieldName.ManaCost).value = 15f;
+        /* Also use current time */
     }
 
     public override void WhileWaiting(Vector2 p_location = default, Vector2 p_direction = default)
@@ -111,37 +104,39 @@ public class DashSkill : SkillBase
         return failResult;
     }
 
-    public IEnumerator Dashing(Vector3 direction)
+    public IEnumerator Dashing(Vector3 p_direction)
     {
-        GameEffect gameEffect;
-        /* Dash explode vfx */
-        gameEffect = GameManager.Instance.dashExplodePool.PickOne().gameEffect;
-        customMono.rotationAndCenterObject.transform.localRotation = Quaternion.identity;
-        gameEffect.transform.parent = customMono.rotationAndCenterObject.transform;
-        gameEffect.transform.SetLocalPositionAndRotation(Vector3.zero, Quaternion.identity);
+        SpawnEffectAsChild(Vector2.zero, GameManager.Instance.dashExplodePool.PickOneGameEffect());
 
-        direction = direction.normalized;
-
-        float currentTime = 0;
-        for (int i = 0; i < totalEffect; i++)
-        {
-            gameEffect = GameManager.Instance.dashEffectPool.PickOne().gameEffect;
-            gameEffect.animateObjects[0].spriteRenderer.sprite = customMono.spriteRenderer.sprite;
-            gameEffect.animateObjects[0].transform.localScale = customMono
-                .directionModifier
-                .transform
-                .localScale;
-            gameEffect.transform.position = customMono.transform.position;
-
-            transform.position +=
-                (1 - EasingFunctions.OutQuint(currentTime / duration)) * dashSpeed * direction;
-
-            yield return new WaitForSeconds(spawnEffectInterval);
-            currentTime += spawnEffectInterval;
-        }
+        StartCoroutine(SpawnAfterImage());
+        yield return Dash(
+            p_direction,
+            GetActionField<ActionFloatField>(ActionFieldName.Speed).value,
+            GetActionField<ActionFloatField>(ActionFieldName.Duration).value,
+            EasingFunctions.OutQuint
+        );
 
         customMono.movementActionBlocking = false;
         customMono.currentAction = null;
+    }
+
+    IEnumerator SpawnAfterImage()
+    {
+        GameEffect t_gameEffect;
+        for (int i = 0; i < GetActionField<ActionIntField>(ActionFieldName.EffectCount).value; i++)
+        {
+            t_gameEffect = GameManager.Instance.dashEffectPool.PickOne().gameEffect;
+            t_gameEffect.animateObjects[0].spriteRenderer.sprite = customMono.spriteRenderer.sprite;
+            t_gameEffect.animateObjects[0].transform.localScale = customMono
+                .directionModifier
+                .transform
+                .localScale;
+            t_gameEffect.transform.position = customMono.transform.position;
+
+            yield return new WaitForSeconds(
+                GetActionField<ActionFloatField>(ActionFieldName.Interval).value
+            );
+        }
     }
 
     public void DashTo(Vector2 direction, float duration)

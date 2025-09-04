@@ -6,6 +6,7 @@ using UnityEditor.UIElements;
 using UnityEngine.Playables;
 using UnityEngine.Timeline;
 using System;
+using UnityEditor.Animations;
 
 public class GameEffectBuilder : EditorWindow
 {
@@ -25,9 +26,12 @@ public class GameEffectBuilder : EditorWindow
         effectLocalRotationVector3Field;
     GradientField colorOverLifetimeGradientField;
     Button buildButton,
-        addColliderButton;
+        addColliderButton,
+        addAnimationObjectButton;
     TextField nameTextField,
-        tagTextField;
+        tagTextField,
+        defaultAnimationObjectControllerNameTextField,
+        newAnimationObjectControllerNameTextField;
     LayerMaskField collisionExcludeLayerMaskLayerMaskField;
     ListGameEffectBehavior listGameEffectBehavior;
     CollideAndDamageSO collideAndDamageSO;
@@ -54,12 +58,44 @@ public class GameEffectBuilder : EditorWindow
     {
         GetVisualElements();
         BuildButtonHandler();
-        AddColliderButtonHandler();
+        AddButtonHandler();
     }
 
-    private void AddColliderButtonHandler()
+    private void AddButtonHandler()
     {
         addColliderButton.clicked += OnAddColliderButtonClicked;
+        addAnimationObjectButton.clicked += OnAddAnimationObjectButtonClicked;
+    }
+
+    private void OnAddAnimationObjectButtonClicked()
+    {
+        if (build == null)
+            return;
+
+        GameObject t_animationObject = new();
+        t_animationObject.transform.parent = build.transform.Find("AnimationObjects");
+        t_animationObject.transform.localPosition = Vector3.zero;
+        t_animationObject.name = "AnimationObject";
+
+        SpriteRenderer t_sR = t_animationObject.AddComponent<SpriteRenderer>();
+        t_sR.sortingOrder = 3;
+        t_sR.sortingLayerName = "Base";
+
+        AnimatorController t_animatorController = AnimatorController.CreateAnimatorControllerAtPath(
+            "Assets/Game/Graphics/Animation/"
+                + (
+                    string.IsNullOrEmpty(newAnimationObjectControllerNameTextField.text)
+                        ? nameTextField.text + "AC"
+                        : newAnimationObjectControllerNameTextField.text
+                )
+                + ".controller"
+        );
+
+        Animator t_animator = t_animationObject.AddComponent<Animator>();
+        t_animator.runtimeAnimatorController = t_animatorController;
+
+        AnimateObject t_aO = t_animationObject.AddComponent<AnimateObject>();
+        t_aO.Reset();
     }
 
     private void OnAddColliderButtonClicked()
@@ -129,6 +165,9 @@ public class GameEffectBuilder : EditorWindow
         collisionExcludeLayerMaskLayerMaskField = scrollViewContent.Q<LayerMaskField>(
             "collision-exclude-layer-mask-lmf"
         );
+        defaultAnimationObjectControllerNameTextField = scrollViewContent.Q<TextField>(
+            "default-animation-object-controller-name-tf"
+        );
         seperator1 = scrollViewContent.Q("seperator-1");
 
         var gameEffectBehavioursIE = new InspectorElement();
@@ -146,6 +185,11 @@ public class GameEffectBuilder : EditorWindow
 
         addColliderButton = scrollViewContent.Q<Button>("add-collider-b");
         addColliderDropdownField = scrollViewContent.Q<DropdownField>("add-collider-df");
+
+        newAnimationObjectControllerNameTextField = scrollViewContent.Q<TextField>(
+            "new-animation-object-controller-name-tf"
+        );
+        addAnimationObjectButton = scrollViewContent.Q<Button>("add-animation-object-b");
 
         scrollViewContent.Add(buildButton);
         collideAndDamageIE.PlaceInFront(seperator1);
@@ -191,6 +235,24 @@ public class GameEffectBuilder : EditorWindow
             }
             GameEffect t_gE = build.GetComponent<GameEffect>();
             t_gE.gameEffectSO = t_buildSO;
+
+            #region Add Animator
+            var t_animater = build
+                .transform.Find("AnimationObjects")
+                .Find("AnimationObject")
+                .GetComponent<Animator>();
+            AnimatorController t_animatorController =
+                AnimatorController.CreateAnimatorControllerAtPath(
+                    "Assets/Game/Graphics/Animation/"
+                        + (
+                            string.IsNullOrEmpty(defaultAnimationObjectControllerNameTextField.text)
+                                ? nameTextField.text + "AC"
+                                : defaultAnimationObjectControllerNameTextField.text
+                        )
+                        + ".controller"
+                );
+            t_animater.runtimeAnimatorController = t_animatorController;
+            #endregion
 
             t_buildSO.gameEffectBehaviours?.ForEach(behaviour =>
             {

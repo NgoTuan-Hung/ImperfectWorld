@@ -6,7 +6,6 @@ public class GetOverThere : SkillBase
     public override void Awake()
     {
         base.Awake();
-        cooldown = 5f;
         successResult = new(true, ActionResultType.Cooldown, cooldown);
     }
 
@@ -36,6 +35,12 @@ public class GetOverThere : SkillBase
         base.Start();
     }
 
+    public override void Config()
+    {
+        GetActionField<ActionFloatField>(ActionFieldName.Cooldown).value = 5f;
+        GetActionField<ActionFloatField>(ActionFieldName.ManaCost).value = 15f;
+    }
+
     public override void WhileWaiting(Vector2 p_location = default, Vector2 p_direction = default)
     {
         base.WhileWaiting(p_direction);
@@ -43,6 +48,11 @@ public class GetOverThere : SkillBase
 
     public override ActionResult Trigger(Vector2 location = default, Vector2 direction = default)
     {
+        if (
+            customMono.stat.currentManaPoint.Value
+            < GetActionField<ActionFloatField>(ActionFieldName.ManaCost).value
+        )
+            return failResult;
         if (canUse && !customMono.actionBlocking)
         {
             canUse = false;
@@ -52,6 +62,9 @@ public class GetOverThere : SkillBase
             StartCoroutine(actionIE = WaitSpawnBlueHole(location));
             StartCoroutine(CooldownCoroutine());
             customMono.currentAction = this;
+            customMono.stat.currentManaPoint.Value -= GetActionField<ActionFloatField>(
+                ActionFieldName.ManaCost
+            ).value;
             return successResult;
         }
 

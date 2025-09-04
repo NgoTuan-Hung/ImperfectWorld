@@ -94,11 +94,11 @@ public class BladeOfPhong : SkillBase
             yield return new WaitForSeconds(Time.fixedDeltaTime);
 
         customMono.animationEventFunctionCaller.mainSkill2Signal = false;
-        GameManager.Instance.actionLogicDataBase.SpawnNormalEffect(
-            this,
+        SpawnNormalEffect(
             GameManager.Instance.bladeOfPhongTornadoEffectPool.PickOneGameEffect(),
             transform.position,
-            p_direction
+            p_direction,
+            true
         );
 
         while (!customMono.animationEventFunctionCaller.endMainSkill2)

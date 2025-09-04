@@ -3,17 +3,10 @@ using UnityEngine;
 
 public class DoubleKill : SkillBase
 {
-    PoisonInfo poisonInfo;
-    SlowInfo slowInfo;
-
     public override void Awake()
     {
         base.Awake();
-        cooldown = 1f;
-        poisonInfo = new(5, 0);
-        slowInfo = new(new(-0.3f, FloatStatModifierType.Multiplicative), 1f);
         successResult = new(true, ActionResultType.Cooldown, cooldown);
-        manaCost = 5f;
     }
 
     public override void OnEnable()
@@ -43,6 +36,17 @@ public class DoubleKill : SkillBase
         StatChangeRegister();
     }
 
+    public override void Config()
+    {
+        GetActionField<ActionFloatField>(ActionFieldName.Cooldown).value = 1f;
+        GetActionField<ActionPoisonInfoField>(ActionFieldName.PoisonInfo).value = new(5, 0);
+        GetActionField<ActionSlowInfoField>(ActionFieldName.SlowInfo).value = new(
+            new(-0.3f, FloatStatModifierType.Multiplicative),
+            1f
+        );
+        GetActionField<ActionFloatField>(ActionFieldName.ManaCost).value = 5f;
+    }
+
     public override void StatChangeRegister()
     {
         base.StatChangeRegister();
@@ -52,9 +56,13 @@ public class DoubleKill : SkillBase
     public override void RecalculateStat()
     {
         base.RecalculateStat();
-        damage = customMono.stat.wisdom.FinalValue * 1.1f;
-        poisonInfo.poisonDamage = customMono.stat.wisdom.FinalValue * 0.25f;
-        slowInfo.totalSlow.value = -(customMono.stat.wisdom.FinalValue * 0.01f + 0.3f);
+        GetActionField<ActionFloatField>(ActionFieldName.Damage).value =
+            customMono.stat.wisdom.FinalValue * 1.1f;
+        GetActionField<ActionPoisonInfoField>(ActionFieldName.PoisonInfo).value.poisonDamage =
+            customMono.stat.wisdom.FinalValue * 0.25f;
+        GetActionField<ActionSlowInfoField>(ActionFieldName.SlowInfo).value.totalSlow.value = -(
+            customMono.stat.wisdom.FinalValue * 0.01f + 0.3f
+        );
     }
 
     public override void WhileWaiting(Vector2 p_location = default, Vector2 p_direction = default)
@@ -64,7 +72,10 @@ public class DoubleKill : SkillBase
 
     public override ActionResult Trigger(Vector2 location = default, Vector2 direction = default)
     {
-        if (customMono.stat.currentManaPoint.Value < manaCost)
+        if (
+            customMono.stat.currentManaPoint.Value
+            < GetActionField<ActionFloatField>(ActionFieldName.ManaCost).value
+        )
             return failResult;
         else if (canUse && !customMono.actionBlocking)
         {
@@ -75,7 +86,9 @@ public class DoubleKill : SkillBase
             StartCoroutine(actionIE = WaitSpawnArrow(direction));
             StartCoroutine(CooldownCoroutine());
             customMono.currentAction = this;
-            customMono.stat.currentManaPoint.Value -= manaCost;
+            customMono.stat.currentManaPoint.Value -= GetActionField<ActionFloatField>(
+                ActionFieldName.ManaCost
+            ).value;
             return successResult;
         }
 
@@ -97,22 +110,26 @@ public class DoubleKill : SkillBase
             t_arrow = GameManager.Instance.elementalLeafRangerPoisonArrowPool.PickOne().gameEffect;
             t_collideAndDamage = (CollideAndDamage)
                 t_arrow.GetBehaviour(EGameEffectBehaviour.CollideAndDamage);
-            t_collideAndDamage.poisonInfo = poisonInfo;
+            t_collideAndDamage.poisonInfo = GetActionField<ActionPoisonInfoField>(
+                ActionFieldName.PoisonInfo
+            ).value;
         }
         else
         {
             t_arrow = GameManager.Instance.elementalLeafRangerVineArrowPool.PickOne().gameEffect;
             t_collideAndDamage = (CollideAndDamage)
                 t_arrow.GetBehaviour(EGameEffectBehaviour.CollideAndDamage);
-            t_collideAndDamage.slowInfo = slowInfo;
+            t_collideAndDamage.slowInfo = GetActionField<ActionSlowInfoField>(
+                ActionFieldName.SlowInfo
+            ).value;
         }
         t_collideAndDamage.allyTags = customMono.allyTags;
-        t_collideAndDamage.collideDamage = damage;
-        t_arrow.transform.position = customMono.firePoint.transform.position;
-        t_arrow.transform.rotation = Quaternion.Euler(
-            0,
-            0,
-            Vector2.SignedAngle(Vector2.right, p_direction)
+        t_collideAndDamage.collideDamage = GetActionField<ActionFloatField>(
+            ActionFieldName.Damage
+        ).value;
+        t_arrow.transform.SetPositionAndRotation(
+            customMono.firePoint.transform.position,
+            Quaternion.Euler(0, 0, Vector2.SignedAngle(Vector2.right, p_direction))
         );
         t_arrow.KeepFlyingAt(p_direction);
 

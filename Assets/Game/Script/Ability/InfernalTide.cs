@@ -6,12 +6,8 @@ public class InfernalTide : SkillBase
     public override void Awake()
     {
         base.Awake();
-        cooldown = 5f;
-        currentAmmo = maxAmmo = 5;
         // maxRange = 2f;
-        interval = 0.1f;
         successResult = new(true, ActionResultType.Cooldown, cooldown);
-        manaCost = 30f;
     }
 
     public override void OnEnable()
@@ -41,6 +37,14 @@ public class InfernalTide : SkillBase
         StatChangeRegister();
     }
 
+    public override void Config()
+    {
+        GetActionField<ActionFloatField>(ActionFieldName.Cooldown).value = 5f;
+        GetActionField<ActionIntField>(ActionFieldName.EffectCount).value = 5;
+        GetActionField<ActionFloatField>(ActionFieldName.Interval).value = 0.1f;
+        GetActionField<ActionFloatField>(ActionFieldName.ManaCost).value = 30f;
+    }
+
     public override void StatChangeRegister()
     {
         base.StatChangeRegister();
@@ -50,7 +54,8 @@ public class InfernalTide : SkillBase
     public override void RecalculateStat()
     {
         base.RecalculateStat();
-        damage = customMono.stat.might.FinalValue * 0.25f;
+        GetActionField<ActionFloatField>(ActionFieldName.Damage).value =
+            customMono.stat.might.FinalValue * 0.25f;
     }
 
     public override void WhileWaiting(Vector2 p_location = default, Vector2 p_direction = default)
@@ -60,7 +65,10 @@ public class InfernalTide : SkillBase
 
     public override ActionResult Trigger(Vector2 location = default, Vector2 direction = default)
     {
-        if (customMono.stat.currentManaPoint.Value < manaCost)
+        if (
+            customMono.stat.currentManaPoint.Value
+            < GetActionField<ActionFloatField>(ActionFieldName.ManaCost).value
+        )
             return failResult;
         else if (canUse && !customMono.actionBlocking)
         {
@@ -71,7 +79,9 @@ public class InfernalTide : SkillBase
             StartCoroutine(actionIE = WaitSpawnFlame(direction));
             StartCoroutine(CooldownCoroutine());
             customMono.currentAction = this;
-            customMono.stat.currentManaPoint.Value -= manaCost;
+            customMono.stat.currentManaPoint.Value -= GetActionField<ActionFloatField>(
+                ActionFieldName.ManaCost
+            ).value;
 
             return successResult;
         }
@@ -96,12 +106,11 @@ public class InfernalTide : SkillBase
         customMono.animationEventFunctionCaller.mainSkill3Signal = false;
 
         transform.position -= p_direction.normalized * 1.5f;
-        CollideAndDamage t_fan =
-            GameManager
-                .Instance.infernalTideFanPool.PickOne()
-                .gameEffect.GetBehaviour(EGameEffectBehaviour.CollideAndDamage) as CollideAndDamage;
+        CollideAndDamage t_fan = GameManager
+            .Instance.infernalTideFanPool.PickOne()
+            .gameEffect.GetCollideAndDamage();
         t_fan.allyTags = customMono.allyTags;
-        t_fan.collideDamage = damage * 10;
+        t_fan.collideDamage = GetActionField<ActionFloatField>(ActionFieldName.Damage).value * 10;
         t_fan.transform.SetPositionAndRotation(
             customMono.firePoint.transform.position,
             Quaternion.Euler(0, 0, Vector2.SignedAngle(Vector2.right, p_direction))
@@ -125,25 +134,19 @@ public class InfernalTide : SkillBase
             )
         );
 
-        currentAmmo = 0;
-        while (currentAmmo < maxAmmo)
+        for (int i = 0; i < GetActionField<ActionIntField>(ActionFieldName.EffectCount).value; i++)
         {
-            CollideAndDamage t_flame =
-                GameManager
-                    .Instance.infernalTideFlamePool.PickOne()
-                    .gameEffect.GetBehaviour(EGameEffectBehaviour.CollideAndDamage)
-                as CollideAndDamage;
-            t_flame.allyTags = customMono.allyTags;
-            t_flame.collideDamage = damage;
-            t_flame.transform.position =
+            SpawnNormalEffect(
+                GameManager.Instance.infernalTideFlamePool.PickOneGameEffect(),
                 customMono.rotationAndCenterObject.transform.TransformPoint(
-                    Vector3.right.WithY(
-                        currentAmmo % 2 == 0 ? -currentAmmo / 2 : (currentAmmo + 1) / 2
-                    )
-                );
+                    Vector3.right.WithY(i % 2 == 0 ? -i / 2 : (i + 1) / 2)
+                ),
+                p_isCombat: true
+            );
 
-            yield return new WaitForSeconds(interval);
-            currentAmmo++;
+            yield return new WaitForSeconds(
+                GetActionField<ActionFloatField>(ActionFieldName.Interval).value
+            );
         }
     }
 

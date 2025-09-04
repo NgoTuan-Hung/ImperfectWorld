@@ -66,6 +66,7 @@ public partial class GameManager
         rimuruCombo1SlashA,
         rimuruCombo1SlashB,
         rimuruCombo1Dash,
+        rimuruCombo1DashImpact,
         rimuruCombo2SlashA,
         rimuruCombo2SlashB;
 
@@ -143,5 +144,6 @@ public partial class GameManager
         rimuruCombo1SlashA = Resources.Load<GameObject>("RimuruCombo1SlashA");
         rimuruCombo1SlashB = Resources.Load<GameObject>("RimuruCombo1SlashB");
         rimuruCombo1Dash = Resources.Load<GameObject>("RimuruCombo1Dash");
+        rimuruCombo1DashImpact = Resources.Load<GameObject>("RimuruCombo1DashImpact");
     }
 }

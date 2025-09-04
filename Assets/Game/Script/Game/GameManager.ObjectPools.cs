@@ -64,6 +64,7 @@ public partial class GameManager
         rimuruCombo1SlashAPool,
         rimuruCombo1SlashBPool,
         rimuruCombo1DashPool,
+        rimuruCombo1DashImpactPool,
         rimuruCombo2SlashAPool,
         rimuruCombo2SlashBPool;
 
@@ -334,6 +335,10 @@ public partial class GameManager
             rimuruCombo1Dash,
             new PoolArgument(ComponentType.GameEffect, PoolArgument.WhereComponent.Self)
         );
+        rimuruCombo1DashImpactPool = new(
+            rimuruCombo1DashImpact,
+            new PoolArgument(ComponentType.GameEffect, PoolArgument.WhereComponent.Self)
+        );
         LinkPoolWithScriptableObject();
     }
 
@@ -515,6 +520,10 @@ public partial class GameManager
         poolLink.Add(
             rimuruCombo1Dash.GetComponent<GameEffect>().gameEffectSO,
             rimuruCombo1DashPool
+        );
+        poolLink.Add(
+            rimuruCombo1DashImpact.GetComponent<GameEffect>().gameEffectSO,
+            rimuruCombo1DashImpactPool
         );
     }
 }

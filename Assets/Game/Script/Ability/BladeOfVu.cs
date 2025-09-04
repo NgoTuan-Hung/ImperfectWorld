@@ -99,8 +99,7 @@ public class BladeOfVu : SkillBase
 
     IEnumerator TriggerIE(Vector2 location = default, Vector2 direction = default)
     {
-        GameManager.Instance.actionLogicDataBase.SpawnNormalEffect(
-            this,
+        SpawnNormalEffect(
             GameManager.Instance.bladeOfVuStarPool.PickOneGameEffect(),
             GetActionField<ActionGameObjectField>(
                 ActionFieldName.CustomGameObject
@@ -111,14 +110,12 @@ public class BladeOfVu : SkillBase
 
         /* Flash then spawn slash */
         StartCoroutine(SpawnGhost());
-        yield return GameManager.Instance.actionLogicDataBase.Flash(
-            this,
+        yield return Flash(
             Vector3.zero,
             0,
             GetActionField<ActionFloatField>(ActionFieldName.Duration).value
         );
-        GameManager.Instance.actionLogicDataBase.SpawnNormalEffect(
-            this,
+        SpawnNormalEffect(
             GameManager.Instance.bladeOfVuSlashPool.PickOneGameEffect(),
             transform.position,
             p_isCombat: true

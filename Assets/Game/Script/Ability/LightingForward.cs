@@ -6,12 +6,7 @@ public class LightingForward : SkillBase
     public override void Awake()
     {
         base.Awake();
-        cooldown = 5f;
-        currentAmmo = maxAmmo = 5;
-        maxRange = 2f;
-        interval = 0.1f;
         successResult = new(true, ActionResultType.Cooldown, cooldown);
-        manaCost = 20f;
     }
 
     public override void OnEnable()
@@ -41,6 +36,16 @@ public class LightingForward : SkillBase
         StatChangeRegister();
     }
 
+    public override void Config()
+    {
+        GetActionField<ActionFloatField>(ActionFieldName.Cooldown).value = 5f;
+        GetActionField<ActionIntField>(ActionFieldName.EffectCount).value = 5;
+        /* Distance between each lighting */
+        GetActionField<ActionFloatField>(ActionFieldName.Distance).value = 2f;
+        GetActionField<ActionFloatField>(ActionFieldName.Interval).value = 0.1f;
+        GetActionField<ActionFloatField>(ActionFieldName.ManaCost).value = 20f;
+    }
+
     public override void StatChangeRegister()
     {
         base.StatChangeRegister();
@@ -50,7 +55,8 @@ public class LightingForward : SkillBase
     public override void RecalculateStat()
     {
         base.RecalculateStat();
-        damage = customMono.stat.wisdom.FinalValue * 2.75f;
+        GetActionField<ActionFloatField>(ActionFieldName.Damage).value =
+            customMono.stat.wisdom.FinalValue * 2.75f;
     }
 
     public override void WhileWaiting(Vector2 p_location = default, Vector2 p_direction = default)
@@ -60,7 +66,10 @@ public class LightingForward : SkillBase
 
     public override ActionResult Trigger(Vector2 location = default, Vector2 direction = default)
     {
-        if (customMono.stat.currentManaPoint.Value < manaCost)
+        if (
+            customMono.stat.currentManaPoint.Value
+            < GetActionField<ActionFloatField>(ActionFieldName.ManaCost).value
+        )
             return failResult;
         else if (canUse && !customMono.actionBlocking)
         {
@@ -71,7 +80,9 @@ public class LightingForward : SkillBase
             StartCoroutine(actionIE = WaitSpawnLighting(direction));
             StartCoroutine(CooldownCoroutine());
             customMono.currentAction = this;
-            customMono.stat.currentManaPoint.Value -= manaCost;
+            customMono.stat.currentManaPoint.Value -= GetActionField<ActionFloatField>(
+                ActionFieldName.ManaCost
+            ).value;
             return successResult;
         }
 
@@ -100,22 +111,22 @@ public class LightingForward : SkillBase
 
     IEnumerator SpawnLightingIE(Vector3 p_direction)
     {
-        int currentSpawn = 0;
         Vector3 t_lightingOrigin = transform.position;
-        while (currentSpawn < maxAmmo)
+        for (int i = 0; i < GetActionField<ActionIntField>(ActionFieldName.EffectCount).value; i++)
         {
-            CollideAndDamage t_lighting =
-                GameManager
-                    .Instance.lightingForwardLightingPool.PickOne()
-                    .gameEffect.GetBehaviour(EGameEffectBehaviour.CollideAndDamage)
-                as CollideAndDamage;
-            t_lighting.allyTags = customMono.allyTags;
-            t_lighting.collideDamage = damage;
-            t_lighting.transform.position =
-                t_lightingOrigin + currentSpawn * maxRange * p_direction.normalized;
+            SpawnNormalEffect(
+                GameManager.Instance.lightingForwardLightingPool.PickOneGameEffect(),
+                t_lightingOrigin
+                    + i
+                        * GetActionField<ActionFloatField>(ActionFieldName.Distance).value
+                        * p_direction.normalized,
+                default,
+                true
+            );
 
-            yield return new WaitForSeconds(interval);
-            currentSpawn++;
+            yield return new WaitForSeconds(
+                GetActionField<ActionFloatField>(ActionFieldName.Interval).value
+            );
         }
     }
 

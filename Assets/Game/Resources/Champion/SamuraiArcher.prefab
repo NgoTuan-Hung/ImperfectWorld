@@ -128,13 +128,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   attack: 0
   endAttack: 0
-  castingMagic: 0
-  endCastingMagic: 0
+  combo1Signal: 0
+  endCombo1: 0
+  combo2Signal: 0
+  endCombo2: 0
   summon: 0
   endSummon: 0
   endRelease: 0
-  mainSkill1Signal: 0
-  endMainSkill1: 0
   mainSkill2Signal: 0
   endMainSkill2: 0
   mainSkill3Signal: 0
@@ -490,11 +490,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d3345c1ae0ed9ea41b86f2a3c634c06a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  customMono: {fileID: 0}
   cooldown: 0
   onCooldown: 0
   defaultCooldown: 0
   defaultStateSpeed: 0
-  canUse: 0
+  canUse: 1
   boolHash: 0
   actionClip: {fileID: 0}
   audioClip: {fileID: 0}

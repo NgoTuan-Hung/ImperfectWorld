@@ -32,6 +32,7 @@ public enum ActionFieldName
     ComboActions,
     ComboEffects,
     ComboEndAction,
+    Distance,
 }
 
 [CreateAssetMenu(fileName = "ActionFieldInfo", menuName = "ScriptableObjects/ActionFieldInfo")]

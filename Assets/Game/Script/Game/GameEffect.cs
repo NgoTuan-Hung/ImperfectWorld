@@ -222,18 +222,13 @@ public class GameEffect : MonoSelfAware
             );
     }
 
-    public void SetUpCollideAndDamage(
-        HashSet<string> p_allyTags,
-        float p_damage,
-        Action<float> p_dealDamageEvent = null
-    )
+    public void SetUpCollideAndDamage(HashSet<string> p_allyTags, float p_damage)
     {
         var t_collideAndDamage = (CollideAndDamage)GetBehaviour(
             EGameEffectBehaviour.CollideAndDamage
         );
         t_collideAndDamage.allyTags = p_allyTags;
         t_collideAndDamage.collideDamage = p_damage;
-        t_collideAndDamage.dealDamageEvent = p_dealDamageEvent ?? DefaultDealtDamageEvent;
     }
 
     static void DefaultDealtDamageEvent(float p_damage) { }
@@ -263,6 +258,9 @@ public class GameEffect : MonoSelfAware
             );
         }
     }
+
+    public CollideAndDamage GetCollideAndDamage() =>
+        GetBehaviour(EGameEffectBehaviour.CollideAndDamage) as CollideAndDamage;
 
     public void SetParentAndLocalPosAndRot(
         Transform p_parent,

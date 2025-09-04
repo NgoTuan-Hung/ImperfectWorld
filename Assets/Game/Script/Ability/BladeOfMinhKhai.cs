@@ -126,8 +126,7 @@ public class BladeOfMinhKhai : SkillBase
         GameEffect vanishEffect = GameManager.Instance.vanishEffectPool.PickOne().gameEffect;
         vanishEffect.transform.position = transform.position;
 
-        yield return GameManager.Instance.actionLogicDataBase.Dash(
-            this,
+        yield return Dash(
             p_direction,
             GetActionField<ActionFloatField>(ActionFieldName.Speed).value,
             GetActionField<ActionFloatField>(ActionFieldName.Duration).value,
@@ -142,11 +141,10 @@ public class BladeOfMinhKhai : SkillBase
 
         customMono.animationEventFunctionCaller.mainSkill1AS.signal = false;
 
-        GameManager.Instance.actionLogicDataBase.SpawnEffectAsChild(
-            this,
+        SpawnEffectAsChild(
             p_direction,
             GameManager.Instance.bladeOfMinhKhaiSlashEffectPool.PickOneGameEffect(),
-            LifeSteal
+            SetupCAD
         );
 
         while (!customMono.animationEventFunctionCaller.mainSkill1AS.end)
@@ -171,6 +169,8 @@ public class BladeOfMinhKhai : SkillBase
         yield return new WaitForSeconds(p_duration);
         customMono.actionInterval = false;
     }
+
+    void SetupCAD(CollideAndDamage p_cAD) => p_cAD.dealDamageEvent = LifeSteal;
 
     public override void LifeSteal(float damageDealt)
     {

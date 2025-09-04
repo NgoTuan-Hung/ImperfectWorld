@@ -97,6 +97,7 @@ public partial class Stat : MonoEditor, INotifyBindablePropertyChanged
         reflex.RecalculateFinalValue();
         wisdom.RecalculateFinalValue();
         actionMoveSpeedReduceRate.RecalculateFinalValue();
+        moveSpeed.RecalculateFinalValue();
 
         Notify("Size");
     }

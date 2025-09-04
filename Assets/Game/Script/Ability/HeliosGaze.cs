@@ -54,7 +54,6 @@ public class HeliosGaze : SkillBase
         base.RecalculateStat();
         GetActionField<ActionFloatField>(ActionFieldName.Damage).value =
             customMono.stat.might.FinalValue * 0.2f;
-        print(GetActionField<ActionFloatField>(ActionFieldName.Damage).value);
     }
 
     public override ActionResult Trigger(Vector2 location = default, Vector2 direction = default)

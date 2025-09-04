@@ -66,7 +66,6 @@
     <Compile Include="Assets\Game\Script\ActionField\ActionActionField.cs" />
     <Compile Include="Assets\Game\Script\Ability\WoodCry.cs" />
     <Compile Include="Assets\Game\Script\Ability\AirRollSkill.cs" />
-    <Compile Include="Assets\Game\Script\ActionLogic\ActionLogicDataBase.SpawnEffect.cs" />
     <Compile Include="Assets\CustomPackage\Dotween\Modules\DOTweenModuleUtils.cs" />
     <Compile Include="Assets\Test\TestExecutionOrder\TestExecutionOrder3.cs" />
     <Compile Include="Assets\Test\ResetParticleSystemState\ResetParticleSystemState.cs" />
@@ -211,7 +210,6 @@
     <Compile Include="Assets\Game\Script\UI\Revamp\EnhancedOnScreenStick.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\Benchmark01.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TextMeshSpawner.cs" />
-    <Compile Include="Assets\Game\Script\ActionLogic\ActionLogicDataBase.cs" />
     <Compile Include="Assets\Game\Script\Ability\NuclearBomb.cs" />
     <Compile Include="Assets\Game\Script\Game\Movable.cs" />
     <Compile Include="Assets\Game\Script\Other\PausableScript.cs" />
@@ -237,6 +235,7 @@
     <Compile Include="Assets\Game\Script\Ability\HeliosGaze.cs" />
     <Compile Include="Assets\Game\Script\Game\GameEffectPrefab.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\Benchmark03.cs" />
+    <Compile Include="Assets\Game\Script\Game\BaseAction.SpawnEffect.cs" />
     <Compile Include="Assets\Game\Script\Game\GameEffectSO.cs" />
     <Compile Include="Assets\Game\Script\Game\WorldSpaceUI.cs" />
     <Compile Include="Assets\Test\TimelineSerializeTest\BoxCollider2.cs" />
@@ -270,6 +269,7 @@
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_TextEventCheck.cs" />
     <Compile Include="Assets\Game\Script\Other\TestEvent.cs" />
     <Compile Include="Assets\Game\Script\ActionField\ActionListComboActionField.cs" />
+    <Compile Include="Assets\Test\MethodAllocTest\MethodAllocTest.cs" />
     <Compile Include="Assets\Test\UIRevamp\UIR_UIImageEffectTest.cs" />
     <Compile Include="Assets\Game\Script\Ability\MagicLaserSkill.cs" />
     <Compile Include="Assets\Game\Script\Game\GameManager.cs" />
@@ -293,6 +293,7 @@
     <Compile Include="Assets\Game\Script\Other\PoisonInfo.cs" />
     <Compile Include="Assets\Game\Script\UI\Model\ConfigData.cs" />
     <Compile Include="Assets\Test\PierceStrike\PierceStrikeTest.cs" />
+    <Compile Include="Assets\Game\Script\Game\BaseAction.Methods.cs" />
     <Compile Include="Assets\Test\PrefabGetComponentTest\PrefabGetComponentTest1.cs" />
     <Compile Include="Assets\Game\Script\Game\StatusEffect.cs" />
     <Compile Include="Assets\Game\Script\Other\ActionWrapper.cs" />
@@ -1637,6 +1638,7 @@
   <ItemGroup>
     <ProjectReference Include="Assembly-CSharp-firstpass.csproj" />
     <ProjectReference Include="Plugins.BackgroundRecompiler.Editor.csproj" />
+    <ProjectReference Include="Wingman.csproj" />
   </ItemGroup>
   <Import Project="Sdk.targets" Sdk="Microsoft.NET.Sdk" />
   <ItemGroup>
