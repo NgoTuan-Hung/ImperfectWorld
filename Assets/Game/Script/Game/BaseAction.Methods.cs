@@ -195,4 +195,28 @@ public partial class BaseAction
     }
 
     public void DefaultSetupCAD(CollideAndDamage p_cAD) { }
+
+    public void SetRotationAndCenterObject(Vector2 p_dir)
+    {
+        customMono.rotationAndCenterObject.transform.rotation = Quaternion.Euler(
+            new Vector3(0, 0, Vector2.SignedAngle(Vector2.right, p_dir))
+        );
+        customMono.rotationAndCenterObject.transform.localScale =
+            customMono.rotationAndCenterObject.transform.localScale.WithY(
+                customMono.rotationAndCenterObject.transform.right.x > 0 ? 1 : -1
+            );
+    }
+
+    public void SetProjectile(GameEffect p_gameEffect, Vector2 p_dir)
+    {
+        p_gameEffect.transform.SetPositionAndRotation(
+            customMono.rotationAndCenterObject.transform.position,
+            Quaternion.Euler(new Vector3(0, 0, Vector2.SignedAngle(Vector2.right, p_dir)))
+        );
+        p_gameEffect.transform.localScale = p_gameEffect.transform.localScale.WithY(
+            p_gameEffect.transform.right.x > 0 ? 1 : -1
+        );
+
+        p_gameEffect.KeepFlyingAt(p_dir);
+    }
 }

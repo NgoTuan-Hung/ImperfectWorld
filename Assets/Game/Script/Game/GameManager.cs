@@ -7,8 +7,9 @@ using Unity.Cinemachine;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
-public partial class GameManager : MonoSingleton<GameManager>
+public partial class GameManager : MonoBehaviour
 {
+    public static GameManager Instance;
     public readonly int attackButtonScrollViewIndex = 7;
     public readonly int attackButtonIndex = 0;
     Dictionary<int, CustomMono> customMonos = new();
@@ -46,6 +47,7 @@ public partial class GameManager : MonoSingleton<GameManager>
     Dictionary<string, ActionFieldInfo> actionFieldInfoDict = new();
     Dictionary<ActionFieldName, Type> actionFieldMapper = new();
 
+    //
     public void InitializeControllableCharacter(CustomMono p_customMono)
     {
         // CharData t_charData = new(p_customMono);
@@ -80,6 +82,7 @@ public partial class GameManager : MonoSingleton<GameManager>
 
     private void Awake()
     {
+        Instance = this;
         camera = Camera.main;
         foreach (SpawnEnemyInfo spawnEnemyInfo in spawnEnemyInfos)
         {

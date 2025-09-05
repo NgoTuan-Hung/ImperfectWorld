@@ -86,6 +86,8 @@
     <Compile Include="Assets\Game\Script\Ability\DoubleKill.cs" />
     <Compile Include="Assets\Game\Script\UI\Extension\TouchExtension.cs" />
     <Compile Include="Assets\Game\Script\Other\PoolArgument.cs" />
+    <Compile Include="Assets\Game\Script\Other\GameEffectBehaviour\CollideAndDamage.cs" />
+    <Compile Include="Assets\Game\Script\Other\GameEffectBehaviour\BlueHole.cs" />
     <Compile Include="Assets\Game\Script\Game\ActionFieldInfo.cs" />
     <Compile Include="Assets\Game\Script\Game\Testing.cs" />
     <Compile Include="Assets\Game\Script\UI\Revamp\SkillNodeUI.cs" />
@@ -103,7 +105,6 @@
     <Compile Include="Assets\Game\Script\AIBehavior\BaseAIBehavior.cs" />
     <Compile Include="Assets\Game\Script\ActionField\ActionStopWatchField.cs" />
     <Compile Include="Assets\Game\Script\UI\Revamp\EnhancedOnScreenStickEditor.cs" />
-    <Compile Include="Assets\Game\Script\Other\CollideAndDamage.cs" />
     <Compile Include="Assets\CustomPackage\Dotween\Modules\DOTweenModuleSprite.cs" />
     <Compile Include="Assets\Game\Script\UI\Revamp\Test\MenuConfigButton.cs" />
     <Compile Include="Assets\Game\Script\UI\Other\VisualElementExtension.cs" />
@@ -241,12 +242,11 @@
     <Compile Include="Assets\Test\TimelineSerializeTest\BoxCollider2.cs" />
     <Compile Include="Assets\Game\Script\Ability\LightingForward.cs" />
     <Compile Include="Assets\Game\Script\ActionField\ActionVector3Field.cs" />
-    <Compile Include="Assets\Game\Script\Other\InfernalTideFanReceiver.cs" />
+    <Compile Include="Assets\Game\Script\Ability\SovereignFlow.cs" />
     <Compile Include="Assets\Game\Script\Game\FloatStat.cs" />
     <Compile Include="Assets\CustomPackage\Cainos\Pixel Art Top Down - Basic\Script\SpriteColorAnimation.cs" />
     <Compile Include="Assets\Game\Script\Game\GameManager.Prefabs.cs" />
     <Compile Include="Assets\Game\Script\UI\Model\ConfigContentItem.cs" />
-    <Compile Include="Assets\Game\Script\Other\BlueHole.cs" />
     <Compile Include="Assets\CustomPackage\Cainos\Pixel Art Top Down - Basic\Script\LayerTrigger.cs" />
     <Compile Include="Assets\Game\Script\Other\MonoSelfAware.cs" />
     <Compile Include="Assets\Game\Script\UI\UIRenderer\TestVisualElementArc.cs" />
@@ -258,6 +258,7 @@
     <Compile Include="Assets\Test\TimelineSerializeTest\TimelineSerializeSO.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\ObjectSpin.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_PhoneNumberValidator.cs" />
+    <Compile Include="Assets\Game\Script\Other\GameEffectBehaviour\InfernalTideFanReceiver.cs" />
     <Compile Include="Assets\Game\Script\Ability\PhantomPulse.cs" />
     <Compile Include="Assets\Game\Script\Game\BaseAction.cs" />
     <Compile Include="Assets\Game\Script\Other\SkillData.cs" />
@@ -291,8 +292,10 @@
     <Compile Include="Assets\Game\Script\Other\ComboAction.cs" />
     <Compile Include="Assets\Test\TimelineSerializeTest\ColliderCopier.cs" />
     <Compile Include="Assets\Game\Script\Other\PoisonInfo.cs" />
+    <Compile Include="Assets\Game\Script\Other\GameEffectBehaviour\SovereignFlowBehaviour.cs" />
     <Compile Include="Assets\Game\Script\UI\Model\ConfigData.cs" />
     <Compile Include="Assets\Test\PierceStrike\PierceStrikeTest.cs" />
+    <Compile Include="Assets\Game\Script\Ability\RimuruSummonFireball.cs" />
     <Compile Include="Assets\Game\Script\Game\BaseAction.Methods.cs" />
     <Compile Include="Assets\Test\PrefabGetComponentTest\PrefabGetComponentTest1.cs" />
     <Compile Include="Assets\Game\Script\Game\StatusEffect.cs" />

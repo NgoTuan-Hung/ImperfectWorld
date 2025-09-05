@@ -18,6 +18,7 @@ public enum EGameEffectBehaviour
     CollideAndDamage,
     BlueHole,
     InfernalTideFanReceiver,
+    SovereignFlowBehaviour,
 }
 
 public class GameEffect : MonoSelfAware
@@ -230,8 +231,6 @@ public class GameEffect : MonoSelfAware
         t_collideAndDamage.allyTags = p_allyTags;
         t_collideAndDamage.collideDamage = p_damage;
     }
-
-    static void DefaultDealtDamageEvent(float p_damage) { }
 
     public void PlaceAndLookAt(Vector3 p_position, Transform p_transform, float p_delay)
     {

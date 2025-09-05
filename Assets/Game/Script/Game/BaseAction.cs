@@ -88,6 +88,8 @@ public partial class BaseAction : MonoEditor
             || this is GetOverThere
             || this is InfernalTide
             || this is LightingForward
+            || this is SovereignFlow
+            || this is RimuruSummonFireball
         )
         {
             LoadActionFields();

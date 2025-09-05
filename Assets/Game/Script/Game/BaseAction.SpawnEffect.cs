@@ -5,13 +5,7 @@ public partial class BaseAction
 {
     public void SpawnEffectAsChild(Vector2 p_dir, GameEffect p_gameEffect)
     {
-        customMono.rotationAndCenterObject.transform.rotation = Quaternion.Euler(
-            new Vector3(0, 0, Vector2.SignedAngle(Vector2.right, p_dir))
-        );
-        customMono.rotationAndCenterObject.transform.localScale =
-            customMono.rotationAndCenterObject.transform.localScale.WithY(
-                customMono.rotationAndCenterObject.transform.right.x > 0 ? 1 : -1
-            );
+        SetRotationAndCenterObject(p_dir);
 
         p_gameEffect.SetParentAndLocalPosAndRot(
             customMono.rotationAndCenterObject.transform,
