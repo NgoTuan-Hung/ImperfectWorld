@@ -3,20 +3,15 @@ using UnityEngine;
 
 public class MoonSlash : SkillBase
 {
-    int releaseBoolHash;
     ActionWaitInfo actionWaitInfo = new();
 
     public override void Awake()
     {
         base.Awake();
-        cooldown = 5f;
-        currentAmmo = 1;
-        modifiedAngle = 30f.DegToRad();
         boolHash = Animator.StringToHash("Charge");
         audioClip = Resources.Load<AudioClip>("AudioClip/moon-slash");
         actionWaitInfo.releaseBoolHash = Animator.StringToHash("Release");
         actionWaitInfo.requiredWaitTime = 0.3f;
-        manaCost = 13f;
     }
 
     public override void OnEnable()
@@ -29,6 +24,17 @@ public class MoonSlash : SkillBase
     {
         base.Start();
         StatChangeRegister();
+    }
+
+    public override void Config()
+    {
+        base.Config();
+        GetActionField<ActionStopWatchField>(ActionFieldName.StopWatch).value = new();
+        GetActionField<ActionFloatField>(ActionFieldName.Cooldown).value = 5f;
+        GetActionField<ActionIntField>(ActionFieldName.EffectCount).value = 3;
+        GetActionField<ActionFloatField>(ActionFieldName.Angle).value = 30f.DegToRad();
+        GetActionField<ActionFloatField>(ActionFieldName.ManaCost).value = 13f;
+        /* Also use stop watch, ge, damage, direction*/
     }
 
     public override void StatChangeRegister()
@@ -66,7 +72,10 @@ public class MoonSlash : SkillBase
 
     public override ActionResult StartAndWait()
     {
-        if (customMono.stat.currentManaPoint.Value < manaCost)
+        if (
+            customMono.stat.currentManaPoint.Value
+            < GetActionField<ActionFloatField>(ActionFieldName.ManaCost).value
+        )
             return failResult;
         else if (canUse && !customMono.actionBlocking)
         {
@@ -77,7 +86,9 @@ public class MoonSlash : SkillBase
             actionWaitInfo.stillWaiting = true;
             StartCoroutine(actionIE = WaitingCoroutine());
             customMono.currentAction = this;
-            customMono.stat.currentManaPoint.Value -= manaCost;
+            customMono.stat.currentManaPoint.Value -= GetActionField<ActionFloatField>(
+                ActionFieldName.ManaCost
+            ).value;
             return successResult;
         }
 
@@ -86,59 +97,85 @@ public class MoonSlash : SkillBase
 
     IEnumerator WaitingCoroutine()
     {
-        stopwatch.Restart();
+        GetActionField<ActionStopWatchField>(ActionFieldName.StopWatch).value.Restart();
         while (actionWaitInfo.stillWaiting)
             yield return new WaitForSeconds(Time.fixedDeltaTime);
 
-        stopwatch.Stop();
-        if (stopwatch.Elapsed.TotalSeconds >= actionWaitInfo.requiredWaitTime)
+        GetActionField<ActionStopWatchField>(ActionFieldName.StopWatch).value.Stop();
+        if (
+            GetActionField<ActionStopWatchField>(
+                ActionFieldName.StopWatch
+            ).value.Elapsed.TotalSeconds >= actionWaitInfo.requiredWaitTime
+        )
         {
             ToggleAnim(actionWaitInfo.releaseBoolHash, true);
             ToggleAnim(boolHash, false);
             customMono.audioSource.PlayOneShot(audioClip);
             StartCoroutine(CooldownCoroutine());
 
-            Vector2 moonSlashDirection;
-            for (int i = 0; i < currentAmmo; i++)
+            for (
+                int i = 0;
+                i < GetActionField<ActionIntField>(ActionFieldName.EffectCount).value;
+                i++
+            )
             {
-                GameEffect t_moonSlashGameEffect = GameManager
-                    .Instance.moonSlashPool.PickOne()
-                    .gameEffect;
-                var t_collideAndDamage =
-                    t_moonSlashGameEffect.GetBehaviour(EGameEffectBehaviour.CollideAndDamage)
-                    as CollideAndDamage;
-                t_collideAndDamage.allyTags = customMono.allyTags;
-                t_collideAndDamage.collideDamage = damage;
+                GetActionField<ActionGameEffectField>(ActionFieldName.GameEffect).value =
+                    GameManager.Instance.moonSlashPool.PickOneGameEffect();
+                GetActionField<ActionGameEffectField>(ActionFieldName.GameEffect)
+                    .value.SetUpCollideAndDamage(
+                        customMono.allyTags,
+                        GetActionField<ActionFloatField>(ActionFieldName.Damage).value
+                    );
+
                 if (i % 2 == 1)
                 {
-                    moonSlashDirection = actionWaitInfo.finalDirection.RotateZ(
-                        (i + 1) / 2 * modifiedAngle
-                    );
-                    t_moonSlashGameEffect.transform.SetPositionAndRotation(
-                        customMono.firePoint.transform.position,
-                        Quaternion.Euler(
-                            0,
-                            0,
-                            Vector2.SignedAngle(Vector2.right, moonSlashDirection)
-                        )
-                    );
+                    GetActionField<ActionVector3Field>(ActionFieldName.Direction).value =
+                        actionWaitInfo.finalDirection.RotateZ(
+                            (i + 1)
+                                / 2
+                                * GetActionField<ActionFloatField>(ActionFieldName.Angle).value
+                        );
+                    GetActionField<ActionGameEffectField>(ActionFieldName.GameEffect)
+                        .value.transform.SetPositionAndRotation(
+                            customMono.firePoint.transform.position,
+                            Quaternion.Euler(
+                                0,
+                                0,
+                                Vector2.SignedAngle(
+                                    Vector2.right,
+                                    GetActionField<ActionVector3Field>(
+                                        ActionFieldName.Direction
+                                    ).value
+                                )
+                            )
+                        );
                 }
                 else
                 {
-                    moonSlashDirection = actionWaitInfo.finalDirection.RotateZ(
-                        -i / 2 * modifiedAngle
-                    );
-                    t_moonSlashGameEffect.transform.SetPositionAndRotation(
-                        customMono.firePoint.transform.position,
-                        Quaternion.Euler(
-                            0,
-                            0,
-                            Vector2.SignedAngle(Vector2.right, moonSlashDirection)
-                        )
-                    );
+                    GetActionField<ActionVector3Field>(ActionFieldName.Direction).value =
+                        actionWaitInfo.finalDirection.RotateZ(
+                            -i / 2 * GetActionField<ActionFloatField>(ActionFieldName.Angle).value
+                        );
+                    GetActionField<ActionGameEffectField>(ActionFieldName.GameEffect)
+                        .value.transform.SetPositionAndRotation(
+                            customMono.firePoint.transform.position,
+                            Quaternion.Euler(
+                                0,
+                                0,
+                                Vector2.SignedAngle(
+                                    Vector2.right,
+                                    GetActionField<ActionVector3Field>(
+                                        ActionFieldName.Direction
+                                    ).value
+                                )
+                            )
+                        );
                 }
 
-                t_moonSlashGameEffect.KeepFlyingAt(moonSlashDirection);
+                GetActionField<ActionGameEffectField>(ActionFieldName.GameEffect)
+                    .value.KeepFlyingAt(
+                        GetActionField<ActionVector3Field>(ActionFieldName.Direction).value
+                    );
             }
 
             while (!customMono.animationEventFunctionCaller.endRelease)
@@ -188,7 +225,7 @@ public class MoonSlash : SkillBase
         ToggleAnim(actionWaitInfo.releaseBoolHash, false);
         StopCoroutine(actionIE);
         actionWaitInfo.stillWaiting = false;
-        stopwatch.Stop();
+        GetActionField<ActionStopWatchField>(ActionFieldName.StopWatch).value.Stop();
         customMono.animationEventFunctionCaller.endRelease = false;
     }
 }

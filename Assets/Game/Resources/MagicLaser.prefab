@@ -49,7 +49,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: 9064b50f57c4e2a4998b3ccbed1a0190, type: 3}
+  m_audioClip: {fileID: 0}
   m_Resource: {fileID: 8300000, guid: 9064b50f57c4e2a4998b3ccbed1a0190, type: 3}
   m_PlayOnAwake: 1
   m_Volume: 1
@@ -155,8 +155,6 @@ PlayableDirector:
     value: {fileID: 8545997470628268970}
   - key: {fileID: 4268156306391106762, guid: 6f4520e003cde3142af1e6b6085cd22b, type: 2}
     value: {fileID: 2701625321469141095}
-  - key: {fileID: -5508859073478870663, guid: 6f4520e003cde3142af1e6b6085cd22b, type: 2}
-    value: {fileID: 0}
   m_ExposedReferences:
     m_References: []
 --- !u!95 &8545997470628268970
@@ -338,7 +336,7 @@ Transform:
   m_GameObject: {fileID: 8505452889549373243}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 4.1500015, y: 0, z: 0}
+  m_LocalPosition: {x: -2.21, y: -0.06, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -364,6 +362,8 @@ SpriteRenderer:
   m_RayTracingAccelStructBuildFlagsOverride: 0
   m_RayTracingAccelStructBuildFlags: 1
   m_SmallMeshCulling: 1
+  m_ForceMeshLod: -1
+  m_MeshLodSelectionBias: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -385,15 +385,16 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
+  m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 1774004605
   m_SortingLayer: 1
-  m_SortingOrder: 1
+  m_SortingOrder: 3
   m_Sprite: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 5.234375, y: 5.125}
+  m_Size: {x: 7.984375, y: 6.765625}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 0
@@ -501,7 +502,7 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0, y: 0.027793407}
+  m_Offset: {x: 0.23450089, y: 0.25798166}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -511,5 +512,5 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 1, y: 1.0555868}
+  m_Size: {x: 1.7392807, y: 0.5952103}
   m_EdgeRadius: 0

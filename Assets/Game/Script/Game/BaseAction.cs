@@ -90,6 +90,10 @@ public partial class BaseAction : MonoEditor
             || this is LightingForward
             || this is SovereignFlow
             || this is RimuruSummonFireball
+            || this is RimuruSummonLightingWolf
+            || this is MagicLaserSkill
+            || this is MoonSlash
+            || this is NuclearBomb
         )
         {
             LoadActionFields();

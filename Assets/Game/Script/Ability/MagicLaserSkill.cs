@@ -6,10 +6,7 @@ public class MagicLaserSkill : SkillBase
     public override void Awake()
     {
         base.Awake();
-        cooldown = 10f;
-        damage = defaultDamage = 1f;
         successResult = new(true, ActionResultType.Cooldown, cooldown);
-        manaCost = 20f;
     }
 
     public override void OnEnable()
@@ -23,9 +20,24 @@ public class MagicLaserSkill : SkillBase
         StatChangeRegister();
     }
 
+    public override void Config()
+    {
+        GetActionField<ActionFloatField>(ActionFieldName.Cooldown).value = 10f;
+        GetActionField<ActionFloatField>(ActionFieldName.ManaCost).value = 20f;
+        /* Also use damage and gaemeeffect */
+    }
+
     public override void StatChangeRegister()
     {
         base.StatChangeRegister();
+        customMono.stat.wisdom.finalValueChangeEvent += RecalculateStat;
+    }
+
+    public override void RecalculateStat()
+    {
+        base.RecalculateStat();
+        GetActionField<ActionFloatField>(ActionFieldName.Damage).value =
+            customMono.stat.wisdom.FinalValue * 0.2f;
     }
 
     public override void AddActionManuals()
@@ -44,55 +56,59 @@ public class MagicLaserSkill : SkillBase
         );
     }
 
-    public override ActionResult Trigger(Vector2 location = default, Vector2 direction = default)
+    public override ActionResult Trigger(
+        Vector2 p_location = default,
+        Vector2 p_direction = default
+    )
     {
-        if (customMono.stat.currentManaPoint.Value < manaCost)
+        if (
+            customMono.stat.currentManaPoint.Value
+            < GetActionField<ActionFloatField>(ActionFieldName.ManaCost).value
+        )
             return failResult;
         else if (canUse && !customMono.actionBlocking)
         {
             canUse = false;
             customMono.actionBlocking = true;
+            customMono.statusEffect.Slow(customMono.stat.actionSlowModifier);
             ToggleAnim(GameManager.Instance.mainSkill1BoolHash, true);
-            StartCoroutine(actionIE = TriggerCoroutine(location, direction));
+            StartCoroutine(actionIE = TriggerCoroutine(p_location, p_direction));
             StartCoroutine(CooldownCoroutine());
             customMono.currentAction = this;
-            customMono.stat.currentManaPoint.Value -= manaCost;
+            customMono.stat.currentManaPoint.Value -= GetActionField<ActionFloatField>(
+                ActionFieldName.ManaCost
+            ).value;
             return successResult;
         }
 
         return failResult;
     }
 
-    IEnumerator TriggerCoroutine(Vector2 location = default, Vector2 direction = default)
+    IEnumerator TriggerCoroutine(Vector2 p_location = default, Vector2 p_direction = default)
     {
         while (!customMono.animationEventFunctionCaller.mainSkill1AS.signal)
             yield return new WaitForSeconds(Time.fixedDeltaTime);
 
         customMono.animationEventFunctionCaller.mainSkill1AS.signal = false;
-        bool t_animatorLocalScale = customMono.AnimatorWrapper.animator.transform.localScale.x > 0;
 
-        CollideAndDamage gameEffect =
-            GameManager
-                .Instance.magicLaserPool.PickOne()
-                .gameEffect.GetBehaviour(EGameEffectBehaviour.CollideAndDamage) as CollideAndDamage;
-        gameEffect.allyTags = customMono.allyTags;
-        gameEffect.collideDamage = damage;
-
-        if (t_animatorLocalScale)
-            gameEffect.transform.SetPositionAndRotation(
-                location - new Vector2(6, 0),
-                Quaternion.Euler(0, 0, 0)
+        GetActionField<ActionGameEffectField>(ActionFieldName.GameEffect).value =
+            GameManager.Instance.magicLaserPool.PickOneGameEffect();
+        GetActionField<ActionGameEffectField>(ActionFieldName.GameEffect)
+            .value.SetUpCollideAndDamage(
+                customMono.allyTags,
+                GetActionField<ActionFloatField>(ActionFieldName.Damage).value
             );
-        else
-            gameEffect.transform.SetPositionAndRotation(
-                location + new Vector2(6, 0),
-                Quaternion.Euler(0, 180, 0)
-            );
-
-        while (!customMono.animationEventFunctionCaller.mainSkill1AS.end)
-            yield return new WaitForSeconds(Time.fixedDeltaTime);
+        GetActionField<ActionGameEffectField>(ActionFieldName.GameEffect).value.transform.position =
+            p_location;
+        GetActionField<ActionGameEffectField>(
+            ActionFieldName.GameEffect
+        ).value.transform.localScale = GetActionField<ActionGameEffectField>(
+            ActionFieldName.GameEffect
+        )
+            .value.transform.localScale.WithX(customMono.GetDirection().x > 0 ? 1 : -1);
 
         customMono.actionBlocking = false;
+        customMono.statusEffect.RemoveSlow(customMono.stat.actionSlowModifier);
         customMono.animationEventFunctionCaller.mainSkill1AS.end = false;
         ToggleAnim(GameManager.Instance.mainSkill1BoolHash, false);
         customMono.currentAction = null;
@@ -106,7 +122,7 @@ public class MagicLaserSkill : SkillBase
     IEnumerator FireAtCoroutine(Vector2 location, float duration)
     {
         customMono.actionInterval = true;
-        Trigger(location: location);
+        Trigger(p_location: location);
         yield return new WaitForSeconds(duration);
 
         customMono.actionInterval = false;
@@ -116,6 +132,7 @@ public class MagicLaserSkill : SkillBase
     {
         base.ActionInterrupt();
         customMono.actionBlocking = false;
+        customMono.statusEffect.RemoveSlow(customMono.stat.actionSlowModifier);
         ToggleAnim(GameManager.Instance.mainSkill1BoolHash, false);
         StopCoroutine(actionIE);
         customMono.animationEventFunctionCaller.mainSkill1AS.signal = false;

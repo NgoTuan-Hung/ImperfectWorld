@@ -73,7 +73,10 @@ public partial class GameManager
         rimuruCombo2SlashA,
         rimuruCombo2SlashB,
         sovereignFlowEffect,
-        rimuruFireBall;
+        rimuruFireBall,
+        rimuruFireBallImpact,
+        rimuruLightingWolf,
+        rimuruLightingWolfSummonCircle;
 
     List<string> prefabNames = new()
     {
@@ -146,6 +149,9 @@ public partial class GameManager
         "rimuruCombo2SlashB",
         "sovereignFlowEffect",
         "rimuruFireBall",
+        "rimuruFireBallImpact",
+        "rimuruLightingWolf",
+        "rimuruLightingWolfSummonCircle",
     };
 
     void LoadGameEffectPrefabs()

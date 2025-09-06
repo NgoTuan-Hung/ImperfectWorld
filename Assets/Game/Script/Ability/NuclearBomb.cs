@@ -6,9 +6,7 @@ public class NuclearBomb : SkillBase
     public override void Awake()
     {
         base.Awake();
-        cooldown = 5f;
         successResult = new(true, ActionResultType.Cooldown, cooldown);
-        manaCost = 30f;
     }
 
     public override void OnEnable()
@@ -38,6 +36,12 @@ public class NuclearBomb : SkillBase
         StatChangeRegister();
     }
 
+    public override void Config()
+    {
+        GetActionField<ActionFloatField>(ActionFieldName.Cooldown).value = 5f;
+        GetActionField<ActionFloatField>(ActionFieldName.ManaCost).value = 30f;
+    }
+
     public override void StatChangeRegister()
     {
         base.StatChangeRegister();
@@ -47,7 +51,8 @@ public class NuclearBomb : SkillBase
     public override void RecalculateStat()
     {
         base.RecalculateStat();
-        damage = customMono.stat.wisdom.FinalValue * 4.25f;
+        GetActionField<ActionFloatField>(ActionFieldName.Damage).value =
+            customMono.stat.wisdom.FinalValue * 4.25f;
     }
 
     public override void WhileWaiting(Vector2 p_location = default, Vector2 p_direction = default)
@@ -57,7 +62,10 @@ public class NuclearBomb : SkillBase
 
     public override ActionResult Trigger(Vector2 location = default, Vector2 direction = default)
     {
-        if (customMono.stat.currentManaPoint.Value < manaCost)
+        if (
+            customMono.stat.currentManaPoint.Value
+            < GetActionField<ActionFloatField>(ActionFieldName.ManaCost).value
+        )
             return failResult;
         else if (canUse && !customMono.actionBlocking)
         {
@@ -68,7 +76,9 @@ public class NuclearBomb : SkillBase
             StartCoroutine(actionIE = WaitSpawnExplosion(location));
             StartCoroutine(CooldownCoroutine());
             customMono.currentAction = this;
-            customMono.stat.currentManaPoint.Value -= manaCost;
+            customMono.stat.currentManaPoint.Value -= GetActionField<ActionFloatField>(
+                ActionFieldName.ManaCost
+            ).value;
             return successResult;
         }
 
@@ -81,13 +91,12 @@ public class NuclearBomb : SkillBase
             yield return new WaitForSeconds(Time.fixedDeltaTime);
 
         customMono.animationEventFunctionCaller.mainSkill3Signal = false;
-        CollideAndDamage t_nuclearBomb =
-            GameManager
-                .Instance.nuclearBombExplosionPool.PickOne()
-                .gameEffect.GetBehaviour(EGameEffectBehaviour.CollideAndDamage) as CollideAndDamage;
-        t_nuclearBomb.allyTags = customMono.allyTags;
-        t_nuclearBomb.collideDamage = damage;
-        t_nuclearBomb.transform.position = p_location;
+
+        SpawnNormalEffect(
+            GameManager.Instance.nuclearBombExplosionPool.PickOneGameEffect(),
+            p_location,
+            p_isCombat: true
+        );
 
         while (!customMono.animationEventFunctionCaller.endMainSkill3)
             yield return new WaitForSeconds(Time.fixedDeltaTime);
