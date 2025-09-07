@@ -24,6 +24,8 @@ public static class VectorExtension
         return new Vector2(x, vector2.y);
     }
 
+    public static Vector2 AsVector2(this Vector3 vector3) => (Vector2)vector3;
+
     public static Vector3 WithY(this Vector3 vector3, float y)
     {
         return new Vector3(vector3.x, y, vector3.z);

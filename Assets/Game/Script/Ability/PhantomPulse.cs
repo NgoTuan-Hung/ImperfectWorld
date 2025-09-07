@@ -3,20 +3,10 @@ using UnityEngine;
 
 public class PhantomPulse : SkillBase
 {
-    Vector3 enemyDirection;
-    CustomMono targetEnemy;
-
     public override void Awake()
     {
         base.Awake();
-        cooldown = 2.5f;
-        /* In this skill, this will be the number of animation we will play,
-        we want to reuse as many fields as possible */
-        maxAmmo = 9;
-        /* In this skill, this will be the portion each variation hold in blend tree. */
-        modifiedAngle = 1f / (maxAmmo - 1);
         successResult = new(true, ActionResultType.Cooldown, cooldown);
-        manaCost = 10f;
     }
 
     public override void OnEnable()
@@ -46,6 +36,19 @@ public class PhantomPulse : SkillBase
         StatChangeRegister();
     }
 
+    public override void Config()
+    {
+        GetActionField<ActionFloatField>(ActionFieldName.Cooldown).value = 2.5f;
+        /* In this skill, this will be the number of animation we will play,
+        we want to reuse as many fields as possible */
+        GetActionField<ActionIntField>(ActionFieldName.Variants).value = 9;
+        /* In this skill, this will be the portion each variation hold in blend tree. */
+        GetActionField<ActionFloatField>(ActionFieldName.Blend).value =
+            1f / (GetActionField<ActionIntField>(ActionFieldName.Variants).value - 1);
+        GetActionField<ActionFloatField>(ActionFieldName.ManaCost).value = 10f;
+        /* Also use damage, target, selectedVariant, gameeffect, direction */
+    }
+
     public override void StatChangeRegister()
     {
         base.StatChangeRegister();
@@ -55,7 +58,8 @@ public class PhantomPulse : SkillBase
     public override void RecalculateStat()
     {
         base.RecalculateStat();
-        damage = customMono.stat.might.FinalValue * 1.5f;
+        GetActionField<ActionFloatField>(ActionFieldName.Damage).value =
+            customMono.stat.might.FinalValue * 1.5f;
     }
 
     public override void WhileWaiting(Vector2 p_location = default, Vector2 p_direction = default)
@@ -65,7 +69,10 @@ public class PhantomPulse : SkillBase
 
     public override ActionResult Trigger(Vector2 location = default, Vector2 direction = default)
     {
-        if (customMono.stat.currentManaPoint.Value < manaCost)
+        if (
+            customMono.stat.currentManaPoint.Value
+            < GetActionField<ActionFloatField>(ActionFieldName.ManaCost).value
+        )
             return failResult;
         else if (canUse && !customMono.actionBlocking)
         {
@@ -76,7 +83,9 @@ public class PhantomPulse : SkillBase
             StartCoroutine(actionIE = TriggerIE(direction));
             StartCoroutine(CooldownCoroutine());
             customMono.currentAction = this;
-            customMono.stat.currentManaPoint.Value -= manaCost;
+            customMono.stat.currentManaPoint.Value -= GetActionField<ActionFloatField>(
+                ActionFieldName.ManaCost
+            ).value;
 
             return successResult;
         }
@@ -103,87 +112,124 @@ public class PhantomPulse : SkillBase
         else
         {
             #region Skill variant
-            /* In this skill, this will be the selected skill variation */
-            targetEnemy = customMono.botSensor.currentNearestEnemy;
-            currentAmmo = Random.Range(1, maxAmmo);
-            SetBlend(GameManager.Instance.mainSkill2BlendHash, modifiedAngle * currentAmmo);
+            GetActionField<ActionCustomMonoField>(ActionFieldName.Target).value = customMono
+                .botSensor
+                .currentNearestEnemy;
+            GetActionField<ActionIntField>(ActionFieldName.SeletecdVariant).value = Random.Range(
+                1,
+                GetActionField<ActionIntField>(ActionFieldName.Variants).value
+            );
+            SetBlend(
+                GameManager.Instance.mainSkill2BlendHash,
+                GetActionField<ActionFloatField>(ActionFieldName.Blend).value
+                    * GetActionField<ActionIntField>(ActionFieldName.SeletecdVariant).value
+            );
             transform.position =
-                targetEnemy.transform.position + new Vector3(Random.Range(-1, 1), 0, 0);
+                GetActionField<ActionCustomMonoField>(
+                    ActionFieldName.Target
+                ).value.transform.position + new Vector3(Random.Range(-1, 1), 0, 0);
 
             while (!customMono.animationEventFunctionCaller.mainSkill2Signal)
                 yield return new WaitForSeconds(Time.fixedDeltaTime);
 
             customMono.animationEventFunctionCaller.mainSkill2Signal = false;
-            switch (currentAmmo)
+            switch (GetActionField<ActionIntField>(ActionFieldName.SeletecdVariant).value)
             {
                 case 1: // fire down
                 {
-                    GameEffect t_shockwave = GameManager
-                        .Instance.strongDudeShockwavePool.PickOne()
-                        .gameEffect;
+                    GetActionField<ActionGameEffectField>(ActionFieldName.GameEffect).value =
+                        GameManager.Instance.strongDudeShockwavePool.PickOne().gameEffect;
 
                     var t_collideAndDamage = (CollideAndDamage)
-                        t_shockwave.GetBehaviour(EGameEffectBehaviour.CollideAndDamage);
+                        GetActionField<ActionGameEffectField>(ActionFieldName.GameEffect)
+                            .value.GetBehaviour(EGameEffectBehaviour.CollideAndDamage);
                     t_collideAndDamage.allyTags = customMono.allyTags;
-                    t_collideAndDamage.collideDamage = damage * 0.5f;
+                    t_collideAndDamage.collideDamage =
+                        GetActionField<ActionFloatField>(ActionFieldName.Damage).value * 0.5f;
+                    t_collideAndDamage.pushEnemyOnCollideForce = 20;
                     t_collideAndDamage.pushDirection =
-                        targetEnemy.rotationAndCenterObject.transform.position
+                        GetActionField<ActionCustomMonoField>(
+                            ActionFieldName.Target
+                        ).value.rotationAndCenterObject.transform.position
                         - customMono.rotationAndCenterObject.transform.position;
-                    t_shockwave.transform.parent = customMono.rotationAndCenterObject.transform;
-                    t_shockwave.transform.localPosition = Vector3.zero;
+                    GetActionField<ActionGameEffectField>(
+                        ActionFieldName.GameEffect
+                    ).value.transform.parent = customMono.rotationAndCenterObject.transform;
+                    GetActionField<ActionGameEffectField>(
+                        ActionFieldName.GameEffect
+                    ).value.transform.localPosition = Vector3.zero;
 
                     break;
                 }
                 case 2: // fire punch
                 {
-                    enemyDirection =
-                        targetEnemy.rotationAndCenterObject.transform.position
+                    GetActionField<ActionVector3Field>(ActionFieldName.Direction).value =
+                        GetActionField<ActionCustomMonoField>(
+                            ActionFieldName.Target
+                        ).value.rotationAndCenterObject.transform.position
                         - customMono.rotationAndCenterObject.transform.position;
+
                     customMono.SetUpdateDirectionIndicator(
-                        enemyDirection,
+                        GetActionField<ActionVector3Field>(ActionFieldName.Direction).value,
                         UpdateDirectionIndicatorPriority.Low
                     );
-                    GameEffect t_knockUpCollider = GameManager
-                        .Instance.knockUpColliderPool.PickOne()
-                        .gameEffect;
+                    GetActionField<ActionGameEffectField>(ActionFieldName.GameEffect).value =
+                        GameManager.Instance.knockUpColliderPool.PickOne().gameEffect;
 
                     var t_collideAndDamage = (CollideAndDamage)
-                        t_knockUpCollider.GetBehaviour(EGameEffectBehaviour.CollideAndDamage);
+                        GetActionField<ActionGameEffectField>(ActionFieldName.GameEffect)
+                            .value.GetBehaviour(EGameEffectBehaviour.CollideAndDamage);
+
                     t_collideAndDamage.allyTags = customMono.allyTags;
-                    t_collideAndDamage.collideDamage = damage * 0.5f;
-                    t_knockUpCollider.transform.position = customMono.firePoint.transform.position;
-                    t_knockUpCollider.rigidbody2D.AddForce(
-                        enemyDirection.normalized * 5f,
-                        ForceMode2D.Impulse
-                    );
+                    t_collideAndDamage.collideDamage =
+                        GetActionField<ActionFloatField>(ActionFieldName.Damage).value * 0.5f;
+                    t_collideAndDamage.pushEnemyOnCollideForce = 20;
+                    GetActionField<ActionGameEffectField>(
+                        ActionFieldName.GameEffect
+                    ).value.transform.position = customMono.firePoint.transform.position;
+                    GetActionField<ActionGameEffectField>(ActionFieldName.GameEffect)
+                        .value.rigidbody2D.AddForce(
+                            GetActionField<ActionVector3Field>(
+                                ActionFieldName.Direction
+                            ).value.normalized * 5f,
+                            ForceMode2D.Impulse
+                        );
                     break;
                 }
                 case 3: // forward kick
                 {
-                    enemyDirection =
-                        targetEnemy.rotationAndCenterObject.transform.position
+                    GetActionField<ActionVector3Field>(ActionFieldName.Direction).value =
+                        GetActionField<ActionCustomMonoField>(
+                            ActionFieldName.Target
+                        ).value.rotationAndCenterObject.transform.position
                         - customMono.rotationAndCenterObject.transform.position;
                     customMono.SetUpdateDirectionIndicator(
-                        enemyDirection,
+                        GetActionField<ActionVector3Field>(ActionFieldName.Direction).value,
                         UpdateDirectionIndicatorPriority.Low
                     );
-                    GameEffect t_pushRandomCollider = GameManager
-                        .Instance.pushColliderPool.PickOne()
-                        .gameEffect;
+                    GetActionField<ActionGameEffectField>(ActionFieldName.GameEffect).value =
+                        GameManager.Instance.pushColliderPool.PickOne().gameEffect;
 
                     var t_collideAndDamage = (CollideAndDamage)
-                        t_pushRandomCollider.GetBehaviour(EGameEffectBehaviour.CollideAndDamage);
+                        GetActionField<ActionGameEffectField>(ActionFieldName.GameEffect)
+                            .value.GetBehaviour(EGameEffectBehaviour.CollideAndDamage);
                     t_collideAndDamage.allyTags = customMono.allyTags;
-                    t_collideAndDamage.collideDamage = damage * 0.5f;
-                    t_collideAndDamage.pushDirection = enemyDirection;
-                    t_pushRandomCollider.transform.position = customMono
-                        .firePoint
-                        .transform
-                        .position;
-                    t_pushRandomCollider.rigidbody2D.AddForce(
-                        enemyDirection.normalized * 5f,
-                        ForceMode2D.Impulse
-                    );
+                    t_collideAndDamage.collideDamage =
+                        GetActionField<ActionFloatField>(ActionFieldName.Damage).value * 0.5f;
+                    t_collideAndDamage.pushEnemyOnCollideForce = 20;
+                    t_collideAndDamage.pushDirection = GetActionField<ActionVector3Field>(
+                        ActionFieldName.Direction
+                    ).value;
+                    GetActionField<ActionGameEffectField>(
+                        ActionFieldName.GameEffect
+                    ).value.transform.position = customMono.firePoint.transform.position;
+                    GetActionField<ActionGameEffectField>(ActionFieldName.GameEffect)
+                        .value.rigidbody2D.AddForce(
+                            GetActionField<ActionVector3Field>(
+                                ActionFieldName.Direction
+                            ).value.normalized * 5f,
+                            ForceMode2D.Impulse
+                        );
                     break;
                 }
                 case 4: // Kame
@@ -195,61 +241,74 @@ public class PhantomPulse : SkillBase
                 }
                 case 7: // punch down
                 {
-                    enemyDirection =
-                        targetEnemy.rotationAndCenterObject.transform.position
+                    GetActionField<ActionVector3Field>(ActionFieldName.Direction).value =
+                        GetActionField<ActionCustomMonoField>(
+                            ActionFieldName.Target
+                        ).value.rotationAndCenterObject.transform.position
                         - customMono.rotationAndCenterObject.transform.position;
                     customMono.SetUpdateDirectionIndicator(
-                        enemyDirection,
+                        GetActionField<ActionVector3Field>(ActionFieldName.Direction).value,
                         UpdateDirectionIndicatorPriority.Low
                     );
-                    GameEffect t_pushRandomCollider = GameManager
-                        .Instance.pushColliderPool.PickOne()
-                        .gameEffect;
+                    GetActionField<ActionGameEffectField>(ActionFieldName.GameEffect).value =
+                        GameManager.Instance.pushColliderPool.PickOne().gameEffect;
 
                     var t_collideAndDamage = (CollideAndDamage)
-                        t_pushRandomCollider.GetBehaviour(EGameEffectBehaviour.CollideAndDamage);
+                        GetActionField<ActionGameEffectField>(ActionFieldName.GameEffect)
+                            .value.GetBehaviour(EGameEffectBehaviour.CollideAndDamage);
                     t_collideAndDamage.allyTags = customMono.allyTags;
-                    t_collideAndDamage.collideDamage = damage * 0.5f;
+                    t_collideAndDamage.collideDamage =
+                        GetActionField<ActionFloatField>(ActionFieldName.Damage).value * 0.5f;
+                    t_collideAndDamage.pushEnemyOnCollideForce = 20;
                     t_collideAndDamage.pushDirection = Vector2.down;
-                    t_pushRandomCollider.transform.position = customMono
-                        .firePoint
-                        .transform
-                        .position;
-                    t_pushRandomCollider.rigidbody2D.AddForce(
-                        enemyDirection.normalized * 5f,
-                        ForceMode2D.Impulse
-                    );
+                    GetActionField<ActionGameEffectField>(
+                        ActionFieldName.GameEffect
+                    ).value.transform.position = customMono.firePoint.transform.position;
+                    GetActionField<ActionGameEffectField>(ActionFieldName.GameEffect)
+                        .value.rigidbody2D.AddForce(
+                            GetActionField<ActionVector3Field>(
+                                ActionFieldName.Direction
+                            ).value.normalized * 5f,
+                            ForceMode2D.Impulse
+                        );
                     break;
                 }
                 case 8: // swipe right
                 {
-                    enemyDirection =
-                        targetEnemy.rotationAndCenterObject.transform.position
+                    GetActionField<ActionVector3Field>(ActionFieldName.Direction).value =
+                        GetActionField<ActionCustomMonoField>(
+                            ActionFieldName.Target
+                        ).value.rotationAndCenterObject.transform.position
                         - customMono.rotationAndCenterObject.transform.position;
                     customMono.SetUpdateDirectionIndicator(
-                        enemyDirection,
+                        GetActionField<ActionVector3Field>(ActionFieldName.Direction).value,
                         UpdateDirectionIndicatorPriority.Low
                     );
-                    GameEffect t_stunCollider = GameManager
-                        .Instance.stunColliderPool.PickOne()
-                        .gameEffect;
+                    GetActionField<ActionGameEffectField>(ActionFieldName.GameEffect).value =
+                        GameManager.Instance.stunColliderPool.PickOne().gameEffect;
 
                     var t_collideAndDamage = (CollideAndDamage)
-                        t_stunCollider.GetBehaviour(EGameEffectBehaviour.CollideAndDamage);
+                        GetActionField<ActionGameEffectField>(ActionFieldName.GameEffect)
+                            .value.GetBehaviour(EGameEffectBehaviour.CollideAndDamage);
                     t_collideAndDamage.allyTags = customMono.allyTags;
-                    t_collideAndDamage.collideDamage = damage * 0.5f;
-                    t_stunCollider.transform.position = customMono.firePoint.transform.position;
-                    t_stunCollider.rigidbody2D.AddForce(
-                        enemyDirection.normalized * 5f,
-                        ForceMode2D.Impulse
-                    );
+                    t_collideAndDamage.collideDamage =
+                        GetActionField<ActionFloatField>(ActionFieldName.Damage).value * 0.5f;
+                    t_collideAndDamage.stunDuration = 0.5f;
+                    GetActionField<ActionGameEffectField>(
+                        ActionFieldName.GameEffect
+                    ).value.transform.position = customMono.firePoint.transform.position;
+                    GetActionField<ActionGameEffectField>(ActionFieldName.GameEffect)
+                        .value.rigidbody2D.AddForce(
+                            GetActionField<ActionVector3Field>(
+                                ActionFieldName.Direction
+                            ).value.normalized * 5f,
+                            ForceMode2D.Impulse
+                        );
                     break;
                 }
                 default:
                     break;
             }
-            #endregion
-            #region End Skill variant
             #endregion
         }
 
@@ -265,27 +324,40 @@ public class PhantomPulse : SkillBase
 
     IEnumerator FireDragon()
     {
-        GameEffect t_phantomPulseDragon;
         CollideAndDamage t_collideAndDamage;
 
-        enemyDirection =
-            targetEnemy.rotationAndCenterObject.transform.position
+        GetActionField<ActionVector3Field>(ActionFieldName.Direction).value =
+            GetActionField<ActionCustomMonoField>(
+                ActionFieldName.Target
+            ).value.rotationAndCenterObject.transform.position
             - customMono.rotationAndCenterObject.transform.position;
         customMono.SetUpdateDirectionIndicator(
-            enemyDirection,
+            GetActionField<ActionVector3Field>(ActionFieldName.Direction).value,
             UpdateDirectionIndicatorPriority.Low
         );
 
         for (int i = 0; i < 2; i++)
         {
-            t_phantomPulseDragon = GameManager.Instance.phantomPulseDragonPool.PickOne().gameEffect;
+            GetActionField<ActionGameEffectField>(ActionFieldName.GameEffect).value = GameManager
+                .Instance.phantomPulseDragonPool.PickOne()
+                .gameEffect;
 
             t_collideAndDamage = (CollideAndDamage)
-                t_phantomPulseDragon.GetBehaviour(EGameEffectBehaviour.CollideAndDamage);
+                GetActionField<ActionGameEffectField>(ActionFieldName.GameEffect)
+                    .value.GetBehaviour(EGameEffectBehaviour.CollideAndDamage);
             t_collideAndDamage.allyTags = customMono.allyTags;
-            t_collideAndDamage.collideDamage = damage;
-            t_phantomPulseDragon.transform.position = customMono.firePoint.transform.position;
-            t_phantomPulseDragon.KeepFlyingAt(enemyDirection, true, EasingType.OutQuint);
+            t_collideAndDamage.collideDamage = GetActionField<ActionFloatField>(
+                ActionFieldName.Damage
+            ).value;
+            GetActionField<ActionGameEffectField>(
+                ActionFieldName.GameEffect
+            ).value.transform.position = customMono.firePoint.transform.position;
+            GetActionField<ActionGameEffectField>(ActionFieldName.GameEffect)
+                .value.KeepFlyingAt(
+                    GetActionField<ActionVector3Field>(ActionFieldName.Direction).value,
+                    true,
+                    EasingType.OutQuint
+                );
 
             yield return new WaitForSeconds(0.2f);
         }

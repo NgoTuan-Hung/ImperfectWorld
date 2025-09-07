@@ -154,6 +154,7 @@ public partial class GameManager : MonoBehaviour
                     ActionFieldName.ComboActions => typeof(ActionListComboActionField),
                     ActionFieldName.ComboEndAction => typeof(ActionActionField),
                     ActionFieldName.Distance => typeof(ActionFloatField),
+                    ActionFieldName.SeletecdVariant => typeof(ActionIntField),
                     _ => null,
                 }
             );

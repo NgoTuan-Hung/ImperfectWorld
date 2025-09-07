@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: KnockUpColliderSO
   m_EditorClassIdentifier: 
   isDeactivateAfterTime: 1
-  deactivateTime: 0.2
+  deactivateTime: 0.5
   isTimeline: 0
   randomRotation: 0
   flyAtSpeed: 0.2
@@ -53,13 +53,10 @@ MonoBehaviour:
     m_ColorSpace: -1
     m_NumColorKeys: 2
     m_NumAlphaKeys: 2
-  timelineAsset: {fileID: 0}
   collideAndDamageSO: {fileID: 11400000, guid: 5dacde5762036e94c9b5cfe6cc1c296f, type: 2}
-  audioSource: {fileID: 1974757943835480586, guid: 2934cb22500079945a68f77660578c82, type: 3}
-  gameEffectPrefab: {fileID: 3623755267665536501, guid: 2934cb22500079945a68f77660578c82, type: 3}
-  useTrailRenderer: 0
   tag: Untagged
   collisionExcludeLayerMask:
     serializedVersion: 2
     m_Bits: 247
   gameEffectBehaviours: 01000000
+  useParticleSystem: 0

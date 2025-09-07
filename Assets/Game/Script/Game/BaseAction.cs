@@ -94,6 +94,8 @@ public partial class BaseAction : MonoEditor
             || this is MagicLaserSkill
             || this is MoonSlash
             || this is NuclearBomb
+            || this is OrbitalNemesis
+            || this is PhantomPulse
         )
         {
             LoadActionFields();

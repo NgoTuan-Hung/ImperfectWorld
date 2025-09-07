@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: PushColliderSO
   m_EditorClassIdentifier: 
   isDeactivateAfterTime: 1
-  deactivateTime: 0.2
+  deactivateTime: 0.5
   isTimeline: 0
   randomRotation: 0
   flyAtSpeed: 0.2
@@ -53,13 +53,10 @@ MonoBehaviour:
     m_ColorSpace: -1
     m_NumColorKeys: 2
     m_NumAlphaKeys: 2
-  timelineAsset: {fileID: 0}
   collideAndDamageSO: {fileID: 11400000, guid: 020c4c53212c14e45b953248c2e9ea0c, type: 2}
-  audioSource: {fileID: 5574922048448142884, guid: 1f1bd07037ca7f64cb65be1273afa7a8, type: 3}
-  gameEffectPrefab: {fileID: 6586401228094793217, guid: 1f1bd07037ca7f64cb65be1273afa7a8, type: 3}
-  useTrailRenderer: 0
   tag: Untagged
   collisionExcludeLayerMask:
     serializedVersion: 2
     m_Bits: 247
   gameEffectBehaviours: 01000000
+  useParticleSystem: 0
