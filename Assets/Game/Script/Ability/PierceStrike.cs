@@ -6,30 +6,15 @@ public class PierceStrike : SkillBase
 {
     bool secondPhase = false;
     IEnumerator secondPhaseHandlerIE,
-        actionIE1,
         cooldownIE;
     bool phaseOneFinish = false;
-    float currentTime,
-        speed,
-        secondPhaseDeadline;
+    float secondPhaseDeadline;
     public ActionResult additionalPhaseWithConditionResult;
 
     public override void Awake()
     {
         base.Awake();
-        cooldown = 5f;
-        damage = defaultDamage = 20f;
-        secondPhaseDeadline = 3f;
-        duration = 0.203f;
-        speed = 40f;
-        additionalPhaseWithConditionResult = new(
-            true,
-            ActionResultType.AdditionalPhaseWithCondition,
-            cooldown,
-            secondPhaseDeadline
-        );
-        successResult = new(true, ActionResultType.Cooldown, cooldown);
-        manaCost = 20f;
+        AddActionManuals();
     }
 
     public override void OnEnable()
@@ -59,6 +44,22 @@ public class PierceStrike : SkillBase
         StatChangeRegister();
     }
 
+    public override void Config()
+    {
+        GetActionField<ActionFloatField>(ActionFieldName.Cooldown).value = 5f;
+        secondPhaseDeadline = 3f;
+        GetActionField<ActionFloatField>(ActionFieldName.Duration).value = 0.203f;
+        GetActionField<ActionFloatField>(ActionFieldName.Speed).value = 0.8f;
+        additionalPhaseWithConditionResult = new(
+            true,
+            ActionResultType.AdditionalPhaseWithCondition,
+            GetActionField<ActionFloatField>(ActionFieldName.Cooldown).value,
+            secondPhaseDeadline
+        );
+        GetActionField<ActionFloatField>(ActionFieldName.ManaCost).value = 20f;
+        /* Also use current time, damage , actionie, actionie1*/
+    }
+
     public override void StatChangeRegister()
     {
         base.StatChangeRegister();
@@ -68,7 +69,10 @@ public class PierceStrike : SkillBase
     public override void RecalculateStat()
     {
         base.RecalculateStat();
-        damage = customMono.stat.might.FinalValue;
+        GetActionField<ActionFloatField>(ActionFieldName.Damage).value = customMono
+            .stat
+            .might
+            .FinalValue;
     }
 
     public override void WhileWaiting(Vector2 p_location = default, Vector2 p_direction = default)
@@ -86,7 +90,10 @@ public class PierceStrike : SkillBase
                 customMono.actionBlocking = true;
                 customMono.movementActionBlocking = true;
                 StopCoroutine(secondPhaseHandlerIE);
-                StartCoroutine(actionIE = StartDash(direction));
+                StartCoroutine(
+                    GetActionField<ActionIEnumeratorField>(ActionFieldName.ActionIE).value =
+                        StartDash(direction)
+                );
                 StartCoroutine(cooldownIE = CooldownCoroutine());
                 ToggleAnim(GameManager.Instance.mainSkill1BoolHash, true);
                 customMono.currentAction = this;
@@ -96,7 +103,10 @@ public class PierceStrike : SkillBase
         }
         else
         {
-            if (customMono.stat.currentManaPoint.Value < manaCost)
+            if (
+                customMono.stat.currentManaPoint.Value
+                < GetActionField<ActionFloatField>(ActionFieldName.ManaCost).value
+            )
                 return failResult;
             else if (canUse && !customMono.actionBlocking)
             {
@@ -104,17 +114,24 @@ public class PierceStrike : SkillBase
                 customMono.actionBlocking = true;
                 customMono.statusEffect.Slow(customMono.stat.actionSlowModifier);
                 ToggleAnim(GameManager.Instance.mainSkill1BoolHash, true);
-                StartCoroutine(actionIE = TriggerIE(location, direction));
+                StartCoroutine(
+                    GetActionField<ActionIEnumeratorField>(ActionFieldName.ActionIE).value =
+                        TriggerIE(location, direction)
+                );
                 StartCoroutine(cooldownIE = CooldownCoroutine());
                 customMono.currentAction = this;
                 phaseOneFinish = false;
-                customMono.stat.currentManaPoint.Value -= manaCost;
+                customMono.stat.currentManaPoint.Value -= GetActionField<ActionFloatField>(
+                    ActionFieldName.ManaCost
+                ).value;
                 return additionalPhaseWithConditionResult;
             }
         }
 
         return failResult;
     }
+
+    void SetupCAD(CollideAndDamage p_cAD) => p_cAD.dealDamageEvent = ChangePhase;
 
     IEnumerator TriggerIE(Vector2 p_location = default, Vector2 p_direction = default)
     {
@@ -124,33 +141,11 @@ public class PierceStrike : SkillBase
             yield return new WaitForSeconds(Time.fixedDeltaTime);
 
         customMono.animationEventFunctionCaller.mainSkill1AS.signal = false;
-        customMono.rotationAndCenterObject.transform.localRotation = Quaternion.identity;
-        GameEffect t_pierceStrikeEffect = GameManager
-            .Instance.pierceStrikePool.PickOne()
-            .gameEffect;
-        t_pierceStrikeEffect.transform.parent = customMono.rotationAndCenterObject.transform;
-        t_pierceStrikeEffect.transform.SetLocalPositionAndRotation(
-            t_pierceStrikeEffect.gameEffectSO.effectLocalPosition,
-            Quaternion.Euler(t_pierceStrikeEffect.gameEffectSO.effectLocalRotation)
-        );
-        var t_collideAndDamage =
-            t_pierceStrikeEffect.GetBehaviour(EGameEffectBehaviour.CollideAndDamage)
-            as CollideAndDamage;
-        t_pierceStrikeEffect.transform.localScale = Vector3.one;
-        t_collideAndDamage.allyTags = customMono.allyTags;
-        t_collideAndDamage.collideDamage = damage;
-        t_collideAndDamage.dealDamageEvent = ChangePhase;
-        customMono.rotationAndCenterObject.transform.localScale = new(
-            customMono.directionModifier.transform.localScale.x > 0 ? 1 : -1,
-            1,
-            1
-        );
-        customMono.rotationAndCenterObject.transform.Rotate(
-            Vector3.forward,
-            Vector2.SignedAngle(
-                customMono.rotationAndCenterObject.transform.localScale.WithY(0),
-                p_direction
-            )
+
+        SpawnBasicCombatEffectAsChild(
+            p_direction,
+            GameManager.Instance.pierceStrikePool.PickOneGameEffect(),
+            SetupCAD
         );
 
         while (!customMono.animationEventFunctionCaller.mainSkill1AS.end)
@@ -166,22 +161,22 @@ public class PierceStrike : SkillBase
 
     IEnumerator StartDash(Vector3 p_direction)
     {
-        currentTime = 0;
-
         customMono.SetUpdateDirectionIndicator(p_direction, UpdateDirectionIndicatorPriority.Low);
-        GameEffect vanishEffect = GameManager.Instance.vanishEffectPool.PickOne().gameEffect;
-        vanishEffect.transform.position = transform.position;
-        StartCoroutine(actionIE1 = SecondPhaseTriggerIE(p_direction: p_direction));
 
-        p_direction = p_direction.normalized * speed * Time.fixedDeltaTime;
-        while (currentTime < duration)
-        {
-            transform.position +=
-                (1 - EasingFunctions.OutQuint(currentTime / duration)) * p_direction;
-
-            yield return new WaitForSeconds(Time.fixedDeltaTime);
-            currentTime += Time.fixedDeltaTime;
-        }
+        StartCoroutine(
+            GetActionField<ActionIEnumeratorField>(ActionFieldName.ActionIE1).value =
+                SecondPhaseTriggerIE(p_direction: p_direction)
+        );
+        SpawnNormalEffect(
+            GameManager.Instance.vanishEffectPool.PickOneGameEffect(),
+            transform.position
+        );
+        yield return Dash(
+            p_direction,
+            GetActionField<ActionFloatField>(ActionFieldName.Speed).value,
+            GetActionField<ActionFloatField>(ActionFieldName.Duration).value,
+            EasingFunctions.OutQuint
+        );
     }
 
     IEnumerator SecondPhaseTriggerIE(Vector2 p_location = default, Vector2 p_direction = default)
@@ -191,32 +186,9 @@ public class PierceStrike : SkillBase
 
         customMono.animationEventFunctionCaller.mainSkill1AS.signal = false;
 
-        customMono.rotationAndCenterObject.transform.localRotation = Quaternion.identity;
-        GameEffect t_pierceStrikeSecondPhase = GameManager
-            .Instance.pierceStrikeSecondPhasePool.PickOne()
-            .gameEffect;
-        t_pierceStrikeSecondPhase.transform.parent = customMono.rotationAndCenterObject.transform;
-        t_pierceStrikeSecondPhase.transform.SetLocalPositionAndRotation(
-            t_pierceStrikeSecondPhase.gameEffectSO.effectLocalPosition,
-            Quaternion.Euler(t_pierceStrikeSecondPhase.gameEffectSO.effectLocalRotation)
-        );
-        var t_collideAndDamage =
-            t_pierceStrikeSecondPhase.GetBehaviour(EGameEffectBehaviour.CollideAndDamage)
-            as CollideAndDamage;
-        t_pierceStrikeSecondPhase.transform.localScale = Vector3.one;
-        t_collideAndDamage.allyTags = customMono.allyTags;
-        t_collideAndDamage.collideDamage = damage;
-        customMono.rotationAndCenterObject.transform.localScale = new(
-            customMono.directionModifier.transform.localScale.x > 0 ? 1 : -1,
-            1,
-            1
-        );
-        customMono.rotationAndCenterObject.transform.Rotate(
-            Vector3.forward,
-            Vector2.SignedAngle(
-                customMono.rotationAndCenterObject.transform.localScale.WithY(0),
-                p_direction
-            )
+        SpawnBasicCombatEffectAsChild(
+            p_direction,
+            GameManager.Instance.pierceStrikeSecondPhasePool.PickOneGameEffect()
         );
 
         while (!customMono.animationEventFunctionCaller.mainSkill1AS.end)
@@ -267,9 +239,8 @@ public class PierceStrike : SkillBase
         customMono.actionBlocking = false;
         customMono.movementActionBlocking = false;
         ToggleAnim(GameManager.Instance.mainSkill1BoolHash, false);
-        StopCoroutine(actionIE);
-        if (actionIE1 != null)
-            StopCoroutine(actionIE1);
+        StopCoroutine(GetActionField<ActionIEnumeratorField>(ActionFieldName.ActionIE).value);
+        StopCoroutine(GetActionField<ActionIEnumeratorField>(ActionFieldName.ActionIE1).value);
         customMono.animationEventFunctionCaller.mainSkill1AS.signal = false;
         customMono.animationEventFunctionCaller.mainSkill1AS.end = false;
         customMono.statusEffect.RemoveSlow(customMono.stat.actionSlowModifier);

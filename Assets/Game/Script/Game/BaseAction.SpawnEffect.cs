@@ -14,6 +14,15 @@ public partial class BaseAction
         );
     }
 
+    public void SpawnBasicCombatEffectAsChild(Vector2 p_dir, GameEffect p_gameEffect)
+    {
+        SpawnEffectAsChild(p_dir, p_gameEffect);
+        p_gameEffect.SetUpCollideAndDamage(
+            customMono.allyTags,
+            GetActionField<ActionFloatField>(ActionFieldName.Damage).value
+        );
+    }
+
     /// <summary>
     /// Use Damage
     /// </summary>
@@ -21,17 +30,13 @@ public partial class BaseAction
     /// <param name="p_dir"></param>
     /// <param name="p_gameEffect"></param>
     /// <param name="p_dealDamageEvent"></param>
-    public void SpawnEffectAsChild(
+    public void SpawnBasicCombatEffectAsChild(
         Vector2 p_dir,
         GameEffect p_gameEffect,
         Action<CollideAndDamage> p_setupCollideAndDamage
     )
     {
-        SpawnEffectAsChild(p_dir, p_gameEffect);
-        p_gameEffect.SetUpCollideAndDamage(
-            customMono.allyTags,
-            GetActionField<ActionFloatField>(ActionFieldName.Damage).value
-        );
+        SpawnBasicCombatEffectAsChild(p_dir, p_gameEffect);
         p_setupCollideAndDamage(
             p_gameEffect.GetBehaviour(EGameEffectBehaviour.CollideAndDamage) as CollideAndDamage
         );
@@ -42,7 +47,11 @@ public partial class BaseAction
         Action<CollideAndDamage> p_setupCollideAndDamage
     )
     {
-        SpawnEffectAsChild(customMono.GetDirection(), p_gameEffect, p_setupCollideAndDamage);
+        SpawnBasicCombatEffectAsChild(
+            customMono.GetDirection(),
+            p_gameEffect,
+            p_setupCollideAndDamage
+        );
     }
 
     public void SpawnEffectRelative(

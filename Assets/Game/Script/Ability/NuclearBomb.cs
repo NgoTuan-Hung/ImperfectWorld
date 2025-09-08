@@ -6,7 +6,6 @@ public class NuclearBomb : SkillBase
     public override void Awake()
     {
         base.Awake();
-        successResult = new(true, ActionResultType.Cooldown, cooldown);
     }
 
     public override void OnEnable()
@@ -40,6 +39,11 @@ public class NuclearBomb : SkillBase
     {
         GetActionField<ActionFloatField>(ActionFieldName.Cooldown).value = 5f;
         GetActionField<ActionFloatField>(ActionFieldName.ManaCost).value = 30f;
+        successResult = new(
+            true,
+            ActionResultType.Cooldown,
+            GetActionField<ActionFloatField>(ActionFieldName.Cooldown).value
+        );
     }
 
     public override void StatChangeRegister()
@@ -73,7 +77,10 @@ public class NuclearBomb : SkillBase
             customMono.actionBlocking = true;
             customMono.statusEffect.Slow(customMono.stat.actionSlowModifier);
             ToggleAnim(GameManager.Instance.mainSkill3BoolHash, true);
-            StartCoroutine(actionIE = WaitSpawnExplosion(location));
+            StartCoroutine(
+                GetActionField<ActionIEnumeratorField>(ActionFieldName.ActionIE).value =
+                    WaitSpawnExplosion(location)
+            );
             StartCoroutine(CooldownCoroutine());
             customMono.currentAction = this;
             customMono.stat.currentManaPoint.Value -= GetActionField<ActionFloatField>(
@@ -127,7 +134,7 @@ public class NuclearBomb : SkillBase
         customMono.actionBlocking = false;
         customMono.statusEffect.RemoveSlow(customMono.stat.actionSlowModifier);
         ToggleAnim(GameManager.Instance.mainSkill3BoolHash, false);
-        StopCoroutine(actionIE);
+        StopCoroutine(GetActionField<ActionIEnumeratorField>(ActionFieldName.ActionIE).value);
         customMono.animationEventFunctionCaller.mainSkill3Signal = false;
         customMono.animationEventFunctionCaller.endMainSkill3 = false;
     }

@@ -6,7 +6,6 @@ public class GetOverThere : SkillBase
     public override void Awake()
     {
         base.Awake();
-        successResult = new(true, ActionResultType.Cooldown, cooldown);
     }
 
     public override void OnEnable()
@@ -39,6 +38,11 @@ public class GetOverThere : SkillBase
     {
         GetActionField<ActionFloatField>(ActionFieldName.Cooldown).value = 5f;
         GetActionField<ActionFloatField>(ActionFieldName.ManaCost).value = 15f;
+        successResult = new(
+            true,
+            ActionResultType.Cooldown,
+            GetActionField<ActionFloatField>(ActionFieldName.Cooldown).value
+        );
     }
 
     public override void WhileWaiting(Vector2 p_location = default, Vector2 p_direction = default)
@@ -59,7 +63,10 @@ public class GetOverThere : SkillBase
             customMono.actionBlocking = true;
             customMono.statusEffect.Slow(customMono.stat.actionSlowModifier);
             ToggleAnim(GameManager.Instance.mainSkill2BoolHash, true);
-            StartCoroutine(actionIE = WaitSpawnBlueHole(location));
+            StartCoroutine(
+                GetActionField<ActionIEnumeratorField>(ActionFieldName.ActionIE).value =
+                    WaitSpawnBlueHole(location)
+            );
             StartCoroutine(CooldownCoroutine());
             customMono.currentAction = this;
             customMono.stat.currentManaPoint.Value -= GetActionField<ActionFloatField>(
@@ -113,7 +120,7 @@ public class GetOverThere : SkillBase
         customMono.actionBlocking = false;
         customMono.statusEffect.RemoveSlow(customMono.stat.actionSlowModifier);
         ToggleAnim(GameManager.Instance.mainSkill2BoolHash, false);
-        StopCoroutine(actionIE);
+        StopCoroutine(GetActionField<ActionIEnumeratorField>(ActionFieldName.ActionIE).value);
         customMono.animationEventFunctionCaller.mainSkill2Signal = false;
         customMono.animationEventFunctionCaller.endMainSkill2 = false;
     }

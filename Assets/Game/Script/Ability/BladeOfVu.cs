@@ -13,7 +13,6 @@ public class BladeOfVu : SkillBase
         /* Get sprite list from res */
         spriteList =
             spriteList != null ? spriteList : Resources.Load<SpriteList>("BladeOfVuSpriteList");
-        successResult = new(true, ActionResultType.Cooldown, cooldown);
         AddActionManuals();
     }
 
@@ -57,6 +56,11 @@ public class BladeOfVu : SkillBase
         GetActionField<ActionFloatField>(ActionFieldName.Duration).value =
             GetActionField<ActionIntField>(ActionFieldName.EffectCount).value
             * GetActionField<ActionFloatField>(ActionFieldName.Interval).value;
+        successResult = new(
+            true,
+            ActionResultType.Cooldown,
+            GetActionField<ActionFloatField>(ActionFieldName.Cooldown).value
+        );
     }
 
     public override void StatChangeRegister()
@@ -85,7 +89,12 @@ public class BladeOfVu : SkillBase
             customMono.actionBlocking = true;
             customMono.movementActionBlocking = true;
             ToggleAnim(GameManager.Instance.mainSkill3BoolHash, true);
-            StartCoroutine(actionIE = TriggerIE(location, direction));
+            StartCoroutine(
+                GetActionField<ActionIEnumeratorField>(ActionFieldName.ActionIE).value = TriggerIE(
+                    location,
+                    direction
+                )
+            );
             StartCoroutine(CooldownCoroutine());
             customMono.currentAction = this;
             customMono.stat.currentManaPoint.Value -= GetActionField<ActionFloatField>(
@@ -172,6 +181,6 @@ public class BladeOfVu : SkillBase
         customMono.actionBlocking = false;
         customMono.movementActionBlocking = false;
         ToggleAnim(GameManager.Instance.mainSkill3BoolHash, false);
-        StopCoroutine(actionIE);
+        StopCoroutine(GetActionField<ActionIEnumeratorField>(ActionFieldName.ActionIE).value);
     }
 }

@@ -6,7 +6,6 @@ public class DeepBlade : SkillBase
     public override void Awake()
     {
         base.Awake();
-        successResult = new(true, ActionResultType.Cooldown, cooldown);
         // AddActionManuals();
     }
 
@@ -43,6 +42,11 @@ public class DeepBlade : SkillBase
         /* Stun duration */
         GetActionField<ActionFloatField>(ActionFieldName.Duration).value = 1f;
         GetActionField<ActionFloatField>(ActionFieldName.ManaCost).value = 10f;
+        successResult = new(
+            true,
+            ActionResultType.Cooldown,
+            GetActionField<ActionFloatField>(ActionFieldName.Cooldown).value
+        );
     }
 
     public override void StatChangeRegister()
@@ -79,7 +83,12 @@ public class DeepBlade : SkillBase
             customMono.actionBlocking = true;
             customMono.statusEffect.Slow(customMono.stat.actionSlowModifier);
             ToggleAnim(GameManager.Instance.mainSkill2BoolHash, true);
-            StartCoroutine(actionIE = TriggerIE(p_location, p_direction));
+            StartCoroutine(
+                GetActionField<ActionIEnumeratorField>(ActionFieldName.ActionIE).value = TriggerIE(
+                    p_location,
+                    p_direction
+                )
+            );
             StartCoroutine(CooldownCoroutine());
             customMono.currentAction = this;
             customMono.stat.currentManaPoint.Value -= GetActionField<ActionFloatField>(
@@ -98,7 +107,7 @@ public class DeepBlade : SkillBase
 
         customMono.animationEventFunctionCaller.mainSkill2Signal = false;
 
-        SpawnEffectAsChild(
+        SpawnBasicCombatEffectAsChild(
             p_direction,
             GameManager.Instance.deepBladeSlashPool.PickOneGameEffect(),
             SetupCAD
@@ -135,7 +144,7 @@ public class DeepBlade : SkillBase
         base.ActionInterrupt();
         customMono.actionBlocking = false;
         ToggleAnim(GameManager.Instance.mainSkill2BoolHash, false);
-        StopCoroutine(actionIE);
+        StopCoroutine(GetActionField<ActionIEnumeratorField>(ActionFieldName.ActionIE).value);
         customMono.animationEventFunctionCaller.mainSkill2Signal = false;
         customMono.animationEventFunctionCaller.endMainSkill2 = false;
         customMono.statusEffect.RemoveSlow(customMono.stat.actionSlowModifier);

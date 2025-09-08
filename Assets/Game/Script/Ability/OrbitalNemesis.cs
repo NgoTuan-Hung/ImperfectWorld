@@ -7,7 +7,6 @@ public class OrbitalNemesis : SkillBase
     public override void Awake()
     {
         base.Awake();
-        successResult = new(true, ActionResultType.Cooldown, cooldown);
         AddActionManuals();
     }
 
@@ -51,6 +50,11 @@ public class OrbitalNemesis : SkillBase
         GetActionField<ActionFloatField>(ActionFieldName.Blend).value =
             1f / (GetActionField<ActionIntField>(ActionFieldName.Variants).value - 1);
         GetActionField<ActionFloatField>(ActionFieldName.Speed).value = 2f;
+        successResult = new(
+            true,
+            ActionResultType.Cooldown,
+            GetActionField<ActionFloatField>(ActionFieldName.Cooldown).value
+        );
         /* Also use current time, direction */
     }
 
@@ -85,7 +89,9 @@ public class OrbitalNemesis : SkillBase
             customMono.AnimatorWrapper.animator.SetTrigger(
                 GameManager.Instance.mainSkill2TriggerHash
             );
-            StartCoroutine(actionIE = StartDash());
+            StartCoroutine(
+                GetActionField<ActionIEnumeratorField>(ActionFieldName.ActionIE).value = StartDash()
+            );
             StartCoroutine(CooldownCoroutine());
             customMono.currentAction = this;
             customMono.stat.currentManaPoint.Value -= GetActionField<ActionFloatField>(
@@ -121,7 +127,7 @@ public class OrbitalNemesis : SkillBase
             /* If we are too far from the enemy, dash closer */
             if (
                 GetActionField<ActionVector3Field>(ActionFieldName.Direction).value.sqrMagnitude
-                > maxRange
+                > GetActionField<ActionFloatField>(ActionFieldName.Range).value
             )
             {
                 GetActionField<ActionVector3Field>(ActionFieldName.Direction).value =
@@ -231,7 +237,7 @@ public class OrbitalNemesis : SkillBase
         customMono.movementActionBlocking = false;
         customMono.actionBlocking = false;
         ToggleAnim(GameManager.Instance.mainSkill2BoolHash, false);
-        StopCoroutine(actionIE);
+        StopCoroutine(GetActionField<ActionIEnumeratorField>(ActionFieldName.ActionIE).value);
         customMono.animationEventFunctionCaller.mainSkill2Signal = false;
     }
 }

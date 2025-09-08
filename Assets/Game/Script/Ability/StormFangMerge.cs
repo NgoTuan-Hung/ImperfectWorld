@@ -8,12 +8,6 @@ public class StormFangMerge : SkillBase
     public override void Awake()
     {
         base.Awake();
-        duration = 2f;
-        cooldown = 5f;
-        successResult = new(true, ActionResultType.Cooldown, cooldown);
-        manaCost = 30f;
-        // dashSpeed *= Time.deltaTime;
-        // boolhash = ...
     }
 
     public override void OnEnable()
@@ -43,6 +37,20 @@ public class StormFangMerge : SkillBase
         StatChangeRegister();
     }
 
+    public override void Config()
+    {
+        GetActionField<ActionFloatField>(ActionFieldName.Duration).value = 2f;
+        GetActionField<ActionFloatField>(ActionFieldName.Cooldown).value = 5f;
+        successResult = new(
+            true,
+            ActionResultType.Cooldown,
+            GetActionField<ActionFloatField>(ActionFieldName.Cooldown).value
+        );
+        GetActionField<ActionFloatField>(ActionFieldName.ManaCost).value = 30f;
+        GetActionField<ActionFloatField>(ActionFieldName.Speed).value = 0.8f;
+        /* Also damage, currentTIme, actionie */
+    }
+
     public override void StatChangeRegister()
     {
         base.StatChangeRegister();
@@ -52,7 +60,8 @@ public class StormFangMerge : SkillBase
     public override void RecalculateStat()
     {
         base.RecalculateStat();
-        damage = customMono.stat.reflex.FinalValue * 0.25f;
+        GetActionField<ActionFloatField>(ActionFieldName.Damage).value =
+            customMono.stat.reflex.FinalValue * 0.25f;
     }
 
     public override void WhileWaiting(Vector2 p_location = default, Vector2 p_direction = default)
@@ -62,7 +71,10 @@ public class StormFangMerge : SkillBase
 
     public override ActionResult Trigger(Vector2 location = default, Vector2 direction = default)
     {
-        if (customMono.stat.currentManaPoint.Value < manaCost)
+        if (
+            customMono.stat.currentManaPoint.Value
+            < GetActionField<ActionFloatField>(ActionFieldName.ManaCost).value
+        )
             return failResult;
         else if (canUse && !customMono.movementActionBlocking && !customMono.actionBlocking)
         {
@@ -70,18 +82,20 @@ public class StormFangMerge : SkillBase
             customMono.actionBlocking = true;
             customMono.movementActionBlocking = true;
             ToggleAnim(GameManager.Instance.mainSkill2BoolHash, true);
-            StartCoroutine(actionIE = StartSpinning(direction));
+            StartCoroutine(
+                GetActionField<ActionIEnumeratorField>(ActionFieldName.ActionIE).value =
+                    StartSpinning(direction)
+            );
             StartCoroutine(CooldownCoroutine());
             customMono.currentAction = this;
-            customMono.stat.currentManaPoint.Value -= manaCost;
+            customMono.stat.currentManaPoint.Value -= GetActionField<ActionFloatField>(
+                ActionFieldName.ManaCost
+            ).value;
             return successResult;
         }
 
         return failResult;
     }
-
-    float currentTime,
-        travelSpeed = 40;
 
     IEnumerator StartSpinning(Vector3 p_direction)
     {
@@ -103,21 +117,16 @@ public class StormFangMerge : SkillBase
         t_stormFangMergeBlades.transform.parent = customMono.rotationAndCenterObject.transform;
         t_stormFangMergeBlades.transform.localPosition = Vector3.zero;
         t_stormFangMergeBlades.allyTags = customMono.allyTags;
-        t_stormFangMergeBlades.collideDamage = damage;
+        t_stormFangMergeBlades.collideDamage = GetActionField<ActionFloatField>(
+            ActionFieldName.Damage
+        ).value;
 
-        p_direction = Time.fixedDeltaTime * travelSpeed * p_direction.normalized;
-        stopwatch.Restart();
-        while (stopwatch.Elapsed.TotalSeconds < duration)
-        {
-            transform.position +=
-                // (1 - EasingFunctions.InQuint(currentTime / duration)) * p_direction;
-                EasingFunctions.InQuint((float)stopwatch.Elapsed.TotalSeconds / duration)
-                * p_direction;
-
-            // yield return new WaitForEndOfFrame();
-            yield return null;
-        }
-        stopwatch.Stop();
+        yield return Dash(
+            p_direction,
+            GetActionField<ActionFloatField>(ActionFieldName.Speed).value,
+            GetActionField<ActionFloatField>(ActionFieldName.Duration).value,
+            EasingFunctions.InQuint
+        );
 
         customMono.actionBlocking = false;
         customMono.movementActionBlocking = false;
@@ -148,6 +157,6 @@ public class StormFangMerge : SkillBase
         customMono.actionBlocking = false;
         customMono.movementActionBlocking = false;
         ToggleAnim(GameManager.Instance.mainSkill2BoolHash, false);
-        StopCoroutine(actionIE);
+        StopCoroutine(GetActionField<ActionIEnumeratorField>(ActionFieldName.ActionIE).value);
     }
 }

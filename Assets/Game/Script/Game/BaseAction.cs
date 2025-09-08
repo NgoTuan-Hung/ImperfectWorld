@@ -1,7 +1,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Diagnostics;
 using UnityEngine;
 
 public enum ActionUse
@@ -23,7 +22,6 @@ public enum ActionUse
 public partial class BaseAction : MonoEditor
 {
     public CustomMono customMono;
-    public float cooldown;
     public bool onCooldown;
     public float defaultCooldown;
     public float defaultStateSpeed;
@@ -36,23 +34,8 @@ public partial class BaseAction : MonoEditor
     public bool canUse;
     public List<BotActionManual> botActionManuals = new();
     public int boolHash = 0;
-
-    /// <summary>
-    /// Executing custom callback when animation end.
-    /// </summary>
-    public Action endAnimCallback = () => { };
-    public AnimationClip actionClip;
     public AudioClip audioClip;
-    public float damage = 0;
-    public float defaultDamage = 0;
-    public int maxAmmo,
-        currentAmmo;
-    public float modifiedAngle;
-    public float lifeStealPercent;
-    public float stunDuration;
-    public Stopwatch stopwatch = new();
-    public IEnumerator actionIE,
-        botIE;
+    public IEnumerator botIE;
     public static ActionResult failResult = new();
     public ActionResult successResult = new(true, ActionResultType.Cooldown, default);
     Dictionary<ActionFieldName, ActionField> actionFields = new();
@@ -73,34 +56,8 @@ public partial class BaseAction : MonoEditor
         base.Start();
         /* Stop action when we die */
         customMono.stat.currentHealthPointReachZeroEvent += StopAndDisable;
-        /* Test */
-        if (
-            this is ArcaneSwarm
-            || this is HeliosGaze
-            || this is RimuruCombo2
-            || this is RimuruCombo1
-            || this is BladeOfMinhKhai
-            || this is BladeOfPhong
-            || this is BladeOfVu
-            || this is DashSkill
-            || this is DeepBlade
-            || this is DoubleKill
-            || this is GetOverThere
-            || this is InfernalTide
-            || this is LightingForward
-            || this is SovereignFlow
-            || this is RimuruSummonFireball
-            || this is RimuruSummonLightingWolf
-            || this is MagicLaserSkill
-            || this is MoonSlash
-            || this is NuclearBomb
-            || this is OrbitalNemesis
-            || this is PhantomPulse
-        )
-        {
-            LoadActionFields();
-            Config();
-        }
+        LoadActionFields();
+        Config();
     }
 
     private void LoadActionFields()
@@ -139,33 +96,11 @@ public partial class BaseAction : MonoEditor
     public IEnumerator CooldownCoroutine()
     {
         onCooldown = true;
-        yield return new WaitForSecondsRealtime(cooldown);
+        yield return new WaitForSecondsRealtime(
+            GetActionField<ActionFloatField>(ActionFieldName.Cooldown).value
+        );
         onCooldown = false;
         canUse = true;
-    }
-
-    /// <summary>
-    /// Wait for the animation to end by checking the signal.
-    /// You will want to check AnimationEventFunctionCaller
-    /// for this.
-    /// </summary>
-    /// <param name="endAnimCheck"></param>
-    public virtual void EndAnimWait(Func<bool> endAnimCheck)
-    {
-        StartCoroutine(EndAnimWaitCoroutine(endAnimCheck));
-    }
-
-    IEnumerator EndAnimWaitCoroutine(Func<bool> endAnimCheck)
-    {
-        while (!endAnimCheck())
-            yield return new WaitForSeconds(Time.fixedDeltaTime);
-
-        onCooldown = true;
-        ToggleAnim(boolHash, false);
-        endAnimCallback();
-        yield return new WaitForSeconds(cooldown);
-        canUse = true;
-        onCooldown = false;
     }
 
     public virtual void StatChangeRegister() { }
@@ -200,8 +135,6 @@ public partial class BaseAction : MonoEditor
     ) { }
 
     public virtual void DoAuto(DoActionParamInfo p_doActionParamInfo) { }
-
-    public virtual void AddAmmo(int ammount) => currentAmmo += ammount;
 
     public virtual void LifeSteal(float damageDealt) { }
 

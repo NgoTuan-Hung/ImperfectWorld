@@ -28,12 +28,15 @@ public enum ActionFieldName
     Direction,
     Blend,
     Target,
-    IsNextPhase,
+    CurrentPhase,
     ComboActions,
     ComboEffects,
     ComboEndAction,
     Distance,
     SeletecdVariant,
+    AllPhases,
+    UseCount,
+    MaxUseCount,
 }
 
 [CreateAssetMenu(fileName = "ActionFieldInfo", menuName = "ScriptableObjects/ActionFieldInfo")]

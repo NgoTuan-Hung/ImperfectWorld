@@ -7,8 +7,6 @@ public class DashSkill : SkillBase
     public override void Awake()
     {
         base.Awake();
-
-        successResult = new(true, ActionResultType.Cooldown, cooldown);
     }
 
     public override void OnEnable()
@@ -73,6 +71,11 @@ public class DashSkill : SkillBase
             GetActionField<ActionFloatField>(ActionFieldName.Duration).value
             / GetActionField<ActionIntField>(ActionFieldName.EffectCount).value;
         GetActionField<ActionFloatField>(ActionFieldName.ManaCost).value = 15f;
+        successResult = new(
+            true,
+            ActionResultType.Cooldown,
+            GetActionField<ActionFloatField>(ActionFieldName.Cooldown).value
+        );
         /* Also use current time */
     }
 
@@ -92,7 +95,11 @@ public class DashSkill : SkillBase
         {
             canUse = false;
             customMono.movementActionBlocking = true;
-            StartCoroutine(actionIE = Dashing(direction));
+            StartCoroutine(
+                GetActionField<ActionIEnumeratorField>(ActionFieldName.ActionIE).value = Dashing(
+                    direction
+                )
+            );
             StartCoroutine(CooldownCoroutine());
             customMono.currentAction = this;
             customMono.stat.currentManaPoint.Value -= GetActionField<ActionFloatField>(
@@ -157,6 +164,6 @@ public class DashSkill : SkillBase
     {
         base.ActionInterrupt();
         customMono.movementActionBlocking = true;
-        StopCoroutine(actionIE);
+        StopCoroutine(GetActionField<ActionIEnumeratorField>(ActionFieldName.ActionIE).value);
     }
 }

@@ -6,7 +6,6 @@ public class RimuruSummonLightingWolf : SkillBase
     public override void Awake()
     {
         base.Awake();
-        successResult = new(true, ActionResultType.Cooldown, cooldown);
     }
 
     public override void OnEnable()
@@ -41,6 +40,11 @@ public class RimuruSummonLightingWolf : SkillBase
         GetActionField<ActionFloatField>(ActionFieldName.Cooldown).value = 1f;
         GetActionField<ActionFloatField>(ActionFieldName.ManaCost).value = 5f;
         GetActionField<ActionFloatField>(ActionFieldName.Duration).value = 2.95f;
+        successResult = new(
+            true,
+            ActionResultType.Cooldown,
+            GetActionField<ActionFloatField>(ActionFieldName.Cooldown).value
+        );
         /* Also use Damage */
     }
 
@@ -75,7 +79,10 @@ public class RimuruSummonLightingWolf : SkillBase
             customMono.actionBlocking = true;
             customMono.movementActionBlocking = true;
             ToggleAnim(GameManager.Instance.mainSkill3BoolHash, true);
-            StartCoroutine(actionIE = WaitSpawnLightingWolf(direction));
+            StartCoroutine(
+                GetActionField<ActionIEnumeratorField>(ActionFieldName.ActionIE).value =
+                    WaitSpawnLightingWolf(direction)
+            );
             StartCoroutine(CooldownCoroutine());
             customMono.currentAction = this;
             customMono.stat.currentManaPoint.Value -= GetActionField<ActionFloatField>(
@@ -135,7 +142,7 @@ public class RimuruSummonLightingWolf : SkillBase
         customMono.actionBlocking = false;
         customMono.movementActionBlocking = false;
         ToggleAnim(GameManager.Instance.mainSkill3BoolHash, false);
-        StopCoroutine(actionIE);
+        StopCoroutine(GetActionField<ActionIEnumeratorField>(ActionFieldName.ActionIE).value);
         customMono.animationEventFunctionCaller.mainSkill3Signal = false;
         customMono.animationEventFunctionCaller.endMainSkill3 = false;
     }

@@ -6,7 +6,6 @@ public class BladeOfPhong : SkillBase
     public override void Awake()
     {
         base.Awake();
-        successResult = new(true, ActionResultType.Cooldown, cooldown);
         AddActionManuals();
     }
 
@@ -41,6 +40,11 @@ public class BladeOfPhong : SkillBase
     {
         GetActionField<ActionFloatField>(ActionFieldName.Cooldown).value = 5f;
         GetActionField<ActionFloatField>(ActionFieldName.ManaCost).value = 10f;
+        successResult = new(
+            true,
+            ActionResultType.Cooldown,
+            GetActionField<ActionFloatField>(ActionFieldName.Cooldown).value
+        );
     }
 
     public override void StatChangeRegister()
@@ -74,7 +78,10 @@ public class BladeOfPhong : SkillBase
             customMono.actionBlocking = true;
             customMono.statusEffect.Slow(customMono.stat.actionSlowModifier);
             ToggleAnim(GameManager.Instance.mainSkill2BoolHash, true);
-            StartCoroutine(actionIE = WaitSpawnTornadoSignal(direction));
+            StartCoroutine(
+                GetActionField<ActionIEnumeratorField>(ActionFieldName.ActionIE).value =
+                    WaitSpawnTornadoSignal(direction)
+            );
             StartCoroutine(CooldownCoroutine());
             customMono.currentAction = this;
             customMono.stat.currentManaPoint.Value -= GetActionField<ActionFloatField>(
@@ -130,7 +137,7 @@ public class BladeOfPhong : SkillBase
         customMono.actionBlocking = false;
         customMono.statusEffect.RemoveSlow(customMono.stat.actionSlowModifier);
         ToggleAnim(GameManager.Instance.mainSkill2BoolHash, false);
-        StopCoroutine(actionIE);
+        StopCoroutine(GetActionField<ActionIEnumeratorField>(ActionFieldName.ActionIE).value);
         customMono.animationEventFunctionCaller.mainSkill2Signal = false;
         customMono.animationEventFunctionCaller.endMainSkill2 = false;
     }

@@ -1,7 +1,5 @@
-using System;
 using System.Collections;
 using UnityEngine;
-using Touch = UnityEngine.InputSystem.EnhancedTouch.Touch;
 
 public class AirRollSkill : SkillBase
 {
@@ -9,22 +7,16 @@ public class AirRollSkill : SkillBase
         p2,
         p3,
         mid;
-    float t,
-        oneMinusT,
-        moveLength,
+    float oneMinusT,
         landDelay = 0.5f;
     int landBoolHash;
-    float angle = 90f.DegToRad(); /* -90 is ok too */
 
     public override void Awake()
     {
         base.Awake();
-        duration = 1f;
-        moveLength = Time.fixedDeltaTime / duration;
         boolHash = Animator.StringToHash("AirRoll");
         landBoolHash = Animator.StringToHash("Land");
         audioClip = Resources.Load<AudioClip>("AudioClip/air-roll-landing");
-        cooldown = 0f;
     }
 
     public override void OnEnable()
@@ -55,6 +47,19 @@ public class AirRollSkill : SkillBase
         base.Start();
     }
 
+    public override void Config()
+    {
+        GetActionField<ActionFloatField>(ActionFieldName.Duration).value = 1f;
+        GetActionField<ActionFloatField>(ActionFieldName.Interval).value =
+            Time.fixedDeltaTime / GetActionField<ActionFloatField>(ActionFieldName.Duration).value;
+        boolHash = Animator.StringToHash("AirRoll");
+        landBoolHash = Animator.StringToHash("Land");
+        audioClip = Resources.Load<AudioClip>("AudioClip/air-roll-landing");
+        GetActionField<ActionFloatField>(ActionFieldName.Cooldown).value = 0f;
+        GetActionField<ActionFloatField>(ActionFieldName.Angle).value = 90f.DegToRad(); /* -90 is ok too */
+        /* Also actionie */
+    }
+
     public override ActionResult Trigger(Vector2 location = default, Vector2 direction = default)
     {
         if (canUse && !customMono.actionBlocking)
@@ -64,8 +69,10 @@ public class AirRollSkill : SkillBase
             customMono.movementActionBlocking = true;
             customMono.statusEffect.ccImmune = true;
             ToggleAnim(boolHash, true);
-            actionIE = TriggerCoroutine(location, direction);
-            StartCoroutine(actionIE);
+            StartCoroutine(
+                GetActionField<ActionIEnumeratorField>(ActionFieldName.ActionIE).value =
+                    TriggerCoroutine(location, direction)
+            );
             StartCoroutine(CooldownCoroutine());
             customMono.currentAction = this;
             return successResult;
@@ -84,19 +91,31 @@ public class AirRollSkill : SkillBase
         p3 = location;
         mid = (p1 + p3) / 2;
         p2 = p3 - p1;
-        p2 = p2.RotateZ(angle) + mid;
+        p2 = p2.RotateZ(GetActionField<ActionFloatField>(ActionFieldName.Angle).value) + mid;
 
         customMono.SetUpdateDirectionIndicator(direction, UpdateDirectionIndicatorPriority.Low);
 
-        t = 0;
-        while (t < duration)
+        GetActionField<ActionFloatField>(ActionFieldName.CurrentTime).value = 0;
+        while (
+            GetActionField<ActionFloatField>(ActionFieldName.CurrentTime).value
+            < GetActionField<ActionFloatField>(ActionFieldName.Duration).value
+        )
         {
-            oneMinusT = 1 - t;
+            oneMinusT = 1 - GetActionField<ActionFloatField>(ActionFieldName.CurrentTime).value;
             /* quadratic bezier formula */
-            transform.position = oneMinusT * oneMinusT * p1 + 2 * t * oneMinusT * p2 + t * t * p3;
+            transform.position =
+                oneMinusT * oneMinusT * p1
+                + 2
+                    * GetActionField<ActionFloatField>(ActionFieldName.CurrentTime).value
+                    * oneMinusT
+                    * p2
+                + GetActionField<ActionFloatField>(ActionFieldName.CurrentTime).value
+                    * GetActionField<ActionFloatField>(ActionFieldName.CurrentTime).value
+                    * p3;
 
             yield return new WaitForSeconds(Time.fixedDeltaTime);
-            t += moveLength;
+            GetActionField<ActionFloatField>(ActionFieldName.CurrentTime).value +=
+                GetActionField<ActionFloatField>(ActionFieldName.Interval).value;
         }
 
         /* After we finish jumping, we can delay to land for a short time. */
@@ -114,8 +133,7 @@ public class AirRollSkill : SkillBase
 
     public void AirRollTo(Vector2 direction, Vector2 location, float duration)
     {
-        botIE = AirRollToCoroutine(direction, location, duration);
-        StartCoroutine(botIE);
+        StartCoroutine(AirRollToCoroutine(direction, location, duration));
     }
 
     IEnumerator AirRollToCoroutine(Vector2 direction, Vector2 location, float duration)
@@ -132,6 +150,6 @@ public class AirRollSkill : SkillBase
         customMono.actionBlocking = false;
         customMono.movementActionBlocking = false;
         ToggleAnim(boolHash, false);
-        StopCoroutine(actionIE);
+        StopCoroutine(GetActionField<ActionIEnumeratorField>(ActionFieldName.ActionIE).value);
     }
 }

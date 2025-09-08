@@ -207,7 +207,7 @@ public partial class BaseAction
             );
     }
 
-    public void SetProjectile(GameEffect p_gameEffect, Vector2 p_dir)
+    public void SetCombatProjectile(GameEffect p_gameEffect, Vector2 p_dir)
     {
         p_gameEffect.transform.SetPositionAndRotation(
             customMono.rotationAndCenterObject.transform.position,
@@ -215,6 +215,11 @@ public partial class BaseAction
         );
         p_gameEffect.transform.localScale = p_gameEffect.transform.localScale.WithY(
             p_gameEffect.transform.right.x > 0 ? 1 : -1
+        );
+
+        p_gameEffect.SetUpCollideAndDamage(
+            customMono.allyTags,
+            GetActionField<ActionFloatField>(ActionFieldName.Damage).value
         );
 
         p_gameEffect.KeepFlyingAt(p_dir);

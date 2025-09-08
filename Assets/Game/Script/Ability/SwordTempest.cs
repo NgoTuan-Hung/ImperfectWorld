@@ -1,5 +1,4 @@
 using System.Collections;
-using Kryz.Tweening;
 using UnityEngine;
 
 public class SwordTempest : SkillBase
@@ -7,12 +6,6 @@ public class SwordTempest : SkillBase
     public override void Awake()
     {
         base.Awake();
-        cooldown = 5f;
-        damage = defaultDamage = 20f;
-        successResult = new(true, ActionResultType.Cooldown, cooldown);
-        manaCost = 25f;
-        // dashSpeed *= Time.deltaTime;
-        // boolhash = ...
     }
 
     public override void OnEnable()
@@ -42,6 +35,18 @@ public class SwordTempest : SkillBase
         StatChangeRegister();
     }
 
+    public override void Config()
+    {
+        GetActionField<ActionFloatField>(ActionFieldName.Cooldown).value = 5f;
+        successResult = new(
+            true,
+            ActionResultType.Cooldown,
+            GetActionField<ActionFloatField>(ActionFieldName.Cooldown).value
+        );
+        GetActionField<ActionFloatField>(ActionFieldName.ManaCost).value = 25f;
+        /* Also damage, actionIE, gameeffect */
+    }
+
     public override void StatChangeRegister()
     {
         base.StatChangeRegister();
@@ -51,7 +56,8 @@ public class SwordTempest : SkillBase
     public override void RecalculateStat()
     {
         base.RecalculateStat();
-        damage = customMono.stat.reflex.FinalValue * 2.5f;
+        GetActionField<ActionFloatField>(ActionFieldName.Damage).value =
+            customMono.stat.reflex.FinalValue * 2.5f;
     }
 
     public override void WhileWaiting(Vector2 p_location = default, Vector2 p_direction = default)
@@ -61,7 +67,10 @@ public class SwordTempest : SkillBase
 
     public override ActionResult Trigger(Vector2 location = default, Vector2 direction = default)
     {
-        if (customMono.stat.currentManaPoint.Value < manaCost)
+        if (
+            customMono.stat.currentManaPoint.Value
+            < GetActionField<ActionFloatField>(ActionFieldName.ManaCost).value
+        )
             return failResult;
         else if (canUse && !customMono.movementActionBlocking && !customMono.actionBlocking)
         {
@@ -69,10 +78,15 @@ public class SwordTempest : SkillBase
             customMono.actionBlocking = true;
             customMono.statusEffect.Slow(customMono.stat.actionSlowModifier);
             ToggleAnim(GameManager.Instance.mainSkill3BoolHash, true);
-            StartCoroutine(actionIE = WaitSpawnSlashSignal(direction));
+            StartCoroutine(
+                GetActionField<ActionIEnumeratorField>(ActionFieldName.ActionIE).value =
+                    WaitSpawnSlashSignal(direction)
+            );
             StartCoroutine(CooldownCoroutine());
             customMono.currentAction = this;
-            customMono.stat.currentManaPoint.Value -= manaCost;
+            customMono.stat.currentManaPoint.Value -= GetActionField<ActionFloatField>(
+                ActionFieldName.ManaCost
+            ).value;
 
             return successResult;
         }
@@ -89,102 +103,68 @@ public class SwordTempest : SkillBase
 
         customMono.animationEventFunctionCaller.mainSkill3Signal = false;
 
-        customMono.rotationAndCenterObject.transform.localRotation = Quaternion.identity;
-        GameEffect t_swordTempestSlashEffect = GameManager
-            .Instance.swordTempestSlash1Pool.PickOne()
-            .gameEffect;
-        t_swordTempestSlashEffect.transform.parent = customMono.rotationAndCenterObject.transform;
-        t_swordTempestSlashEffect.transform.SetLocalPositionAndRotation(
-            t_swordTempestSlashEffect.gameEffectSO.effectLocalPosition,
-            Quaternion.Euler(t_swordTempestSlashEffect.gameEffectSO.effectLocalRotation)
+        GetActionField<ActionGameEffectField>(ActionFieldName.GameEffect).value =
+            GameManager.Instance.swordTempestSlash1Pool.PickOneGameEffect();
+        SpawnEffectAsChild(
+            p_direction,
+            GetActionField<ActionGameEffectField>(ActionFieldName.GameEffect).value
         );
-
-        var t_collideAndDamage =
-            t_swordTempestSlashEffect.GetBehaviour(EGameEffectBehaviour.CollideAndDamage)
-            as CollideAndDamage;
-
-        /* This is needed because it will change parent eventually */
-        t_swordTempestSlashEffect.transform.localScale = Vector3.one;
-        t_collideAndDamage.allyTags = customMono.allyTags;
-        t_collideAndDamage.collideDamage = damage;
-        customMono.rotationAndCenterObject.transform.localScale = new(
-            customMono.directionModifier.transform.localScale.x > 0 ? 1 : -1,
-            1,
-            1
-        );
-        customMono.rotationAndCenterObject.transform.Rotate(
-            Vector3.forward,
-            Vector2.SignedAngle(
-                customMono.rotationAndCenterObject.transform.localScale,
-                p_direction
-            )
-        );
+        GetActionField<ActionGameEffectField>(ActionFieldName.GameEffect)
+            .value.SetUpCollideAndDamage(
+                customMono.allyTags,
+                GetActionField<ActionFloatField>(ActionFieldName.Damage).value
+            );
 
         while (!customMono.animationEventFunctionCaller.mainSkill3Signal)
             yield return new WaitForSeconds(Time.fixedDeltaTime);
 
         customMono.animationEventFunctionCaller.mainSkill3Signal = false;
-        t_swordTempestSlashEffect = GameManager
-            .Instance.swordTempestSlash2Pool.PickOne()
-            .gameEffect;
-        t_swordTempestSlashEffect.transform.parent = customMono.rotationAndCenterObject.transform;
-        t_swordTempestSlashEffect.transform.SetLocalPositionAndRotation(
-            t_swordTempestSlashEffect.gameEffectSO.effectLocalPosition,
-            Quaternion.Euler(t_swordTempestSlashEffect.gameEffectSO.effectLocalRotation)
+
+        GetActionField<ActionGameEffectField>(ActionFieldName.GameEffect).value =
+            GameManager.Instance.swordTempestSlash2Pool.PickOneGameEffect();
+        SpawnEffectAsChild(
+            p_direction,
+            GetActionField<ActionGameEffectField>(ActionFieldName.GameEffect).value
         );
-
-        t_collideAndDamage =
-            t_swordTempestSlashEffect.GetBehaviour(EGameEffectBehaviour.CollideAndDamage)
-            as CollideAndDamage;
-
-        /* This is needed because it will change parent eventually */
-        t_swordTempestSlashEffect.transform.localScale = Vector3.one;
-        t_collideAndDamage.allyTags = customMono.allyTags;
-        t_collideAndDamage.collideDamage = 2 * damage;
+        GetActionField<ActionGameEffectField>(ActionFieldName.GameEffect)
+            .value.SetUpCollideAndDamage(
+                customMono.allyTags,
+                2 * GetActionField<ActionFloatField>(ActionFieldName.Damage).value
+            );
 
         while (!customMono.animationEventFunctionCaller.mainSkill3Signal)
             yield return new WaitForSeconds(Time.fixedDeltaTime);
 
         customMono.animationEventFunctionCaller.mainSkill3Signal = false;
-        t_swordTempestSlashEffect = GameManager
-            .Instance.swordTempestSlash1Pool.PickOne()
-            .gameEffect;
-        t_swordTempestSlashEffect.transform.parent = customMono.rotationAndCenterObject.transform;
-        t_swordTempestSlashEffect.transform.SetLocalPositionAndRotation(
-            t_swordTempestSlashEffect.gameEffectSO.effectLocalPosition,
-            Quaternion.Euler(t_swordTempestSlashEffect.gameEffectSO.effectLocalRotation)
+
+        GetActionField<ActionGameEffectField>(ActionFieldName.GameEffect).value =
+            GameManager.Instance.swordTempestSlash1Pool.PickOneGameEffect();
+        SpawnEffectAsChild(
+            p_direction,
+            GetActionField<ActionGameEffectField>(ActionFieldName.GameEffect).value
         );
-
-        t_collideAndDamage =
-            t_swordTempestSlashEffect.GetBehaviour(EGameEffectBehaviour.CollideAndDamage)
-            as CollideAndDamage;
-
-        /* This is needed because it will change parent eventually */
-        t_swordTempestSlashEffect.transform.localScale = Vector3.one;
-        t_collideAndDamage.allyTags = customMono.allyTags;
-        t_collideAndDamage.collideDamage = 3 * damage;
+        GetActionField<ActionGameEffectField>(ActionFieldName.GameEffect)
+            .value.SetUpCollideAndDamage(
+                customMono.allyTags,
+                3 * GetActionField<ActionFloatField>(ActionFieldName.Damage).value
+            );
 
         while (!customMono.animationEventFunctionCaller.mainSkill3Signal)
             yield return new WaitForSeconds(Time.fixedDeltaTime);
 
         customMono.animationEventFunctionCaller.mainSkill3Signal = false;
-        t_swordTempestSlashEffect = GameManager
-            .Instance.swordTempestSlash3Pool.PickOne()
-            .gameEffect;
-        t_swordTempestSlashEffect.transform.parent = customMono.rotationAndCenterObject.transform;
-        t_swordTempestSlashEffect.transform.SetLocalPositionAndRotation(
-            t_swordTempestSlashEffect.gameEffectSO.effectLocalPosition,
-            Quaternion.Euler(t_swordTempestSlashEffect.gameEffectSO.effectLocalRotation)
+
+        GetActionField<ActionGameEffectField>(ActionFieldName.GameEffect).value =
+            GameManager.Instance.swordTempestSlash3Pool.PickOneGameEffect();
+        SpawnEffectAsChild(
+            p_direction,
+            GetActionField<ActionGameEffectField>(ActionFieldName.GameEffect).value
         );
-
-        t_collideAndDamage =
-            t_swordTempestSlashEffect.GetBehaviour(EGameEffectBehaviour.CollideAndDamage)
-            as CollideAndDamage;
-
-        /* This is needed because it will change parent eventually */
-        t_swordTempestSlashEffect.transform.localScale = Vector3.one;
-        t_collideAndDamage.allyTags = customMono.allyTags;
-        t_collideAndDamage.collideDamage = 4 * damage;
+        GetActionField<ActionGameEffectField>(ActionFieldName.GameEffect)
+            .value.SetUpCollideAndDamage(
+                customMono.allyTags,
+                4 * GetActionField<ActionFloatField>(ActionFieldName.Damage).value
+            );
 
         while (!customMono.animationEventFunctionCaller.endMainSkill3)
             yield return new WaitForSeconds(Time.fixedDeltaTime);
@@ -214,7 +194,7 @@ public class SwordTempest : SkillBase
         base.ActionInterrupt();
         customMono.actionBlocking = false;
         ToggleAnim(GameManager.Instance.mainSkill3BoolHash, false);
-        StopCoroutine(actionIE);
+        StopCoroutine(GetActionField<ActionIEnumeratorField>(ActionFieldName.ActionIE).value);
         customMono.animationEventFunctionCaller.mainSkill3Signal = false;
         customMono.animationEventFunctionCaller.endMainSkill3 = false;
 

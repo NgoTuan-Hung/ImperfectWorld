@@ -6,8 +6,6 @@ public class ArcaneSwarm : SkillBase
     public override void Awake()
     {
         base.Awake();
-        successResult = new(true, ActionResultType.Cooldown, cooldown);
-        cooldown = .5f;
 
         AddActionManuals();
     }
@@ -41,6 +39,11 @@ public class ArcaneSwarm : SkillBase
         GetActionField<ActionFloatField>(ActionFieldName.Cooldown).value = 0.5f;
         GetActionField<ActionIntField>(ActionFieldName.Variants).value = 6;
         GetActionField<ActionFloatField>(ActionFieldName.ManaCost).value = 5f;
+        successResult = new(
+            true,
+            ActionResultType.Cooldown,
+            GetActionField<ActionFloatField>(ActionFieldName.Cooldown).value
+        );
     }
 
     public override void StatChangeRegister()

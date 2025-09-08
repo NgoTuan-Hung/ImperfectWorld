@@ -6,7 +6,6 @@ public class LightingForward : SkillBase
     public override void Awake()
     {
         base.Awake();
-        successResult = new(true, ActionResultType.Cooldown, cooldown);
     }
 
     public override void OnEnable()
@@ -44,6 +43,11 @@ public class LightingForward : SkillBase
         GetActionField<ActionFloatField>(ActionFieldName.Distance).value = 2f;
         GetActionField<ActionFloatField>(ActionFieldName.Interval).value = 0.1f;
         GetActionField<ActionFloatField>(ActionFieldName.ManaCost).value = 20f;
+        successResult = new(
+            true,
+            ActionResultType.Cooldown,
+            GetActionField<ActionFloatField>(ActionFieldName.Cooldown).value
+        );
     }
 
     public override void StatChangeRegister()
@@ -77,7 +81,10 @@ public class LightingForward : SkillBase
             customMono.actionBlocking = true;
             customMono.statusEffect.Slow(customMono.stat.actionSlowModifier);
             ToggleAnim(GameManager.Instance.mainSkill1BoolHash, true);
-            StartCoroutine(actionIE = WaitSpawnLighting(direction));
+            StartCoroutine(
+                GetActionField<ActionIEnumeratorField>(ActionFieldName.ActionIE).value =
+                    WaitSpawnLighting(direction)
+            );
             StartCoroutine(CooldownCoroutine());
             customMono.currentAction = this;
             customMono.stat.currentManaPoint.Value -= GetActionField<ActionFloatField>(
@@ -149,7 +156,7 @@ public class LightingForward : SkillBase
         customMono.actionBlocking = false;
         customMono.statusEffect.RemoveSlow(customMono.stat.actionSlowModifier);
         ToggleAnim(GameManager.Instance.mainSkill1BoolHash, false);
-        StopCoroutine(actionIE);
+        StopCoroutine(GetActionField<ActionIEnumeratorField>(ActionFieldName.ActionIE).value);
         customMono.animationEventFunctionCaller.mainSkill1AS.signal = false;
         customMono.animationEventFunctionCaller.mainSkill1AS.end = false;
     }

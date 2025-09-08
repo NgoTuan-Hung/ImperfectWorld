@@ -7,7 +7,6 @@ public class SovereignFlow : SkillBase
     public override void Awake()
     {
         base.Awake();
-        successResult = new(true, ActionResultType.Cooldown, cooldown);
         AddActionManuals();
     }
 
@@ -42,6 +41,11 @@ public class SovereignFlow : SkillBase
     {
         GetActionField<ActionFloatField>(ActionFieldName.Cooldown).value = 5f;
         GetActionField<ActionFloatField>(ActionFieldName.ManaCost).value = 10f;
+        successResult = new(
+            true,
+            ActionResultType.Cooldown,
+            GetActionField<ActionFloatField>(ActionFieldName.Cooldown).value
+        );
         // also actionIE, gameeffect
     }
 

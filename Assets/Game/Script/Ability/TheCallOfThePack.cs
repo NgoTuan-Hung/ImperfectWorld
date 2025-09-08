@@ -3,7 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Random = UnityEngine.Random;
-using Touch = UnityEngine.InputSystem.EnhancedTouch.Touch;
 
 public class TheCallOfThePack : SkillBase
 {
@@ -15,17 +14,6 @@ public class TheCallOfThePack : SkillBase
     public override void Awake()
     {
         base.Awake();
-        boolHash = Animator.StringToHash("Summon");
-        cooldown = defaultCooldown = 60f;
-        audioClip = Resources.Load<AudioClip>("AudioClip/the-call-of-the-pack");
-        maxRange = 20f;
-
-        smallWereWolfPrefab = Resources.Load("SmallWereWolf") as GameObject;
-        smallWereWolfPool ??= new ObjectPool(
-            smallWereWolfPrefab,
-            new PoolArgument(ComponentType.CustomMono, PoolArgument.WhereComponent.Self)
-        );
-        successResult = new(true, ActionResultType.Cooldown, cooldown);
     }
 
     public override void OnEnable()
@@ -57,6 +45,26 @@ public class TheCallOfThePack : SkillBase
 #endif
     }
 
+    public override void Config()
+    {
+        boolHash = Animator.StringToHash("Summon");
+        GetActionField<ActionFloatField>(ActionFieldName.Cooldown).value = 60f;
+        audioClip = Resources.Load<AudioClip>("AudioClip/the-call-of-the-pack");
+        GetActionField<ActionFloatField>(ActionFieldName.Range).value = 20f;
+
+        smallWereWolfPrefab = Resources.Load("SmallWereWolf") as GameObject;
+        smallWereWolfPool ??= new ObjectPool(
+            smallWereWolfPrefab,
+            new PoolArgument(ComponentType.CustomMono, PoolArgument.WhereComponent.Self)
+        );
+        successResult = new(
+            true,
+            ActionResultType.Cooldown,
+            GetActionField<ActionFloatField>(ActionFieldName.Cooldown).value
+        );
+        /* also actionie  */
+    }
+
     public override ActionResult Trigger(Vector2 location = default, Vector2 direction = default)
     {
         if (canUse && !customMono.actionBlocking)
@@ -65,7 +73,10 @@ public class TheCallOfThePack : SkillBase
             customMono.actionBlocking = true;
             customMono.statusEffect.Slow(customMono.stat.actionSlowModifier);
             ToggleAnim(boolHash, true);
-            StartCoroutine(actionIE = TriggerCoroutine());
+            StartCoroutine(
+                GetActionField<ActionIEnumeratorField>(ActionFieldName.ActionIE).value =
+                    TriggerCoroutine()
+            );
             StartCoroutine(CooldownCoroutine());
             customMono.currentAction = this;
 
@@ -102,10 +113,16 @@ public class TheCallOfThePack : SkillBase
         radius of maxRange and make them jump to our position with
         a small offset. */
         CustomMono customMono = poolObject.customMono;
-        summonX = Random.Range(-maxRange, maxRange);
+        summonX = Random.Range(
+            -GetActionField<ActionFloatField>(ActionFieldName.Range).value,
+            GetActionField<ActionFloatField>(ActionFieldName.Range).value
+        );
         summonY = (float)(
-            Math.Sqrt(maxRange * maxRange - summonX * summonX)
-            * (Random.Range(-1f, 1f) > 0 ? 1 : -1)
+            Math.Sqrt(
+                GetActionField<ActionFloatField>(ActionFieldName.Range).value
+                    * GetActionField<ActionFloatField>(ActionFieldName.Range).value
+                    - summonX * summonX
+            ) * (Random.Range(-1f, 1f) > 0 ? 1 : -1)
         );
         customMono.transform.position = transform.position + new Vector3(summonX, summonY, 0);
         yield return new WaitForSeconds(Random.Range(0, 0.3f));
@@ -138,6 +155,6 @@ public class TheCallOfThePack : SkillBase
         customMono.statusEffect.RemoveSlow(customMono.stat.actionSlowModifier);
         customMono.animationEventFunctionCaller.summon = false;
         customMono.animationEventFunctionCaller.endSummon = false;
-        StopCoroutine(actionIE);
+        StopCoroutine(GetActionField<ActionIEnumeratorField>(ActionFieldName.ActionIE).value);
     }
 }

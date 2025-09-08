@@ -7,9 +7,6 @@ public class RimuruCombo1 : SkillBase
     public override void Awake()
     {
         base.Awake();
-        successResult = new(true, ActionResultType.Cooldown, cooldown);
-        // dashSpeed *= Time.deltaTime;
-        // boolhash = ...
     }
 
     public override void OnEnable()
@@ -60,6 +57,11 @@ public class RimuruCombo1 : SkillBase
             new(DashSmall),
             new(FlashSmall),
         };
+        successResult = new(
+            true,
+            ActionResultType.Cooldown,
+            GetActionField<ActionFloatField>(ActionFieldName.Cooldown).value
+        );
     }
 
     public override void StatChangeRegister()
@@ -89,10 +91,16 @@ public class RimuruCombo1 : SkillBase
             customMono.movementActionBlocking = true;
             customMono.statusEffect.Slow(customMono.stat.actionSlowModifier);
             ToggleAnim(GameManager.Instance.combo1BoolHash, true);
-            StartCoroutine(actionIE = WaitCombo1(direction));
+            StartCoroutine(
+                GetActionField<ActionIEnumeratorField>(ActionFieldName.ActionIE).value = WaitCombo1(
+                    direction
+                )
+            );
             StartCoroutine(CooldownCoroutine());
             customMono.currentAction = this;
-            customMono.stat.currentManaPoint.Value -= manaCost;
+            customMono.stat.currentManaPoint.Value -= GetActionField<ActionFloatField>(
+                ActionFieldName.ManaCost
+            ).value;
 
             return successResult;
         }
@@ -129,11 +137,11 @@ public class RimuruCombo1 : SkillBase
         customMono.actionBlocking = false;
         customMono.movementActionBlocking = false;
         ToggleAnim(GameManager.Instance.combo1BoolHash, false);
-        StopCoroutine(actionIE);
+        StopCoroutine(GetActionField<ActionIEnumeratorField>(ActionFieldName.ActionIE).value);
         customMono.animationEventFunctionCaller.combo1Signal = false;
         customMono.animationEventFunctionCaller.endCombo1 = false;
-
         customMono.statusEffect.RemoveSlow(customMono.stat.actionSlowModifier);
+        Combo1Stop();
     }
 
     IEnumerator DashSmall(Vector2 p_pos, Vector2 p_dir)

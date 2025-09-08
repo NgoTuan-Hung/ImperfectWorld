@@ -8,9 +8,6 @@ public class WoodCry : SkillBase
     public override void Awake()
     {
         base.Awake();
-        cooldown = 10f;
-        successResult = new(true, ActionResultType.Cooldown, cooldown);
-        manaCost = 20f;
     }
 
     public override void OnEnable()
@@ -24,6 +21,18 @@ public class WoodCry : SkillBase
         StatChangeRegister();
     }
 
+    public override void Config()
+    {
+        GetActionField<ActionFloatField>(ActionFieldName.Cooldown).value = 10f;
+        successResult = new(
+            true,
+            ActionResultType.Cooldown,
+            GetActionField<ActionFloatField>(ActionFieldName.Cooldown).value
+        );
+        GetActionField<ActionFloatField>(ActionFieldName.ManaCost).value = 20f;
+        /* also damage, actionie */
+    }
+
     public override void StatChangeRegister()
     {
         base.StatChangeRegister();
@@ -33,7 +42,8 @@ public class WoodCry : SkillBase
     public override void RecalculateStat()
     {
         base.RecalculateStat();
-        damage = customMono.stat.wisdom.FinalValue * 0.15f;
+        GetActionField<ActionFloatField>(ActionFieldName.Damage).value =
+            customMono.stat.wisdom.FinalValue * 0.15f;
         healAmmount = customMono.stat.wisdom.FinalValue * 0.07f;
     }
 
@@ -55,7 +65,10 @@ public class WoodCry : SkillBase
 
     public override ActionResult Trigger(Vector2 location = default, Vector2 direction = default)
     {
-        if (customMono.stat.currentManaPoint.Value < manaCost)
+        if (
+            customMono.stat.currentManaPoint.Value
+            < GetActionField<ActionFloatField>(ActionFieldName.ManaCost).value
+        )
             return failResult;
         else if (canUse && !customMono.actionBlocking)
         {
@@ -63,10 +76,15 @@ public class WoodCry : SkillBase
             customMono.actionBlocking = true;
             customMono.statusEffect.Slow(customMono.stat.actionSlowModifier);
             ToggleAnim(GameManager.Instance.mainSkill2BoolHash, true);
-            StartCoroutine(actionIE = TriggerCoroutine(location, direction));
+            StartCoroutine(
+                GetActionField<ActionIEnumeratorField>(ActionFieldName.ActionIE).value =
+                    TriggerCoroutine(location, direction)
+            );
             StartCoroutine(CooldownCoroutine());
             customMono.currentAction = this;
-            customMono.stat.currentManaPoint.Value -= manaCost;
+            customMono.stat.currentManaPoint.Value -= GetActionField<ActionFloatField>(
+                ActionFieldName.ManaCost
+            ).value;
             return successResult;
         }
 
@@ -79,7 +97,6 @@ public class WoodCry : SkillBase
             yield return new WaitForSeconds(Time.fixedDeltaTime);
 
         customMono.animationEventFunctionCaller.mainSkill2Signal = false;
-        // bool t_animatorLocalScale = customMono.AnimatorWrapper.animator.transform.localScale.x > 0;
 
         CollideAndDamage t_gameEffect =
             GameManager
@@ -87,7 +104,7 @@ public class WoodCry : SkillBase
                 .gameEffect.GetBehaviour(EGameEffectBehaviour.CollideAndDamage) as CollideAndDamage;
 
         t_gameEffect.allyTags = customMono.allyTags;
-        t_gameEffect.collideDamage = damage;
+        t_gameEffect.collideDamage = GetActionField<ActionFloatField>(ActionFieldName.Damage).value;
         t_gameEffect.healAmmount = healAmmount;
         t_gameEffect.transform.position = location;
 
@@ -121,7 +138,7 @@ public class WoodCry : SkillBase
         customMono.actionBlocking = false;
         customMono.statusEffect.RemoveSlow(customMono.stat.actionSlowModifier);
         ToggleAnim(GameManager.Instance.mainSkill2BoolHash, false);
-        StopCoroutine(actionIE);
+        StopCoroutine(GetActionField<ActionIEnumeratorField>(ActionFieldName.ActionIE).value);
         customMono.animationEventFunctionCaller.mainSkill2Signal = false;
         customMono.animationEventFunctionCaller.endMainSkill2 = false;
     }

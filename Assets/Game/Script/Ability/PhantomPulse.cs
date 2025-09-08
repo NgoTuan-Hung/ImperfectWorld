@@ -6,7 +6,6 @@ public class PhantomPulse : SkillBase
     public override void Awake()
     {
         base.Awake();
-        successResult = new(true, ActionResultType.Cooldown, cooldown);
     }
 
     public override void OnEnable()
@@ -46,6 +45,11 @@ public class PhantomPulse : SkillBase
         GetActionField<ActionFloatField>(ActionFieldName.Blend).value =
             1f / (GetActionField<ActionIntField>(ActionFieldName.Variants).value - 1);
         GetActionField<ActionFloatField>(ActionFieldName.ManaCost).value = 10f;
+        successResult = new(
+            true,
+            ActionResultType.Cooldown,
+            GetActionField<ActionFloatField>(ActionFieldName.Cooldown).value
+        );
         /* Also use damage, target, selectedVariant, gameeffect, direction */
     }
 
@@ -80,7 +84,11 @@ public class PhantomPulse : SkillBase
             customMono.actionBlocking = true;
             customMono.statusEffect.Slow(customMono.stat.actionSlowModifier);
             ToggleAnim(GameManager.Instance.mainSkill2BoolHash, true);
-            StartCoroutine(actionIE = TriggerIE(direction));
+            StartCoroutine(
+                GetActionField<ActionIEnumeratorField>(ActionFieldName.ActionIE).value = TriggerIE(
+                    direction
+                )
+            );
             StartCoroutine(CooldownCoroutine());
             customMono.currentAction = this;
             customMono.stat.currentManaPoint.Value -= GetActionField<ActionFloatField>(
@@ -382,7 +390,7 @@ public class PhantomPulse : SkillBase
         customMono.actionBlocking = false;
         customMono.statusEffect.RemoveSlow(customMono.stat.actionSlowModifier);
         ToggleAnim(GameManager.Instance.mainSkill2BoolHash, false);
-        StopCoroutine(actionIE);
+        StopCoroutine(GetActionField<ActionIEnumeratorField>(ActionFieldName.ActionIE).value);
         customMono.animationEventFunctionCaller.mainSkill2Signal = false;
         customMono.animationEventFunctionCaller.endMainSkill2 = false;
     }

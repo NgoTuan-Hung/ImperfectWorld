@@ -46,7 +46,8 @@ public class MoonSlash : SkillBase
     public override void RecalculateStat()
     {
         base.RecalculateStat();
-        damage = customMono.stat.might.FinalValue * 2.3f;
+        GetActionField<ActionFloatField>(ActionFieldName.Damage).value =
+            customMono.stat.might.FinalValue * 2.3f;
     }
 
     public override void AddActionManuals()
@@ -84,7 +85,10 @@ public class MoonSlash : SkillBase
             customMono.statusEffect.Slow(customMono.stat.actionSlowModifier);
             ToggleAnim(boolHash, true);
             actionWaitInfo.stillWaiting = true;
-            StartCoroutine(actionIE = WaitingCoroutine());
+            StartCoroutine(
+                GetActionField<ActionIEnumeratorField>(ActionFieldName.ActionIE).value =
+                    WaitingCoroutine()
+            );
             customMono.currentAction = this;
             customMono.stat.currentManaPoint.Value -= GetActionField<ActionFloatField>(
                 ActionFieldName.ManaCost
@@ -223,7 +227,7 @@ public class MoonSlash : SkillBase
         customMono.statusEffect.RemoveSlow(customMono.stat.actionSlowModifier);
         ToggleAnim(boolHash, false);
         ToggleAnim(actionWaitInfo.releaseBoolHash, false);
-        StopCoroutine(actionIE);
+        StopCoroutine(GetActionField<ActionIEnumeratorField>(ActionFieldName.ActionIE).value);
         actionWaitInfo.stillWaiting = false;
         GetActionField<ActionStopWatchField>(ActionFieldName.StopWatch).value.Stop();
         customMono.animationEventFunctionCaller.endRelease = false;

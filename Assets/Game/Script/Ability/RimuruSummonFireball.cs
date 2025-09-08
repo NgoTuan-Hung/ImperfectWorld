@@ -6,7 +6,6 @@ public class RimuruSummonFireball : SkillBase
     public override void Awake()
     {
         base.Awake();
-        successResult = new(true, ActionResultType.Cooldown, cooldown);
     }
 
     public override void OnEnable()
@@ -40,7 +39,12 @@ public class RimuruSummonFireball : SkillBase
     {
         GetActionField<ActionFloatField>(ActionFieldName.Cooldown).value = 1f;
         GetActionField<ActionFloatField>(ActionFieldName.ManaCost).value = 5f;
-        /* Also use GameEffect & Damage */
+        successResult = new(
+            true,
+            ActionResultType.Cooldown,
+            GetActionField<ActionFloatField>(ActionFieldName.Cooldown).value
+        );
+        /* Also use Damage */
     }
 
     public override void StatChangeRegister()
@@ -74,7 +78,10 @@ public class RimuruSummonFireball : SkillBase
             customMono.actionBlocking = true;
             customMono.statusEffect.Slow(customMono.stat.actionSlowModifier);
             ToggleAnim(GameManager.Instance.mainSkill2BoolHash, true);
-            StartCoroutine(actionIE = WaitSpawnFireBall(direction));
+            StartCoroutine(
+                GetActionField<ActionIEnumeratorField>(ActionFieldName.ActionIE).value =
+                    WaitSpawnFireBall(direction)
+            );
             StartCoroutine(CooldownCoroutine());
             customMono.currentAction = this;
             customMono.stat.currentManaPoint.Value -= GetActionField<ActionFloatField>(
@@ -95,18 +102,10 @@ public class RimuruSummonFireball : SkillBase
 
         customMono.animationEventFunctionCaller.mainSkill2Signal = false;
 
-        GetActionField<ActionGameEffectField>(ActionFieldName.GameEffect).value =
-            GameManager.Instance.rimuruFireBallPool.PickOneGameEffect();
-
-        SetProjectile(
-            GetActionField<ActionGameEffectField>(ActionFieldName.GameEffect).value,
+        SetCombatProjectile(
+            GameManager.Instance.rimuruFireBallPool.PickOneGameEffect(),
             p_direction
         );
-        GetActionField<ActionGameEffectField>(ActionFieldName.GameEffect)
-            .value.SetUpCollideAndDamage(
-                customMono.allyTags,
-                GetActionField<ActionFloatField>(ActionFieldName.Damage).value
-            );
 
         while (!customMono.animationEventFunctionCaller.endMainSkill2)
             yield return new WaitForSeconds(Time.fixedDeltaTime);
@@ -137,7 +136,7 @@ public class RimuruSummonFireball : SkillBase
         customMono.actionBlocking = false;
         customMono.statusEffect.RemoveSlow(customMono.stat.actionSlowModifier);
         ToggleAnim(GameManager.Instance.mainSkill2BoolHash, false);
-        StopCoroutine(actionIE);
+        StopCoroutine(GetActionField<ActionIEnumeratorField>(ActionFieldName.ActionIE).value);
         customMono.animationEventFunctionCaller.mainSkill2Signal = false;
         customMono.animationEventFunctionCaller.endMainSkill2 = false;
     }

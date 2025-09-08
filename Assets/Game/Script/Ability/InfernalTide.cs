@@ -6,8 +6,6 @@ public class InfernalTide : SkillBase
     public override void Awake()
     {
         base.Awake();
-        // maxRange = 2f;
-        successResult = new(true, ActionResultType.Cooldown, cooldown);
     }
 
     public override void OnEnable()
@@ -43,6 +41,11 @@ public class InfernalTide : SkillBase
         GetActionField<ActionIntField>(ActionFieldName.EffectCount).value = 5;
         GetActionField<ActionFloatField>(ActionFieldName.Interval).value = 0.1f;
         GetActionField<ActionFloatField>(ActionFieldName.ManaCost).value = 30f;
+        successResult = new(
+            true,
+            ActionResultType.Cooldown,
+            GetActionField<ActionFloatField>(ActionFieldName.Cooldown).value
+        );
     }
 
     public override void StatChangeRegister()
@@ -76,7 +79,10 @@ public class InfernalTide : SkillBase
             customMono.actionBlocking = true;
             customMono.statusEffect.Slow(customMono.stat.actionSlowModifier);
             ToggleAnim(GameManager.Instance.mainSkill3BoolHash, true);
-            StartCoroutine(actionIE = WaitSpawnFlame(direction));
+            StartCoroutine(
+                GetActionField<ActionIEnumeratorField>(ActionFieldName.ActionIE).value =
+                    WaitSpawnFlame(direction)
+            );
             StartCoroutine(CooldownCoroutine());
             customMono.currentAction = this;
             customMono.stat.currentManaPoint.Value -= GetActionField<ActionFloatField>(
@@ -169,7 +175,7 @@ public class InfernalTide : SkillBase
         customMono.actionBlocking = false;
         customMono.statusEffect.RemoveSlow(customMono.stat.actionSlowModifier);
         ToggleAnim(GameManager.Instance.mainSkill3BoolHash, false);
-        StopCoroutine(actionIE);
+        StopCoroutine(GetActionField<ActionIEnumeratorField>(ActionFieldName.ActionIE).value);
         customMono.animationEventFunctionCaller.mainSkill3Signal = false;
         customMono.animationEventFunctionCaller.endMainSkill3 = false;
     }

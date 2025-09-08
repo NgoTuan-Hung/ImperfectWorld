@@ -7,11 +7,6 @@ public class SteelCyclone : SkillBase
     public override void Awake()
     {
         base.Awake();
-        maxAmmo = 16;
-        cooldown = 1f;
-        /* Get sprite list from res */
-        successResult = new(true, ActionResultType.Cooldown, cooldown);
-        modifiedAngle = (45f / 2).DegToRad();
     }
 
     public override void OnEnable()
@@ -41,6 +36,19 @@ public class SteelCyclone : SkillBase
         StatChangeRegister();
     }
 
+    public override void Config()
+    {
+        GetActionField<ActionIntField>(ActionFieldName.EffectCount).value = 16;
+        GetActionField<ActionFloatField>(ActionFieldName.Cooldown).value = 1f;
+        successResult = new(
+            true,
+            ActionResultType.Cooldown,
+            GetActionField<ActionFloatField>(ActionFieldName.Cooldown).value
+        );
+        GetActionField<ActionFloatField>(ActionFieldName.Angle).value = (45f / 2).DegToRad();
+        /* Also use damage, gameeffect */
+    }
+
     public override void StatChangeRegister()
     {
         base.StatChangeRegister();
@@ -50,7 +58,10 @@ public class SteelCyclone : SkillBase
     public override void RecalculateStat()
     {
         base.RecalculateStat();
-        damage = customMono.stat.wisdom.FinalValue;
+        GetActionField<ActionFloatField>(ActionFieldName.Damage).value = customMono
+            .stat
+            .wisdom
+            .FinalValue;
     }
 
     public override ActionResult Trigger(Vector2 location = default, Vector2 direction = default)
@@ -61,23 +72,31 @@ public class SteelCyclone : SkillBase
             customMono.actionBlocking = true;
             StartCoroutine(CooldownCoroutine());
 
-            GameEffect t_kunai;
-            CollideAndDamage t_collideAndDamage;
-            for (int i = 0; i < maxAmmo; i++)
+            for (
+                int i = 0;
+                i < GetActionField<ActionIntField>(ActionFieldName.EffectCount).value;
+                i++
+            )
             {
-                t_kunai = GameManager.Instance.kunaiPool.PickOne().gameEffect;
+                GetActionField<ActionGameEffectField>(ActionFieldName.GameEffect).value =
+                    GameManager.Instance.kunaiPool.PickOne().gameEffect;
+                GetActionField<ActionGameEffectField>(ActionFieldName.GameEffect)
+                    .value.SetUpCollideAndDamage(
+                        customMono.allyTags,
+                        GetActionField<ActionFloatField>(ActionFieldName.Damage).value
+                    );
 
-                t_collideAndDamage =
-                    t_kunai.GetBehaviour(EGameEffectBehaviour.CollideAndDamage) as CollideAndDamage;
-                t_collideAndDamage.allyTags = customMono.allyTags;
-                t_collideAndDamage.collideDamage = damage;
-
-                t_kunai.transform.position = customMono.rotationAndCenterObject.transform.position;
-                t_kunai.KeepFlyingAt(
-                    Vector2.right.RotateZ(i * modifiedAngle),
-                    true,
-                    EasingType.OutQuint
-                );
+                GetActionField<ActionGameEffectField>(
+                    ActionFieldName.GameEffect
+                ).value.transform.position = customMono.rotationAndCenterObject.transform.position;
+                GetActionField<ActionGameEffectField>(ActionFieldName.GameEffect)
+                    .value.KeepFlyingAt(
+                        Vector2.right.RotateZ(
+                            i * GetActionField<ActionFloatField>(ActionFieldName.Angle).value
+                        ),
+                        true,
+                        EasingType.OutQuint
+                    );
             }
 
             customMono.actionBlocking = false;

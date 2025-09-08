@@ -7,18 +7,21 @@ public class Slaughter : SkillBase
     {
         base.Awake();
         audioClip = Resources.Load<AudioClip>("AudioClip/slaughter");
-        cooldown = defaultCooldown = 1f;
-        maxAmmo = 10;
-        manaCost = 5f;
+        AddActionManuals();
     }
 
     IEnumerator RefillAmmo()
     {
         while (true)
         {
-            if (currentAmmo < maxAmmo)
+            if (
+                GetActionField<ActionIntField>(ActionFieldName.UseCount).value
+                < GetActionField<ActionIntField>(ActionFieldName.MaxUseCount).value
+            )
             {
-                yield return new WaitForSeconds(cooldown);
+                yield return new WaitForSeconds(
+                    GetActionField<ActionFloatField>(ActionFieldName.Cooldown).value
+                );
                 AddAmmo(1);
             }
             else
@@ -26,10 +29,10 @@ public class Slaughter : SkillBase
         }
     }
 
-    public override void AddAmmo(int ammount)
+    public void AddAmmo(int ammount)
     {
-        base.AddAmmo(ammount);
-        if (currentAmmo > 0)
+        GetActionField<ActionIntField>(ActionFieldName.UseCount).value += ammount;
+        if (GetActionField<ActionIntField>(ActionFieldName.UseCount).value > 0)
             botActionManuals[0].actionChanceAjuster = 100;
         else
             botActionManuals[0].actionChanceAjuster = 0;
@@ -38,7 +41,14 @@ public class Slaughter : SkillBase
     public override void OnEnable()
     {
         base.OnEnable();
-        currentAmmo = maxAmmo;
+        StartCoroutine(LateEnable());
+    }
+
+    IEnumerator LateEnable()
+    {
+        yield return null;
+        GetActionField<ActionIntField>(ActionFieldName.UseCount).value =
+            GetActionField<ActionIntField>(ActionFieldName.MaxUseCount).value;
         StartCoroutine(RefillAmmo());
     }
 
@@ -46,6 +56,14 @@ public class Slaughter : SkillBase
     {
         base.Start();
         StatChangeRegister();
+    }
+
+    public override void Config()
+    {
+        GetActionField<ActionFloatField>(ActionFieldName.Cooldown).value = 1f;
+        GetActionField<ActionIntField>(ActionFieldName.MaxUseCount).value = 10;
+        GetActionField<ActionFloatField>(ActionFieldName.ManaCost).value = 5f;
+        /* Also use actionie, damage, gameeffect, usageCount */
     }
 
     public override void StatChangeRegister()
@@ -57,7 +75,10 @@ public class Slaughter : SkillBase
     public override void RecalculateStat()
     {
         base.RecalculateStat();
-        damage = customMono.stat.might.FinalValue;
+        GetActionField<ActionFloatField>(ActionFieldName.Damage).value = customMono
+            .stat
+            .might
+            .FinalValue;
     }
 
     public override void AddActionManuals()
@@ -73,9 +94,16 @@ public class Slaughter : SkillBase
     automatically (RefillAmmo coroutine). */
     public override ActionResult Trigger(Vector2 location = default, Vector2 direction = default)
     {
-        if (customMono.stat.currentManaPoint.Value < manaCost)
+        if (
+            customMono.stat.currentManaPoint.Value
+            < GetActionField<ActionFloatField>(ActionFieldName.ManaCost).value
+        )
             return failResult;
-        else if (canUse && !customMono.actionBlocking && currentAmmo > 0)
+        else if (
+            canUse
+            && !customMono.actionBlocking
+            && GetActionField<ActionIntField>(ActionFieldName.UseCount).value > 0
+        )
         {
             canUse = false;
             customMono.actionBlocking = true;
@@ -83,25 +111,29 @@ public class Slaughter : SkillBase
             customMono.audioSource.PlayOneShot(audioClip);
             AddAmmo(-1);
             ToggleAnim(GameManager.Instance.mainSkill1BoolHash, true);
-            StartCoroutine(actionIE = EndAnimWaitCoroutine());
+            StartCoroutine(
+                GetActionField<ActionIEnumeratorField>(ActionFieldName.ActionIE).value =
+                    EndAnimWaitCoroutine()
+            );
             customMono.currentAction = this;
-            customMono.stat.currentManaPoint.Value -= manaCost;
+            customMono.stat.currentManaPoint.Value -= GetActionField<ActionFloatField>(
+                ActionFieldName.ManaCost
+            ).value;
 
             customMono.SetUpdateDirectionIndicator(direction, UpdateDirectionIndicatorPriority.Low);
-            GameEffect t_projectileEffect = GameManager
+            GetActionField<ActionGameEffectField>(ActionFieldName.GameEffect).value = GameManager
                 .Instance.slaughterProjectilePool.PickOne()
                 .gameEffect;
-            var t_collideAndDamage =
-                t_projectileEffect.GetBehaviour(EGameEffectBehaviour.CollideAndDamage)
-                as CollideAndDamage;
-            t_collideAndDamage.allyTags = customMono.allyTags;
-            t_collideAndDamage.collideDamage = damage;
-            t_projectileEffect.transform.position = customMono.firePoint.transform.position;
-            t_projectileEffect.transform.rotation = Quaternion.Euler(
-                0,
-                0,
-                Vector2.SignedAngle(Vector2.right, direction)
-            );
+            GetActionField<ActionGameEffectField>(ActionFieldName.GameEffect)
+                .value.SetUpCollideAndDamage(
+                    customMono.allyTags,
+                    GetActionField<ActionFloatField>(ActionFieldName.Damage).value
+                );
+            GetActionField<ActionGameEffectField>(ActionFieldName.GameEffect)
+                .value.transform.SetPositionAndRotation(
+                    customMono.firePoint.transform.position,
+                    Quaternion.Euler(0, 0, Vector2.SignedAngle(Vector2.right, direction))
+                );
 
             /* Place the projectile slightly above our current fire direction so:
             | (place it here instead)
@@ -111,11 +143,15 @@ public class Slaughter : SkillBase
             |
             |
             | (or place it here)*/
-            t_projectileEffect.transform.position +=
-                t_projectileEffect.transform.TransformDirection(Vector3.up).normalized
-                * Random.Range(-0.3f, 0.3f);
+            GetActionField<ActionGameEffectField>(
+                ActionFieldName.GameEffect
+            ).value.transform.position +=
+                GetActionField<ActionGameEffectField>(ActionFieldName.GameEffect)
+                    .value.transform.TransformDirection(Vector3.up)
+                    .normalized * Random.Range(-0.3f, 0.3f);
 
-            t_projectileEffect.KeepFlyingAt(direction);
+            GetActionField<ActionGameEffectField>(ActionFieldName.GameEffect)
+                .value.KeepFlyingAt(direction);
 
             return successResult;
         }
@@ -148,7 +184,7 @@ public class Slaughter : SkillBase
         customMono.actionBlocking = false;
         customMono.statusEffect.RemoveSlow(customMono.stat.actionSlowModifier);
         ToggleAnim(GameManager.Instance.mainSkill1BoolHash, false);
-        StopCoroutine(actionIE);
+        StopCoroutine(GetActionField<ActionIEnumeratorField>(ActionFieldName.ActionIE).value);
         customMono.animationEventFunctionCaller.mainSkill1AS.end = false;
     }
 }

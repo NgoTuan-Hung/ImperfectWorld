@@ -6,8 +6,6 @@ public class HeliosGaze : SkillBase
     public override void Awake()
     {
         base.Awake();
-        successResult = new(true, ActionResultType.Cooldown, cooldown);
-        cooldown = .5f;
 
         AddActionManuals();
     }
@@ -41,6 +39,11 @@ public class HeliosGaze : SkillBase
         GetActionField<ActionFloatField>(ActionFieldName.Cooldown).value = 0.5f;
         GetActionField<ActionFloatField>(ActionFieldName.ManaCost).value = 5f;
         GetActionField<ActionFloatField>(ActionFieldName.Interval).value = .5f;
+        successResult = new(
+            true,
+            ActionResultType.Cooldown,
+            GetActionField<ActionFloatField>(ActionFieldName.Cooldown).value
+        );
     }
 
     public override void StatChangeRegister()

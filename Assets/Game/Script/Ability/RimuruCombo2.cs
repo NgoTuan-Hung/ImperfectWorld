@@ -7,9 +7,6 @@ public class RimuruCombo2 : SkillBase
     public override void Awake()
     {
         base.Awake();
-        successResult = new(true, ActionResultType.Cooldown, cooldown);
-        // dashSpeed *= Time.deltaTime;
-        // boolhash = ...
     }
 
     public override void OnEnable()
@@ -51,6 +48,11 @@ public class RimuruCombo2 : SkillBase
         GetActionField<ActionFloatField>(ActionFieldName.ManaCost).value = 0f;
         GetActionField<ActionIntField>(ActionFieldName.Variants).value = 2;
         ConfigCombo2();
+        successResult = new(
+            true,
+            ActionResultType.Cooldown,
+            GetActionField<ActionFloatField>(ActionFieldName.Cooldown).value
+        );
     }
 
     public override void StatChangeRegister()
@@ -79,10 +81,16 @@ public class RimuruCombo2 : SkillBase
             customMono.actionBlocking = true;
             customMono.statusEffect.Slow(customMono.stat.actionSlowModifier);
             ToggleAnim(GameManager.Instance.combo2BoolHash, true);
-            StartCoroutine(actionIE = WaitCombo2(direction));
+            StartCoroutine(
+                GetActionField<ActionIEnumeratorField>(ActionFieldName.ActionIE).value = WaitCombo2(
+                    direction
+                )
+            );
             StartCoroutine(CooldownCoroutine());
             customMono.currentAction = this;
-            customMono.stat.currentManaPoint.Value -= manaCost;
+            customMono.stat.currentManaPoint.Value -= GetActionField<ActionFloatField>(
+                ActionFieldName.ManaCost
+            ).value;
 
             return successResult;
         }
@@ -117,10 +125,10 @@ public class RimuruCombo2 : SkillBase
         base.ActionInterrupt();
         customMono.actionBlocking = false;
         ToggleAnim(GameManager.Instance.combo2BoolHash, false);
-        StopCoroutine(actionIE);
+        StopCoroutine(GetActionField<ActionIEnumeratorField>(ActionFieldName.ActionIE).value);
         customMono.animationEventFunctionCaller.combo2Signal = false;
         customMono.animationEventFunctionCaller.endCombo2 = false;
-
         customMono.statusEffect.RemoveSlow(customMono.stat.actionSlowModifier);
+        Combo2Stop();
     }
 }

@@ -6,9 +6,6 @@ public class RayOfJungle : SkillBase
     public override void Awake()
     {
         base.Awake();
-        cooldown = 5f;
-        successResult = new(true, ActionResultType.Cooldown, cooldown);
-        manaCost = 15f;
     }
 
     public override void OnEnable()
@@ -38,6 +35,18 @@ public class RayOfJungle : SkillBase
         StatChangeRegister();
     }
 
+    public override void Config()
+    {
+        GetActionField<ActionFloatField>(ActionFieldName.Cooldown).value = 5f;
+        GetActionField<ActionFloatField>(ActionFieldName.ManaCost).value = 15f;
+        successResult = new(
+            true,
+            ActionResultType.Cooldown,
+            GetActionField<ActionFloatField>(ActionFieldName.Cooldown).value
+        );
+        /* Also use actionie , damage*/
+    }
+
     public override void StatChangeRegister()
     {
         base.StatChangeRegister();
@@ -47,12 +56,16 @@ public class RayOfJungle : SkillBase
     public override void RecalculateStat()
     {
         base.RecalculateStat();
-        damage = customMono.stat.reflex.FinalValue * 0.11f;
+        GetActionField<ActionFloatField>(ActionFieldName.Damage).value =
+            customMono.stat.reflex.FinalValue * 0.11f;
     }
 
     public override ActionResult Trigger(Vector2 location = default, Vector2 direction = default)
     {
-        if (customMono.stat.currentManaPoint.Value < manaCost)
+        if (
+            customMono.stat.currentManaPoint.Value
+            < GetActionField<ActionFloatField>(ActionFieldName.ManaCost).value
+        )
             return failResult;
         else if (canUse && !customMono.actionBlocking)
         {
@@ -60,10 +73,17 @@ public class RayOfJungle : SkillBase
             customMono.actionBlocking = true;
             customMono.statusEffect.Slow(customMono.stat.actionSlowModifier);
             ToggleAnim(GameManager.Instance.mainSkill1BoolHash, true);
-            StartCoroutine(actionIE = TriggerIE(location, direction));
+            StartCoroutine(
+                GetActionField<ActionIEnumeratorField>(ActionFieldName.ActionIE).value = TriggerIE(
+                    location,
+                    direction
+                )
+            );
             StartCoroutine(CooldownCoroutine());
             customMono.currentAction = this;
-            customMono.stat.currentManaPoint.Value -= manaCost;
+            customMono.stat.currentManaPoint.Value -= GetActionField<ActionFloatField>(
+                ActionFieldName.ManaCost
+            ).value;
             return successResult;
         }
 
@@ -78,32 +98,9 @@ public class RayOfJungle : SkillBase
             yield return new WaitForSeconds(Time.fixedDeltaTime);
 
         customMono.animationEventFunctionCaller.mainSkill1AS.signal = false;
-        customMono.rotationAndCenterObject.transform.localRotation = Quaternion.identity;
-        GameEffect t_rayOfJungleBeam = GameManager
-            .Instance.rayOfJungleBeamPool.PickOne()
-            .gameEffect;
-        t_rayOfJungleBeam.transform.parent = customMono.rotationAndCenterObject.transform;
-        t_rayOfJungleBeam.transform.SetLocalPositionAndRotation(
-            t_rayOfJungleBeam.gameEffectSO.effectLocalPosition,
-            Quaternion.Euler(t_rayOfJungleBeam.gameEffectSO.effectLocalRotation)
-        );
-        t_rayOfJungleBeam.transform.localScale = Vector3.one;
-        var t_collideAndDamage =
-            t_rayOfJungleBeam.GetBehaviour(EGameEffectBehaviour.CollideAndDamage)
-            as CollideAndDamage;
-        t_collideAndDamage.allyTags = customMono.allyTags;
-        t_collideAndDamage.collideDamage = damage;
-        customMono.rotationAndCenterObject.transform.localScale = new(
-            customMono.directionModifier.transform.localScale.x > 0 ? 1 : -1,
-            1,
-            1
-        );
-        customMono.rotationAndCenterObject.transform.Rotate(
-            Vector3.forward,
-            Vector2.SignedAngle(
-                customMono.rotationAndCenterObject.transform.localScale.WithY(0),
-                p_direction
-            )
+        SpawnEffectAsChild(
+            p_direction,
+            GameManager.Instance.rayOfJungleBeamPool.PickOneGameEffect()
         );
 
         while (!customMono.animationEventFunctionCaller.mainSkill1AS.end)
@@ -134,7 +131,7 @@ public class RayOfJungle : SkillBase
         base.ActionInterrupt();
         customMono.actionBlocking = false;
         ToggleAnim(GameManager.Instance.mainSkill1BoolHash, false);
-        StopCoroutine(actionIE);
+        StopCoroutine(GetActionField<ActionIEnumeratorField>(ActionFieldName.ActionIE).value);
         customMono.animationEventFunctionCaller.mainSkill1AS.signal = false;
         customMono.animationEventFunctionCaller.mainSkill1AS.end = false;
         customMono.statusEffect.RemoveSlow(customMono.stat.actionSlowModifier);

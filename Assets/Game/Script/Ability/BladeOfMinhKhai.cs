@@ -7,9 +7,6 @@ public class BladeOfMinhKhai : SkillBase
     public override void Awake()
     {
         base.Awake();
-        successResult = new(true, ActionResultType.Cooldown, cooldown);
-        // dashSpeed *= Time.deltaTime;
-        // boolhash = ...
         AddActionManuals();
     }
 
@@ -57,12 +54,17 @@ public class BladeOfMinhKhai : SkillBase
 
     public override void Config()
     {
-        GetActionField<ActionFloatField>(ActionFieldName.Duration).value = 0.203f;
+        GetActionField<ActionFloatField>(ActionFieldName.Duration).value = 0.1f;
         GetActionField<ActionFloatField>(ActionFieldName.Cooldown).value = 5f;
         GetActionField<ActionFloatField>(ActionFieldName.LifeStealPercent).value = 0.25f;
         GetActionField<ActionFloatField>(ActionFieldName.ManaCost).value = 10f;
         GetActionField<ActionFloatField>(ActionFieldName.CurrentTime).value = 0;
-        GetActionField<ActionFloatField>(ActionFieldName.Speed).value = 40f * Time.fixedDeltaTime;
+        GetActionField<ActionFloatField>(ActionFieldName.Speed).value = 0.3f;
+        successResult = new(
+            true,
+            ActionResultType.Cooldown,
+            GetActionField<ActionFloatField>(ActionFieldName.Cooldown).value
+        );
         // also actionIE and actionIE1
     }
 
@@ -141,7 +143,7 @@ public class BladeOfMinhKhai : SkillBase
 
         customMono.animationEventFunctionCaller.mainSkill1AS.signal = false;
 
-        SpawnEffectAsChild(
+        SpawnBasicCombatEffectAsChild(
             p_direction,
             GameManager.Instance.bladeOfMinhKhaiSlashEffectPool.PickOneGameEffect(),
             SetupCAD

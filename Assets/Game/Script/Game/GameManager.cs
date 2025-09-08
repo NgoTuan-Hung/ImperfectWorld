@@ -150,11 +150,14 @@ public partial class GameManager : MonoBehaviour
                     ActionFieldName.Direction => typeof(ActionVector3Field),
                     ActionFieldName.Blend => typeof(ActionFloatField),
                     ActionFieldName.Target => typeof(ActionCustomMonoField),
-                    ActionFieldName.IsNextPhase => typeof(ActionBoolField),
+                    ActionFieldName.CurrentPhase => typeof(ActionIntField),
                     ActionFieldName.ComboActions => typeof(ActionListComboActionField),
                     ActionFieldName.ComboEndAction => typeof(ActionActionField),
                     ActionFieldName.Distance => typeof(ActionFloatField),
                     ActionFieldName.SeletecdVariant => typeof(ActionIntField),
+                    ActionFieldName.AllPhases => typeof(ActionIntField),
+                    ActionFieldName.UseCount => typeof(ActionIntField),
+                    ActionFieldName.MaxUseCount => typeof(ActionIntField),
                     _ => null,
                 }
             );

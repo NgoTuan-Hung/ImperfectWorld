@@ -9,7 +9,6 @@ public class Scatter : SkillBase
     ActionWaitInfo actionWaitInfo = new();
     GameEffect scatterChargeGameEffect;
     public static List<List<float>> arrowAnglesAtPhases;
-    public long realInterval;
     SpriteRenderer scatterArrowPhaseIcon;
     public static Vector3 punch;
     public static float punchDuration = 0.5f,
@@ -20,31 +19,6 @@ public class Scatter : SkillBase
     public override void Awake()
     {
         base.Awake();
-        cooldown = 5f;
-        boolHash = Animator.StringToHash("Charge");
-        audioClip = Resources.Load<AudioClip>("AudioClip/scatter-release");
-        actionWaitInfo.releaseBoolHash = Animator.StringToHash("Release");
-        damage = defaultDamage = 30f;
-        /* In this skill ammo mean phase */
-        currentAmmo = 0;
-        maxAmmo = 3;
-        realInterval = (long)(0.5 * 1000);
-
-        arrowAnglesAtPhases ??= new()
-        {
-            new List<float> { 0f.DegToRad() },
-            new List<float> { -30f.DegToRad(), 30f.DegToRad() },
-            new List<float> { 0f.DegToRad(), -30f.DegToRad(), 30f.DegToRad() },
-        };
-        successResult = new(true, ActionResultType.Cooldown, cooldown);
-        scatterArrowPhaseIcon = transform
-            .Find("ScatterArrowPhaseIcon")
-            .GetComponent<SpriteRenderer>();
-        punch = new(0.2f, 0.2f);
-        punchDuration = 0.5f;
-        elasticity = 0;
-        vibrato = 10;
-        manaCost = 30f;
     }
 
     public override void OnEnable()
@@ -62,6 +36,42 @@ public class Scatter : SkillBase
         StatChangeRegister();
     }
 
+    public override void Config()
+    {
+        GetActionField<ActionFloatField>(ActionFieldName.Cooldown).value = 5f;
+        boolHash = Animator.StringToHash("Charge");
+        audioClip = Resources.Load<AudioClip>("AudioClip/scatter-release");
+        actionWaitInfo.releaseBoolHash = Animator.StringToHash("Release");
+        /* In this skill ammo mean phase */
+        GetActionField<ActionIntField>(ActionFieldName.CurrentPhase).value = 0;
+        GetActionField<ActionIntField>(ActionFieldName.AllPhases).value = 3;
+        GetActionField<ActionFloatField>(ActionFieldName.Interval).value = 0.5f;
+
+        arrowAnglesAtPhases ??= new()
+        {
+            new List<float> { 0f.DegToRad() },
+            new List<float> { -30f.DegToRad(), 30f.DegToRad() },
+            new List<float> { 0f.DegToRad(), -30f.DegToRad(), 30f.DegToRad() },
+        };
+        successResult = new(
+            true,
+            ActionResultType.Cooldown,
+            GetActionField<ActionFloatField>(ActionFieldName.Cooldown).value
+        );
+        scatterArrowPhaseIcon = transform
+            .Find("ScatterArrowPhaseIcon")
+            .GetComponent<SpriteRenderer>();
+
+        punch = new(0.2f, 0.2f);
+        punchDuration = 0.5f;
+        elasticity = 0;
+        vibrato = 10;
+        GetActionField<ActionFloatField>(ActionFieldName.ManaCost).value = 30f;
+        GetActionField<ActionStopWatchField>(ActionFieldName.StopWatch).value = new();
+
+        /* Also use damage, actionIE */
+    }
+
     public override void StatChangeRegister()
     {
         base.StatChangeRegister();
@@ -71,7 +81,8 @@ public class Scatter : SkillBase
     public override void RecalculateStat()
     {
         base.RecalculateStat();
-        damage = customMono.stat.wisdom.FinalValue * 1.5f;
+        GetActionField<ActionFloatField>(ActionFieldName.Damage).value =
+            customMono.stat.wisdom.FinalValue * 1.5f;
     }
 
     public override void AddActionManuals()
@@ -102,7 +113,10 @@ public class Scatter : SkillBase
 
     public override ActionResult StartAndWait()
     {
-        if (customMono.stat.currentManaPoint.Value < manaCost)
+        if (
+            customMono.stat.currentManaPoint.Value
+            < GetActionField<ActionFloatField>(ActionFieldName.ManaCost).value
+        )
             return failResult;
         else if (canUse && !customMono.actionBlocking)
         {
@@ -111,9 +125,14 @@ public class Scatter : SkillBase
             customMono.statusEffect.Slow(customMono.stat.actionSlowModifier);
             ToggleAnim(boolHash, true);
             actionWaitInfo.stillWaiting = true;
-            StartCoroutine(actionIE = WaitingCoroutine());
+            StartCoroutine(
+                GetActionField<ActionIEnumeratorField>(ActionFieldName.ActionIE).value =
+                    WaitingCoroutine()
+            );
             customMono.currentAction = this;
-            customMono.stat.currentManaPoint.Value -= manaCost;
+            customMono.stat.currentManaPoint.Value -= GetActionField<ActionFloatField>(
+                ActionFieldName.ManaCost
+            ).value;
 
             return successResult;
         }
@@ -126,68 +145,58 @@ public class Scatter : SkillBase
         scatterChargeGameEffect = GameManager.Instance.scatterChargePool.PickOne().gameEffect;
         scatterChargeGameEffect.Follow(transform);
 
-        stopwatch.Restart();
-        currentAmmo = 0;
+        GetActionField<ActionStopWatchField>(ActionFieldName.StopWatch).value.Restart();
+        GetActionField<ActionIntField>(ActionFieldName.CurrentPhase).value = 0;
         while (actionWaitInfo.stillWaiting)
         {
             yield return null;
 
-            if (currentAmmo < maxAmmo)
+            if (
+                GetActionField<ActionIntField>(ActionFieldName.CurrentPhase).value
+                < GetActionField<ActionIntField>(ActionFieldName.AllPhases).value
+            )
             {
-                if (stopwatch.ElapsedMilliseconds > realInterval)
+                if (
+                    GetActionField<ActionStopWatchField>(
+                        ActionFieldName.StopWatch
+                    ).value.Elapsed.TotalSeconds
+                    > GetActionField<ActionFloatField>(ActionFieldName.Interval).value
+                )
                 {
-                    currentAmmo++;
+                    GetActionField<ActionIntField>(ActionFieldName.CurrentPhase).value++;
                     HandleIcon();
 
-                    stopwatch.Restart();
+                    GetActionField<ActionStopWatchField>(ActionFieldName.StopWatch).value.Restart();
                 }
             }
         }
 
-        stopwatch.Stop();
+        GetActionField<ActionStopWatchField>(ActionFieldName.StopWatch).value.Stop();
         scatterChargeGameEffect.deactivate();
         StartCoroutine(CooldownCoroutine());
         scatterArrowPhaseIcon.gameObject.SetActive(false);
         iconTweener?.Kill();
 
-        if (currentAmmo > 0)
+        if (GetActionField<ActionIntField>(ActionFieldName.CurrentPhase).value > 0)
         {
             ToggleAnim(actionWaitInfo.releaseBoolHash, true);
             ToggleAnim(boolHash, false);
             customMono.audioSource.PlayOneShot(audioClip);
 
-            GameEffect t_scatterFlashEffect = GameManager
-                .Instance.scatterFlashPool.PickOne()
-                .gameEffect;
-            t_scatterFlashEffect.transform.position = customMono.firePoint.transform.position;
+            SpawnEffectAsChild(
+                Vector2.zero,
+                GameManager.Instance.scatterFlashPool.PickOneGameEffect()
+            );
 
-            GameEffect t_scatterArrowGameEffect;
-            CollideAndDamage t_collideAndDamage;
-            arrowAnglesAtPhases[currentAmmo - 1]
+            arrowAnglesAtPhases[
+                GetActionField<ActionIntField>(ActionFieldName.CurrentPhase).value - 1
+            ]
                 .ForEach(arrowAngle =>
                 {
-                    t_scatterArrowGameEffect = GameManager
-                        .Instance.scatterArrowPool.PickOne()
-                        .gameEffect;
-                    t_collideAndDamage =
-                        t_scatterArrowGameEffect.GetBehaviour(EGameEffectBehaviour.CollideAndDamage)
-                        as CollideAndDamage;
-                    t_collideAndDamage.allyTags = customMono.allyTags;
-                    t_collideAndDamage.collideDamage = damage;
-
-                    t_scatterArrowGameEffect.transform.SetPositionAndRotation(
-                        customMono.firePoint.transform.position,
-                        Quaternion.Euler(
-                            0,
-                            0,
-                            Vector2.SignedAngle(
-                                Vector2.right,
-                                actionWaitInfo.finalDirection.RotateZ(arrowAngle)
-                            )
-                        )
+                    SetCombatProjectile(
+                        GameManager.Instance.scatterArrowPool.PickOneGameEffect(),
+                        actionWaitInfo.finalDirection.RotateZ(arrowAngle)
                     );
-
-                    t_scatterArrowGameEffect.KeepFlyingForward();
                 });
 
             while (!customMono.animationEventFunctionCaller.endRelease)
@@ -211,7 +220,7 @@ public class Scatter : SkillBase
     private void HandleIcon()
     {
         scatterArrowPhaseIcon.gameObject.SetActive(true);
-        switch (currentAmmo)
+        switch (GetActionField<ActionIntField>(ActionFieldName.CurrentPhase).value)
         {
             case 1:
             {
@@ -275,9 +284,9 @@ public class Scatter : SkillBase
         customMono.statusEffect.RemoveSlow(customMono.stat.actionSlowModifier);
         ToggleAnim(boolHash, false);
         ToggleAnim(actionWaitInfo.releaseBoolHash, false);
-        StopCoroutine(actionIE);
+        StopCoroutine(GetActionField<ActionIEnumeratorField>(ActionFieldName.ActionIE).value);
         actionWaitInfo.stillWaiting = false;
-        stopwatch.Stop();
+        GetActionField<ActionStopWatchField>(ActionFieldName.StopWatch).value.Stop();
         /* In case this is used somewhere we don't know*/
         if (scatterChargeGameEffect.gameObject.activeSelf)
             scatterChargeGameEffect.deactivate();

@@ -12,11 +12,10 @@ public class Attackable : SkillBase
         base.Awake();
         boolHash = Animator.StringToHash("Attack");
         audioClip = customMono.attackAudioClip;
-        cooldown = defaultCooldown = defaultStateSpeed = 1f;
+
         if (customMono.attackType == AttackType.Melee)
         {
             Attack = MeleeAttack;
-            damage = defaultDamage = 5f;
             botActionManuals.Add(
                 new BotActionManual(
                     ActionUse.MeleeDamage,
@@ -32,7 +31,6 @@ public class Attackable : SkillBase
         else
         {
             Attack = RangedAttack;
-            damage = defaultDamage = 2.5f;
             botActionManuals.Add(
                 new BotActionManual(
                     ActionUse.RangedDamage,
@@ -45,7 +43,6 @@ public class Attackable : SkillBase
                 )
             );
         }
-        successResult = new(true, ActionResultType.Cooldown, cooldown);
 
         AddActionManuals();
     }
@@ -67,6 +64,26 @@ public class Attackable : SkillBase
         StatChangeRegister();
     }
 
+    public override void Config()
+    {
+        if (customMono.attackType == AttackType.Melee)
+            GetActionField<ActionFloatField>(ActionFieldName.Damage).value = 5f;
+        else
+            GetActionField<ActionFloatField>(ActionFieldName.Damage).value = 2.5f;
+
+        GetActionField<ActionFloatField>(ActionFieldName.Cooldown).value =
+            defaultCooldown =
+            defaultStateSpeed =
+                1f;
+        successResult = new(
+            true,
+            ActionResultType.Cooldown,
+            GetActionField<ActionFloatField>(ActionFieldName.Cooldown).value
+        );
+
+        /* also damage, actionIE */
+    }
+
     public override void StatChangeRegister()
     {
         base.StatChangeRegister();
@@ -78,7 +95,8 @@ public class Attackable : SkillBase
                 "AttackAnimSpeed",
                 defaultStateSpeed * customMono.stat.attackSpeed.FinalValue
             );
-            cooldown = defaultCooldown / customMono.stat.attackSpeed.FinalValue;
+            GetActionField<ActionFloatField>(ActionFieldName.Cooldown).value =
+                defaultCooldown / customMono.stat.attackSpeed.FinalValue;
             botActionManuals[0].doActionParamInfo.nextActionChoosingIntervalProposal =
                 0.5f / customMono.stat.attackSpeed.FinalValue;
 
@@ -101,7 +119,10 @@ public class Attackable : SkillBase
             customMono.actionBlocking = true;
             customMono.statusEffect.Slow(customMono.stat.actionSlowModifier);
             ToggleAnim(boolHash, true);
-            StartCoroutine(actionIE = MeleeAttackCoroutine(attackDirection));
+            StartCoroutine(
+                GetActionField<ActionIEnumeratorField>(ActionFieldName.ActionIE).value =
+                    MeleeAttackCoroutine(attackDirection)
+            );
             StartCoroutine(CooldownCoroutine());
             customMono.currentAction = this;
             return successResult;
@@ -129,7 +150,9 @@ public class Attackable : SkillBase
             customMono.meleeCollisionEffectSO;
         attackCollider.allyTags = customMono.allyTags;
         attackCollider.transform.position = customMono.firePoint.transform.position;
-        attackCollider.collideDamage = damage;
+        attackCollider.collideDamage = GetActionField<ActionFloatField>(
+            ActionFieldName.Damage
+        ).value;
         attackCollider.GameEffect.rigidbody2D.AddForce(
             attackDirection.normalized * colliderForce,
             ForceMode2D.Impulse
@@ -153,7 +176,10 @@ public class Attackable : SkillBase
             customMono.actionBlocking = true;
             customMono.statusEffect.Slow(customMono.stat.actionSlowModifier);
             ToggleAnim(boolHash, true);
-            StartCoroutine(actionIE = RangedAttackCoroutine(attackDirection));
+            StartCoroutine(
+                GetActionField<ActionIEnumeratorField>(ActionFieldName.ActionIE).value =
+                    RangedAttackCoroutine(attackDirection)
+            );
             StartCoroutine(CooldownCoroutine());
             customMono.currentAction = this;
             return successResult;
@@ -181,7 +207,9 @@ public class Attackable : SkillBase
             t_projectileEffect.GetBehaviour(EGameEffectBehaviour.CollideAndDamage)
             as CollideAndDamage;
         t_collideAndDamage.allyTags = customMono.allyTags;
-        t_collideAndDamage.collideDamage = damage;
+        t_collideAndDamage.collideDamage = GetActionField<ActionFloatField>(
+            ActionFieldName.Damage
+        ).value;
         t_projectileEffect.transform.position = customMono.firePoint.transform.position;
         t_projectileEffect.transform.rotation = Quaternion.Euler(
             0,
@@ -234,7 +262,7 @@ public class Attackable : SkillBase
         customMono.statusEffect.RemoveSlow(customMono.stat.actionSlowModifier);
         customMono.actionBlocking = false;
         ToggleAnim(boolHash, false);
-        StopCoroutine(actionIE);
+        StopCoroutine(GetActionField<ActionIEnumeratorField>(ActionFieldName.ActionIE).value);
         customMono.animationEventFunctionCaller.endAttack = false;
         customMono.animationEventFunctionCaller.attack = false;
     }
