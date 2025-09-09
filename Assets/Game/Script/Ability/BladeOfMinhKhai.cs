@@ -138,10 +138,14 @@ public class BladeOfMinhKhai : SkillBase
 
     IEnumerator WaitSpawnSlashSignal(Vector3 p_direction)
     {
-        while (!customMono.animationEventFunctionCaller.mainSkill1AS.signal)
+        while (
+            !customMono.animationEventFunctionCaller.GetSignalVals(
+                EAnimationSignal.MainSkill1Signal
+            )
+        )
             yield return new WaitForSeconds(Time.fixedDeltaTime);
 
-        customMono.animationEventFunctionCaller.mainSkill1AS.signal = false;
+        customMono.animationEventFunctionCaller.SetSignal(EAnimationSignal.MainSkill1Signal, false);
 
         SpawnBasicCombatEffectAsChild(
             p_direction,
@@ -149,10 +153,12 @@ public class BladeOfMinhKhai : SkillBase
             SetupCAD
         );
 
-        while (!customMono.animationEventFunctionCaller.mainSkill1AS.end)
+        while (
+            !customMono.animationEventFunctionCaller.GetSignalVals(EAnimationSignal.EndMainSkill1)
+        )
             yield return new WaitForSeconds(Time.fixedDeltaTime);
 
-        customMono.animationEventFunctionCaller.mainSkill1AS.end = false;
+        customMono.animationEventFunctionCaller.SetSignal(EAnimationSignal.EndMainSkill1, false);
         customMono.actionBlocking = false;
         customMono.movementActionBlocking = false;
         ToggleAnim(GameManager.Instance.mainSkill1BoolHash, false);
@@ -188,7 +194,7 @@ public class BladeOfMinhKhai : SkillBase
         ToggleAnim(GameManager.Instance.mainSkill1BoolHash, false);
         StopCoroutine(GetActionField<ActionIEnumeratorField>(ActionFieldName.ActionIE).value);
         StopCoroutine(GetActionField<ActionIEnumeratorField>(ActionFieldName.ActionIE1).value);
-        customMono.animationEventFunctionCaller.mainSkill1AS.signal = false;
-        customMono.animationEventFunctionCaller.mainSkill1AS.end = false;
+        customMono.animationEventFunctionCaller.SetSignal(EAnimationSignal.MainSkill1Signal, false);
+        customMono.animationEventFunctionCaller.SetSignal(EAnimationSignal.EndMainSkill1, false);
     }
 }

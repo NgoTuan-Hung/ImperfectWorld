@@ -137,10 +137,17 @@ public class PhantomPulse : SkillBase
                     ActionFieldName.Target
                 ).value.transform.position + new Vector3(Random.Range(-1, 1), 0, 0);
 
-            while (!customMono.animationEventFunctionCaller.mainSkill2Signal)
+            while (
+                !customMono.animationEventFunctionCaller.GetSignalVals(
+                    EAnimationSignal.MainSkill2Signal
+                )
+            )
                 yield return new WaitForSeconds(Time.fixedDeltaTime);
 
-            customMono.animationEventFunctionCaller.mainSkill2Signal = false;
+            customMono.animationEventFunctionCaller.SetSignal(
+                EAnimationSignal.MainSkill2Signal,
+                false
+            );
             switch (GetActionField<ActionIntField>(ActionFieldName.SeletecdVariant).value)
             {
                 case 1: // fire down
@@ -320,10 +327,12 @@ public class PhantomPulse : SkillBase
             #endregion
         }
 
-        while (!customMono.animationEventFunctionCaller.endMainSkill2)
+        while (
+            !customMono.animationEventFunctionCaller.GetSignalVals(EAnimationSignal.EndMainSkill2)
+        )
             yield return new WaitForSeconds(Time.fixedDeltaTime);
 
-        customMono.animationEventFunctionCaller.endMainSkill2 = false;
+        customMono.animationEventFunctionCaller.SetSignal(EAnimationSignal.EndMainSkill2, false);
         ToggleAnim(GameManager.Instance.mainSkill2BoolHash, false);
         customMono.actionBlocking = false;
         customMono.statusEffect.RemoveSlow(customMono.stat.actionSlowModifier);
@@ -391,7 +400,7 @@ public class PhantomPulse : SkillBase
         customMono.statusEffect.RemoveSlow(customMono.stat.actionSlowModifier);
         ToggleAnim(GameManager.Instance.mainSkill2BoolHash, false);
         StopCoroutine(GetActionField<ActionIEnumeratorField>(ActionFieldName.ActionIE).value);
-        customMono.animationEventFunctionCaller.mainSkill2Signal = false;
-        customMono.animationEventFunctionCaller.endMainSkill2 = false;
+        customMono.animationEventFunctionCaller.SetSignal(EAnimationSignal.MainSkill2Signal, false);
+        customMono.animationEventFunctionCaller.SetSignal(EAnimationSignal.EndMainSkill2, false);
     }
 }

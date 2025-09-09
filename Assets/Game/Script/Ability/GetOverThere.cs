@@ -80,10 +80,14 @@ public class GetOverThere : SkillBase
 
     IEnumerator WaitSpawnBlueHole(Vector3 p_location)
     {
-        while (!customMono.animationEventFunctionCaller.mainSkill2Signal)
+        while (
+            !customMono.animationEventFunctionCaller.GetSignalVals(
+                EAnimationSignal.MainSkill2Signal
+            )
+        )
             yield return new WaitForSeconds(Time.fixedDeltaTime);
 
-        customMono.animationEventFunctionCaller.mainSkill2Signal = false;
+        customMono.animationEventFunctionCaller.SetSignal(EAnimationSignal.MainSkill2Signal, false);
         BlueHole blueHole = (BlueHole)
             GameManager
                 .Instance.blueHolePool.PickOne()
@@ -91,10 +95,12 @@ public class GetOverThere : SkillBase
         blueHole.allyTags = customMono.allyTags;
         blueHole.transform.position = p_location;
 
-        while (!customMono.animationEventFunctionCaller.endMainSkill2)
+        while (
+            !customMono.animationEventFunctionCaller.GetSignalVals(EAnimationSignal.EndMainSkill2)
+        )
             yield return new WaitForSeconds(Time.fixedDeltaTime);
 
-        customMono.animationEventFunctionCaller.endMainSkill2 = false;
+        customMono.animationEventFunctionCaller.SetSignal(EAnimationSignal.EndMainSkill2, false);
         ToggleAnim(GameManager.Instance.mainSkill2BoolHash, false);
         customMono.actionBlocking = false;
         customMono.statusEffect.RemoveSlow(customMono.stat.actionSlowModifier);
@@ -121,7 +127,7 @@ public class GetOverThere : SkillBase
         customMono.statusEffect.RemoveSlow(customMono.stat.actionSlowModifier);
         ToggleAnim(GameManager.Instance.mainSkill2BoolHash, false);
         StopCoroutine(GetActionField<ActionIEnumeratorField>(ActionFieldName.ActionIE).value);
-        customMono.animationEventFunctionCaller.mainSkill2Signal = false;
-        customMono.animationEventFunctionCaller.endMainSkill2 = false;
+        customMono.animationEventFunctionCaller.SetSignal(EAnimationSignal.MainSkill2Signal, false);
+        customMono.animationEventFunctionCaller.SetSignal(EAnimationSignal.EndMainSkill2, false);
     }
 }

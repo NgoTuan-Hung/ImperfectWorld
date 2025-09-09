@@ -97,20 +97,26 @@ public class RimuruSummonFireball : SkillBase
     {
         customMono.SetUpdateDirectionIndicator(p_direction, UpdateDirectionIndicatorPriority.Low);
 
-        while (!customMono.animationEventFunctionCaller.mainSkill2Signal)
+        while (
+            !customMono.animationEventFunctionCaller.GetSignalVals(
+                EAnimationSignal.MainSkill2Signal
+            )
+        )
             yield return new WaitForSeconds(Time.fixedDeltaTime);
 
-        customMono.animationEventFunctionCaller.mainSkill2Signal = false;
+        customMono.animationEventFunctionCaller.SetSignal(EAnimationSignal.MainSkill2Signal, false);
 
         SetCombatProjectile(
             GameManager.Instance.rimuruFireBallPool.PickOneGameEffect(),
             p_direction
         );
 
-        while (!customMono.animationEventFunctionCaller.endMainSkill2)
+        while (
+            !customMono.animationEventFunctionCaller.GetSignalVals(EAnimationSignal.EndMainSkill2)
+        )
             yield return new WaitForSeconds(Time.fixedDeltaTime);
 
-        customMono.animationEventFunctionCaller.endMainSkill2 = false;
+        customMono.animationEventFunctionCaller.SetSignal(EAnimationSignal.EndMainSkill2, false);
         ToggleAnim(GameManager.Instance.mainSkill2BoolHash, false);
         customMono.actionBlocking = false;
         customMono.statusEffect.RemoveSlow(customMono.stat.actionSlowModifier);
@@ -137,7 +143,7 @@ public class RimuruSummonFireball : SkillBase
         customMono.statusEffect.RemoveSlow(customMono.stat.actionSlowModifier);
         ToggleAnim(GameManager.Instance.mainSkill2BoolHash, false);
         StopCoroutine(GetActionField<ActionIEnumeratorField>(ActionFieldName.ActionIE).value);
-        customMono.animationEventFunctionCaller.mainSkill2Signal = false;
-        customMono.animationEventFunctionCaller.endMainSkill2 = false;
+        customMono.animationEventFunctionCaller.SetSignal(EAnimationSignal.MainSkill2Signal, false);
+        customMono.animationEventFunctionCaller.SetSignal(EAnimationSignal.EndMainSkill2, false);
     }
 }

@@ -167,10 +167,14 @@ public class OrbitalNemesis : SkillBase
             UpdateDirectionIndicatorPriority.Low
         );
 
-        while (!customMono.animationEventFunctionCaller.mainSkill2Signal)
+        while (
+            !customMono.animationEventFunctionCaller.GetSignalVals(
+                EAnimationSignal.MainSkill2Signal
+            )
+        )
             yield return new WaitForSeconds(Time.fixedDeltaTime);
 
-        customMono.animationEventFunctionCaller.mainSkill2Signal = false;
+        customMono.animationEventFunctionCaller.SetSignal(EAnimationSignal.MainSkill2Signal, false);
 
         GameManager
             .Instance.orbitalNemesisDashPool.PickOneGameEffect()
@@ -238,6 +242,6 @@ public class OrbitalNemesis : SkillBase
         customMono.actionBlocking = false;
         ToggleAnim(GameManager.Instance.mainSkill2BoolHash, false);
         StopCoroutine(GetActionField<ActionIEnumeratorField>(ActionFieldName.ActionIE).value);
-        customMono.animationEventFunctionCaller.mainSkill2Signal = false;
+        customMono.animationEventFunctionCaller.SetSignal(EAnimationSignal.MainSkill2Signal, false);
     }
 }

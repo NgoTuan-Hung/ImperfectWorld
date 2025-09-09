@@ -76,7 +76,8 @@ public partial class GameManager
         rimuruFireBall,
         rimuruFireBallImpact,
         rimuruLightingWolf,
-        rimuruLightingWolfSummonCircle;
+        rimuruLightingWolfSummonCircle,
+        rimuruHeavenFallRay;
 
     List<string> prefabNames = new()
     {
@@ -152,6 +153,7 @@ public partial class GameManager
         "rimuruFireBallImpact",
         "rimuruLightingWolf",
         "rimuruLightingWolfSummonCircle",
+        "rimuruHeavenFallRay",
     };
 
     void LoadGameEffectPrefabs()

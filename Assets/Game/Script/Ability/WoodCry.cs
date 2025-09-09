@@ -93,10 +93,14 @@ public class WoodCry : SkillBase
 
     IEnumerator TriggerCoroutine(Vector2 location = default, Vector2 direction = default)
     {
-        while (!customMono.animationEventFunctionCaller.mainSkill2Signal)
+        while (
+            !customMono.animationEventFunctionCaller.GetSignalVals(
+                EAnimationSignal.MainSkill2Signal
+            )
+        )
             yield return new WaitForSeconds(Time.fixedDeltaTime);
 
-        customMono.animationEventFunctionCaller.mainSkill2Signal = false;
+        customMono.animationEventFunctionCaller.SetSignal(EAnimationSignal.MainSkill2Signal, false);
 
         CollideAndDamage t_gameEffect =
             GameManager
@@ -108,12 +112,14 @@ public class WoodCry : SkillBase
         t_gameEffect.healAmmount = healAmmount;
         t_gameEffect.transform.position = location;
 
-        while (!customMono.animationEventFunctionCaller.endMainSkill2)
+        while (
+            !customMono.animationEventFunctionCaller.GetSignalVals(EAnimationSignal.EndMainSkill2)
+        )
             yield return new WaitForSeconds(Time.fixedDeltaTime);
 
         customMono.actionBlocking = false;
         customMono.statusEffect.RemoveSlow(customMono.stat.actionSlowModifier);
-        customMono.animationEventFunctionCaller.endMainSkill2 = false;
+        customMono.animationEventFunctionCaller.SetSignal(EAnimationSignal.EndMainSkill2, false);
         ToggleAnim(GameManager.Instance.mainSkill2BoolHash, false);
         customMono.currentAction = null;
     }
@@ -139,7 +145,7 @@ public class WoodCry : SkillBase
         customMono.statusEffect.RemoveSlow(customMono.stat.actionSlowModifier);
         ToggleAnim(GameManager.Instance.mainSkill2BoolHash, false);
         StopCoroutine(GetActionField<ActionIEnumeratorField>(ActionFieldName.ActionIE).value);
-        customMono.animationEventFunctionCaller.mainSkill2Signal = false;
-        customMono.animationEventFunctionCaller.endMainSkill2 = false;
+        customMono.animationEventFunctionCaller.SetSignal(EAnimationSignal.MainSkill2Signal, false);
+        customMono.animationEventFunctionCaller.SetSignal(EAnimationSignal.EndMainSkill2, false);
     }
 }

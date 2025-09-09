@@ -33,7 +33,6 @@ public partial class BaseAction : MonoEditor
     /// </summary>
     public bool canUse;
     public List<BotActionManual> botActionManuals = new();
-    public int boolHash = 0;
     public AudioClip audioClip;
     public IEnumerator botIE;
     public static ActionResult failResult = new();

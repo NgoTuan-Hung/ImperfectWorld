@@ -39,8 +39,14 @@ public partial class GameManager : MonoBehaviour
         mainSkill3BoolHash = Animator.StringToHash("MainSkill3"),
         mainSkill2BlendHash = Animator.StringToHash("MainSkill2Blend"),
         mainSkill2TriggerHash = Animator.StringToHash("MainSkill2Trigger"),
+        mainSkill4BoolHash = Animator.StringToHash("MainSkill4"),
         combo1BoolHash = Animator.StringToHash("Combo1"),
-        combo2BoolHash = Animator.StringToHash("Combo2");
+        combo2BoolHash = Animator.StringToHash("Combo2"),
+        airRollBoolHash = Animator.StringToHash("AirRoll"),
+        landBoolHash = Animator.StringToHash("Land"),
+        chargeBoolHash = Animator.StringToHash("Charge"),
+        summonBoolHash = Animator.StringToHash("Summon"),
+        walkBoolHash = Animator.StringToHash("Walk");
     public Dictionary<int, GameObject> colliderOwner = new();
     IEnumerator roundTimerCountDownIE;
     public List<ActionFieldInfo> actionFieldInfos = new();

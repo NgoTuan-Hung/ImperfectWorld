@@ -99,17 +99,25 @@ public class InfernalTide : SkillBase
     {
         customMono.SetUpdateDirectionIndicator(p_direction, UpdateDirectionIndicatorPriority.Low);
 
-        while (!customMono.animationEventFunctionCaller.mainSkill3Signal)
+        while (
+            !customMono.animationEventFunctionCaller.GetSignalVals(
+                EAnimationSignal.MainSkill3Signal
+            )
+        )
             yield return new WaitForSeconds(Time.fixedDeltaTime);
 
-        customMono.animationEventFunctionCaller.mainSkill3Signal = false;
+        customMono.animationEventFunctionCaller.SetSignal(EAnimationSignal.MainSkill3Signal, false);
         StartCoroutine(SpawnFlameIE(p_direction));
 
         customMono.SetUpdateDirectionIndicator(p_direction, UpdateDirectionIndicatorPriority.Low);
-        while (!customMono.animationEventFunctionCaller.mainSkill3Signal)
+        while (
+            !customMono.animationEventFunctionCaller.GetSignalVals(
+                EAnimationSignal.MainSkill3Signal
+            )
+        )
             yield return new WaitForSeconds(Time.fixedDeltaTime);
 
-        customMono.animationEventFunctionCaller.mainSkill3Signal = false;
+        customMono.animationEventFunctionCaller.SetSignal(EAnimationSignal.MainSkill3Signal, false);
 
         transform.position -= p_direction.normalized * 1.5f;
         CollideAndDamage t_fan = GameManager
@@ -122,10 +130,12 @@ public class InfernalTide : SkillBase
             Quaternion.Euler(0, 0, Vector2.SignedAngle(Vector2.right, p_direction))
         );
 
-        while (!customMono.animationEventFunctionCaller.endMainSkill3)
+        while (
+            !customMono.animationEventFunctionCaller.GetSignalVals(EAnimationSignal.EndMainSkill3)
+        )
             yield return new WaitForSeconds(Time.fixedDeltaTime);
 
-        customMono.animationEventFunctionCaller.endMainSkill3 = false;
+        customMono.animationEventFunctionCaller.SetSignal(EAnimationSignal.EndMainSkill3, false);
         ToggleAnim(GameManager.Instance.mainSkill3BoolHash, false);
         customMono.actionBlocking = false;
         customMono.statusEffect.RemoveSlow(customMono.stat.actionSlowModifier);
@@ -176,7 +186,7 @@ public class InfernalTide : SkillBase
         customMono.statusEffect.RemoveSlow(customMono.stat.actionSlowModifier);
         ToggleAnim(GameManager.Instance.mainSkill3BoolHash, false);
         StopCoroutine(GetActionField<ActionIEnumeratorField>(ActionFieldName.ActionIE).value);
-        customMono.animationEventFunctionCaller.mainSkill3Signal = false;
-        customMono.animationEventFunctionCaller.endMainSkill3 = false;
+        customMono.animationEventFunctionCaller.SetSignal(EAnimationSignal.MainSkill3Signal, false);
+        customMono.animationEventFunctionCaller.SetSignal(EAnimationSignal.EndMainSkill3, false);
     }
 }

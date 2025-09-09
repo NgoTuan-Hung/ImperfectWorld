@@ -9,14 +9,10 @@ public class AirRollSkill : SkillBase
         mid;
     float oneMinusT,
         landDelay = 0.5f;
-    int landBoolHash;
 
     public override void Awake()
     {
         base.Awake();
-        boolHash = Animator.StringToHash("AirRoll");
-        landBoolHash = Animator.StringToHash("Land");
-        audioClip = Resources.Load<AudioClip>("AudioClip/air-roll-landing");
     }
 
     public override void OnEnable()
@@ -52,8 +48,6 @@ public class AirRollSkill : SkillBase
         GetActionField<ActionFloatField>(ActionFieldName.Duration).value = 1f;
         GetActionField<ActionFloatField>(ActionFieldName.Interval).value =
             Time.fixedDeltaTime / GetActionField<ActionFloatField>(ActionFieldName.Duration).value;
-        boolHash = Animator.StringToHash("AirRoll");
-        landBoolHash = Animator.StringToHash("Land");
         audioClip = Resources.Load<AudioClip>("AudioClip/air-roll-landing");
         GetActionField<ActionFloatField>(ActionFieldName.Cooldown).value = 0f;
         GetActionField<ActionFloatField>(ActionFieldName.Angle).value = 90f.DegToRad(); /* -90 is ok too */
@@ -68,7 +62,7 @@ public class AirRollSkill : SkillBase
             customMono.actionBlocking = true;
             customMono.movementActionBlocking = true;
             customMono.statusEffect.ccImmune = true;
-            ToggleAnim(boolHash, true);
+            ToggleAnim(GameManager.Instance.airRollBoolHash, true);
             StartCoroutine(
                 GetActionField<ActionIEnumeratorField>(ActionFieldName.ActionIE).value =
                     TriggerCoroutine(location, direction)
@@ -119,13 +113,13 @@ public class AirRollSkill : SkillBase
         }
 
         /* After we finish jumping, we can delay to land for a short time. */
-        ToggleAnim(boolHash, false);
-        ToggleAnim(landBoolHash, true);
+        ToggleAnim(GameManager.Instance.airRollBoolHash, false);
+        ToggleAnim(GameManager.Instance.landBoolHash, true);
         customMono.audioSource.PlayOneShot(audioClip);
         customMono.statusEffect.ccImmune = false;
 
         yield return new WaitForSeconds(landDelay);
-        ToggleAnim(landBoolHash, false);
+        ToggleAnim(GameManager.Instance.landBoolHash, false);
         customMono.actionBlocking = false;
         customMono.movementActionBlocking = false;
         customMono.currentAction = null;
@@ -149,7 +143,7 @@ public class AirRollSkill : SkillBase
         base.ActionInterrupt();
         customMono.actionBlocking = false;
         customMono.movementActionBlocking = false;
-        ToggleAnim(boolHash, false);
+        ToggleAnim(GameManager.Instance.airRollBoolHash, false);
         StopCoroutine(GetActionField<ActionIEnumeratorField>(ActionFieldName.ActionIE).value);
     }
 }

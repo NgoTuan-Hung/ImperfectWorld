@@ -8,7 +8,6 @@ public class MoonSlash : SkillBase
     public override void Awake()
     {
         base.Awake();
-        boolHash = Animator.StringToHash("Charge");
         audioClip = Resources.Load<AudioClip>("AudioClip/moon-slash");
         actionWaitInfo.releaseBoolHash = Animator.StringToHash("Release");
         actionWaitInfo.requiredWaitTime = 0.3f;
@@ -83,7 +82,7 @@ public class MoonSlash : SkillBase
             canUse = false;
             customMono.actionBlocking = true;
             customMono.statusEffect.Slow(customMono.stat.actionSlowModifier);
-            ToggleAnim(boolHash, true);
+            ToggleAnim(GameManager.Instance.chargeBoolHash, true);
             actionWaitInfo.stillWaiting = true;
             StartCoroutine(
                 GetActionField<ActionIEnumeratorField>(ActionFieldName.ActionIE).value =
@@ -113,7 +112,7 @@ public class MoonSlash : SkillBase
         )
         {
             ToggleAnim(actionWaitInfo.releaseBoolHash, true);
-            ToggleAnim(boolHash, false);
+            ToggleAnim(GameManager.Instance.chargeBoolHash, false);
             customMono.audioSource.PlayOneShot(audioClip);
             StartCoroutine(CooldownCoroutine());
 
@@ -182,19 +181,21 @@ public class MoonSlash : SkillBase
                     );
             }
 
-            while (!customMono.animationEventFunctionCaller.endRelease)
+            while (
+                !customMono.animationEventFunctionCaller.GetSignalVals(EAnimationSignal.EndRelease)
+            )
                 yield return new WaitForSeconds(Time.fixedDeltaTime);
 
             customMono.actionBlocking = false;
             ToggleAnim(actionWaitInfo.releaseBoolHash, false);
-            customMono.animationEventFunctionCaller.endRelease = false;
+            customMono.animationEventFunctionCaller.SetSignal(EAnimationSignal.EndRelease, false);
             customMono.statusEffect.RemoveSlow(customMono.stat.actionSlowModifier);
         }
         else
         {
             canUse = true;
             customMono.actionBlocking = false;
-            ToggleAnim(boolHash, false);
+            ToggleAnim(GameManager.Instance.chargeBoolHash, false);
             customMono.statusEffect.RemoveSlow(customMono.stat.actionSlowModifier);
         }
 
@@ -225,11 +226,11 @@ public class MoonSlash : SkillBase
         base.ActionInterrupt();
         customMono.actionBlocking = false;
         customMono.statusEffect.RemoveSlow(customMono.stat.actionSlowModifier);
-        ToggleAnim(boolHash, false);
+        ToggleAnim(GameManager.Instance.chargeBoolHash, false);
         ToggleAnim(actionWaitInfo.releaseBoolHash, false);
         StopCoroutine(GetActionField<ActionIEnumeratorField>(ActionFieldName.ActionIE).value);
         actionWaitInfo.stillWaiting = false;
         GetActionField<ActionStopWatchField>(ActionFieldName.StopWatch).value.Stop();
-        customMono.animationEventFunctionCaller.endRelease = false;
+        customMono.animationEventFunctionCaller.SetSignal(EAnimationSignal.EndRelease, false);
     }
 }

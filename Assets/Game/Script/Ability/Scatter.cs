@@ -39,7 +39,6 @@ public class Scatter : SkillBase
     public override void Config()
     {
         GetActionField<ActionFloatField>(ActionFieldName.Cooldown).value = 5f;
-        boolHash = Animator.StringToHash("Charge");
         audioClip = Resources.Load<AudioClip>("AudioClip/scatter-release");
         actionWaitInfo.releaseBoolHash = Animator.StringToHash("Release");
         /* In this skill ammo mean phase */
@@ -123,7 +122,7 @@ public class Scatter : SkillBase
             canUse = false;
             customMono.actionBlocking = true;
             customMono.statusEffect.Slow(customMono.stat.actionSlowModifier);
-            ToggleAnim(boolHash, true);
+            ToggleAnim(GameManager.Instance.chargeBoolHash, true);
             actionWaitInfo.stillWaiting = true;
             StartCoroutine(
                 GetActionField<ActionIEnumeratorField>(ActionFieldName.ActionIE).value =
@@ -180,7 +179,7 @@ public class Scatter : SkillBase
         if (GetActionField<ActionIntField>(ActionFieldName.CurrentPhase).value > 0)
         {
             ToggleAnim(actionWaitInfo.releaseBoolHash, true);
-            ToggleAnim(boolHash, false);
+            ToggleAnim(GameManager.Instance.chargeBoolHash, false);
             customMono.audioSource.PlayOneShot(audioClip);
 
             SpawnEffectAsChild(
@@ -199,18 +198,20 @@ public class Scatter : SkillBase
                     );
                 });
 
-            while (!customMono.animationEventFunctionCaller.endRelease)
+            while (
+                !customMono.animationEventFunctionCaller.GetSignalVals(EAnimationSignal.EndRelease)
+            )
                 yield return new WaitForSeconds(Time.fixedDeltaTime);
 
             customMono.actionBlocking = false;
             ToggleAnim(actionWaitInfo.releaseBoolHash, false);
-            customMono.animationEventFunctionCaller.endRelease = false;
+            customMono.animationEventFunctionCaller.SetSignal(EAnimationSignal.EndRelease, false);
             customMono.statusEffect.RemoveSlow(customMono.stat.actionSlowModifier);
         }
         else
         {
             customMono.actionBlocking = false;
-            ToggleAnim(boolHash, false);
+            ToggleAnim(GameManager.Instance.chargeBoolHash, false);
             customMono.statusEffect.RemoveSlow(customMono.stat.actionSlowModifier);
         }
 
@@ -282,7 +283,7 @@ public class Scatter : SkillBase
         base.ActionInterrupt();
         customMono.actionBlocking = false;
         customMono.statusEffect.RemoveSlow(customMono.stat.actionSlowModifier);
-        ToggleAnim(boolHash, false);
+        ToggleAnim(GameManager.Instance.chargeBoolHash, false);
         ToggleAnim(actionWaitInfo.releaseBoolHash, false);
         StopCoroutine(GetActionField<ActionIEnumeratorField>(ActionFieldName.ActionIE).value);
         actionWaitInfo.stillWaiting = false;
@@ -290,7 +291,7 @@ public class Scatter : SkillBase
         /* In case this is used somewhere we don't know*/
         if (scatterChargeGameEffect.gameObject.activeSelf)
             scatterChargeGameEffect.deactivate();
-        customMono.animationEventFunctionCaller.endRelease = false;
+        customMono.animationEventFunctionCaller.SetSignal(EAnimationSignal.EndRelease, false);
 
         scatterArrowPhaseIcon.gameObject.SetActive(false);
         iconTweener?.Kill();

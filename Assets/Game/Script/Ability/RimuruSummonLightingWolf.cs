@@ -101,7 +101,9 @@ public class RimuruSummonLightingWolf : SkillBase
             GameManager.Instance.rimuruLightingWolfSummonCirclePool.PickOneGameEffect()
         );
 
-        while (!customMono.animationEventFunctionCaller.endMainSkill3)
+        while (
+            !customMono.animationEventFunctionCaller.GetSignalVals(EAnimationSignal.EndMainSkill3)
+        )
             yield return new WaitForSeconds(Time.fixedDeltaTime);
 
         SpawnNormalEffect(
@@ -116,7 +118,7 @@ public class RimuruSummonLightingWolf : SkillBase
             GetActionField<ActionFloatField>(ActionFieldName.Duration).value
         );
 
-        customMono.animationEventFunctionCaller.endMainSkill3 = false;
+        customMono.animationEventFunctionCaller.SetSignal(EAnimationSignal.EndMainSkill3, false);
         ToggleAnim(GameManager.Instance.mainSkill3BoolHash, false);
         customMono.actionBlocking = false;
         customMono.movementActionBlocking = false;
@@ -143,7 +145,7 @@ public class RimuruSummonLightingWolf : SkillBase
         customMono.movementActionBlocking = false;
         ToggleAnim(GameManager.Instance.mainSkill3BoolHash, false);
         StopCoroutine(GetActionField<ActionIEnumeratorField>(ActionFieldName.ActionIE).value);
-        customMono.animationEventFunctionCaller.mainSkill3Signal = false;
-        customMono.animationEventFunctionCaller.endMainSkill3 = false;
+        customMono.animationEventFunctionCaller.SetSignal(EAnimationSignal.MainSkill3Signal, false);
+        customMono.animationEventFunctionCaller.SetSignal(EAnimationSignal.EndMainSkill3, false);
     }
 }

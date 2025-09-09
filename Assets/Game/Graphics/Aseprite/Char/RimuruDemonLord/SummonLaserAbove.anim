@@ -55,8 +55,29 @@ AnimationClip:
     m_Center: {x: 0, y: 0, z: 0}
     m_Extent: {x: 0, y: 0, z: 0}
   m_ClipBindingConstant:
-    genericBindings: []
-    pptrCurveMapping: []
+    genericBindings:
+    - serializedVersion: 2
+      path: 0
+      attribute: 0
+      script: {fileID: 0}
+      typeID: 212
+      customType: 23
+      isPPtrCurve: 1
+      isIntCurve: 0
+      isSerializeReferenceCurve: 0
+    pptrCurveMapping:
+    - {fileID: -4451284569979146260, guid: ff9286422c07c41409e734dd999dbc01, type: 3}
+    - {fileID: -6751544588857548747, guid: ff9286422c07c41409e734dd999dbc01, type: 3}
+    - {fileID: 8989644540670581558, guid: ff9286422c07c41409e734dd999dbc01, type: 3}
+    - {fileID: 6060372233169597558, guid: ff9286422c07c41409e734dd999dbc01, type: 3}
+    - {fileID: 4178718992605459205, guid: ff9286422c07c41409e734dd999dbc01, type: 3}
+    - {fileID: -3523761543054216310, guid: ff9286422c07c41409e734dd999dbc01, type: 3}
+    - {fileID: -4587946616932565865, guid: ff9286422c07c41409e734dd999dbc01, type: 3}
+    - {fileID: -5580774726568313838, guid: ff9286422c07c41409e734dd999dbc01, type: 3}
+    - {fileID: -7611398384223721564, guid: ff9286422c07c41409e734dd999dbc01, type: 3}
+    - {fileID: 4998471367639790116, guid: ff9286422c07c41409e734dd999dbc01, type: 3}
+    - {fileID: -7914172065351443485, guid: ff9286422c07c41409e734dd999dbc01, type: 3}
+    - {fileID: -7914172065351443485, guid: ff9286422c07c41409e734dd999dbc01, type: 3}
   m_AnimationClipSettings:
     serializedVersion: 2
     m_AdditiveReferencePoseClip: {fileID: 0}
@@ -81,4 +102,18 @@ AnimationClip:
   m_EulerEditorCurves: []
   m_HasGenericRootTransform: 0
   m_HasMotionFloatCurves: 0
-  m_Events: []
+  m_Events:
+  - time: 0.99
+    functionName: SetSignal
+    data: 
+    objectReferenceParameter: {fileID: 0}
+    floatParameter: 0
+    intParameter: 15
+    messageOptions: 0
+  - time: 1.29
+    functionName: SetSignal
+    data: 
+    objectReferenceParameter: {fileID: 0}
+    floatParameter: 0
+    intParameter: 16
+    messageOptions: 0

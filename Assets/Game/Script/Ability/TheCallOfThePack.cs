@@ -47,7 +47,6 @@ public class TheCallOfThePack : SkillBase
 
     public override void Config()
     {
-        boolHash = Animator.StringToHash("Summon");
         GetActionField<ActionFloatField>(ActionFieldName.Cooldown).value = 60f;
         audioClip = Resources.Load<AudioClip>("AudioClip/the-call-of-the-pack");
         GetActionField<ActionFloatField>(ActionFieldName.Range).value = 20f;
@@ -72,7 +71,7 @@ public class TheCallOfThePack : SkillBase
             canUse = false;
             customMono.actionBlocking = true;
             customMono.statusEffect.Slow(customMono.stat.actionSlowModifier);
-            ToggleAnim(boolHash, true);
+            ToggleAnim(GameManager.Instance.summonBoolHash, true);
             StartCoroutine(
                 GetActionField<ActionIEnumeratorField>(ActionFieldName.ActionIE).value =
                     TriggerCoroutine()
@@ -88,22 +87,22 @@ public class TheCallOfThePack : SkillBase
 
     IEnumerator TriggerCoroutine()
     {
-        while (!customMono.animationEventFunctionCaller.summon)
+        while (!customMono.animationEventFunctionCaller.GetSignalVals(EAnimationSignal.Summon))
             yield return new WaitForSeconds(Time.fixedDeltaTime);
 
         /* summon 3 were wolves */
-        customMono.animationEventFunctionCaller.summon = false;
+        customMono.animationEventFunctionCaller.SetSignal(EAnimationSignal.Summon, false);
         customMono.audioSource.PlayOneShot(audioClip);
         List<PoolObject> poolObjects = smallWereWolfPool.Pick(3);
 
         foreach (PoolObject poolObject in poolObjects)
             StartCoroutine(DelayAirRoll(poolObject));
 
-        while (customMono.animationEventFunctionCaller.endSummon)
+        while (!customMono.animationEventFunctionCaller.GetSignalVals(EAnimationSignal.EndSummon))
             yield return new WaitForSeconds(Time.fixedDeltaTime);
         customMono.statusEffect.RemoveSlow(customMono.stat.actionSlowModifier);
         customMono.actionBlocking = false;
-        customMono.animationEventFunctionCaller.endSummon = false;
+        customMono.animationEventFunctionCaller.SetSignal(EAnimationSignal.EndSummon, false);
         customMono.currentAction = null;
     }
 
@@ -151,10 +150,10 @@ public class TheCallOfThePack : SkillBase
     {
         base.ActionInterrupt();
         customMono.actionBlocking = false;
-        ToggleAnim(boolHash, false);
+        ToggleAnim(GameManager.Instance.summonBoolHash, false);
         customMono.statusEffect.RemoveSlow(customMono.stat.actionSlowModifier);
-        customMono.animationEventFunctionCaller.summon = false;
-        customMono.animationEventFunctionCaller.endSummon = false;
+        customMono.animationEventFunctionCaller.SetSignal(EAnimationSignal.Summon, false);
+        customMono.animationEventFunctionCaller.SetSignal(EAnimationSignal.EndSummon, false);
         StopCoroutine(GetActionField<ActionIEnumeratorField>(ActionFieldName.ActionIE).value);
     }
 }

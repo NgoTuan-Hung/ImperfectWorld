@@ -25,10 +25,14 @@ public partial class BaseAction
     {
         for (int i = 0; i < GetActionField<ActionIntField>(ActionFieldName.Variants).value; i++)
         {
-            while (!customMono.animationEventFunctionCaller.combo1Signal)
+            while (
+                !customMono.animationEventFunctionCaller.GetSignalVals(
+                    EAnimationSignal.Combo1Signal
+                )
+            )
                 yield return new WaitForSeconds(Time.fixedDeltaTime);
 
-            customMono.animationEventFunctionCaller.combo1Signal = false;
+            customMono.animationEventFunctionCaller.SetSignal(EAnimationSignal.Combo1Signal, false);
 
             if (
                 GetActionField<ActionListComboEffectField>(ActionFieldName.ComboEffects)
@@ -57,7 +61,7 @@ public partial class BaseAction
             );
         }
 
-        while (!customMono.animationEventFunctionCaller.endCombo1)
+        while (!customMono.animationEventFunctionCaller.GetSignalVals(EAnimationSignal.EndCombo1))
             yield return new WaitForSeconds(Time.fixedDeltaTime);
 
         GetActionField<ActionActionField>(ActionFieldName.ComboEndAction).value();
@@ -95,10 +99,14 @@ public partial class BaseAction
     {
         for (int i = 0; i < GetActionField<ActionIntField>(ActionFieldName.Variants).value; i++)
         {
-            while (!customMono.animationEventFunctionCaller.combo2Signal)
+            while (
+                !customMono.animationEventFunctionCaller.GetSignalVals(
+                    EAnimationSignal.Combo2Signal
+                )
+            )
                 yield return new WaitForSeconds(Time.fixedDeltaTime);
 
-            customMono.animationEventFunctionCaller.combo2Signal = false;
+            customMono.animationEventFunctionCaller.SetSignal(EAnimationSignal.Combo2Signal, false);
 
             if (
                 GetActionField<ActionListComboEffectField>(ActionFieldName.ComboEffects)
@@ -127,7 +135,7 @@ public partial class BaseAction
             );
         }
 
-        while (!customMono.animationEventFunctionCaller.endCombo2)
+        while (!customMono.animationEventFunctionCaller.GetSignalVals(EAnimationSignal.EndCombo2))
             yield return new WaitForSeconds(Time.fixedDeltaTime);
 
         GetActionField<ActionActionField>(ActionFieldName.ComboEndAction).value();

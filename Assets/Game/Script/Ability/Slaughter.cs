@@ -161,13 +161,15 @@ public class Slaughter : SkillBase
 
     IEnumerator EndAnimWaitCoroutine()
     {
-        while (!customMono.animationEventFunctionCaller.mainSkill1AS.end)
+        while (
+            !customMono.animationEventFunctionCaller.GetSignalVals(EAnimationSignal.EndMainSkill1)
+        )
             yield return new WaitForSeconds(Time.fixedDeltaTime);
 
         ToggleAnim(GameManager.Instance.mainSkill1BoolHash, false);
         customMono.statusEffect.RemoveSlow(customMono.stat.actionSlowModifier);
         customMono.actionBlocking = false;
-        customMono.animationEventFunctionCaller.mainSkill1AS.end = false;
+        customMono.animationEventFunctionCaller.SetSignal(EAnimationSignal.EndMainSkill1, false);
         canUse = true;
         customMono.currentAction = null;
     }
@@ -185,6 +187,6 @@ public class Slaughter : SkillBase
         customMono.statusEffect.RemoveSlow(customMono.stat.actionSlowModifier);
         ToggleAnim(GameManager.Instance.mainSkill1BoolHash, false);
         StopCoroutine(GetActionField<ActionIEnumeratorField>(ActionFieldName.ActionIE).value);
-        customMono.animationEventFunctionCaller.mainSkill1AS.end = false;
+        customMono.animationEventFunctionCaller.SetSignal(EAnimationSignal.EndMainSkill1, false);
     }
 }

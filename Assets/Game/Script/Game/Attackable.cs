@@ -10,7 +10,6 @@ public class Attackable : SkillBase
     public override void Awake()
     {
         base.Awake();
-        boolHash = Animator.StringToHash("Attack");
         audioClip = customMono.attackAudioClip;
 
         if (customMono.attackType == AttackType.Melee)
@@ -118,7 +117,7 @@ public class Attackable : SkillBase
             canUse = false;
             customMono.actionBlocking = true;
             customMono.statusEffect.Slow(customMono.stat.actionSlowModifier);
-            ToggleAnim(boolHash, true);
+            ToggleAnim(GameManager.Instance.attackBoolHash, true);
             StartCoroutine(
                 GetActionField<ActionIEnumeratorField>(ActionFieldName.ActionIE).value =
                     MeleeAttackCoroutine(attackDirection)
@@ -133,10 +132,10 @@ public class Attackable : SkillBase
 
     IEnumerator MeleeAttackCoroutine(Vector2 attackDirection)
     {
-        while (!customMono.animationEventFunctionCaller.attack)
+        while (!customMono.animationEventFunctionCaller.GetSignalVals(EAnimationSignal.Attack))
             yield return new WaitForSeconds(Time.fixedDeltaTime);
 
-        customMono.animationEventFunctionCaller.attack = false;
+        customMono.animationEventFunctionCaller.SetSignal(EAnimationSignal.Attack, false);
         customMono.audioSource.PlayOneShot(audioClip);
         customMono.SetUpdateDirectionIndicator(
             attackDirection,
@@ -158,13 +157,13 @@ public class Attackable : SkillBase
             ForceMode2D.Impulse
         );
 
-        while (!customMono.animationEventFunctionCaller.endAttack)
+        while (!customMono.animationEventFunctionCaller.GetSignalVals(EAnimationSignal.EndAttack))
             yield return new WaitForSeconds(Time.fixedDeltaTime);
 
-        customMono.animationEventFunctionCaller.endAttack = false;
+        customMono.animationEventFunctionCaller.SetSignal(EAnimationSignal.EndAttack, false);
         customMono.statusEffect.RemoveSlow(customMono.stat.actionSlowModifier);
         customMono.actionBlocking = false;
-        ToggleAnim(boolHash, false);
+        ToggleAnim(GameManager.Instance.attackBoolHash, false);
         customMono.currentAction = null;
     }
 
@@ -175,7 +174,7 @@ public class Attackable : SkillBase
             canUse = false;
             customMono.actionBlocking = true;
             customMono.statusEffect.Slow(customMono.stat.actionSlowModifier);
-            ToggleAnim(boolHash, true);
+            ToggleAnim(GameManager.Instance.attackBoolHash, true);
             StartCoroutine(
                 GetActionField<ActionIEnumeratorField>(ActionFieldName.ActionIE).value =
                     RangedAttackCoroutine(attackDirection)
@@ -190,10 +189,10 @@ public class Attackable : SkillBase
 
     IEnumerator RangedAttackCoroutine(Vector2 attackDirection)
     {
-        while (!customMono.animationEventFunctionCaller.attack)
+        while (!customMono.animationEventFunctionCaller.GetSignalVals(EAnimationSignal.Attack))
             yield return new WaitForSeconds(Time.fixedDeltaTime);
 
-        customMono.animationEventFunctionCaller.attack = false;
+        customMono.animationEventFunctionCaller.SetSignal(EAnimationSignal.Attack, false);
         customMono.audioSource.PlayOneShot(audioClip);
         customMono.SetUpdateDirectionIndicator(
             attackDirection,
@@ -219,13 +218,13 @@ public class Attackable : SkillBase
 
         t_projectileEffect.KeepFlyingAt(attackDirection);
 
-        while (!customMono.animationEventFunctionCaller.endAttack)
+        while (!customMono.animationEventFunctionCaller.GetSignalVals(EAnimationSignal.EndAttack))
             yield return new WaitForSeconds(Time.fixedDeltaTime);
 
-        customMono.animationEventFunctionCaller.endAttack = false;
+        customMono.animationEventFunctionCaller.SetSignal(EAnimationSignal.EndAttack, false);
         customMono.statusEffect.RemoveSlow(customMono.stat.actionSlowModifier);
         customMono.actionBlocking = false;
-        ToggleAnim(boolHash, false);
+        ToggleAnim(GameManager.Instance.attackBoolHash, false);
         customMono.currentAction = null;
     }
 
@@ -261,9 +260,9 @@ public class Attackable : SkillBase
         base.ActionInterrupt();
         customMono.statusEffect.RemoveSlow(customMono.stat.actionSlowModifier);
         customMono.actionBlocking = false;
-        ToggleAnim(boolHash, false);
+        ToggleAnim(GameManager.Instance.attackBoolHash, false);
         StopCoroutine(GetActionField<ActionIEnumeratorField>(ActionFieldName.ActionIE).value);
-        customMono.animationEventFunctionCaller.endAttack = false;
-        customMono.animationEventFunctionCaller.attack = false;
+        customMono.animationEventFunctionCaller.SetSignal(EAnimationSignal.EndAttack, false);
+        customMono.animationEventFunctionCaller.SetSignal(EAnimationSignal.Attack, false);
     }
 }

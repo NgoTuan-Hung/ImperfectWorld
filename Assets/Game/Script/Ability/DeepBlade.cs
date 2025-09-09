@@ -102,10 +102,14 @@ public class DeepBlade : SkillBase
 
     IEnumerator TriggerIE(Vector2 p_location = default, Vector2 p_direction = default)
     {
-        while (!customMono.animationEventFunctionCaller.mainSkill2Signal)
+        while (
+            !customMono.animationEventFunctionCaller.GetSignalVals(
+                EAnimationSignal.MainSkill2Signal
+            )
+        )
             yield return new WaitForSeconds(Time.fixedDeltaTime);
 
-        customMono.animationEventFunctionCaller.mainSkill2Signal = false;
+        customMono.animationEventFunctionCaller.SetSignal(EAnimationSignal.MainSkill2Signal, false);
 
         SpawnBasicCombatEffectAsChild(
             p_direction,
@@ -113,11 +117,13 @@ public class DeepBlade : SkillBase
             SetupCAD
         );
 
-        while (!customMono.animationEventFunctionCaller.endMainSkill2)
+        while (
+            !customMono.animationEventFunctionCaller.GetSignalVals(EAnimationSignal.EndMainSkill2)
+        )
             yield return new WaitForSeconds(Time.fixedDeltaTime);
 
         customMono.statusEffect.RemoveSlow(customMono.stat.actionSlowModifier);
-        customMono.animationEventFunctionCaller.endMainSkill2 = false;
+        customMono.animationEventFunctionCaller.SetSignal(EAnimationSignal.EndMainSkill2, false);
         customMono.actionBlocking = false;
         ToggleAnim(GameManager.Instance.mainSkill2BoolHash, false);
         customMono.currentAction = null;
@@ -145,8 +151,8 @@ public class DeepBlade : SkillBase
         customMono.actionBlocking = false;
         ToggleAnim(GameManager.Instance.mainSkill2BoolHash, false);
         StopCoroutine(GetActionField<ActionIEnumeratorField>(ActionFieldName.ActionIE).value);
-        customMono.animationEventFunctionCaller.mainSkill2Signal = false;
-        customMono.animationEventFunctionCaller.endMainSkill2 = false;
+        customMono.animationEventFunctionCaller.SetSignal(EAnimationSignal.MainSkill2Signal, false);
+        customMono.animationEventFunctionCaller.SetSignal(EAnimationSignal.EndMainSkill2, false);
         customMono.statusEffect.RemoveSlow(customMono.stat.actionSlowModifier);
     }
 }

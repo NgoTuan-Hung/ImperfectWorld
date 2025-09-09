@@ -1,5 +1,27 @@
 using System;
+using System.Collections;
 using UnityEngine;
+
+public enum EAnimationSignal
+{
+    Attack,
+    EndAttack,
+    Combo1Signal,
+    EndCombo1,
+    Combo2Signal,
+    EndCombo2,
+    Summon,
+    EndSummon,
+    EndRelease,
+    MainSkill1Signal,
+    EndMainSkill1,
+    MainSkill2Signal,
+    EndMainSkill2,
+    MainSkill3Signal,
+    EndMainSkill3,
+    MainSkill4Signal,
+    EndMainSkill4,
+}
 
 /// <summary>
 /// A repository for animation event callbacks. This component must be placed on the
@@ -13,67 +35,26 @@ using UnityEngine;
 /// </summary>
 public class AnimationEventFunctionCaller : MonoBehaviour
 {
-    public bool attack;
-    public bool endAttack;
-    public bool combo1Signal;
-    public bool endCombo1;
-    public bool combo2Signal;
-    public bool endCombo2;
-    public bool summon;
-    public bool endSummon;
-    public bool endRelease;
-    public AnimationSignal mainSkill1AS = new();
-    public bool mainSkill2Signal;
-    public bool endMainSkill2;
-    public bool mainSkill3Signal;
-    public bool endMainSkill3;
-
-    public void Attack() => attack = true;
-
-    public void EndAttack() => endAttack = true;
-
-    public void Combo1Signal() => combo1Signal = true;
-
-    public void EndCombo1() => endCombo1 = true;
-
-    public void Combo2Signal() => combo2Signal = true;
-
-    public void EndCombo2() => endCombo2 = true;
-
-    public void Summon() => summon = true;
-
-    public void EndSummon() => endSummon = true;
-
-    public void EndRelease() => endRelease = true;
-
-    public void MainSkill1Signal() => mainSkill1AS.signal = true;
-
-    public void EndMainSkill1() => mainSkill1AS.end = true;
-
-    public void MainSkill2Signal() => mainSkill2Signal = true;
-
-    public void EndMainSkill2() => endMainSkill2 = true;
-
-    public void MainSkill3Signal() => mainSkill3Signal = true;
-
-    public void EndMainSkill3() => endMainSkill3 = true;
-
     private void OnEnable()
     {
-        attack = false;
-        endAttack = false;
-        combo1Signal = false;
-        endCombo1 = false;
-        combo2Signal = false;
-        endCombo2 = false;
-        summon = false;
-        endSummon = false;
-        endRelease = false;
-        mainSkill1AS.signal = false;
-        mainSkill1AS.end = false;
-        mainSkill2Signal = false;
-        endMainSkill2 = false;
-        mainSkill3Signal = false;
-        endMainSkill3 = false;
+        ResetVals();
+    }
+
+    BitArray signalVals;
+
+    public bool GetSignalVals(EAnimationSignal p_eAS) => signalVals.Get((int)p_eAS);
+
+    private void Awake()
+    {
+        signalVals = new(Enum.GetNames(typeof(EAnimationSignal)).Length);
+    }
+
+    public void SetSignal(EAnimationSignal p_eAS) => signalVals[(int)p_eAS] = true;
+
+    public void SetSignal(EAnimationSignal p_eAS, bool p_value) => signalVals[(int)p_eAS] = p_value;
+
+    void ResetVals()
+    {
+        signalVals.SetAll(false);
     }
 }

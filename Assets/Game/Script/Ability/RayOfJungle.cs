@@ -94,19 +94,25 @@ public class RayOfJungle : SkillBase
     {
         customMono.SetUpdateDirectionIndicator(p_direction, UpdateDirectionIndicatorPriority.Low);
 
-        while (!customMono.animationEventFunctionCaller.mainSkill1AS.signal)
+        while (
+            !customMono.animationEventFunctionCaller.GetSignalVals(
+                EAnimationSignal.MainSkill1Signal
+            )
+        )
             yield return new WaitForSeconds(Time.fixedDeltaTime);
 
-        customMono.animationEventFunctionCaller.mainSkill1AS.signal = false;
+        customMono.animationEventFunctionCaller.SetSignal(EAnimationSignal.MainSkill1Signal, false);
         SpawnEffectAsChild(
             p_direction,
             GameManager.Instance.rayOfJungleBeamPool.PickOneGameEffect()
         );
 
-        while (!customMono.animationEventFunctionCaller.mainSkill1AS.end)
+        while (
+            !customMono.animationEventFunctionCaller.GetSignalVals(EAnimationSignal.EndMainSkill1)
+        )
             yield return new WaitForSeconds(Time.fixedDeltaTime);
 
-        customMono.animationEventFunctionCaller.mainSkill1AS.end = false;
+        customMono.animationEventFunctionCaller.SetSignal(EAnimationSignal.EndMainSkill1, false);
         customMono.actionBlocking = false;
         ToggleAnim(GameManager.Instance.mainSkill1BoolHash, false);
         customMono.statusEffect.RemoveSlow(customMono.stat.actionSlowModifier);
@@ -132,8 +138,8 @@ public class RayOfJungle : SkillBase
         customMono.actionBlocking = false;
         ToggleAnim(GameManager.Instance.mainSkill1BoolHash, false);
         StopCoroutine(GetActionField<ActionIEnumeratorField>(ActionFieldName.ActionIE).value);
-        customMono.animationEventFunctionCaller.mainSkill1AS.signal = false;
-        customMono.animationEventFunctionCaller.mainSkill1AS.end = false;
+        customMono.animationEventFunctionCaller.SetSignal(EAnimationSignal.MainSkill1Signal, false);
+        customMono.animationEventFunctionCaller.SetSignal(EAnimationSignal.EndMainSkill1, false);
         customMono.statusEffect.RemoveSlow(customMono.stat.actionSlowModifier);
     }
 }

@@ -106,10 +106,10 @@ public class DoubleKill : SkillBase
     {
         customMono.SetUpdateDirectionIndicator(p_direction, UpdateDirectionIndicatorPriority.Low);
 
-        while (!customMono.animationEventFunctionCaller.attack)
+        while (!customMono.animationEventFunctionCaller.GetSignalVals(EAnimationSignal.Attack))
             yield return new WaitForSeconds(Time.fixedDeltaTime);
 
-        customMono.animationEventFunctionCaller.attack = false;
+        customMono.animationEventFunctionCaller.SetSignal(EAnimationSignal.Attack, false);
         GameEffect t_arrow;
         CollideAndDamage t_collideAndDamage;
         if (Random.Range(0, 2) == 0)
@@ -140,10 +140,10 @@ public class DoubleKill : SkillBase
         );
         t_arrow.KeepFlyingAt(p_direction);
 
-        while (!customMono.animationEventFunctionCaller.endAttack)
+        while (!customMono.animationEventFunctionCaller.GetSignalVals(EAnimationSignal.EndAttack))
             yield return new WaitForSeconds(Time.fixedDeltaTime);
 
-        customMono.animationEventFunctionCaller.endAttack = false;
+        customMono.animationEventFunctionCaller.SetSignal(EAnimationSignal.EndAttack, false);
         ToggleAnim(GameManager.Instance.attackBoolHash, false);
         customMono.actionBlocking = false;
         customMono.statusEffect.RemoveSlow(customMono.stat.actionSlowModifier);
@@ -170,7 +170,7 @@ public class DoubleKill : SkillBase
         customMono.statusEffect.RemoveSlow(customMono.stat.actionSlowModifier);
         ToggleAnim(GameManager.Instance.attackBoolHash, false);
         StopCoroutine(GetActionField<ActionIEnumeratorField>(ActionFieldName.ActionIE).value);
-        customMono.animationEventFunctionCaller.attack = false;
-        customMono.animationEventFunctionCaller.endAttack = false;
+        customMono.animationEventFunctionCaller.SetSignal(EAnimationSignal.Attack, false);
+        customMono.animationEventFunctionCaller.SetSignal(EAnimationSignal.EndAttack, false);
     }
 }

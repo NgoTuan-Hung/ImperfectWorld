@@ -98,10 +98,14 @@ public class SwordTempest : SkillBase
     {
         customMono.SetUpdateDirectionIndicator(p_direction, UpdateDirectionIndicatorPriority.Low);
 
-        while (!customMono.animationEventFunctionCaller.mainSkill3Signal)
+        while (
+            !customMono.animationEventFunctionCaller.GetSignalVals(
+                EAnimationSignal.MainSkill3Signal
+            )
+        )
             yield return new WaitForSeconds(Time.fixedDeltaTime);
 
-        customMono.animationEventFunctionCaller.mainSkill3Signal = false;
+        customMono.animationEventFunctionCaller.SetSignal(EAnimationSignal.MainSkill3Signal, false);
 
         GetActionField<ActionGameEffectField>(ActionFieldName.GameEffect).value =
             GameManager.Instance.swordTempestSlash1Pool.PickOneGameEffect();
@@ -115,10 +119,14 @@ public class SwordTempest : SkillBase
                 GetActionField<ActionFloatField>(ActionFieldName.Damage).value
             );
 
-        while (!customMono.animationEventFunctionCaller.mainSkill3Signal)
+        while (
+            !customMono.animationEventFunctionCaller.GetSignalVals(
+                EAnimationSignal.MainSkill3Signal
+            )
+        )
             yield return new WaitForSeconds(Time.fixedDeltaTime);
 
-        customMono.animationEventFunctionCaller.mainSkill3Signal = false;
+        customMono.animationEventFunctionCaller.SetSignal(EAnimationSignal.MainSkill3Signal, false);
 
         GetActionField<ActionGameEffectField>(ActionFieldName.GameEffect).value =
             GameManager.Instance.swordTempestSlash2Pool.PickOneGameEffect();
@@ -132,10 +140,14 @@ public class SwordTempest : SkillBase
                 2 * GetActionField<ActionFloatField>(ActionFieldName.Damage).value
             );
 
-        while (!customMono.animationEventFunctionCaller.mainSkill3Signal)
+        while (
+            !customMono.animationEventFunctionCaller.GetSignalVals(
+                EAnimationSignal.MainSkill3Signal
+            )
+        )
             yield return new WaitForSeconds(Time.fixedDeltaTime);
 
-        customMono.animationEventFunctionCaller.mainSkill3Signal = false;
+        customMono.animationEventFunctionCaller.SetSignal(EAnimationSignal.MainSkill3Signal, false);
 
         GetActionField<ActionGameEffectField>(ActionFieldName.GameEffect).value =
             GameManager.Instance.swordTempestSlash1Pool.PickOneGameEffect();
@@ -149,10 +161,14 @@ public class SwordTempest : SkillBase
                 3 * GetActionField<ActionFloatField>(ActionFieldName.Damage).value
             );
 
-        while (!customMono.animationEventFunctionCaller.mainSkill3Signal)
+        while (
+            !customMono.animationEventFunctionCaller.GetSignalVals(
+                EAnimationSignal.MainSkill3Signal
+            )
+        )
             yield return new WaitForSeconds(Time.fixedDeltaTime);
 
-        customMono.animationEventFunctionCaller.mainSkill3Signal = false;
+        customMono.animationEventFunctionCaller.SetSignal(EAnimationSignal.MainSkill3Signal, false);
 
         GetActionField<ActionGameEffectField>(ActionFieldName.GameEffect).value =
             GameManager.Instance.swordTempestSlash3Pool.PickOneGameEffect();
@@ -166,11 +182,13 @@ public class SwordTempest : SkillBase
                 4 * GetActionField<ActionFloatField>(ActionFieldName.Damage).value
             );
 
-        while (!customMono.animationEventFunctionCaller.endMainSkill3)
+        while (
+            !customMono.animationEventFunctionCaller.GetSignalVals(EAnimationSignal.EndMainSkill3)
+        )
             yield return new WaitForSeconds(Time.fixedDeltaTime);
 
         customMono.statusEffect.RemoveSlow(customMono.stat.actionSlowModifier);
-        customMono.animationEventFunctionCaller.endMainSkill3 = false;
+        customMono.animationEventFunctionCaller.SetSignal(EAnimationSignal.EndMainSkill3, false);
         customMono.actionBlocking = false;
         ToggleAnim(GameManager.Instance.mainSkill3BoolHash, false);
         customMono.currentAction = null;
@@ -195,8 +213,8 @@ public class SwordTempest : SkillBase
         customMono.actionBlocking = false;
         ToggleAnim(GameManager.Instance.mainSkill3BoolHash, false);
         StopCoroutine(GetActionField<ActionIEnumeratorField>(ActionFieldName.ActionIE).value);
-        customMono.animationEventFunctionCaller.mainSkill3Signal = false;
-        customMono.animationEventFunctionCaller.endMainSkill3 = false;
+        customMono.animationEventFunctionCaller.SetSignal(EAnimationSignal.MainSkill3Signal, false);
+        customMono.animationEventFunctionCaller.SetSignal(EAnimationSignal.EndMainSkill3, false);
 
         customMono.statusEffect.RemoveSlow(customMono.stat.actionSlowModifier);
     }

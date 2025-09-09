@@ -9,7 +9,6 @@ public class Movable : BaseAction
     public override void Awake()
     {
         base.Awake();
-        boolHash = Animator.StringToHash("Walk");
         AddActionManuals();
 
         pausableScript.resumeFixedUpdate = () => pausableScript.fixedUpdate = MoveByController;
@@ -131,10 +130,10 @@ public class Movable : BaseAction
 
     public void ToggleMoveAnim(bool value)
     {
-        customMono.AnimatorWrapper.animator.SetBool(boolHash, value);
+        customMono.AnimatorWrapper.animator.SetBool(GameManager.Instance.walkBoolHash, value);
     }
 
-    public bool GetMoveBool() => GetBool(boolHash);
+    public bool GetMoveBool() => GetBool(GameManager.Instance.walkBoolHash);
 
     public void MoveTo(Vector2 direction, float duration)
     {

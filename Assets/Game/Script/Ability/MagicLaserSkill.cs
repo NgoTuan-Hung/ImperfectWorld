@@ -93,10 +93,14 @@ public class MagicLaserSkill : SkillBase
 
     IEnumerator TriggerCoroutine(Vector2 p_location = default, Vector2 p_direction = default)
     {
-        while (!customMono.animationEventFunctionCaller.mainSkill1AS.signal)
+        while (
+            !customMono.animationEventFunctionCaller.GetSignalVals(
+                EAnimationSignal.MainSkill1Signal
+            )
+        )
             yield return new WaitForSeconds(Time.fixedDeltaTime);
 
-        customMono.animationEventFunctionCaller.mainSkill1AS.signal = false;
+        customMono.animationEventFunctionCaller.SetSignal(EAnimationSignal.MainSkill1Signal, false);
 
         GetActionField<ActionGameEffectField>(ActionFieldName.GameEffect).value =
             GameManager.Instance.magicLaserPool.PickOneGameEffect();
@@ -114,9 +118,14 @@ public class MagicLaserSkill : SkillBase
         )
             .value.transform.localScale.WithX(customMono.GetDirection().x > 0 ? 1 : -1);
 
+        while (
+            !customMono.animationEventFunctionCaller.GetSignalVals(EAnimationSignal.EndMainSkill1)
+        )
+            yield return new WaitForSeconds(Time.fixedDeltaTime);
+
         customMono.actionBlocking = false;
         customMono.statusEffect.RemoveSlow(customMono.stat.actionSlowModifier);
-        customMono.animationEventFunctionCaller.mainSkill1AS.end = false;
+        customMono.animationEventFunctionCaller.SetSignal(EAnimationSignal.EndMainSkill1, false);
         ToggleAnim(GameManager.Instance.mainSkill1BoolHash, false);
         customMono.currentAction = null;
     }
@@ -142,7 +151,7 @@ public class MagicLaserSkill : SkillBase
         customMono.statusEffect.RemoveSlow(customMono.stat.actionSlowModifier);
         ToggleAnim(GameManager.Instance.mainSkill1BoolHash, false);
         StopCoroutine(GetActionField<ActionIEnumeratorField>(ActionFieldName.ActionIE).value);
-        customMono.animationEventFunctionCaller.mainSkill1AS.signal = false;
-        customMono.animationEventFunctionCaller.mainSkill1AS.end = false;
+        customMono.animationEventFunctionCaller.SetSignal(EAnimationSignal.MainSkill1Signal, false);
+        customMono.animationEventFunctionCaller.SetSignal(EAnimationSignal.EndMainSkill1, false);
     }
 }

@@ -111,7 +111,7 @@ public class RimuruCombo1 : SkillBase
     public void Combo1End()
     {
         customMono.statusEffect.RemoveSlow(customMono.stat.actionSlowModifier);
-        customMono.animationEventFunctionCaller.endCombo1 = false;
+        customMono.animationEventFunctionCaller.SetSignal(EAnimationSignal.EndCombo1, false);
         customMono.actionBlocking = false;
         customMono.movementActionBlocking = false;
         ToggleAnim(GameManager.Instance.combo1BoolHash, false);
@@ -138,8 +138,8 @@ public class RimuruCombo1 : SkillBase
         customMono.movementActionBlocking = false;
         ToggleAnim(GameManager.Instance.combo1BoolHash, false);
         StopCoroutine(GetActionField<ActionIEnumeratorField>(ActionFieldName.ActionIE).value);
-        customMono.animationEventFunctionCaller.combo1Signal = false;
-        customMono.animationEventFunctionCaller.endCombo1 = false;
+        customMono.animationEventFunctionCaller.SetSignal(EAnimationSignal.Combo1Signal, false);
+        customMono.animationEventFunctionCaller.SetSignal(EAnimationSignal.EndCombo1, false);
         customMono.statusEffect.RemoveSlow(customMono.stat.actionSlowModifier);
         Combo1Stop();
     }
