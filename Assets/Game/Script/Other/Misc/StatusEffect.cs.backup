@@ -1,0 +1,12 @@
+    bool CheckEffect(StatusEffectState p_statusEffectState) =>
+        (currentStates & 0x1 << (int)p_statusEffectState) == 0x1 << (int)p_statusEffectState;
+
+    void ToggleEffect(StatusEffectState p_statusEffectState)
+    {
+        currentStates |= 0x1 << (int)p_statusEffectState;
+    }
+
+    void RemoveEffect(StatusEffectState p_statusEffectState)
+    {
+        currentStates &= ~(0x1 << (int)p_statusEffectState);
+    }

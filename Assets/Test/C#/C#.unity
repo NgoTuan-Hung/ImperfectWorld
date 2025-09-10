@@ -320,6 +320,7 @@ GameObject:
   - component: {fileID: 2102053476}
   - component: {fileID: 2102053477}
   - component: {fileID: 2102053478}
+  - component: {fileID: 2102053479}
   m_Layer: 0
   m_Name: Test
   m_TagString: Untagged
@@ -373,11 +374,23 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2102053474}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f4acdfb0a640bd640933cb5aed9a017f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &2102053479
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2102053474}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c0ae6e000a735a847a15632284c3dbe0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TestThrow
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
