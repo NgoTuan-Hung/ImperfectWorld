@@ -1,5 +1,4 @@
 using System.Collections;
-using Kryz.Tweening;
 using UnityEngine;
 
 public class SovereignFlow : SkillBase
@@ -7,7 +6,6 @@ public class SovereignFlow : SkillBase
     public override void Awake()
     {
         base.Awake();
-        AddActionManuals();
     }
 
     public override void OnEnable()
@@ -20,7 +18,7 @@ public class SovereignFlow : SkillBase
         base.AddActionManuals();
         botActionManuals.Add(
             new BotActionManual(
-                ActionUse.GetCloser,
+                ActionUse.RangedDamage,
                 (p_doActionParamInfo) =>
                     BotTrigger(
                         p_doActionParamInfo.centerToTargetCenterDirection,

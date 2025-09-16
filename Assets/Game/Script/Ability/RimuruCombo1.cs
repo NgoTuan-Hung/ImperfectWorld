@@ -28,6 +28,18 @@ public class RimuruCombo1 : SkillBase
                 new(nextActionChoosingIntervalProposal: 0.5f)
             )
         );
+
+        botActionManuals.Add(
+            new BotActionManual(
+                ActionUse.RangedDamage,
+                (p_doActionParamInfo) =>
+                    BotTrigger(
+                        p_doActionParamInfo.centerToTargetCenterDirection,
+                        p_doActionParamInfo.nextActionChoosingIntervalProposal
+                    ),
+                new(nextActionChoosingIntervalProposal: 0.5f)
+            )
+        );
     }
 
     public override void Start()

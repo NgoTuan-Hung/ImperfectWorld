@@ -14,7 +14,6 @@ public class PierceStrike : SkillBase
     public override void Awake()
     {
         base.Awake();
-        AddActionManuals();
     }
 
     public override void OnEnable()

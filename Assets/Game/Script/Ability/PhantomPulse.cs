@@ -123,14 +123,14 @@ public class PhantomPulse : SkillBase
             GetActionField<ActionCustomMonoField>(ActionFieldName.Target).value = customMono
                 .botSensor
                 .currentNearestEnemy;
-            GetActionField<ActionIntField>(ActionFieldName.SeletecdVariant).value = Random.Range(
+            GetActionField<ActionIntField>(ActionFieldName.SelectedVariant).value = Random.Range(
                 1,
                 GetActionField<ActionIntField>(ActionFieldName.Variants).value
             );
             SetBlend(
                 GameManager.Instance.mainSkill2BlendHash,
                 GetActionField<ActionFloatField>(ActionFieldName.Blend).value
-                    * GetActionField<ActionIntField>(ActionFieldName.SeletecdVariant).value
+                    * GetActionField<ActionIntField>(ActionFieldName.SelectedVariant).value
             );
             transform.position =
                 GetActionField<ActionCustomMonoField>(
@@ -148,7 +148,7 @@ public class PhantomPulse : SkillBase
                 EAnimationSignal.MainSkill2Signal,
                 false
             );
-            switch (GetActionField<ActionIntField>(ActionFieldName.SeletecdVariant).value)
+            switch (GetActionField<ActionIntField>(ActionFieldName.SelectedVariant).value)
             {
                 case 1: // fire down
                 {

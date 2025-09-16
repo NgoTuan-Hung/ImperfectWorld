@@ -50,6 +50,7 @@
   <ItemGroup>
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_TextEventHandler.cs" />
     <Compile Include="Assets\Game\Script\Game\CustomMono.cs" />
+    <Compile Include="Assets\Game\Script\Game\CharAttackInfo.cs" />
     <Compile Include="Assets\Game\Script\Game\AnimationSignal.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\EnvMapAnimator.cs" />
     <Compile Include="Assets\Game\Script\Game\FloatStatWithCap.cs" />
@@ -86,6 +87,7 @@
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\Benchmark02.cs" />
     <Compile Include="Assets\Game\Script\Ability\DoubleKill.cs" />
     <Compile Include="Assets\Game\Script\UI\Extension\TouchExtension.cs" />
+    <Compile Include="Assets\Game\Script\Ability\AttackRevamp.cs" />
     <Compile Include="Assets\Game\Script\Other\PoolArgument.cs" />
     <Compile Include="Assets\Game\Script\Other\GameEffectBehaviour\CollideAndDamage.cs" />
     <Compile Include="Assets\Game\Script\Other\GameEffectBehaviour\BlueHole.cs" />
@@ -104,6 +106,7 @@
     <Compile Include="Assets\CustomPackage\Dotween\Modules\DOTweenModulePhysics2D.cs" />
     <Compile Include="Assets\Game\Script\Game\BotSensor.cs" />
     <Compile Include="Assets\Game\Script\AIBehavior\BaseAIBehavior.cs" />
+    <Compile Include="Assets\Game\Script\Other\DeveloperConsole\DevConsole.cs" />
     <Compile Include="Assets\Game\Script\ActionField\ActionStopWatchField.cs" />
     <Compile Include="Assets\Game\Script\Ability\RimuruSummonLightingWolf.cs" />
     <Compile Include="Assets\Game\Script\UI\Revamp\EnhancedOnScreenStickEditor.cs" />
@@ -285,12 +288,14 @@
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TextMeshProFloatingText.cs" />
     <Compile Include="Assets\Game\Script\UI\Model\ConfigMenuItem.cs" />
     <Compile Include="Assets\Game\Script\Ability\RayOfJungle.cs" />
+    <Compile Include="Assets\Game\Script\AIBehavior\NewAIBehavior.cs" />
     <Compile Include="Assets\Game\Script\Other\MonoEditor.cs" />
     <Compile Include="Assets\CustomPackage\Dotween\Modules\DOTweenModuleAudio.cs" />
     <Compile Include="Assets\Test\TestExecutionOrder\TestExecutionOrder1.cs" />
     <Compile Include="Assets\Game\Script\ActionField\ActionIntField.cs" />
     <Compile Include="Assets\CustomPackage\Dotween\Modules\DOTweenModuleUI.cs" />
     <Compile Include="Assets\Test\TestObjectPoolRevamp\TestObjectPoolRevamp.cs" />
+    <Compile Include="Assets\Game\Script\Game\SpawnEnemySkillInfo.cs" />
     <Compile Include="Assets\Game\Script\ActionField\ActionSlowInfoField.cs" />
     <Compile Include="Assets\Game\Script\Other\ComboAction.cs" />
     <Compile Include="Assets\Test\TimelineSerializeTest\ColliderCopier.cs" />
@@ -1645,6 +1650,8 @@
     <ProjectReference Include="Assembly-CSharp-firstpass.csproj" />
     <ProjectReference Include="Plugins.BackgroundRecompiler.Editor.csproj" />
     <ProjectReference Include="Wingman.csproj" />
+    <ProjectReference Include="IngameDebugConsole.Runtime.csproj" />
+    <ProjectReference Include="IngameDebugConsole.Editor.csproj" />
   </ItemGroup>
   <Import Project="Sdk.targets" Sdk="Microsoft.NET.Sdk" />
   <ItemGroup>

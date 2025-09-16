@@ -128,6 +128,8 @@ public class Movable : BaseAction
         }
     }
 
+    public void StopMove() => ToggleMoveAnim(false);
+
     public void ToggleMoveAnim(bool value)
     {
         customMono.AnimatorWrapper.animator.SetBool(GameManager.Instance.walkBoolHash, value);

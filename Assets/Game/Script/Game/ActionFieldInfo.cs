@@ -33,7 +33,7 @@ public enum ActionFieldName
     ComboEffects,
     ComboEndAction,
     Distance,
-    SeletecdVariant,
+    SelectedVariant,
     AllPhases,
     UseCount,
     MaxUseCount,

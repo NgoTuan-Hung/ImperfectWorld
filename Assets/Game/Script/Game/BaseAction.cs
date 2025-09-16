@@ -24,7 +24,7 @@ public partial class BaseAction : MonoEditor
     public CustomMono customMono;
     public bool onCooldown;
     public float defaultCooldown;
-    public float defaultStateSpeed;
+    public float defaultStateSpeed = 1;
 
     /// <summary>
     /// this action should only be executed when
@@ -38,6 +38,7 @@ public partial class BaseAction : MonoEditor
     public static ActionResult failResult = new();
     public ActionResult successResult = new(true, ActionResultType.Cooldown, default);
     Dictionary<ActionFieldName, ActionField> actionFields = new();
+    public bool unlocked = false;
 
     public virtual void Awake()
     {
@@ -144,6 +145,7 @@ public partial class BaseAction : MonoEditor
 
     public virtual void Unlock()
     {
+        unlocked = true;
         AddActionManuals();
     }
 }

@@ -3,6 +3,11 @@ using UnityEngine;
 
 public partial class BaseAction
 {
+    public void SpawnEffectAtLoc(Vector2 p_pos, GameEffect p_gameEffect)
+    {
+        p_gameEffect.transform.position = p_pos;
+    }
+
     public void SpawnEffectAsChild(Vector2 p_dir, GameEffect p_gameEffect)
     {
         SetRotationAndCenterObject(p_dir);

@@ -10,8 +10,6 @@ using Random = UnityEngine.Random;
 public partial class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
-    public readonly int attackButtonScrollViewIndex = 7;
-    public readonly int attackButtonIndex = 0;
     Dictionary<int, CustomMono> customMonos = new();
     List<CustomMono> playerAllies = new();
     public int currentSpawn = 0;
@@ -19,8 +17,7 @@ public partial class GameManager : MonoBehaviour
     public float spawnInterval = 1f;
     int round = 0;
     public List<SpawnEnemyInfo> spawnEnemyInfos = new();
-    public List<int> spawnChances = new();
-    public List<float> spawnCumulativeDistribution = new();
+    List<SpawnEnemyInfo> unlockSkillSEI = new();
     List<ObjectPool> spawnObjectPools = new();
     Dictionary<CustomMono, SpawnedPawnInfo> spawnedPawnsThisRound = new();
     ObjectPool pickedObjectPool;
@@ -34,6 +31,7 @@ public partial class GameManager : MonoBehaviour
     public CinemachineCamera cinemachineCamera;
     public Dictionary<GameEffectSO, ObjectPool> poolLink = new();
     public int attackBoolHash = Animator.StringToHash("Attack"),
+        attackBlendHash = Animator.StringToHash("AttackBlend"),
         mainSkill1BoolHash = Animator.StringToHash("MainSkill1"),
         mainSkill2BoolHash = Animator.StringToHash("MainSkill2"),
         mainSkill3BoolHash = Animator.StringToHash("MainSkill3"),
@@ -53,33 +51,7 @@ public partial class GameManager : MonoBehaviour
     Dictionary<string, ActionFieldInfo> actionFieldInfoDict = new();
     Dictionary<ActionFieldName, Type> actionFieldMapper = new();
 
-    //
-    public void InitializeControllableCharacter(CustomMono p_customMono)
-    {
-        // CharData t_charData = new(p_customMono);
-        // currentControlledCharData ??= t_charData;
-
-        // t_charData.individualView = GameUIManager.Instance.AddNewIndividualView(
-        //     p_customMono.charUIData,
-        //     () =>
-        //     {
-        //         cinemachineCamera.Follow = p_customMono.transform;
-        //         currentControlledCharData.customMono.ResumeBot();
-        //         currentControlledCharData = t_charData;
-        //         currentControlledCharData.customMono.PauseBot();
-        //     }
-        // );
-
-        // charDataDict.Add(p_customMono.GetHashCode(), t_charData);
-
-        // t_charData.individualView.joyStickMoveEvent += (vector) =>
-        // {
-        //     vector.Scale(VectorExtension.inverseY);
-        //     p_customMono.movable.moveVector = vector;
-        // };
-
-        // GameUIManager.Instance.CheckFirstIndividualView();
-    }
+    public void InitializeControllableCharacter(CustomMono p_customMono) { }
 
     public void InitializeControllableCharacterRevamp(CustomMono p_customMono)
     {
@@ -98,6 +70,9 @@ public partial class GameManager : MonoBehaviour
                     new PoolArgument(ComponentType.CustomMono, PoolArgument.WhereComponent.Self)
                 )
             );
+
+            spawnEnemyInfo.Init();
+            unlockSkillSEI.Add(spawnEnemyInfo);
         }
 
         InitAllEffectPools();
@@ -160,7 +135,7 @@ public partial class GameManager : MonoBehaviour
                     ActionFieldName.ComboActions => typeof(ActionListComboActionField),
                     ActionFieldName.ComboEndAction => typeof(ActionActionField),
                     ActionFieldName.Distance => typeof(ActionFloatField),
-                    ActionFieldName.SeletecdVariant => typeof(ActionIntField),
+                    ActionFieldName.SelectedVariant => typeof(ActionIntField),
                     ActionFieldName.AllPhases => typeof(ActionIntField),
                     ActionFieldName.UseCount => typeof(ActionIntField),
                     ActionFieldName.MaxUseCount => typeof(ActionIntField),
@@ -190,7 +165,7 @@ public partial class GameManager : MonoBehaviour
             };
         }
 
-        InitRound();
+        // InitRound();
     }
 
     void InitRound()
@@ -227,6 +202,9 @@ public partial class GameManager : MonoBehaviour
                     Random.Range(spawnRangeObject.bounds.min.y, spawnRangeObject.bounds.max.y)
                 );
                 HandlePawnStatThisRound(p_customMono);
+                StartCoroutine(
+                    HandleSpawnSkill(p_customMono, spawnEnemyInfos[rand].spawnEnemySkillInfos)
+                );
 
                 currentSpawn++;
 
@@ -264,6 +242,7 @@ public partial class GameManager : MonoBehaviour
         basicSpawnSchemeEnemyStat.currentReflex += 0.5f;
         basicSpawnSchemeEnemyStat.currentWisdom += 0.5f;
         basicSpawnSchemeEnemyStat.currentMoveSpeed += 0.5f;
+        UnlockSpawnSkillEvery3Round();
     }
 
     void HandlePawnStatThisRound(CustomMono p_customMono)
@@ -305,6 +284,38 @@ public partial class GameManager : MonoBehaviour
 
         GameUIManagerRevamp.Instance.roundText.text = "ROUND " + round;
         stopwatch.Restart();
+    }
+
+    /// <summary>
+    /// Unlock skills for spawned enemies if any
+    /// </summary>
+    /// <param name="p_customMono"></param>
+    /// <param name="p_sEKI"></param>
+    /// <returns></returns>
+    IEnumerator HandleSpawnSkill(CustomMono p_customMono, List<SpawnEnemySkillInfo> p_sEKI)
+    {
+        /* Since customMono might awake or start at this point, we should wait for
+        a frame before continuing */
+        yield return null;
+
+        p_customMono.skill.HandleSkillUnlock(p_sEKI);
+    }
+
+    void UnlockSpawnSkillEvery3Round()
+    {
+        if (round % 3 == 0 && round > 0)
+        {
+            if (unlockSkillSEI.Count > 0)
+            {
+                rand = Random.Range(0, unlockSkillSEI.Count);
+
+                while (!unlockSkillSEI[rand].UnlockNextSkill())
+                {
+                    unlockSkillSEI.RemoveAt(rand);
+                    rand = Random.Range(0, unlockSkillSEI.Count);
+                }
+            }
+        }
     }
 
     public void AddCustomMono(CustomMono customMono)

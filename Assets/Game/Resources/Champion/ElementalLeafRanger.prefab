@@ -126,19 +126,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0182cb3923f57a1458b6708ef0d49809, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  attack: 0
-  endAttack: 0
-  castingMagic: 0
-  endCastingMagic: 0
-  summon: 0
-  endSummon: 0
-  endRelease: 0
-  mainSkill1Signal: 0
-  endMainSkill1: 0
-  mainSkill2Signal: 0
-  endMainSkill2: 0
-  mainSkill3Signal: 0
-  endMainSkill3: 0
 --- !u!1 &5800095605073204079
 GameObject:
   m_ObjectHideFlags: 0
@@ -457,21 +444,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d3345c1ae0ed9ea41b86f2a3c634c06a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cooldown: 0
+  customMono: {fileID: 0}
   onCooldown: 0
   defaultCooldown: 0
   defaultStateSpeed: 0
   canUse: 1
-  boolHash: 0
-  actionClip: {fileID: 0}
   audioClip: {fileID: 0}
-  damage: 0
-  defaultDamage: 0
-  maxAmmo: 0
-  currentAmmo: 0
-  modifiedAngle: 0
-  lifeStealPercent: 0
-  stunDuration: 0
+  unlocked: 0
   moveVector: {x: 0, y: 0}
 --- !u!114 &1098763971853099495
 MonoBehaviour:
@@ -518,9 +497,9 @@ MonoBehaviour:
   customMono: {fileID: 0}
   skillDataSOs:
   - {fileID: 11400000, guid: 1c867fbe8b471654dae0b5d9aa81b709, type: 2}
+  - {fileID: 11400000, guid: 82d2dcf54adedd741a6c39cda85b4a3c, type: 2}
   - {fileID: 11400000, guid: 5d2023664fb455b42875ba90da1f7790, type: 2}
   - {fileID: 11400000, guid: 41cd28db47a010748abdf74eb1487818, type: 2}
-  - {fileID: 11400000, guid: 82d2dcf54adedd741a6c39cda85b4a3c, type: 2}
   skillBases: []
 --- !u!114 &9221185469736541080
 MonoBehaviour:

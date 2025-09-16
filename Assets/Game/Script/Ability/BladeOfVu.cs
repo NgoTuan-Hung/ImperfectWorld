@@ -13,7 +13,6 @@ public class BladeOfVu : SkillBase
         /* Get sprite list from res */
         spriteList =
             spriteList != null ? spriteList : Resources.Load<SpriteList>("BladeOfVuSpriteList");
-        AddActionManuals();
     }
 
     public override void OnEnable()

@@ -24,7 +24,7 @@ public class RimuruSummonFireball : SkillBase
                         p_doActionParamInfo.firePointToTargetCenterDirection,
                         p_doActionParamInfo.nextActionChoosingIntervalProposal
                     ),
-                new(nextActionChoosingIntervalProposal: 0.4f)
+                new(nextActionChoosingIntervalProposal: 0.5f)
             )
         );
     }

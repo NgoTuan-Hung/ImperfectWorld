@@ -6,6 +6,7 @@ public enum BotAIBehavior
     DefaultMeleeBehavior,
     DefaultRangedBehavior,
     Ruhmleyna,
+    NewAIBehavior,
 }
 
 public partial class BotAIManager
@@ -16,6 +17,7 @@ public partial class BotAIManager
         { BotAIBehavior.DefaultMeleeBehavior, typeof(DefaultMeleeBehavior) },
         { BotAIBehavior.DefaultRangedBehavior, typeof(DefaultRangedBehavior) },
         { BotAIBehavior.Ruhmleyna, typeof(RuhmleynaBehavior) },
+        { BotAIBehavior.NewAIBehavior, typeof(NewAIBehavior) },
     };
 
     public BaseAIBehavior aiBehavior;

@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1cb3ed3e615e53240964c7767178a777, type: 3}
+  m_Name: VirgilCAI
+  m_EditorClassIdentifier: Assembly-CSharp::CharAttackInfo
+  meleeAttackInfos:
+  - meleeAttackEffectSO: {fileID: 11400000, guid: e08f758de75232c4cb9d61e33c886973, type: 2}
+    meleeImpactEffectSO: {fileID: 11400000, guid: fc67747c09c22dd4b91cbdd40f21f82d, type: 2}
+  variant: 1

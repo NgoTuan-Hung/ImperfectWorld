@@ -7,7 +7,6 @@ public class Slaughter : SkillBase
     {
         base.Awake();
         audioClip = Resources.Load<AudioClip>("AudioClip/slaughter");
-        AddActionManuals();
     }
 
     IEnumerator RefillAmmo()

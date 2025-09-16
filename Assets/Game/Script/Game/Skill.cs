@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 public class Skill : CustomMonoPal
 {
@@ -33,7 +34,6 @@ public class Skill : CustomMonoPal
         {
             for (int i = 0; i < skillDataSOs.Count; i++)
             {
-                customMono.actionIntelligence.AddManuals(skillBases[i].botActionManuals);
                 skillDatas.Add(new(skillDataSOs[i], skillBases[i]));
             }
 
@@ -42,5 +42,25 @@ public class Skill : CustomMonoPal
             // 	GameManager.Instance.GetCharData(customMono).individualView, skillDatas
             // );
         }
+    }
+
+    public void HandleSkillUnlock(List<SpawnEnemySkillInfo> spawnEnemySkillInfos)
+    {
+        BaseAction t_skill;
+        spawnEnemySkillInfos.ForEach(sEKI =>
+        {
+            if (sEKI.unlocked)
+            {
+                t_skill = skillBases.FirstOrDefault(sB => sB.GetType().Equals(sEKI.skillType));
+                if (!t_skill.unlocked)
+                    UnlockSkill(t_skill);
+            }
+        });
+    }
+
+    public void UnlockSkill(BaseAction p_skill)
+    {
+        p_skill.Unlock();
+        customMono.actionIntelligence.AddManuals(p_skill.botActionManuals);
     }
 }
