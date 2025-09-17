@@ -12,11 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 98f3bba0a7728f04cadd88fdf57d5924, type: 3}
   m_Name: ArrowSO
   m_EditorClassIdentifier: 
-  isDeactivateAfterTime: 1
+  isDeactivateAfterTime: 0
   deactivateTime: 5
   isTimeline: 0
   randomRotation: 0
-  flyAtSpeed: 0.2
+  flyAtSpeed: 0.5
   followOffset: {x: -0.8, y: 1.5, z: 0}
   followSlowlyPositionLerpTime: 0.04
   playSound: 0
@@ -53,13 +53,10 @@ MonoBehaviour:
     m_ColorSpace: -1
     m_NumColorKeys: 2
     m_NumAlphaKeys: 2
-  timelineAsset: {fileID: 0}
-  collideAndDamageSO: {fileID: 11400000, guid: a25a432ccbb043840ae3d616e78b405c, type: 2}
-  audioSource: {fileID: -854398111778407156, guid: 342b08f5217c5b84493691b79af46d1a, type: 3}
-  gameEffectPrefab: {fileID: 3771280884400930949, guid: 342b08f5217c5b84493691b79af46d1a, type: 3}
-  useTrailRenderer: 0
+  collideAndDamageSO: {fileID: 0}
   tag: Untagged
   collisionExcludeLayerMask:
     serializedVersion: 2
     m_Bits: 247
-  gameEffectBehaviours: 01000000
+  gameEffectBehaviours: 
+  useParticleSystem: 0

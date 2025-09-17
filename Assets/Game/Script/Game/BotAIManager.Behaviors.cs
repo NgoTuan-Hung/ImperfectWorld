@@ -3,20 +3,14 @@ using System.Collections.Generic;
 
 public enum BotAIBehavior
 {
-    DefaultMeleeBehavior,
-    DefaultRangedBehavior,
-    Ruhmleyna,
     NewAIBehavior,
 }
 
 public partial class BotAIManager
 {
-    public BotAIBehavior useBotAIBehavior = BotAIBehavior.DefaultMeleeBehavior;
+    public BotAIBehavior useBotAIBehavior = BotAIBehavior.NewAIBehavior;
     static Dictionary<BotAIBehavior, Type> behaviorMap = new()
     {
-        { BotAIBehavior.DefaultMeleeBehavior, typeof(DefaultMeleeBehavior) },
-        { BotAIBehavior.DefaultRangedBehavior, typeof(DefaultRangedBehavior) },
-        { BotAIBehavior.Ruhmleyna, typeof(RuhmleynaBehavior) },
         { BotAIBehavior.NewAIBehavior, typeof(NewAIBehavior) },
     };
 

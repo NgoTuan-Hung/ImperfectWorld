@@ -12,15 +12,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 98f3bba0a7728f04cadd88fdf57d5924, type: 3}
   m_Name: ElementalLeafRangerArrowSO
   m_EditorClassIdentifier: 
-  isDeactivateAfterTime: 1
+  isDeactivateAfterTime: 0
   deactivateTime: 5
   isTimeline: 0
   randomRotation: 0
-  flyAtSpeed: 0.2
+  flyAtSpeed: 0.5
   followOffset: {x: -0.8, y: 1.5, z: 0}
   followSlowlyPositionLerpTime: 0.04
   playSound: 0
-  effectLocalPosition: {x: 0.8499999, y: -1.27, z: 0}
+  effectLocalPosition: {x: 0, y: 0, z: 0}
   effectLocalRotation: {x: 0, y: 0, z: 0}
   isColoredOverLifetime: 0
   colorOverLifetimeGrad:
@@ -53,13 +53,10 @@ MonoBehaviour:
     m_ColorSpace: -1
     m_NumColorKeys: 2
     m_NumAlphaKeys: 2
-  timelineAsset: {fileID: 0}
-  collideAndDamageSO: {fileID: 11400000, guid: f4913fb034c86684584a8a7d6b8538e8, type: 2}
-  audioSource: {fileID: 1499273822444370369, guid: 40729879bd178be4b8c90477c0b08d68, type: 3}
-  gameEffectPrefab: {fileID: 4731918804945079599, guid: 40729879bd178be4b8c90477c0b08d68, type: 3}
-  useTrailRenderer: 0
+  collideAndDamageSO: {fileID: 0}
   tag: Untagged
   collisionExcludeLayerMask:
     serializedVersion: 2
     m_Bits: 247
-  gameEffectBehaviours: 01000000
+  gameEffectBehaviours: 
+  useParticleSystem: 0

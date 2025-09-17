@@ -1,159 +1,159 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using Random = UnityEngine.Random;
+// using System;
+// using System.Collections;
+// using System.Collections.Generic;
+// using UnityEngine;
+// using Random = UnityEngine.Random;
 
-public class TheCallOfThePack : SkillBase
-{
-    GameObject smallWereWolfPrefab;
-    static ObjectPool smallWereWolfPool;
-    float summonX,
-        summonY;
+// public class TheCallOfThePack : SkillBase
+// {
+//     GameObject smallWereWolfPrefab;
+//     static ObjectPool smallWereWolfPool;
+//     float summonX,
+//         summonY;
 
-    public override void Awake()
-    {
-        base.Awake();
-    }
+//     public override void Awake()
+//     {
+//         base.Awake();
+//     }
 
-    public override void OnEnable()
-    {
-        base.OnEnable();
-    }
+//     public override void OnEnable()
+//     {
+//         base.OnEnable();
+//     }
 
-    public override void AddActionManuals()
-    {
-        base.AddActionManuals();
-        botActionManuals.Add(
-            new BotActionManual(
-                ActionUse.SummonShortRange,
-                (p_doActionParamInfo) =>
-                    Call(p_doActionParamInfo.nextActionChoosingIntervalProposal),
-                new(nextActionChoosingIntervalProposal: 0.5f)
-            )
-        );
-    }
+//     public override void AddActionManuals()
+//     {
+//         base.AddActionManuals();
+//         botActionManuals.Add(
+//             new BotActionManual(
+//                 ActionUse.SummonShortRange,
+//                 (p_doActionParamInfo) =>
+//                     Call(p_doActionParamInfo.nextActionChoosingIntervalProposal),
+//                 new(nextActionChoosingIntervalProposal: 0.5f)
+//             )
+//         );
+//     }
 
-    public override void Start()
-    {
-        base.Start();
-#if UNITY_EDITOR
-        onExitPlayModeEvent += () =>
-        {
-            smallWereWolfPool = null;
-        };
-#endif
-    }
+//     public override void Start()
+//     {
+//         base.Start();
+// #if UNITY_EDITOR
+//         onExitPlayModeEvent += () =>
+//         {
+//             smallWereWolfPool = null;
+//         };
+// #endif
+//     }
 
-    public override void Config()
-    {
-        GetActionField<ActionFloatField>(ActionFieldName.Cooldown).value = 60f;
-        audioClip = Resources.Load<AudioClip>("AudioClip/the-call-of-the-pack");
-        GetActionField<ActionFloatField>(ActionFieldName.Range).value = 20f;
+//     public override void Config()
+//     {
+//         GetActionField<ActionFloatField>(ActionFieldName.Cooldown).value = 60f;
+//         audioClip = Resources.Load<AudioClip>("AudioClip/the-call-of-the-pack");
+//         GetActionField<ActionFloatField>(ActionFieldName.Range).value = 20f;
 
-        smallWereWolfPrefab = Resources.Load("SmallWereWolf") as GameObject;
-        smallWereWolfPool ??= new ObjectPool(
-            smallWereWolfPrefab,
-            new PoolArgument(ComponentType.CustomMono, PoolArgument.WhereComponent.Self)
-        );
-        successResult = new(
-            true,
-            ActionResultType.Cooldown,
-            GetActionField<ActionFloatField>(ActionFieldName.Cooldown).value
-        );
-        /* also actionie  */
-    }
+//         smallWereWolfPrefab = Resources.Load("SmallWereWolf") as GameObject;
+//         smallWereWolfPool ??= new ObjectPool(
+//             smallWereWolfPrefab,
+//             new PoolArgument(ComponentType.CustomMono, PoolArgument.WhereComponent.Self)
+//         );
+//         successResult = new(
+//             true,
+//             ActionResultType.Cooldown,
+//             GetActionField<ActionFloatField>(ActionFieldName.Cooldown).value
+//         );
+//         /* also actionie  */
+//     }
 
-    public override ActionResult Trigger(Vector2 location = default, Vector2 direction = default)
-    {
-        if (canUse && !customMono.actionBlocking)
-        {
-            canUse = false;
-            customMono.actionBlocking = true;
-            customMono.statusEffect.Slow(customMono.stat.actionSlowModifier);
-            ToggleAnim(GameManager.Instance.summonBoolHash, true);
-            StartCoroutine(
-                GetActionField<ActionIEnumeratorField>(ActionFieldName.ActionIE).value =
-                    TriggerCoroutine()
-            );
-            StartCoroutine(CooldownCoroutine());
-            customMono.currentAction = this;
+//     public override ActionResult Trigger(Vector2 location = default, Vector2 direction = default)
+//     {
+//         if (canUse && !customMono.actionBlocking)
+//         {
+//             canUse = false;
+//             customMono.actionBlocking = true;
+//             customMono.statusEffect.Slow(customMono.stat.actionSlowModifier);
+//             ToggleAnim(GameManager.Instance.summonBoolHash, true);
+//             StartCoroutine(
+//                 GetActionField<ActionIEnumeratorField>(ActionFieldName.ActionIE).value =
+//                     TriggerCoroutine()
+//             );
+//             StartCoroutine(CooldownCoroutine());
+//             customMono.currentAction = this;
 
-            return successResult;
-        }
+//             return successResult;
+//         }
 
-        return failResult;
-    }
+//         return failResult;
+//     }
 
-    IEnumerator TriggerCoroutine()
-    {
-        while (!customMono.animationEventFunctionCaller.GetSignalVals(EAnimationSignal.Summon))
-            yield return new WaitForSeconds(Time.fixedDeltaTime);
+//     IEnumerator TriggerCoroutine()
+//     {
+//         while (!customMono.animationEventFunctionCaller.GetSignalVals(EAnimationSignal.Summon))
+//             yield return new WaitForSeconds(Time.fixedDeltaTime);
 
-        /* summon 3 were wolves */
-        customMono.animationEventFunctionCaller.SetSignal(EAnimationSignal.Summon, false);
-        customMono.audioSource.PlayOneShot(audioClip);
-        List<PoolObject> poolObjects = smallWereWolfPool.Pick(3);
+//         /* summon 3 were wolves */
+//         customMono.animationEventFunctionCaller.SetSignal(EAnimationSignal.Summon, false);
+//         customMono.audioSource.PlayOneShot(audioClip);
+//         List<PoolObject> poolObjects = smallWereWolfPool.Pick(3);
 
-        foreach (PoolObject poolObject in poolObjects)
-            StartCoroutine(DelayAirRoll(poolObject));
+//         foreach (PoolObject poolObject in poolObjects)
+//             StartCoroutine(DelayAirRoll(poolObject));
 
-        while (!customMono.animationEventFunctionCaller.GetSignalVals(EAnimationSignal.EndSummon))
-            yield return new WaitForSeconds(Time.fixedDeltaTime);
-        customMono.statusEffect.RemoveSlow(customMono.stat.actionSlowModifier);
-        customMono.actionBlocking = false;
-        customMono.animationEventFunctionCaller.SetSignal(EAnimationSignal.EndSummon, false);
-        customMono.currentAction = null;
-    }
+//         while (!customMono.animationEventFunctionCaller.GetSignalVals(EAnimationSignal.EndSummon))
+//             yield return new WaitForSeconds(Time.fixedDeltaTime);
+//         customMono.statusEffect.RemoveSlow(customMono.stat.actionSlowModifier);
+//         customMono.actionBlocking = false;
+//         customMono.animationEventFunctionCaller.SetSignal(EAnimationSignal.EndSummon, false);
+//         customMono.currentAction = null;
+//     }
 
-    IEnumerator DelayAirRoll(PoolObject poolObject)
-    {
-        /* Place the were wolf along the circle around me with the
-        radius of maxRange and make them jump to our position with
-        a small offset. */
-        CustomMono customMono = poolObject.customMono;
-        summonX = Random.Range(
-            -GetActionField<ActionFloatField>(ActionFieldName.Range).value,
-            GetActionField<ActionFloatField>(ActionFieldName.Range).value
-        );
-        summonY = (float)(
-            Math.Sqrt(
-                GetActionField<ActionFloatField>(ActionFieldName.Range).value
-                    * GetActionField<ActionFloatField>(ActionFieldName.Range).value
-                    - summonX * summonX
-            ) * (Random.Range(-1f, 1f) > 0 ? 1 : -1)
-        );
-        customMono.transform.position = transform.position + new Vector3(summonX, summonY, 0);
-        yield return new WaitForSeconds(Random.Range(0, 0.3f));
-        customMono.botAIManager.aiBehavior.ForceUsingAction(
-            ActionUse.AirRoll,
-            transform.position + new Vector3(Random.Range(-1, 1), Random.Range(-1, 1)),
-            2f
-        );
-    }
+//     IEnumerator DelayAirRoll(PoolObject poolObject)
+//     {
+//         /* Place the were wolf along the circle around me with the
+//         radius of maxRange and make them jump to our position with
+//         a small offset. */
+//         CustomMono customMono = poolObject.customMono;
+//         summonX = Random.Range(
+//             -GetActionField<ActionFloatField>(ActionFieldName.Range).value,
+//             GetActionField<ActionFloatField>(ActionFieldName.Range).value
+//         );
+//         summonY = (float)(
+//             Math.Sqrt(
+//                 GetActionField<ActionFloatField>(ActionFieldName.Range).value
+//                     * GetActionField<ActionFloatField>(ActionFieldName.Range).value
+//                     - summonX * summonX
+//             ) * (Random.Range(-1f, 1f) > 0 ? 1 : -1)
+//         );
+//         customMono.transform.position = transform.position + new Vector3(summonX, summonY, 0);
+//         yield return new WaitForSeconds(Random.Range(0, 0.3f));
+//         // customMono.botAIManager.aiBehavior.ForceUsingAction(
+//         //     ActionUse.AirRoll,
+//         //     transform.position + new Vector3(Random.Range(-1, 1), Random.Range(-1, 1)),
+//         //     2f
+//         // );
+//     }
 
-    public void Call(float duration)
-    {
-        StartCoroutine(CallCoroutine(duration));
-    }
+//     public void Call(float duration)
+//     {
+//         StartCoroutine(CallCoroutine(duration));
+//     }
 
-    IEnumerator CallCoroutine(float duration)
-    {
-        customMono.actionInterval = true;
-        Trigger();
-        yield return new WaitForSeconds(duration);
+//     IEnumerator CallCoroutine(float duration)
+//     {
+//         customMono.actionInterval = true;
+//         Trigger();
+//         yield return new WaitForSeconds(duration);
 
-        customMono.actionInterval = false;
-    }
+//         customMono.actionInterval = false;
+//     }
 
-    public override void ActionInterrupt()
-    {
-        base.ActionInterrupt();
-        customMono.actionBlocking = false;
-        ToggleAnim(GameManager.Instance.summonBoolHash, false);
-        customMono.statusEffect.RemoveSlow(customMono.stat.actionSlowModifier);
-        customMono.animationEventFunctionCaller.SetSignal(EAnimationSignal.Summon, false);
-        customMono.animationEventFunctionCaller.SetSignal(EAnimationSignal.EndSummon, false);
-        StopCoroutine(GetActionField<ActionIEnumeratorField>(ActionFieldName.ActionIE).value);
-    }
-}
+//     public override void ActionInterrupt()
+//     {
+//         base.ActionInterrupt();
+//         customMono.actionBlocking = false;
+//         ToggleAnim(GameManager.Instance.summonBoolHash, false);
+//         customMono.statusEffect.RemoveSlow(customMono.stat.actionSlowModifier);
+//         customMono.animationEventFunctionCaller.SetSignal(EAnimationSignal.Summon, false);
+//         customMono.animationEventFunctionCaller.SetSignal(EAnimationSignal.EndSummon, false);
+//         StopCoroutine(GetActionField<ActionIEnumeratorField>(ActionFieldName.ActionIE).value);
+//     }
+// }

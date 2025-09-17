@@ -25,11 +25,6 @@ public class Skill : CustomMonoPal
 
     void InitSkill()
     {
-        for (int i = 0; i < skillDataSOs.Count; i++)
-        {
-            customMono.actionIntelligence.AddManuals(skillBases[i].botActionManuals);
-        }
-
         if (customMono.isControllable)
         {
             for (int i = 0; i < skillDataSOs.Count; i++)
@@ -61,6 +56,5 @@ public class Skill : CustomMonoPal
     public void UnlockSkill(BaseAction p_skill)
     {
         p_skill.Unlock();
-        customMono.actionIntelligence.AddManuals(p_skill.botActionManuals);
     }
 }

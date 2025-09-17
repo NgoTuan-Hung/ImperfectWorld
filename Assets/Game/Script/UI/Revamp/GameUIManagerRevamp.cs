@@ -231,7 +231,7 @@ public class GameUIManagerRevamp : MonoEditorSingleton<GameUIManagerRevamp>
                                 p_centerToPointerDir
                             ) =>
                             {
-                                t_skillSlotUI.skillNodeUI.skillBase.WhileWaiting(
+                                t_skillSlotUI.skillNodeUI.skillBase.TriggerContinuous(
                                     p_pointerPosition,
                                     p_centerToPointerDir
                                 );
@@ -271,7 +271,7 @@ public class GameUIManagerRevamp : MonoEditorSingleton<GameUIManagerRevamp>
                                 p_pointerPosition,
                                 p_centerToPointerDir
                             ) =>
-                                t_skillSlotUI.skillNodeUI.skillBase.WhileWaiting(
+                                t_skillSlotUI.skillNodeUI.skillBase.TriggerContinuous(
                                     p_location: p_pointerPosition,
                                     p_direction: p_centerToPointerDir
                                 );

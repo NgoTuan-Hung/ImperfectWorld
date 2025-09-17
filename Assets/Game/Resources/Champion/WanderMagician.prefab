@@ -126,19 +126,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0182cb3923f57a1458b6708ef0d49809, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  attack: 0
-  endAttack: 0
-  castingMagic: 0
-  endCastingMagic: 0
-  summon: 0
-  endSummon: 0
-  endRelease: 0
-  mainSkill1Signal: 0
-  endMainSkill1: 0
-  mainSkill2Signal: 0
-  endMainSkill2: 0
-  mainSkill3Signal: 0
-  endMainSkill3: 0
 --- !u!1 &6363290272921356084
 GameObject:
   m_ObjectHideFlags: 0
@@ -189,8 +176,6 @@ GameObject:
   - component: {fileID: 1214381880752246153}
   - component: {fileID: 2466865448266440456}
   - component: {fileID: 7083115136417995445}
-  - component: {fileID: 834792069889194963}
-  - component: {fileID: 8358491539568613821}
   - component: {fileID: 513280056857668141}
   - component: {fileID: 1277164082142199727}
   - component: {fileID: 7978585790228963272}
@@ -410,8 +395,8 @@ MonoBehaviour:
   currentHealthPoint:
     cap: 0
   healthPoint:
-    baseValue: 20
-    finalValue: 20
+    baseValue: 15
+    finalValue: 15
     referenceModifiers: []
     modifiers: []
   healthRegen:
@@ -486,8 +471,6 @@ MonoBehaviour:
   spriteRenderer: {fileID: 0}
   animationEventFunctionCaller: {fileID: 0}
   movable: {fileID: 0}
-  movementIntelligence: {fileID: 0}
-  actionIntelligence: {fileID: 0}
   botSensor: {fileID: 0}
   botAIManager: {fileID: 0}
   stat: {fileID: 0}
@@ -505,6 +488,7 @@ MonoBehaviour:
   attackAudioClip: {fileID: 8300000, guid: 1831f3e85531e554081da581aac0d078, type: 3}
   meleeCollisionEffectSO: {fileID: 0}
   longRangeProjectileEffectSO: {fileID: 11400000, guid: 0152fa7a68a379f4dabe1a7053af1754, type: 2}
+  charAttackInfo: {fileID: 11400000, guid: 44c56ed2c3d73bd4d84b6a9e906c5b5e, type: 2}
   attackType: 1
   statusEffect: {fileID: 0}
   rotationAndCenterObject: {fileID: 0}
@@ -537,52 +521,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d3345c1ae0ed9ea41b86f2a3c634c06a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cooldown: 0
+  customMono: {fileID: 0}
   onCooldown: 0
   defaultCooldown: 0
   defaultStateSpeed: 0
   canUse: 1
-  boolHash: 0
-  actionClip: {fileID: 0}
   audioClip: {fileID: 0}
-  damage: 0
-  defaultDamage: 0
-  maxAmmo: 0
-  currentAmmo: 0
-  modifiedAngle: 0
-  lifeStealPercent: 0
-  stunDuration: 0
+  unlocked: 0
   moveVector: {x: 0, y: 0}
---- !u!114 &834792069889194963
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6920399575831899041}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2623757eb5f46ee4abafbe08eaddd68d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  actionChances: 
-  actionCumulativeDistribution: []
-  presummedActionChances: 
---- !u!114 &8358491539568613821
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6920399575831899041}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4ae2c2d3186a9fc488532551d8419d91, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  actionChances: 
-  actionCumulativeDistribution: []
-  presummedActionChances: 
 --- !u!114 &513280056857668141
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -597,10 +543,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   customMono: {fileID: 0}
   skillDataSOs:
-  - {fileID: 11400000, guid: 1c867fbe8b471654dae0b5d9aa81b709, type: 2}
-  - {fileID: 11400000, guid: fc9e8fa109257c445b86f24bd35abbf8, type: 2}
-  - {fileID: 11400000, guid: 435fce547d318d94f838c9c3f2cf2fa9, type: 2}
-  - {fileID: 11400000, guid: d433e8152bc56e147a7e5edd86d7fde5, type: 2}
+  - {fileID: 11400000, guid: d956062efdfc6274d972e2ef0fc25827, type: 2}
   skillBases: []
 --- !u!114 &1277164082142199727
 MonoBehaviour:
@@ -669,7 +612,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BotAIManager
   customMono: {fileID: 0}
-  useBotAIBehavior: 1
+  useBotAIBehavior: 0
   aiBehavior: {fileID: 0}
 --- !u!1001 &814628871469298295
 PrefabInstance:

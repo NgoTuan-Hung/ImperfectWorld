@@ -127,19 +127,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0182cb3923f57a1458b6708ef0d49809, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  attack: 0
-  endAttack: 0
-  castingMagic: 0
-  endCastingMagic: 0
-  summon: 0
-  endSummon: 0
-  endRelease: 0
-  mainSkill1Signal: 0
-  endMainSkill1: 0
-  mainSkill2Signal: 0
-  endMainSkill2: 0
-  mainSkill3Signal: 0
-  endMainSkill3: 0
 --- !u!1 &1427103596814760749
 GameObject:
   m_ObjectHideFlags: 0
@@ -186,8 +173,6 @@ GameObject:
   - component: {fileID: 2294511856684483096}
   - component: {fileID: 7525494074642245837}
   - component: {fileID: 5776027955895354842}
-  - component: {fileID: 7023779683548498420}
-  - component: {fileID: 1020389073582314238}
   - component: {fileID: 7859021448824365601}
   - component: {fileID: 3208730866302124916}
   - component: {fileID: 1319466979024103620}
@@ -484,8 +469,6 @@ MonoBehaviour:
   spriteRenderer: {fileID: 0}
   animationEventFunctionCaller: {fileID: 0}
   movable: {fileID: 0}
-  movementIntelligence: {fileID: 0}
-  actionIntelligence: {fileID: 0}
   botSensor: {fileID: 0}
   botAIManager: {fileID: 0}
   stat: {fileID: 0}
@@ -503,6 +486,7 @@ MonoBehaviour:
   attackAudioClip: {fileID: 8300000, guid: 4a4b48223eddcde4ca98850c4a405077, type: 3}
   meleeCollisionEffectSO: {fileID: 11400000, guid: 57f5a5216cc7363438a755be830c78a9, type: 2}
   longRangeProjectileEffectSO: {fileID: 0}
+  charAttackInfo: {fileID: 11400000, guid: 5becf2e8e539f9742b34fd6043db9910, type: 2}
   attackType: 0
   statusEffect: {fileID: 0}
   rotationAndCenterObject: {fileID: 0}
@@ -522,52 +506,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d3345c1ae0ed9ea41b86f2a3c634c06a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cooldown: 0
+  customMono: {fileID: 0}
   onCooldown: 0
   defaultCooldown: 0
   defaultStateSpeed: 0
   canUse: 1
-  boolHash: 0
-  actionClip: {fileID: 0}
   audioClip: {fileID: 0}
-  damage: 0
-  defaultDamage: 0
-  maxAmmo: 0
-  currentAmmo: 0
-  modifiedAngle: 0
-  lifeStealPercent: 0
-  stunDuration: 0
+  unlocked: 0
   moveVector: {x: 0, y: 0}
---- !u!114 &7023779683548498420
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6724394765168942705}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4ae2c2d3186a9fc488532551d8419d91, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  actionChances: 
-  actionCumulativeDistribution: []
-  presummedActionChances: 
---- !u!114 &1020389073582314238
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6724394765168942705}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2623757eb5f46ee4abafbe08eaddd68d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  actionChances: 
-  actionCumulativeDistribution: []
-  presummedActionChances: 
 --- !u!114 &7859021448824365601
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -595,10 +541,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   customMono: {fileID: 0}
   skillDataSOs:
-  - {fileID: 11400000, guid: 1c867fbe8b471654dae0b5d9aa81b709, type: 2}
-  - {fileID: 11400000, guid: a6be81b4acc301b47a926883a9f47ade, type: 2}
-  - {fileID: 11400000, guid: ce0123f1849375d49a041c6c87aa546c, type: 2}
-  - {fileID: 11400000, guid: cc7bf204cfd06a9478d863885bbb9e6c, type: 2}
+  - {fileID: 11400000, guid: d956062efdfc6274d972e2ef0fc25827, type: 2}
   skillBases: []
 --- !u!114 &1319466979024103620
 MonoBehaviour:

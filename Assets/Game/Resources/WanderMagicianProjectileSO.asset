@@ -20,7 +20,7 @@ MonoBehaviour:
   followOffset: {x: -0.8, y: 1.5, z: 0}
   followSlowlyPositionLerpTime: 0.04
   playSound: 0
-  effectLocalPosition: {x: 0.8499999, y: -1.27, z: 0}
+  effectLocalPosition: {x: 0, y: 0, z: 0}
   effectLocalRotation: {x: 0, y: 0, z: 0}
   isColoredOverLifetime: 0
   colorOverLifetimeGrad:
@@ -53,13 +53,10 @@ MonoBehaviour:
     m_ColorSpace: -1
     m_NumColorKeys: 2
     m_NumAlphaKeys: 2
-  timelineAsset: {fileID: 0}
-  collideAndDamageSO: {fileID: 11400000, guid: 99fe302522ce62d41b626fc2f5f3eef8, type: 2}
-  audioSource: {fileID: 8466125307730119543, guid: caf374498fe9fa648a84bf5203e4239e, type: 3}
-  gameEffectPrefab: {fileID: 4662037328661818214, guid: caf374498fe9fa648a84bf5203e4239e, type: 3}
-  useTrailRenderer: 0
+  collideAndDamageSO: {fileID: 0}
   tag: Untagged
   collisionExcludeLayerMask:
     serializedVersion: 2
     m_Bits: 247
-  gameEffectBehaviours: 01000000
+  gameEffectBehaviours: 
+  useParticleSystem: 0

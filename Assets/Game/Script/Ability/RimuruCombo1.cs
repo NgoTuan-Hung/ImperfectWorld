@@ -17,29 +17,6 @@ public class RimuruCombo1 : SkillBase
     public override void AddActionManuals()
     {
         base.AddActionManuals();
-        botActionManuals.Add(
-            new BotActionManual(
-                ActionUse.MeleeDamage,
-                (p_doActionParamInfo) =>
-                    BotTrigger(
-                        p_doActionParamInfo.centerToTargetCenterDirection,
-                        p_doActionParamInfo.nextActionChoosingIntervalProposal
-                    ),
-                new(nextActionChoosingIntervalProposal: 0.5f)
-            )
-        );
-
-        botActionManuals.Add(
-            new BotActionManual(
-                ActionUse.RangedDamage,
-                (p_doActionParamInfo) =>
-                    BotTrigger(
-                        p_doActionParamInfo.centerToTargetCenterDirection,
-                        p_doActionParamInfo.nextActionChoosingIntervalProposal
-                    ),
-                new(nextActionChoosingIntervalProposal: 0.5f)
-            )
-        );
     }
 
     public override void Start()
@@ -89,16 +66,18 @@ public class RimuruCombo1 : SkillBase
             customMono.stat.reflex.FinalValue * 2.5f;
     }
 
-    public override void WhileWaiting(Vector2 p_location = default, Vector2 p_direction = default)
+    public override void TriggerContinuous(
+        Vector2 p_location = default,
+        Vector2 p_direction = default
+    )
     {
         customMono.SetUpdateDirectionIndicator(p_direction, UpdateDirectionIndicatorPriority.Low);
     }
 
     public override ActionResult Trigger(Vector2 location = default, Vector2 direction = default)
     {
-        if (canUse && !customMono.actionBlocking && !customMono.movementActionBlocking)
+        if (!customMono.actionBlocking && !customMono.movementActionBlocking)
         {
-            canUse = false;
             customMono.actionBlocking = true;
             customMono.movementActionBlocking = true;
             customMono.statusEffect.Slow(customMono.stat.actionSlowModifier);

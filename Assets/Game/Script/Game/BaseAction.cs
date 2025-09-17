@@ -32,7 +32,6 @@ public partial class BaseAction : MonoEditor
     /// after some cooldown.
     /// </summary>
     public bool canUse;
-    public List<BotActionManual> botActionManuals = new();
     public AudioClip audioClip;
     public IEnumerator botIE;
     public static ActionResult failResult = new();
@@ -129,7 +128,7 @@ public partial class BaseAction : MonoEditor
         return failResult;
     }
 
-    public virtual void WhileWaiting(
+    public virtual void TriggerContinuous(
         Vector2 p_location = default,
         Vector2 p_direction = default
     ) { }

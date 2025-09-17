@@ -2,7 +2,7 @@ using System.Collections;
 
 public class NewAIBehavior : BaseAIBehavior
 {
-    AttackRevamp attackRevamp;
+    Attack attack;
 
     public override void Awake()
     {
@@ -18,7 +18,7 @@ public class NewAIBehavior : BaseAIBehavior
     IEnumerator LateStart()
     {
         yield return null;
-        attackRevamp = GetComponent<AttackRevamp>();
+        attack = GetComponent<Attack>();
     }
 
     public override void FixedUpdate()
@@ -33,7 +33,7 @@ public class NewAIBehavior : BaseAIBehavior
 
         if (
             customMono.botSensor.centerToTargetCenterDirection.magnitude
-            > attackRevamp.GetActionField<ActionFloatField>(ActionFieldName.Range).value
+            > attack.GetActionField<ActionFloatField>(ActionFieldName.Range).value
         )
         {
             customMono.movable.Move(customMono.botSensor.originToTargetOriginDirection);
@@ -44,8 +44,8 @@ public class NewAIBehavior : BaseAIBehavior
 
             if (customMono.botSensor.currentNearestEnemy != null)
             {
-                if (!attackRevamp.onCooldown)
-                    attackRevamp.Trigger(
+                if (!attack.onCooldown)
+                    attack.Trigger(
                         p_direction: customMono.botSensor.centerToTargetCenterDirection,
                         p_customMono: customMono.botSensor.currentNearestEnemy
                     );

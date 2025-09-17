@@ -9,30 +9,8 @@ using UnityEngine;
 /// </summary>
 public class BotActionManual
 {
-    public ActionUse actionUse;
+    public bool requireContinuous = false;
     public delegate void DoAction(DoActionParamInfo p_doActionParamInfo);
     public DoAction doAction;
-    public DoActionParamInfo doActionParamInfo;
-    public int botActionManualIndex;
-    public bool actionNeedWait;
-    public Func<ActionResult> startAndWait;
-    public Action<Vector2, Vector2> whileWaiting = (targetLocation, targetDirection) => { };
-    public int actionChanceAjuster = 0;
-
-    public BotActionManual(
-        ActionUse actionUse,
-        DoAction doAction,
-        DoActionParamInfo doActionParamInfo,
-        bool actionNeedWait = false,
-        Func<ActionResult> startAndWait = null,
-        Action<Vector2, Vector2> whileWaiting = null
-    )
-    {
-        this.actionUse = actionUse;
-        this.doAction = doAction;
-        this.doActionParamInfo = doActionParamInfo;
-        this.actionNeedWait = actionNeedWait;
-        this.startAndWait = startAndWait;
-        this.whileWaiting = whileWaiting;
-    }
+    public Action<DoActionParamInfo> botDoActionContinuous = (p_doActionParamInfo) => { };
 }

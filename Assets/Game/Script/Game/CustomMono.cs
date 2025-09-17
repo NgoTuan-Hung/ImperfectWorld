@@ -29,8 +29,6 @@ public class CustomMono : MonoSelfAware
     private AnimatorWrapper animatorWrapper;
     public AnimationEventFunctionCaller animationEventFunctionCaller;
     public Movable movable;
-    public MovementIntelligence movementIntelligence;
-    public ActionIntelligence actionIntelligence;
     public BotSensor botSensor;
     public BotAIManager botAIManager;
     public Stat stat;
@@ -126,10 +124,6 @@ public class CustomMono : MonoSelfAware
         skill = GetComponent<Skill>();
         botSensor = GetComponent<BotSensor>();
         botAIManager = GetComponent<BotAIManager>();
-
-        /* Bot components */
-        movementIntelligence = GetComponent<MovementIntelligence>();
-        actionIntelligence = GetComponent<ActionIntelligence>();
     }
 
     void GetAllChildObject()

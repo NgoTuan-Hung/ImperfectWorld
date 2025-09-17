@@ -141,8 +141,6 @@ GameObject:
   - component: {fileID: 6956051358220845641}
   - component: {fileID: 333891873184638733}
   - component: {fileID: 1765170278504062600}
-  - component: {fileID: 1098763971853099495}
-  - component: {fileID: 3169244063964875462}
   - component: {fileID: 4334772538036549843}
   - component: {fileID: 9221185469736541080}
   - component: {fileID: 5932531251206287754}
@@ -150,7 +148,7 @@ GameObject:
   - component: {fileID: 3261071202894945024}
   m_Layer: 0
   m_Name: ElementalLeafRanger
-  m_TagString: GameBot
+  m_TagString: GamePlayer
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -406,8 +404,6 @@ MonoBehaviour:
   spriteRenderer: {fileID: 0}
   animationEventFunctionCaller: {fileID: 0}
   movable: {fileID: 0}
-  movementIntelligence: {fileID: 0}
-  actionIntelligence: {fileID: 0}
   botSensor: {fileID: 0}
   botAIManager: {fileID: 0}
   stat: {fileID: 0}
@@ -425,6 +421,7 @@ MonoBehaviour:
   attackAudioClip: {fileID: 8300000, guid: 1831f3e85531e554081da581aac0d078, type: 3}
   meleeCollisionEffectSO: {fileID: 0}
   longRangeProjectileEffectSO: {fileID: 11400000, guid: 988efa50fdcfafb4eb59f328dba638c3, type: 2}
+  charAttackInfo: {fileID: 11400000, guid: 34d14b183938c2142ab5da34271198b2, type: 2}
   attackType: 1
   statusEffect: {fileID: 0}
   rotationAndCenterObject: {fileID: 0}
@@ -452,36 +449,6 @@ MonoBehaviour:
   audioClip: {fileID: 0}
   unlocked: 0
   moveVector: {x: 0, y: 0}
---- !u!114 &1098763971853099495
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5800095605073204079}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2623757eb5f46ee4abafbe08eaddd68d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  actionChances: 
-  actionCumulativeDistribution: []
-  presummedActionChances: 
---- !u!114 &3169244063964875462
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5800095605073204079}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4ae2c2d3186a9fc488532551d8419d91, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  actionChances: 
-  actionCumulativeDistribution: []
-  presummedActionChances: 
 --- !u!114 &4334772538036549843
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -496,10 +463,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   customMono: {fileID: 0}
   skillDataSOs:
-  - {fileID: 11400000, guid: 1c867fbe8b471654dae0b5d9aa81b709, type: 2}
-  - {fileID: 11400000, guid: 82d2dcf54adedd741a6c39cda85b4a3c, type: 2}
-  - {fileID: 11400000, guid: 5d2023664fb455b42875ba90da1f7790, type: 2}
-  - {fileID: 11400000, guid: 41cd28db47a010748abdf74eb1487818, type: 2}
+  - {fileID: 11400000, guid: d956062efdfc6274d972e2ef0fc25827, type: 2}
   skillBases: []
 --- !u!114 &9221185469736541080
 MonoBehaviour:
@@ -614,7 +578,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BotAIManager
   customMono: {fileID: 0}
-  useBotAIBehavior: 1
+  useBotAIBehavior: 0
   aiBehavior: {fileID: 0}
 --- !u!1 &8816088761046860172
 GameObject:

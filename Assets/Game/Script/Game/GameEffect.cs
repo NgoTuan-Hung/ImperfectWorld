@@ -271,4 +271,51 @@ public class GameEffect : MonoSelfAware
         transform.localScale = Vector3.one;
         transform.SetLocalPositionAndRotation(p_localPos, Quaternion.Euler(p_localRot));
     }
+
+    public void FireAsRangedAttackEffect(
+        Vector3 p_origin,
+        float p_damage,
+        CustomMono p_target,
+        GameEffectSO p_impactEffect
+    )
+    {
+        StartCoroutine(FireAsRangedAttackEffectIE(p_origin, p_damage, p_target, p_impactEffect));
+    }
+
+    IEnumerator FireAsRangedAttackEffectIE(
+        Vector3 p_origin,
+        float p_damage,
+        CustomMono p_target,
+        GameEffectSO p_impactEffect
+    )
+    {
+        transform.position = p_origin;
+        Vector3 targetDir;
+        float epsilon = gameEffectSO.flyAtSpeed + 0.1f;
+        while (
+            Vector2.Distance(
+                transform.position,
+                p_target.rotationAndCenterObject.transform.position
+            ) > epsilon
+        )
+        {
+            targetDir = p_target.rotationAndCenterObject.transform.position - transform.position;
+            transform.rotation = Quaternion.Euler(
+                transform.rotation.eulerAngles.WithZ(Vector2.SignedAngle(Vector2.right, targetDir))
+            );
+            transform.localScale = transform.localScale.WithY(
+                targetDir.x > 0
+                    ? Math.Abs(transform.localScale.y)
+                    : -Math.Abs(transform.localScale.y)
+            );
+
+            transform.position += targetDir.normalized * gameEffectSO.flyAtSpeed;
+            yield return new WaitForSeconds(Time.fixedDeltaTime);
+        }
+
+        p_target.statusEffect.GetHit(p_damage);
+        GameManager.Instance.poolLink[p_impactEffect].PickOneGameEffect().transform.position =
+            p_target.rotationAndCenterObject.transform.position;
+        deactivate();
+    }
 }

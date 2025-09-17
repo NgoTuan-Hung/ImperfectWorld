@@ -141,8 +141,6 @@ GameObject:
   - component: {fileID: 6114070029568689062}
   - component: {fileID: 2064893532750167186}
   - component: {fileID: 3939600642513553}
-  - component: {fileID: 7175290945325434453}
-  - component: {fileID: 6604901035267016073}
   - component: {fileID: 3627049645906622430}
   - component: {fileID: 1140524323545118634}
   - component: {fileID: 5185675333155485747}
@@ -439,8 +437,6 @@ MonoBehaviour:
   spriteRenderer: {fileID: 0}
   animationEventFunctionCaller: {fileID: 0}
   movable: {fileID: 0}
-  movementIntelligence: {fileID: 0}
-  actionIntelligence: {fileID: 0}
   botSensor: {fileID: 0}
   botAIManager: {fileID: 0}
   stat: {fileID: 0}
@@ -458,6 +454,7 @@ MonoBehaviour:
   attackAudioClip: {fileID: 8300000, guid: 4a4b48223eddcde4ca98850c4a405077, type: 3}
   meleeCollisionEffectSO: {fileID: 11400000, guid: 57f5a5216cc7363438a755be830c78a9, type: 2}
   longRangeProjectileEffectSO: {fileID: 0}
+  charAttackInfo: {fileID: 11400000, guid: e28d432f719a2de4598d69a38d35f376, type: 2}
   attackType: 0
   statusEffect: {fileID: 0}
   rotationAndCenterObject: {fileID: 0}
@@ -485,36 +482,6 @@ MonoBehaviour:
   audioClip: {fileID: 0}
   unlocked: 0
   moveVector: {x: 0, y: 0}
---- !u!114 &7175290945325434453
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7338680796603692614}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4ae2c2d3186a9fc488532551d8419d91, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  actionChances: 
-  actionCumulativeDistribution: []
-  presummedActionChances: 
---- !u!114 &6604901035267016073
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7338680796603692614}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2623757eb5f46ee4abafbe08eaddd68d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  actionChances: 
-  actionCumulativeDistribution: []
-  presummedActionChances: 
 --- !u!114 &3627049645906622430
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -542,10 +509,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   customMono: {fileID: 0}
   skillDataSOs:
-  - {fileID: 11400000, guid: 1c867fbe8b471654dae0b5d9aa81b709, type: 2}
-  - {fileID: 11400000, guid: 12c3bbff2d3f2e3419f4d641e25e2f4c, type: 2}
-  - {fileID: 11400000, guid: ac1c61a40479db34fb9b5d221fa5a90d, type: 2}
-  - {fileID: 11400000, guid: ade0fd0865441524d95440e8055cf34a, type: 2}
+  - {fileID: 11400000, guid: d956062efdfc6274d972e2ef0fc25827, type: 2}
   skillBases: []
 --- !u!114 &5185675333155485747
 MonoBehaviour:

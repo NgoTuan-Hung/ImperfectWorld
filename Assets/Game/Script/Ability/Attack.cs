@@ -1,8 +1,12 @@
+using System;
 using System.Collections;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
-public class AttackRevamp : SkillBase
+public class Attack : SkillBase
 {
+    Func<Vector2, Vector2, CustomMono, IEnumerator> triggerIE;
+
     public override void Awake()
     {
         base.Awake();
@@ -28,7 +32,9 @@ public class AttackRevamp : SkillBase
             ActionResultType.Cooldown,
             GetActionField<ActionFloatField>(ActionFieldName.Cooldown).value
         );
-        GetActionField<ActionFloatField>(ActionFieldName.Range).value = 1.25f;
+        GetActionField<ActionFloatField>(ActionFieldName.Range).value = customMono
+            .charAttackInfo
+            .attackRange;
 
         GetActionField<ActionFloatField>(ActionFieldName.Blend).value =
             1
@@ -37,6 +43,23 @@ public class AttackRevamp : SkillBase
                     ? 1
                     : customMono.charAttackInfo.variant - 1
             );
+
+        switch (customMono.charAttackInfo.attackType)
+        {
+            case CharAttackInfo.AttackType.Melee:
+            {
+                triggerIE = MeleeTriggerIE;
+                break;
+            }
+            case CharAttackInfo.AttackType.Ranged:
+            {
+                triggerIE = RangedTriggerIE;
+                break;
+            }
+            default:
+                break;
+        }
+
         /* Also use damage, actionie, selectedVariant */
     }
 
@@ -83,7 +106,7 @@ public class AttackRevamp : SkillBase
             customMono.statusEffect.Slow(customMono.stat.actionSlowModifier);
             ToggleAnim(GameManager.Instance.attackBoolHash, true);
             StartCoroutine(
-                GetActionField<ActionIEnumeratorField>(ActionFieldName.ActionIE).value = TriggerIE(
+                GetActionField<ActionIEnumeratorField>(ActionFieldName.ActionIE).value = triggerIE(
                     p_location,
                     p_direction,
                     p_customMono
@@ -97,7 +120,7 @@ public class AttackRevamp : SkillBase
         return failResult;
     }
 
-    IEnumerator TriggerIE(
+    IEnumerator MeleeTriggerIE(
         Vector2 p_location = default,
         Vector2 p_direction = default,
         CustomMono p_customMono = null
@@ -142,6 +165,38 @@ public class AttackRevamp : SkillBase
                 GetActionField<ActionIntField>(ActionFieldName.SelectedVariant).value
             )
         );
+
+        while (!customMono.animationEventFunctionCaller.GetSignalVals(EAnimationSignal.EndAttack))
+            yield return new WaitForSeconds(Time.fixedDeltaTime);
+
+        customMono.statusEffect.RemoveSlow(customMono.stat.actionSlowModifier);
+        customMono.animationEventFunctionCaller.SetSignal(EAnimationSignal.EndAttack, false);
+        customMono.actionBlocking = false;
+        ToggleAnim(GameManager.Instance.attackBoolHash, false);
+        customMono.currentAction = null;
+    }
+
+    IEnumerator RangedTriggerIE(
+        Vector2 p_location = default,
+        Vector2 p_direction = default,
+        CustomMono p_customMono = null
+    )
+    {
+        customMono.SetUpdateDirectionIndicator(p_direction, UpdateDirectionIndicatorPriority.Low);
+
+        while (!customMono.animationEventFunctionCaller.GetSignalVals(EAnimationSignal.Attack))
+            yield return new WaitForSeconds(Time.fixedDeltaTime);
+
+        customMono.animationEventFunctionCaller.SetSignal(EAnimationSignal.Attack, false);
+
+        customMono
+            .charAttackInfo.GetRangedProjectileEffect()
+            .FireAsRangedAttackEffect(
+                customMono.rotationAndCenterObject.transform.position,
+                GetActionField<ActionFloatField>(ActionFieldName.Damage).value,
+                p_customMono,
+                customMono.charAttackInfo.rangedImpactEffectSO
+            );
 
         while (!customMono.animationEventFunctionCaller.GetSignalVals(EAnimationSignal.EndAttack))
             yield return new WaitForSeconds(Time.fixedDeltaTime);

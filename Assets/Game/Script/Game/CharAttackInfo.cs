@@ -9,6 +9,14 @@ using UnityEngine;
 )]
 public class CharAttackInfo : ScriptableObject
 {
+    public enum AttackType
+    {
+        Melee,
+        Ranged,
+    }
+
+    public AttackType attackType = AttackType.Melee;
+
     [Serializable]
     public class MeleeAttackInfo
     {
@@ -18,6 +26,9 @@ public class CharAttackInfo : ScriptableObject
 
     public List<MeleeAttackInfo> meleeAttackInfos = new();
     public int variant;
+    public GameEffectSO rangedProjectileEffectSO,
+        rangedImpactEffectSO;
+    public float attackRange = 1.25f;
 
     public GameEffect GetMeleeAttackEffect(int p_variant) =>
         GameManager
@@ -34,4 +45,7 @@ public class CharAttackInfo : ScriptableObject
 
     public bool CheckMeleeImpactEffect(int p_variant) =>
         meleeAttackInfos[p_variant].meleeImpactEffectSO != null;
+
+    public GameEffect GetRangedProjectileEffect() =>
+        GameManager.Instance.poolLink[rangedProjectileEffectSO].PickOneGameEffect();
 }
