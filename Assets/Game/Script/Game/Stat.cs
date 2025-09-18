@@ -57,7 +57,7 @@ public partial class Stat : MonoEditor, INotifyBindablePropertyChanged
     }
 
     /// <summary>
-    /// Since we cripple the entity on death, we need to
+    /// Since we cripple the character on death, we need to
     /// reset it state when it's re initialized.
     /// </summary>
     public void ReviveHandler()
@@ -82,7 +82,7 @@ public partial class Stat : MonoEditor, INotifyBindablePropertyChanged
     void ResetStat()
     {
         currentHealthPoint.Value = healthPoint.FinalValue;
-        currentManaPoint.Value = manaPoint.FinalValue;
+        currentManaPoint.Value = 0;
     }
 
     void InitUI()
@@ -166,7 +166,7 @@ public partial class Stat : MonoEditor, INotifyBindablePropertyChanged
         {
             customMono.actionBlocking = true;
             customMono.movementActionBlocking = true;
-            customMono.AnimatorWrapper.SetBool(dieBoolHash, true);
+            customMono.AnimatorWrapper.SetBool(GameManager.Instance.dieBoolHash, true);
             customMono.combatCollision.SetActive(false);
             healthAndManaIndicatorPO.worldSpaceUI.deactivate();
             healthAndManaIndicatorPO = null;

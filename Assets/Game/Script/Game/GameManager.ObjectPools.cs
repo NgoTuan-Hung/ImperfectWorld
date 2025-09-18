@@ -79,7 +79,8 @@ public partial class GameManager
         rimuruLightingWolfSummonCirclePool,
         rimuruHeavenFallRayPool,
         virgilAttackImpactPool,
-        virgilAttackSlashPool;
+        virgilAttackSlashPool,
+        rimuruCombo1SlashAWithColliderPool;
     List<string> objectPoolNames = new()
     {
         "moonSlashExplodePool",
@@ -157,6 +158,7 @@ public partial class GameManager
         "rimuruHeavenFallRayPool",
         "virgilAttackImpactPool",
         "virgilAttackSlashPool",
+        "rimuruCombo1SlashAWithColliderPool",
     };
 
     void InitAllEffectPools()

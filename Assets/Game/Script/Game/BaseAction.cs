@@ -33,6 +33,7 @@ public partial class BaseAction : MonoEditor
     /// </summary>
     public bool canUse;
     public AudioClip audioClip;
+    public BotActionManual botActionManual;
     public IEnumerator botIE;
     public static ActionResult failResult = new();
     public ActionResult successResult = new(true, ActionResultType.Cooldown, default);
@@ -132,6 +133,10 @@ public partial class BaseAction : MonoEditor
         Vector2 p_location = default,
         Vector2 p_direction = default
     ) { }
+
+    public virtual void BotDoAction(DoActionParamInfo p_doActionParamInfo) { }
+
+    public virtual void BotDoActionContinous(DoActionParamInfo p_doActionParamInfo) { }
 
     public virtual void DoAuto(DoActionParamInfo p_doActionParamInfo) { }
 

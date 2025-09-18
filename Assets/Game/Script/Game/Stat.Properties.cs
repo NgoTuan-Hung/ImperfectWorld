@@ -13,7 +13,6 @@ public partial class Stat
     [SerializeField]
     float size = 1f;
     float dissolveTime = 5f;
-    int dieBoolHash = Animator.StringToHash("Die");
     Action onEnable = () => { };
 
     [Header("<color='#D72638'>CURRENT HP")]

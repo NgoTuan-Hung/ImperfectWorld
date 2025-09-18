@@ -79,7 +79,8 @@ public partial class GameManager
         rimuruLightingWolfSummonCircle,
         rimuruHeavenFallRay,
         virgilAttackImpact,
-        virgilAttackSlash;
+        virgilAttackSlash,
+        rimuruCombo1SlashAWithCollider;
 
     List<string> prefabNames = new()
     {
@@ -158,6 +159,7 @@ public partial class GameManager
         "rimuruHeavenFallRay",
         "virgilAttackImpact",
         "virgilAttackSlash",
+        "rimuruCombo1SlashAWithCollider",
     };
 
     void LoadGameEffectPrefabs()

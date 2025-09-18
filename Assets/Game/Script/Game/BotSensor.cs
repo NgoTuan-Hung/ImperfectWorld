@@ -50,6 +50,11 @@ public class BotSensor : CustomMonoPal
     public float distanceToNearestEnemy;
     Action senseDefault = () => { };
 
+    /// <summary>
+    /// A centralized storage for sensor data
+    /// </summary>
+    DoActionParamInfo doActionParamInfo = new();
+
     public override void Awake()
     {
         base.Awake();
@@ -190,7 +195,7 @@ public class BotSensor : CustomMonoPal
             != null
         )
         {
-            if (!customMono.allyTags.Contains(onTriggerCM.transform.tag))
+            if (!customMono.allyTags.Contains(onTriggerCM.tag))
             {
                 /* We can compare squared distance instead of distance because it's faster yet
                 still gives the same result. */
@@ -276,5 +281,18 @@ public class BotSensor : CustomMonoPal
             targetCenterPosition = p_position;
             current_TCP_ChangePriority = (int)p_priority;
         }
+    }
+
+    /// <summary>
+    /// Basically just gathering a bunch of sensor datas.
+    /// </summary>
+    public DoActionParamInfo GetDoActionParamInfo()
+    {
+        doActionParamInfo.originToTargetOriginDirection = originToTargetOriginDirection;
+        doActionParamInfo.centerToTargetCenterDirection = centerToTargetCenterDirection;
+        doActionParamInfo.firePointToTargetCenterDirection = firePointToTargetCenterDirection;
+        doActionParamInfo.targetOriginPosition = targetOriginPosition;
+        doActionParamInfo.targetCenterPosition = targetCenterPosition;
+        return doActionParamInfo;
     }
 }

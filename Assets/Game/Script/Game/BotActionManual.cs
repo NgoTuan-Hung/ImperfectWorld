@@ -9,8 +9,21 @@ using UnityEngine;
 /// </summary>
 public class BotActionManual
 {
-    public bool requireContinuous = false;
-    public delegate void DoAction(DoActionParamInfo p_doActionParamInfo);
-    public DoAction doAction;
+    public Action<DoActionParamInfo> botDoAction = (p_doActionParamInfo) => { };
     public Action<DoActionParamInfo> botDoActionContinuous = (p_doActionParamInfo) => { };
+    public float continousDuration;
+    public bool requireContinuous = false;
+
+    public BotActionManual(
+        Action<DoActionParamInfo> botDoAction,
+        Action<DoActionParamInfo> botDoActionContinuous,
+        float continousDuration = 0,
+        bool requireContinuous = false
+    )
+    {
+        this.botDoAction = botDoAction;
+        this.botDoActionContinuous = botDoActionContinuous;
+        this.continousDuration = continousDuration;
+        this.requireContinuous = requireContinuous;
+    }
 }

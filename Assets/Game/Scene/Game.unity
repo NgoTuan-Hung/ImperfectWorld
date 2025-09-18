@@ -3323,6 +3323,10 @@ PrefabInstance:
       value: WanderMagician
       objectReference: {fileID: 0}
     - target: {fileID: 6920399575831899041, guid: 8064d76ba5c2c0240a4dd99defa17075, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6920399575831899041, guid: 8064d76ba5c2c0240a4dd99defa17075, type: 3}
       propertyPath: m_TagString
       value: GamePlayer
       objectReference: {fileID: 0}
@@ -3564,6 +3568,7 @@ MonoBehaviour:
   chargeBoolHash: 1388814594
   summonBoolHash: -876152609
   walkBoolHash: 765711723
+  dieBoolHash: 20298039
   actionFieldInfos:
   - {fileID: 11400000, guid: ecb5b0a571b97da4caf35fb40f147eaf, type: 2}
   - {fileID: 11400000, guid: aeca683e92b3e9245a55dec402dbec6b, type: 2}
@@ -3771,12 +3776,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4ae2c2d3186a9fc488532551d8419d91, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  customMono: {fileID: 0}
-  actionChances: 
-  actionCumulativeDistribution: []
-  presummedActionChances: 
-  actionNeedWait: 0
-  moveVector: {x: 0, y: 0}
 --- !u!114 &153210376
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3789,11 +3788,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2623757eb5f46ee4abafbe08eaddd68d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  customMono: {fileID: 0}
-  actionChances: 
-  actionCumulativeDistribution: []
-  presummedActionChances: 
-  actionNeedWait: 0
 --- !u!114 &153210377
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -15029,12 +15023,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4ae2c2d3186a9fc488532551d8419d91, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  customMono: {fileID: 0}
-  actionChances: 
-  actionCumulativeDistribution: []
-  presummedActionChances: 
-  actionNeedWait: 0
-  moveVector: {x: 0, y: 0}
 --- !u!114 &1254232931
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -15047,11 +15035,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2623757eb5f46ee4abafbe08eaddd68d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  customMono: {fileID: 0}
-  actionChances: 
-  actionCumulativeDistribution: []
-  presummedActionChances: 
-  actionNeedWait: 0
 --- !u!114 &1254232932
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -16298,6 +16281,7 @@ MonoBehaviour:
   customMono: {fileID: 0}
   skillDataSOs:
   - {fileID: 11400000, guid: d956062efdfc6274d972e2ef0fc25827, type: 2}
+  - {fileID: 11400000, guid: 807560864a8d25f42b5680b634406268, type: 2}
   skillBases: []
 --- !u!114 &1507028184
 MonoBehaviour:
@@ -16367,8 +16351,8 @@ MonoBehaviour:
     referenceModifiers: []
     modifiers: []
   manaRegen:
-    baseValue: 5
-    finalValue: 5
+    baseValue: 10
+    finalValue: 10
     referenceModifiers: []
     modifiers: []
   might:
@@ -16588,7 +16572,7 @@ Transform:
   m_GameObject: {fileID: 1507028176}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.45, y: -2.16, z: 0}
+  m_LocalPosition: {x: 0.05, y: -1.25, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -18346,12 +18330,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4ae2c2d3186a9fc488532551d8419d91, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  customMono: {fileID: 0}
-  actionChances: 
-  actionCumulativeDistribution: []
-  presummedActionChances: 
-  actionNeedWait: 0
-  moveVector: {x: 0, y: 0}
 --- !u!114 &1582844845
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -18419,11 +18397,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2623757eb5f46ee4abafbe08eaddd68d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  customMono: {fileID: 0}
-  actionChances: 
-  actionCumulativeDistribution: []
-  presummedActionChances: 
-  actionNeedWait: 0
 --- !u!61 &1582844848
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -18606,14 +18579,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0ba1f425456de1441860bb9e90ad5230, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  customMono: {fileID: 0}
-  onCooldown: 0
-  defaultCooldown: 0
-  defaultStateSpeed: 0
-  canUse: 1
-  audioClip: {fileID: 8300000, guid: 118b9b5bd2015ec4abe7777d825907c5, type: 3}
-  unlocked: 0
-  colliderForce: 5
 --- !u!114 &1582844854
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -18962,6 +18927,10 @@ PrefabInstance:
     - target: {fileID: 5800095605073204079, guid: c2bffccbb78434844bbf9a760cf92d67, type: 3}
       propertyPath: m_Name
       value: ElementalLeafRanger
+      objectReference: {fileID: 0}
+    - target: {fileID: 5800095605073204079, guid: c2bffccbb78434844bbf9a760cf92d67, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8953793670832478207, guid: c2bffccbb78434844bbf9a760cf92d67, type: 3}
       propertyPath: m_LocalPosition.x
@@ -29974,11 +29943,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2623757eb5f46ee4abafbe08eaddd68d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  customMono: {fileID: 0}
-  actionChances: 
-  actionCumulativeDistribution: []
-  presummedActionChances: 
-  actionNeedWait: 0
 --- !u!114 &2059840852
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -29991,12 +29955,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4ae2c2d3186a9fc488532551d8419d91, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  customMono: {fileID: 0}
-  actionChances: 
-  actionCumulativeDistribution: []
-  presummedActionChances: 
-  actionNeedWait: 0
-  moveVector: {x: 0, y: 0}
 --- !u!114 &2059840853
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -32105,11 +32063,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2623757eb5f46ee4abafbe08eaddd68d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  customMono: {fileID: 0}
-  actionChances: 
-  actionCumulativeDistribution: []
-  presummedActionChances: 
-  actionNeedWait: 0
 --- !u!1001 &393523149756820870
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -34840,11 +34793,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2623757eb5f46ee4abafbe08eaddd68d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  customMono: {fileID: 0}
-  actionChances: 
-  actionCumulativeDistribution: []
-  presummedActionChances: 
-  actionNeedWait: 0
 --- !u!114 &4961647891689969631
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -35820,11 +35768,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2623757eb5f46ee4abafbe08eaddd68d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  customMono: {fileID: 0}
-  actionChances: 
-  actionCumulativeDistribution: []
-  presummedActionChances: 
-  actionNeedWait: 0
 --- !u!4 &6804805372591913785
 Transform:
   m_ObjectHideFlags: 0
@@ -36136,12 +36079,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4ae2c2d3186a9fc488532551d8419d91, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  customMono: {fileID: 0}
-  actionChances: 
-  actionCumulativeDistribution: []
-  presummedActionChances: 
-  actionNeedWait: 0
-  moveVector: {x: 0, y: 0}
 --- !u!1001 &7245318226810410880
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -36365,9 +36302,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6f79454b4f09ead4aaf327a0a868de1b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  customMono: {fileID: 0}
-  logicalAttackRange: 1.5
-  targetTooCloseRange: 1
 --- !u!114 &7285419098741409360
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -36397,12 +36331,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4ae2c2d3186a9fc488532551d8419d91, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  customMono: {fileID: 0}
-  actionChances: 
-  actionCumulativeDistribution: []
-  presummedActionChances: 
-  actionNeedWait: 0
-  moveVector: {x: 0, y: 0}
 --- !u!114 &7285419098741409362
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -36415,11 +36343,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2623757eb5f46ee4abafbe08eaddd68d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  customMono: {fileID: 0}
-  actionChances: 
-  actionCumulativeDistribution: []
-  presummedActionChances: 
-  actionNeedWait: 0
 --- !u!114 &7285419098741409363
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -36996,12 +36919,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4ae2c2d3186a9fc488532551d8419d91, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  customMono: {fileID: 0}
-  actionChances: 
-  actionCumulativeDistribution: []
-  presummedActionChances: 
-  actionNeedWait: 0
-  moveVector: {x: 0, y: 0}
 --- !u!1 &7443903099448302007
 GameObject:
   m_ObjectHideFlags: 0
@@ -38195,12 +38112,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4ae2c2d3186a9fc488532551d8419d91, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  customMono: {fileID: 0}
-  actionChances: 
-  actionCumulativeDistribution: []
-  presummedActionChances: 
-  actionNeedWait: 0
-  moveVector: {x: 0, y: 0}
 --- !u!1001 &9030995657995829406
 PrefabInstance:
   m_ObjectHideFlags: 0

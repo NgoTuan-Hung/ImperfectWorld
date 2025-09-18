@@ -98,7 +98,6 @@ public class CustomMono : MonoSelfAware
     {
         base.Awake();
         allyTags.Add(gameObject.tag);
-        GameManager.Instance.AddCustomMono(this);
         GetAllChildObject();
         GetAllComponents();
         PrepareValues();
@@ -175,6 +174,7 @@ public class CustomMono : MonoSelfAware
 
     public override void Start()
     {
+        GameManager.Instance.AddCustomMono(this);
         if (isControllable)
             GameManager.Instance.InitializeControllableCharacterRevamp(this);
 

@@ -7,6 +7,7 @@ public class RimuruCombo1 : SkillBase
     public override void Awake()
     {
         base.Awake();
+        botActionManual = new(BotDoAction, BotDoActionContinous, 1.35f, true);
     }
 
     public override void OnEnable()
@@ -30,12 +31,12 @@ public class RimuruCombo1 : SkillBase
         GetActionField<ActionActionField>(ActionFieldName.ComboEndAction).value = Combo1End;
         GetActionField<ActionListComboEffectField>(ActionFieldName.ComboEffects).value = new()
         {
-            new(GameManager.Instance.rimuruCombo1SlashAPool, SpawnEffectAsChild),
+            new(GameManager.Instance.rimuruCombo1SlashAWithColliderPool, SpawnEffectAsChild),
             new(GameManager.Instance.rimuruCombo1SlashBPool, SpawnEffectAsChild),
             new(GameManager.Instance.rimuruCombo1DashPool, SpawnEffectRelative),
         };
         GetActionField<ActionFloatField>(ActionFieldName.Cooldown).value = 0f;
-        GetActionField<ActionFloatField>(ActionFieldName.ManaCost).value = 0f;
+        GetActionField<ActionFloatField>(ActionFieldName.ManaCost).value = 100f;
         GetActionField<ActionIntField>(ActionFieldName.Variants).value = 3;
         GetActionField<ActionFloatField>(ActionFieldName.Speed).value = 0.25f;
         GetActionField<ActionFloatField>(ActionFieldName.CurrentTime).value = 0f;
@@ -148,5 +149,15 @@ public class RimuruCombo1 : SkillBase
     IEnumerator FlashSmall(Vector2 p_pos, Vector2 p_dir)
     {
         yield return Flash(p_dir, 2, 0.08f);
+    }
+
+    public override void BotDoAction(DoActionParamInfo p_doActionParamInfo)
+    {
+        Trigger();
+    }
+
+    public override void BotDoActionContinous(DoActionParamInfo p_doActionParamInfo)
+    {
+        TriggerContinuous(default, p_doActionParamInfo.originToTargetOriginDirection);
     }
 }

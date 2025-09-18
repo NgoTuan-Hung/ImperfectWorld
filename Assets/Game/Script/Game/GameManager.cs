@@ -44,7 +44,8 @@ public partial class GameManager : MonoBehaviour
         landBoolHash = Animator.StringToHash("Land"),
         chargeBoolHash = Animator.StringToHash("Charge"),
         summonBoolHash = Animator.StringToHash("Summon"),
-        walkBoolHash = Animator.StringToHash("Walk");
+        walkBoolHash = Animator.StringToHash("Walk"),
+        dieBoolHash = Animator.StringToHash("Die");
     public Dictionary<int, GameObject> colliderOwner = new();
     IEnumerator roundTimerCountDownIE;
     public List<ActionFieldInfo> actionFieldInfos = new();
