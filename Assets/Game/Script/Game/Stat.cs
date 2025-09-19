@@ -151,12 +151,12 @@ public partial class Stat : MonoEditor, INotifyBindablePropertyChanged
     }
 
     void SetHPOnUI() =>
-        healthAndManaIndicatorPO.healthAndManaIndicator.SetHealth(
+        healthAndManaIndicatorPO?.healthAndManaIndicator.SetHealth(
             currentHealthPoint.Value / healthPoint.FinalValue
         );
 
     void SetMPOnUI() =>
-        healthAndManaIndicatorPO.healthAndManaIndicator.SetMana(
+        healthAndManaIndicatorPO?.healthAndManaIndicator.SetMana(
             currentManaPoint.Value / manaPoint.FinalValue
         );
 
@@ -168,7 +168,7 @@ public partial class Stat : MonoEditor, INotifyBindablePropertyChanged
             customMono.movementActionBlocking = true;
             customMono.AnimatorWrapper.SetBool(GameManager.Instance.dieBoolHash, true);
             customMono.combatCollision.SetActive(false);
-            healthAndManaIndicatorPO.worldSpaceUI.deactivate();
+            healthAndManaIndicatorPO?.worldSpaceUI.deactivate();
             healthAndManaIndicatorPO = null;
             StopAllCoroutines();
             StartCoroutine(DissolveCoroutine());

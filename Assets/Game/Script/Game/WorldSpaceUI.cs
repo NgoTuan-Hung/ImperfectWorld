@@ -54,4 +54,15 @@ public class WorldSpaceUI : MonoSelfAware
             yield return new WaitForSeconds(Time.fixedDeltaTime);
         }
     }
+
+    public void StartDamagePopup(Vector3 p_initialPos, float p_damage)
+    {
+        StartCoroutine(StartDamagePopupIE(p_initialPos, p_damage));
+    }
+
+    IEnumerator StartDamagePopupIE(Vector3 p_initialPos, float p_damage)
+    {
+        yield return GetComponent<DamagePopupUI>().StartPopupIE(p_initialPos, p_damage);
+        deactivate();
+    }
 }

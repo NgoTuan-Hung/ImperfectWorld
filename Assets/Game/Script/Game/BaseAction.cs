@@ -152,4 +152,12 @@ public partial class BaseAction : MonoEditor
         unlocked = true;
         AddActionManuals();
     }
+
+    /// <summary>
+    /// Return final damage value considering all damage modifiers (Buff, Debuff, etc.)
+    /// </summary>
+    /// <param name="p_damage"></param>
+    /// <returns></returns>
+    public float CalculateFinalDamage(float p_damage) =>
+        customMono.stat.damageModifier.CalculateValueWithAppliedModifiers(p_damage);
 }

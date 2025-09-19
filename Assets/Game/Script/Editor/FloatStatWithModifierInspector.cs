@@ -1,3 +1,4 @@
+#if UNITY_EDITOR
 using Unity.Properties;
 using Unity.VisualScripting;
 using UnityEditor;
@@ -31,3 +32,5 @@ public class FloatStatWithModifierInspector : PropertyDrawer
         return root;
     }
 }
+
+#endif

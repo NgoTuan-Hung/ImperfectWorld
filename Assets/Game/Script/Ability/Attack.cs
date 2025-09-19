@@ -37,7 +37,7 @@ public class Attack : SkillBase
             .attackRange;
 
         GetActionField<ActionFloatField>(ActionFieldName.Blend).value =
-            1
+            1f
             / (
                 (customMono.charAttackInfo.variant - 1) == 0
                     ? 1
@@ -156,7 +156,7 @@ public class Attack : SkillBase
             );
 
         p_customMono.statusEffect.GetHit(
-            GetActionField<ActionFloatField>(ActionFieldName.Damage).value
+            CalculateFinalDamage(GetActionField<ActionFloatField>(ActionFieldName.Damage).value)
         );
 
         SpawnEffectAtLoc(
@@ -193,7 +193,9 @@ public class Attack : SkillBase
             .charAttackInfo.GetRangedProjectileEffect()
             .FireAsRangedAttackEffect(
                 customMono.rotationAndCenterObject.transform.position,
-                GetActionField<ActionFloatField>(ActionFieldName.Damage).value,
+                CalculateFinalDamage(
+                    GetActionField<ActionFloatField>(ActionFieldName.Damage).value
+                ),
                 p_customMono,
                 customMono.charAttackInfo.rangedImpactEffectSO
             );

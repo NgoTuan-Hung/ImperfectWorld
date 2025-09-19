@@ -34,7 +34,14 @@ public class FloatStatWithModifier : INotifyBindablePropertyChanged
         }
     }
 
+    /// <summary>
+    /// Modifiers which are meant to be changed
+    /// </summary>
     public List<FloatStatModifier> referenceModifiers = new();
+
+    /// <summary>
+    /// Modifiers which should be static/unchanged
+    /// </summary>
     public List<FloatStatModifier> modifiers = new();
     public Action finalValueChangeEvent = () => { };
 

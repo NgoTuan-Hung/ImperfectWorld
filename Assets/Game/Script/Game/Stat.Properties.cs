@@ -52,6 +52,9 @@ public partial class Stat
     [Header("<color='#1ABC9C'>MOVE SPEED")]
     public FloatStatWithModifier moveSpeed = new();
 
+    [Header("<color='#FFC107'>DAMAGE MODIFIER")]
+    public FloatModifier damageModifier = new();
+
     [HideInInspector]
     public FloatStatWithModifier actionMoveSpeedReduceRate = new();
 

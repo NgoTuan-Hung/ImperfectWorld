@@ -39,6 +39,7 @@ public class StatusEffect : CustomMonoPal
     float poisonDamage;
     int actionBlockingFactors = 0,
         movementBlockingFactors = 0;
+    float finalTakenDamage;
 
     public override void Awake()
     {
@@ -83,11 +84,18 @@ public class StatusEffect : CustomMonoPal
 
     public void GetHit(float p_damage)
     {
-        customMono.stat.currentHealthPoint.Value -= Math.Clamp(
+        finalTakenDamage = Math.Clamp(
             p_damage - customMono.stat.armor.FinalValue,
             0f,
             float.MaxValue
         );
+        customMono.stat.currentHealthPoint.Value -= finalTakenDamage;
+        GameUIManagerRevamp
+            .Instance.PickOneDamagePopup()
+            .worldSpaceUI.StartDamagePopup(
+                customMono.rotationAndCenterObject.transform.position,
+                finalTakenDamage
+            );
 
         if (CheckEffect(StatusEffectState.DamageEffect))
             currentDamageTime = 0;

@@ -1,0 +1,6 @@
+<ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="True">
+    <ui:VisualElement style="flex-grow: 0; flex-direction: row;">
+        <uie:PropertyField label="REFERENCE MODIFIERS" binding-path="referenceModifiers" style="width: 50%;" />
+        <uie:PropertyField label="MODIFIERS" binding-path="modifiers" style="width: 50%;" />
+    </ui:VisualElement>
+</ui:UXML>

@@ -1,3 +1,4 @@
+#if UNITY_EDITOR
 using UnityEditor;
 using UnityEditor.U2D.Aseprite;
 using UnityEngine;
@@ -81,3 +82,4 @@ public class GameObjectInjector : AssetPostprocessor
         Debug.Log($"[AsepritePatcher] patched and reimported {assetPath}");
     }
 }
+#endif

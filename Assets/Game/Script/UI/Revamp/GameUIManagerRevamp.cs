@@ -29,7 +29,8 @@ public class GameUIManagerRevamp : MonoEditorSingleton<GameUIManagerRevamp>
     public RectTransform partyMenu;
     Dictionary<int, CharacterInfoUI> characterInfoUIDict = new();
     public CustomMono currentActiveCustomMono;
-    ObjectPool healthAndManaIndicator;
+    ObjectPool healthAndManaIndicator,
+        damagePopupUIPool;
     Vector2 screenTooltipRectSize;
 
     private void Awake()
@@ -54,6 +55,13 @@ public class GameUIManagerRevamp : MonoEditorSingleton<GameUIManagerRevamp>
         {
             p_poolObject.gameObject.transform.SetParent(worldSpaceCanvas.transform, false);
         };
+
+        damagePopupUIPool = new(
+            Resources.Load("DamagePopupUI") as GameObject,
+            new PoolArgument(ComponentType.WorldSpaceUI, PoolArgument.WhereComponent.Self)
+        );
+        damagePopupUIPool.handleCachedComponentRefs += (p_pO) =>
+            p_pO.gameObject.transform.parent = worldSpaceCanvas.transform;
     }
 
     void GetAllUI() { }
@@ -390,4 +398,6 @@ public class GameUIManagerRevamp : MonoEditorSingleton<GameUIManagerRevamp>
         healthAndManaIndicatorObj.worldSpaceUI.FollowSlowly(transform);
         return healthAndManaIndicatorObj;
     }
+
+    public PoolObject PickOneDamagePopup() => damagePopupUIPool.PickOne();
 }
