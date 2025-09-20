@@ -62,7 +62,18 @@ public class WorldSpaceUI : MonoSelfAware
 
     IEnumerator StartDamagePopupIE(Vector3 p_initialPos, float p_damage)
     {
-        yield return GetComponent<DamagePopupUI>().StartPopupIE(p_initialPos, p_damage);
+        yield return GetComponent<TextPopupUI>().StartPopupIE(p_initialPos, p_damage);
+        deactivate();
+    }
+
+    public void StartWeakenPopup(Vector3 p_initialPos)
+    {
+        StartCoroutine(StartWeakenPopupIE(p_initialPos));
+    }
+
+    IEnumerator StartWeakenPopupIE(Vector3 p_initialPos)
+    {
+        yield return GetComponent<TextPopupUI>().StartWeakenPopup(p_initialPos);
         deactivate();
     }
 }

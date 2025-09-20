@@ -86,7 +86,7 @@ public class Attack : SkillBase
             1 / customMono.stat.attackSpeed.FinalValue;
     }
 
-    public ActionResult Trigger(
+    public override ActionResult Trigger(
         Vector2 p_location = default,
         Vector2 p_direction = default,
         CustomMono p_customMono = null

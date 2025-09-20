@@ -293,6 +293,7 @@ public class BotSensor : CustomMonoPal
         doActionParamInfo.firePointToTargetCenterDirection = firePointToTargetCenterDirection;
         doActionParamInfo.targetOriginPosition = targetOriginPosition;
         doActionParamInfo.targetCenterPosition = targetCenterPosition;
+        doActionParamInfo.target = currentNearestEnemy;
         return doActionParamInfo;
     }
 }

@@ -1,15 +1,14 @@
-using System;
 using System.Collections;
 using UnityEngine;
-using Random = UnityEngine.Random;
 
 public class DimmingEdge : SkillBase
 {
-    Func<Vector2, Vector2, CustomMono, IEnumerator> triggerIE;
+    FloatStatModifier damageDebuff;
 
     public override void Awake()
     {
         base.Awake();
+        botActionManual = new(BotDoAction, null);
     }
 
     public override void OnEnable()
@@ -35,42 +34,26 @@ public class DimmingEdge : SkillBase
         GetActionField<ActionFloatField>(ActionFieldName.Range).value = customMono
             .charAttackInfo
             .attackRange;
+        damageDebuff = new(-0.25f, FloatStatModifierType.Multiplicative);
+        /* Debuff duration */
+        GetActionField<ActionFloatField>(ActionFieldName.Duration).value = 5f;
+        GetActionField<ActionFloatField>(ActionFieldName.ManaCost).value = 100f;
 
-        GetActionField<ActionFloatField>(ActionFieldName.Blend).value =
-            1f
-            / (
-                (customMono.charAttackInfo.variant - 1) == 0
-                    ? 1
-                    : customMono.charAttackInfo.variant - 1
-            );
-
-        /* Also use damage, actionie, selectedVariant */
+        /* Also use actionie */
     }
 
     public override void StatChangeRegister()
     {
         base.StatChangeRegister();
-        customMono.stat.attackSpeed.finalValueChangeEvent += RecalculateStat;
+        // customMono.stat.attackSpeed.finalValueChangeEvent += RecalculateStat;
     }
 
     public override void RecalculateStat()
     {
         base.RecalculateStat();
-        GetActionField<ActionFloatField>(ActionFieldName.Damage).value = customMono
-            .stat
-            .might
-            .FinalValue;
-
-        customMono.AnimatorWrapper.animator.SetFloat(
-            "AttackAnimSpeed",
-            defaultStateSpeed * customMono.stat.attackSpeed.FinalValue
-        );
-
-        GetActionField<ActionFloatField>(ActionFieldName.Cooldown).value =
-            1 / customMono.stat.attackSpeed.FinalValue;
     }
 
-    public ActionResult Trigger(
+    public override ActionResult Trigger(
         Vector2 p_location = default,
         Vector2 p_direction = default,
         CustomMono p_customMono = null
@@ -81,6 +64,10 @@ public class DimmingEdge : SkillBase
                 customMono.rotationAndCenterObject.transform.position,
                 p_customMono.rotationAndCenterObject.transform.position
             ) > GetActionField<ActionFloatField>(ActionFieldName.Range).value
+            || (
+                customMono.stat.currentManaPoint.Value
+                < GetActionField<ActionFloatField>(ActionFieldName.ManaCost).value
+            )
         )
             return failResult;
         else if (canUse && !customMono.actionBlocking)
@@ -88,9 +75,9 @@ public class DimmingEdge : SkillBase
             canUse = false;
             customMono.actionBlocking = true;
             customMono.statusEffect.Slow(customMono.stat.actionSlowModifier);
-            ToggleAnim(GameManager.Instance.attackBoolHash, true);
+            ToggleAnim(GameManager.Instance.mainSkill1BoolHash, true);
             StartCoroutine(
-                GetActionField<ActionIEnumeratorField>(ActionFieldName.ActionIE).value = triggerIE(
+                GetActionField<ActionIEnumeratorField>(ActionFieldName.ActionIE).value = TriggerIE(
                     p_location,
                     p_direction,
                     p_customMono
@@ -98,97 +85,55 @@ public class DimmingEdge : SkillBase
             );
             StartCoroutine(CooldownCoroutine());
             customMono.currentAction = this;
+            customMono.stat.currentManaPoint.Value -= GetActionField<ActionFloatField>(
+                ActionFieldName.ManaCost
+            ).value;
             return successResult;
         }
 
         return failResult;
     }
 
-    IEnumerator MeleeTriggerIE(
+    IEnumerator TriggerIE(
         Vector2 p_location = default,
         Vector2 p_direction = default,
         CustomMono p_customMono = null
     )
     {
-        GetActionField<ActionIntField>(ActionFieldName.SelectedVariant).value = Random.Range(
-            0,
-            customMono.charAttackInfo.variant
-        );
-        SetBlend(
-            GameManager.Instance.attackBlendHash,
-            GetActionField<ActionIntField>(ActionFieldName.SelectedVariant).value
-                * GetActionField<ActionFloatField>(ActionFieldName.Blend).value
+        customMono.SetUpdateDirectionIndicator(
+            p_customMono.rotationAndCenterObject.transform.position
+                - customMono.rotationAndCenterObject.transform.position,
+            UpdateDirectionIndicatorPriority.Low
         );
 
-        customMono.SetUpdateDirectionIndicator(p_direction, UpdateDirectionIndicatorPriority.Low);
-
-        while (!customMono.animationEventFunctionCaller.GetSignalVals(EAnimationSignal.Attack))
-            yield return new WaitForSeconds(Time.fixedDeltaTime);
-
-        customMono.animationEventFunctionCaller.SetSignal(EAnimationSignal.Attack, false);
-
-        if (
-            customMono.charAttackInfo.CheckMeleeAttackEffect(
-                GetActionField<ActionIntField>(ActionFieldName.SelectedVariant).value
+        while (
+            !customMono.animationEventFunctionCaller.GetSignalVals(
+                EAnimationSignal.MainSkill1Signal
             )
         )
-            SpawnEffectAsChild(
-                p_direction,
-                customMono.charAttackInfo.GetMeleeAttackEffect(
-                    GetActionField<ActionIntField>(ActionFieldName.SelectedVariant).value
-                )
-            );
+            yield return new WaitForSeconds(Time.fixedDeltaTime);
 
-        p_customMono.statusEffect.GetHit(
-            GetActionField<ActionFloatField>(ActionFieldName.Damage).value
+        customMono.animationEventFunctionCaller.SetSignal(EAnimationSignal.MainSkill1Signal, false);
+
+        p_customMono.statusEffect.Weaken(
+            damageDebuff,
+            GetActionField<ActionFloatField>(ActionFieldName.Duration).value
         );
 
         SpawnEffectAtLoc(
             p_customMono.rotationAndCenterObject.transform.position,
-            customMono.charAttackInfo.GetMeleeImpactEffect(
-                GetActionField<ActionIntField>(ActionFieldName.SelectedVariant).value
-            )
+            GameManager.Instance.dimmingEdgeEffectPool.PickOneGameEffect()
         );
 
-        while (!customMono.animationEventFunctionCaller.GetSignalVals(EAnimationSignal.EndAttack))
+        while (
+            !customMono.animationEventFunctionCaller.GetSignalVals(EAnimationSignal.EndMainSkill1)
+        )
             yield return new WaitForSeconds(Time.fixedDeltaTime);
 
         customMono.statusEffect.RemoveSlow(customMono.stat.actionSlowModifier);
-        customMono.animationEventFunctionCaller.SetSignal(EAnimationSignal.EndAttack, false);
+        customMono.animationEventFunctionCaller.SetSignal(EAnimationSignal.EndMainSkill1, false);
         customMono.actionBlocking = false;
-        ToggleAnim(GameManager.Instance.attackBoolHash, false);
-        customMono.currentAction = null;
-    }
-
-    IEnumerator RangedTriggerIE(
-        Vector2 p_location = default,
-        Vector2 p_direction = default,
-        CustomMono p_customMono = null
-    )
-    {
-        customMono.SetUpdateDirectionIndicator(p_direction, UpdateDirectionIndicatorPriority.Low);
-
-        while (!customMono.animationEventFunctionCaller.GetSignalVals(EAnimationSignal.Attack))
-            yield return new WaitForSeconds(Time.fixedDeltaTime);
-
-        customMono.animationEventFunctionCaller.SetSignal(EAnimationSignal.Attack, false);
-
-        customMono
-            .charAttackInfo.GetRangedProjectileEffect()
-            .FireAsRangedAttackEffect(
-                customMono.rotationAndCenterObject.transform.position,
-                GetActionField<ActionFloatField>(ActionFieldName.Damage).value,
-                p_customMono,
-                customMono.charAttackInfo.rangedImpactEffectSO
-            );
-
-        while (!customMono.animationEventFunctionCaller.GetSignalVals(EAnimationSignal.EndAttack))
-            yield return new WaitForSeconds(Time.fixedDeltaTime);
-
-        customMono.statusEffect.RemoveSlow(customMono.stat.actionSlowModifier);
-        customMono.animationEventFunctionCaller.SetSignal(EAnimationSignal.EndAttack, false);
-        customMono.actionBlocking = false;
-        ToggleAnim(GameManager.Instance.attackBoolHash, false);
+        ToggleAnim(GameManager.Instance.mainSkill1BoolHash, false);
         customMono.currentAction = null;
     }
 
@@ -196,10 +141,15 @@ public class DimmingEdge : SkillBase
     {
         base.ActionInterrupt();
         customMono.actionBlocking = false;
-        ToggleAnim(GameManager.Instance.attackBoolHash, false);
+        ToggleAnim(GameManager.Instance.mainSkill1BoolHash, false);
         StopCoroutine(GetActionField<ActionIEnumeratorField>(ActionFieldName.ActionIE).value);
-        customMono.animationEventFunctionCaller.SetSignal(EAnimationSignal.Attack, false);
-        customMono.animationEventFunctionCaller.SetSignal(EAnimationSignal.EndAttack, false);
+        customMono.animationEventFunctionCaller.SetSignal(EAnimationSignal.MainSkill1Signal, false);
+        customMono.animationEventFunctionCaller.SetSignal(EAnimationSignal.EndMainSkill1, false);
         customMono.statusEffect.RemoveSlow(customMono.stat.actionSlowModifier);
+    }
+
+    public override void BotDoAction(DoActionParamInfo p_doActionParamInfo)
+    {
+        Trigger(p_customMono: p_doActionParamInfo.target);
     }
 }

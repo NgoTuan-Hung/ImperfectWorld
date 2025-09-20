@@ -119,7 +119,11 @@ public partial class BaseAction : MonoEditor
         // StopAllCoroutines();
     }
 
-    public virtual ActionResult Trigger(Vector2 p_location = default, Vector2 p_direction = default)
+    public virtual ActionResult Trigger(
+        Vector2 p_location = default,
+        Vector2 p_direction = default,
+        CustomMono p_customMono = null
+    )
     {
         return failResult;
     }

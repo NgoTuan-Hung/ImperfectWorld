@@ -30,7 +30,7 @@ public class GameUIManagerRevamp : MonoEditorSingleton<GameUIManagerRevamp>
     Dictionary<int, CharacterInfoUI> characterInfoUIDict = new();
     public CustomMono currentActiveCustomMono;
     ObjectPool healthAndManaIndicator,
-        damagePopupUIPool;
+        textPopupUIPool;
     Vector2 screenTooltipRectSize;
 
     private void Awake()
@@ -56,11 +56,11 @@ public class GameUIManagerRevamp : MonoEditorSingleton<GameUIManagerRevamp>
             p_poolObject.gameObject.transform.SetParent(worldSpaceCanvas.transform, false);
         };
 
-        damagePopupUIPool = new(
-            Resources.Load("DamagePopupUI") as GameObject,
+        textPopupUIPool = new(
+            Resources.Load("TextPopupUI") as GameObject,
             new PoolArgument(ComponentType.WorldSpaceUI, PoolArgument.WhereComponent.Self)
         );
-        damagePopupUIPool.handleCachedComponentRefs += (p_pO) =>
+        textPopupUIPool.handleCachedComponentRefs += (p_pO) =>
             p_pO.gameObject.transform.parent = worldSpaceCanvas.transform;
     }
 
@@ -399,5 +399,5 @@ public class GameUIManagerRevamp : MonoEditorSingleton<GameUIManagerRevamp>
         return healthAndManaIndicatorObj;
     }
 
-    public PoolObject PickOneDamagePopup() => damagePopupUIPool.PickOne();
+    public PoolObject PickOneTextPopupUI() => textPopupUIPool.PickOne();
 }

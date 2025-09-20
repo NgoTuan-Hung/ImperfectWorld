@@ -75,8 +75,17 @@ public class RimuruCombo1 : SkillBase
         customMono.SetUpdateDirectionIndicator(p_direction, UpdateDirectionIndicatorPriority.Low);
     }
 
-    public override ActionResult Trigger(Vector2 location = default, Vector2 direction = default)
+    public override ActionResult Trigger(
+        Vector2 location = default,
+        Vector2 direction = default,
+        CustomMono p_customMono = null
+    )
     {
+        if (
+            customMono.stat.currentManaPoint.Value
+            < GetActionField<ActionFloatField>(ActionFieldName.ManaCost).value
+        )
+            return failResult;
         if (!customMono.actionBlocking && !customMono.movementActionBlocking)
         {
             customMono.actionBlocking = true;

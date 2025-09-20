@@ -91,7 +91,7 @@ public class StatusEffect : CustomMonoPal
         );
         customMono.stat.currentHealthPoint.Value -= finalTakenDamage;
         GameUIManagerRevamp
-            .Instance.PickOneDamagePopup()
+            .Instance.PickOneTextPopupUI()
             .worldSpaceUI.StartDamagePopup(
                 customMono.rotationAndCenterObject.transform.position,
                 finalTakenDamage
@@ -346,4 +346,19 @@ public class StatusEffect : CustomMonoPal
     }
 
     int GetMask(StatusEffectState p_factor) => 0x1 << (int)p_factor;
+
+    public void Weaken(FloatStatModifier p_damageModifier, float p_duration)
+    {
+        StartCoroutine(WeakenIE(p_damageModifier, p_duration));
+    }
+
+    IEnumerator WeakenIE(FloatStatModifier p_damageModifier, float p_duration)
+    {
+        customMono.stat.damageModifier.AddModifier(p_damageModifier);
+        GameUIManagerRevamp
+            .Instance.PickOneTextPopupUI()
+            .worldSpaceUI.StartWeakenPopup(customMono.rotationAndCenterObject.transform.position);
+        yield return new WaitForSeconds(p_duration);
+        customMono.stat.damageModifier.RemoveModifier(p_damageModifier);
+    }
 }
