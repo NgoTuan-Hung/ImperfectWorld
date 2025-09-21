@@ -1,6 +1,7 @@
 using System.Collections;
 using DG.Tweening;
 using Kryz.Tweening;
+using TMPEffects.Components;
 using TMPro;
 using UnityEngine;
 
@@ -9,24 +10,27 @@ public class TextPopupUI : MonoBehaviour
     RectTransform rectTransform;
     TextMeshProUGUI textMeshProUGUI;
     Vector2 initialVelocity;
+    TMPAnimator tmpAnimator;
     static readonly float duration = 1f;
     static readonly Vector2 acceleration = new(0, -80f);
-    static TMP_FontAsset damageFontAsset,
-        weakenFontAsset;
+    static Material damagePopupMat,
+        weakenPopupMat;
     float defaultFontSize;
+    public static Color transparentWhite = new(1, 1, 1, 0);
 
     private void Awake()
     {
         textMeshProUGUI = GetComponent<TextMeshProUGUI>();
         defaultFontSize = textMeshProUGUI.fontSize;
         rectTransform = GetComponent<RectTransform>();
-        damageFontAsset ??= Resources.Load<TMP_FontAsset>("FontAsset/DamageFA");
-        weakenFontAsset ??= Resources.Load<TMP_FontAsset>("FontAsset/WeakenFA");
+        damagePopupMat = Resources.Load<Material>("Material/rimouski sb SDF - Damage");
+        weakenPopupMat = Resources.Load<Material>("Material/rimouski sb SDF - Weaken");
+        tmpAnimator = GetComponent<TMPAnimator>();
     }
 
     public IEnumerator StartPopupIE(Vector3 p_initialPos, float p_damage)
     {
-        textMeshProUGUI.font = damageFontAsset;
+        textMeshProUGUI.fontSharedMaterial = damagePopupMat;
         textMeshProUGUI.text = p_damage.ToString();
         transform.position = p_initialPos;
         float t_currentTime = 0;
@@ -43,23 +47,31 @@ public class TextPopupUI : MonoBehaviour
             yield return new WaitForSeconds(Time.fixedDeltaTime);
             t_currentTime += Time.fixedDeltaTime;
         }
+        textMeshProUGUI.color = Color.white;
+        textMeshProUGUI.fontSize = defaultFontSize;
     }
 
     public IEnumerator StartWeakenPopup(Vector3 p_initialPos)
     {
-        textMeshProUGUI.font = weakenFontAsset;
+        tmpAnimator.StartAnimating();
+        textMeshProUGUI.fontSharedMaterial = weakenPopupMat;
         textMeshProUGUI.text = "<shake>WEAKEN";
         transform.position = p_initialPos;
-        var t_currentScale = rectTransform.localScale;
-        rectTransform.localScale = Vector3.zero;
-        rectTransform.DOPunchScale(t_currentScale, 1, 2, 0);
         yield return rectTransform
             .DOMove(
                 transform.position
                     + new Vector3(Random.Range(-1, 1), Random.Range(-1, 1), 0).normalized * 2,
-                1
+                0.5f
             )
             .SetEase(Ease.OutQuint)
             .WaitForCompletion();
+
+        yield return textMeshProUGUI
+            .DOColor(transparentWhite, 0.5f)
+            .SetEase(Ease.OutQuint)
+            .WaitForCompletion();
+        textMeshProUGUI.color = Color.white;
+
+        // rectTransform.localScale = t_currentScale;
     }
 }

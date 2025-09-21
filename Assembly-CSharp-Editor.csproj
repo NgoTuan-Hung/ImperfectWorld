@@ -592,6 +592,10 @@
       <HintPath>Library\PackageCache\com.unity.collections@d49facba0036\Unity.Collections.LowLevel.ILSupport\Unity.Collections.LowLevel.ILSupport.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="TMPEffects.AutoParameters.Attributes">
+      <HintPath>Library\PackageCache\com.luca3317.tmpeffects@9c8994dfe168\TMPEffects.AutoParameters.Attributes.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="nunit.framework">
       <HintPath>Library\PackageCache\com.unity.ext.nunit@031a54704bff\net40\unity-custom\nunit.framework.dll</HintPath>
       <Private>False</Private>
@@ -626,10 +630,6 @@
     </Reference>
     <Reference Include="DOTweenEditor">
       <HintPath>Assets\CustomPackage\Dotween\Editor\DOTweenEditor.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="TMPEffects.AutoParameters.Attributes">
-      <HintPath>Library\PackageCache\com.luca3317.tmpeffects@9c8994dfe168\TMPEffects.AutoParameters.Attributes.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Unity.Android.Types">
@@ -1176,12 +1176,12 @@
       <HintPath>Library\ScriptAssemblies\PsdPlugin.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="TMPEffects.SerializedCollections">
-      <HintPath>Library\ScriptAssemblies\TMPEffects.SerializedCollections.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
     <Reference Include="TMPEffects.NotifyObjectChanged">
       <HintPath>Library\ScriptAssemblies\TMPEffects.NotifyObjectChanged.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="TMPEffects.SerializedCollections">
+      <HintPath>Library\ScriptAssemblies\TMPEffects.SerializedCollections.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Unity.RenderPipelines.Core.ShaderLibrary">
@@ -1260,12 +1260,12 @@
       <HintPath>Library\ScriptAssemblies\Unity.Mathematics.Editor.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="Unity.Cinemachine.Editor">
-      <HintPath>Library\ScriptAssemblies\Unity.Cinemachine.Editor.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
     <Reference Include="TMPEffects.Timeline">
       <HintPath>Library\ScriptAssemblies\TMPEffects.Timeline.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Unity.Cinemachine.Editor">
+      <HintPath>Library\ScriptAssemblies\Unity.Cinemachine.Editor.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Unity.2D.Aseprite.Common">
@@ -1296,12 +1296,12 @@
       <HintPath>Library\ScriptAssemblies\Unity.RenderPipelines.ShaderGraph.ShaderGraphLibrary.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="Unity.VisualScripting.Flow">
-      <HintPath>Library\ScriptAssemblies\Unity.VisualScripting.Flow.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
     <Reference Include="TMPEffects">
       <HintPath>Library\ScriptAssemblies\TMPEffects.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Unity.VisualScripting.Flow">
+      <HintPath>Library\ScriptAssemblies\Unity.VisualScripting.Flow.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Unity.RenderPipelines.Core.Runtime">
