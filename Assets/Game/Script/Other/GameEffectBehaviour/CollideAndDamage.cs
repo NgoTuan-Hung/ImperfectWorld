@@ -50,8 +50,7 @@ public class CollideAndDamage : MonoEditor, IGameEffectBehaviour
     {
         GameEffect t_collisionEffect = GameManager
             .Instance.poolLink[GameEffect.gameEffectSO.collideAndDamageSO.spawnedEffectOnCollide]
-            .PickOne()
-            .gameEffect;
+            .PickOneGameEffect();
 
         t_randomBias = Random.Range(0, 1f);
         t_collisionEffect.transform.position =

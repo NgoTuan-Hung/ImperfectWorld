@@ -6,6 +6,7 @@ public enum ComponentType
     GameEffect,
     WorldSpaceUI,
     CustomMono,
+    TextPopupUI,
 };
 
 public class PoolArgument

@@ -161,8 +161,8 @@ public partial class GameManager : MonoBehaviour
 
             spawnObjectPools[i].handleCachedComponentRefs += (p_poolObject) =>
             {
-                p_poolObject.customMono.stat.currentHealthPointReachZeroEvent += () =>
-                    PawnDeathHandler(p_poolObject.customMono);
+                p_poolObject.CustomMono.stat.currentHealthPointReachZeroEvent += () =>
+                    PawnDeathHandler(p_poolObject.CustomMono);
             };
         }
 
@@ -197,7 +197,7 @@ public partial class GameManager : MonoBehaviour
 
             if (currentSpawn < (int)maxSpawn)
             {
-                CustomMono p_customMono = pickedObjectPool.PickOne().customMono;
+                CustomMono p_customMono = pickedObjectPool.PickOne().CustomMono;
                 p_customMono.transform.position = new Vector3(
                     Random.Range(spawnRangeObject.bounds.min.x, spawnRangeObject.bounds.max.x),
                     Random.Range(spawnRangeObject.bounds.min.y, spawnRangeObject.bounds.max.y)

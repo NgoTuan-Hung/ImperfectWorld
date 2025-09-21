@@ -5,26 +5,34 @@ using UnityEngine;
 
 public enum PoolObjectComponent
 {
+    HealthAndManaIndicator,
     GameEffect,
     WorldSpaceUI,
+    CustomMono,
+    TextPopupUI,
 }
 
 public class PoolObject
 {
     public GameObject gameObject;
-    public HealthAndManaIndicator healthAndManaIndicator;
-    public GameEffect gameEffect;
-    public WorldSpaceUI worldSpaceUI;
-    public CustomMono customMono;
     public IEnumerator idleScheme;
     public PoolRevampPoolObject poolRevampPoolObject;
-    Dictionary<Type, Component> components = new();
+    Dictionary<PoolObjectComponent, Component> components = new();
 
-    public void SetComponent<T>(T component)
+    T GetComponent<T>(PoolObjectComponent p_pOC)
         where T : Component
     {
-        components[typeof(T)] = component;
+        return components[p_pOC] as T;
     }
 
-    // public GameEffect GameEffect => GetComponent<GameEffect>();
+    public void AddComponent(PoolObjectComponent p_pOC, Component p_component) =>
+        components.Add(p_pOC, p_component);
+
+    public HealthAndManaIndicator HealthAndManaIndicator =>
+        GetComponent<HealthAndManaIndicator>(PoolObjectComponent.HealthAndManaIndicator);
+    public GameEffect GameEffect => GetComponent<GameEffect>(PoolObjectComponent.GameEffect);
+    public WorldSpaceUI WorldSpaceUI =>
+        GetComponent<WorldSpaceUI>(PoolObjectComponent.WorldSpaceUI);
+    public CustomMono CustomMono => GetComponent<CustomMono>(PoolObjectComponent.CustomMono);
+    public TextPopupUI TextPopupUI => GetComponent<TextPopupUI>(PoolObjectComponent.TextPopupUI);
 }

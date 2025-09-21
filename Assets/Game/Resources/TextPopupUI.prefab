@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 1980147653918362961}
   - component: {fileID: 2374743892604003256}
   - component: {fileID: 5451732792136999990}
-  - component: {fileID: 259299330437310966}
   - component: {fileID: 686406477273568031}
   - component: {fileID: 8691503190869743964}
   m_Layer: 0
@@ -139,20 +138,6 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
---- !u!114 &259299330437310966
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1958557975442699479}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 620fde5e484237f4987dcb768a51333c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::WorldSpaceUI
-  followOffset: {x: -0.8, y: 1.5, z: 0}
-  followSlowlyPositionLerpTime: 0.04
 --- !u!114 &686406477273568031
 MonoBehaviour:
   m_ObjectHideFlags: 0

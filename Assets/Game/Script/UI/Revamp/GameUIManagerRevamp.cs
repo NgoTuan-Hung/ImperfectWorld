@@ -58,7 +58,7 @@ public class GameUIManagerRevamp : MonoEditorSingleton<GameUIManagerRevamp>
 
         textPopupUIPool = new(
             Resources.Load("TextPopupUI") as GameObject,
-            new PoolArgument(ComponentType.WorldSpaceUI, PoolArgument.WhereComponent.Self)
+            new PoolArgument(ComponentType.TextPopupUI, PoolArgument.WhereComponent.Self)
         );
         textPopupUIPool.handleCachedComponentRefs += (p_pO) =>
             p_pO.gameObject.transform.parent = worldSpaceCanvas.transform;
@@ -395,7 +395,7 @@ public class GameUIManagerRevamp : MonoEditorSingleton<GameUIManagerRevamp>
     public PoolObject CreateAndHandleHPAndMPUIWithFollowing(Transform transform)
     {
         PoolObject healthAndManaIndicatorObj = healthAndManaIndicator.PickOne();
-        healthAndManaIndicatorObj.worldSpaceUI.FollowSlowly(transform);
+        healthAndManaIndicatorObj.WorldSpaceUI.FollowSlowly(transform);
         return healthAndManaIndicatorObj;
     }
 

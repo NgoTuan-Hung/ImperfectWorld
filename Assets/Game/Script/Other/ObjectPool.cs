@@ -55,37 +55,54 @@ public class ObjectPool
                 case ComponentType.HealthAndManaIndicator:
                     handleCachedComponentRefs += (poolObject) =>
                     {
-                        poolObject.healthAndManaIndicator =
+                        poolObject.AddComponent(
+                            PoolObjectComponent.HealthAndManaIndicator,
                             getComponentInLocation(typeof(HealthAndManaIndicator), poolObject)
-                            as HealthAndManaIndicator;
+                        );
                     };
                     break;
                 case ComponentType.GameEffect:
                     handleCachedComponentRefs += (poolObject) =>
                     {
-                        poolObject.gameEffect =
-                            getComponentInLocation(typeof(GameEffect), poolObject) as GameEffect;
+                        poolObject.AddComponent(
+                            PoolObjectComponent.GameEffect,
+                            getComponentInLocation(typeof(GameEffect), poolObject)
+                        );
 
-                        poolObject.gameEffect.deactivate += () => IdleScheme(poolObject);
+                        poolObject.GameEffect.deactivate += () => IdleScheme(poolObject);
                     };
                     break;
                 case ComponentType.WorldSpaceUI:
                     handleCachedComponentRefs += (poolObject) =>
                     {
-                        poolObject.worldSpaceUI =
+                        poolObject.AddComponent(
+                            PoolObjectComponent.WorldSpaceUI,
                             getComponentInLocation(typeof(WorldSpaceUI), poolObject)
-                            as WorldSpaceUI;
+                        );
 
-                        poolObject.worldSpaceUI.deactivate += () => IdleScheme(poolObject);
+                        poolObject.WorldSpaceUI.deactivate += () => IdleScheme(poolObject);
                     };
                     break;
                 case ComponentType.CustomMono:
                     handleCachedComponentRefs += (poolObject) =>
                     {
-                        poolObject.customMono =
-                            getComponentInLocation(typeof(CustomMono), poolObject) as CustomMono;
+                        poolObject.AddComponent(
+                            PoolObjectComponent.CustomMono,
+                            getComponentInLocation(typeof(CustomMono), poolObject)
+                        );
 
-                        poolObject.customMono.deactivate += () => IdleScheme(poolObject);
+                        poolObject.CustomMono.deactivate += () => IdleScheme(poolObject);
+                    };
+                    break;
+                case ComponentType.TextPopupUI:
+                    handleCachedComponentRefs += (poolObject) =>
+                    {
+                        poolObject.AddComponent(
+                            PoolObjectComponent.TextPopupUI,
+                            getComponentInLocation(typeof(TextPopupUI), poolObject)
+                        );
+
+                        poolObject.TextPopupUI.deactivate += () => IdleScheme(poolObject);
                     };
                     break;
                 default:
@@ -230,5 +247,5 @@ public class ObjectPool
             action(pool[i]);
     }
 
-    public GameEffect PickOneGameEffect() => PickOne().gameEffect;
+    public GameEffect PickOneGameEffect() => PickOne().GameEffect;
 }

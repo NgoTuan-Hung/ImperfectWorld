@@ -90,12 +90,14 @@ public class StatusEffect : CustomMonoPal
             float.MaxValue
         );
         customMono.stat.currentHealthPoint.Value -= finalTakenDamage;
-        GameUIManagerRevamp
-            .Instance.PickOneTextPopupUI()
-            .worldSpaceUI.StartDamagePopup(
-                customMono.rotationAndCenterObject.transform.position,
-                finalTakenDamage
-            );
+        StartCoroutine(
+            GameUIManagerRevamp
+                .Instance.PickOneTextPopupUI()
+                .TextPopupUI.StartDamagePopupIE(
+                    customMono.rotationAndCenterObject.transform.position,
+                    finalTakenDamage
+                )
+        );
 
         if (CheckEffect(StatusEffectState.DamageEffect))
             currentDamageTime = 0;
@@ -355,9 +357,11 @@ public class StatusEffect : CustomMonoPal
     IEnumerator WeakenIE(FloatStatModifier p_damageModifier, float p_duration)
     {
         customMono.stat.damageModifier.AddModifier(p_damageModifier);
-        GameUIManagerRevamp
-            .Instance.PickOneTextPopupUI()
-            .worldSpaceUI.StartWeakenPopup(customMono.rotationAndCenterObject.transform.position);
+        StartCoroutine(
+            GameUIManagerRevamp
+                .Instance.PickOneTextPopupUI()
+                .TextPopupUI.StartWeakenPopup(customMono.rotationAndCenterObject.transform.position)
+        );
         yield return new WaitForSeconds(p_duration);
         customMono.stat.damageModifier.RemoveModifier(p_damageModifier);
     }

@@ -5,7 +5,7 @@ using TMPEffects.Components;
 using TMPro;
 using UnityEngine;
 
-public class TextPopupUI : MonoBehaviour
+public class TextPopupUI : MonoSelfAware
 {
     RectTransform rectTransform;
     TextMeshProUGUI textMeshProUGUI;
@@ -18,8 +18,9 @@ public class TextPopupUI : MonoBehaviour
     float defaultFontSize;
     public static Color transparentWhite = new(1, 1, 1, 0);
 
-    private void Awake()
+    public override void Awake()
     {
+        base.Awake();
         textMeshProUGUI = GetComponent<TextMeshProUGUI>();
         defaultFontSize = textMeshProUGUI.fontSize;
         rectTransform = GetComponent<RectTransform>();
@@ -28,7 +29,7 @@ public class TextPopupUI : MonoBehaviour
         tmpAnimator = GetComponent<TMPAnimator>();
     }
 
-    public IEnumerator StartPopupIE(Vector3 p_initialPos, float p_damage)
+    public IEnumerator StartDamagePopupIE(Vector3 p_initialPos, float p_damage)
     {
         textMeshProUGUI.fontSharedMaterial = damagePopupMat;
         textMeshProUGUI.text = p_damage.ToString();
@@ -49,6 +50,7 @@ public class TextPopupUI : MonoBehaviour
         }
         textMeshProUGUI.color = Color.white;
         textMeshProUGUI.fontSize = defaultFontSize;
+        deactivate();
     }
 
     public IEnumerator StartWeakenPopup(Vector3 p_initialPos)
@@ -71,7 +73,6 @@ public class TextPopupUI : MonoBehaviour
             .SetEase(Ease.OutQuint)
             .WaitForCompletion();
         textMeshProUGUI.color = Color.white;
-
-        // rectTransform.localScale = t_currentScale;
+        deactivate();
     }
 }

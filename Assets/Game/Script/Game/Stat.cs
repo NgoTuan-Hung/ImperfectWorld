@@ -151,12 +151,12 @@ public partial class Stat : MonoEditor, INotifyBindablePropertyChanged
     }
 
     void SetHPOnUI() =>
-        healthAndManaIndicatorPO?.healthAndManaIndicator.SetHealth(
+        healthAndManaIndicatorPO?.HealthAndManaIndicator.SetHealth(
             currentHealthPoint.Value / healthPoint.FinalValue
         );
 
     void SetMPOnUI() =>
-        healthAndManaIndicatorPO?.healthAndManaIndicator.SetMana(
+        healthAndManaIndicatorPO?.HealthAndManaIndicator.SetMana(
             currentManaPoint.Value / manaPoint.FinalValue
         );
 
@@ -168,7 +168,7 @@ public partial class Stat : MonoEditor, INotifyBindablePropertyChanged
             customMono.movementActionBlocking = true;
             customMono.AnimatorWrapper.SetBool(GameManager.Instance.dieBoolHash, true);
             customMono.combatCollision.SetActive(false);
-            healthAndManaIndicatorPO?.worldSpaceUI.deactivate();
+            healthAndManaIndicatorPO?.WorldSpaceUI.deactivate();
             healthAndManaIndicatorPO = null;
             StopAllCoroutines();
             StartCoroutine(DissolveCoroutine());
@@ -261,7 +261,7 @@ public partial class Stat : MonoEditor, INotifyBindablePropertyChanged
     {
         yield return new WaitForSeconds(dissolveTime);
 
-        GameEffect dieDissolveEffect = GameManager.Instance.dieDissolvePool.PickOne().gameEffect;
+        GameEffect dieDissolveEffect = GameManager.Instance.dieDissolvePool.PickOneGameEffect();
         dieDissolveEffect.animateObjects[0].spriteRenderer.transform.localScale = customMono
             .directionModifier
             .transform

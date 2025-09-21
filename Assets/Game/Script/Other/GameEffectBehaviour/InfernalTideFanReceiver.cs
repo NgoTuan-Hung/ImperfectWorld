@@ -50,9 +50,8 @@ public class InfernalTideFanReceiver : MonoBehaviour, IGameEffectBehaviour
         {
             t_flame =
                 GameManager
-                    .Instance.infernalTideFlameNoReceiverPool.PickOne()
-                    .gameEffect.GetBehaviour(EGameEffectBehaviour.CollideAndDamage)
-                as CollideAndDamage;
+                    .Instance.infernalTideFlameNoReceiverPool.PickOneGameEffect()
+                    .GetBehaviour(EGameEffectBehaviour.CollideAndDamage) as CollideAndDamage;
             t_flame.transform.position =
                 transform.position + (i * spawnDistance * p_direction).AsVector3();
             t_flame.allyTags = (
