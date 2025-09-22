@@ -24,13 +24,12 @@ public class DimmingEdge : SkillBase
 
     public override void Config()
     {
-        GetActionField<ActionFloatField>(ActionFieldName.Cooldown).value = 1f;
         /* Stun duration */
-        successResult = new(
-            true,
-            ActionResultType.Cooldown,
-            GetActionField<ActionFloatField>(ActionFieldName.Cooldown).value
-        );
+        // successResult = new(
+        //     true,
+        //     ActionResultType.Cooldown,
+        //     GetActionField<ActionFloatField>(ActionFieldName.Cooldown).value
+        // );
         GetActionField<ActionFloatField>(ActionFieldName.Range).value = customMono
             .charAttackInfo
             .attackRange;
@@ -70,9 +69,8 @@ public class DimmingEdge : SkillBase
             )
         )
             return failResult;
-        else if (canUse && !customMono.actionBlocking)
+        else if (!customMono.actionBlocking)
         {
-            canUse = false;
             customMono.actionBlocking = true;
             customMono.statusEffect.Slow(customMono.stat.actionSlowModifier);
             ToggleAnim(GameManager.Instance.mainSkill1BoolHash, true);
@@ -83,7 +81,6 @@ public class DimmingEdge : SkillBase
                     p_customMono
                 )
             );
-            StartCoroutine(CooldownCoroutine());
             customMono.currentAction = this;
             customMono.stat.currentManaPoint.Value -= GetActionField<ActionFloatField>(
                 ActionFieldName.ManaCost

@@ -14,7 +14,8 @@ public class TextPopupUI : MonoSelfAware
     static readonly float duration = 1f;
     static readonly Vector2 acceleration = new(0, -80f);
     static Material damagePopupMat,
-        weakenPopupMat;
+        weakenPopupMat,
+        armorBuffPopupMat;
     float defaultFontSize;
     public static Color transparentWhite = new(1, 1, 1, 0);
 
@@ -26,10 +27,14 @@ public class TextPopupUI : MonoSelfAware
         rectTransform = GetComponent<RectTransform>();
         damagePopupMat = Resources.Load<Material>("Material/rimouski sb SDF - Damage");
         weakenPopupMat = Resources.Load<Material>("Material/rimouski sb SDF - Weaken");
+        armorBuffPopupMat = Resources.Load<Material>("Material/rimouski sb SDF - Armor Buff");
         tmpAnimator = GetComponent<TMPAnimator>();
     }
 
-    public IEnumerator StartDamagePopupIE(Vector3 p_initialPos, float p_damage)
+    public void StartDamagePopup(Vector3 p_initialPos, float p_damage) =>
+        StartCoroutine(StartDamagePopupIE(p_initialPos, p_damage));
+
+    IEnumerator StartDamagePopupIE(Vector3 p_initialPos, float p_damage)
     {
         textMeshProUGUI.fontSharedMaterial = damagePopupMat;
         textMeshProUGUI.text = p_damage.ToString();
@@ -53,7 +58,10 @@ public class TextPopupUI : MonoSelfAware
         deactivate();
     }
 
-    public IEnumerator StartWeakenPopup(Vector3 p_initialPos)
+    public void StartWeakenPopup(Vector3 p_initialPos) =>
+        StartCoroutine(StartWeakenPopupIE(p_initialPos));
+
+    IEnumerator StartWeakenPopupIE(Vector3 p_initialPos)
     {
         tmpAnimator.StartAnimating();
         textMeshProUGUI.fontSharedMaterial = weakenPopupMat;
@@ -73,6 +81,22 @@ public class TextPopupUI : MonoSelfAware
             .SetEase(Ease.OutQuint)
             .WaitForCompletion();
         textMeshProUGUI.color = Color.white;
+        deactivate();
+    }
+
+    public void StartArmorBuffPopup(Vector3 p_initialPos) =>
+        StartCoroutine(StartArmorBuffPopupIE(p_initialPos));
+
+    IEnumerator StartArmorBuffPopupIE(Vector3 p_initialPos)
+    {
+        textMeshProUGUI.fontSharedMaterial = armorBuffPopupMat;
+        textMeshProUGUI.text = "ARMOR⬆";
+        transform.position = p_initialPos;
+        textMeshProUGUI.DOColor(transparentWhite, 0.5f).SetEase(Ease.InCubic);
+        yield return textMeshProUGUI
+            .transform.DOMove(p_initialPos + 2 * Vector3.up, 0.5f)
+            .SetEase(Ease.InCubic)
+            .WaitForCompletion();
         deactivate();
     }
 }

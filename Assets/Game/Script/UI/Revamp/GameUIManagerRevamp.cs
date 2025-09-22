@@ -61,7 +61,7 @@ public class GameUIManagerRevamp : MonoEditorSingleton<GameUIManagerRevamp>
             new PoolArgument(ComponentType.TextPopupUI, PoolArgument.WhereComponent.Self)
         );
         textPopupUIPool.handleCachedComponentRefs += (p_pO) =>
-            p_pO.gameObject.transform.parent = worldSpaceCanvas.transform;
+            p_pO.gameObject.transform.SetParent(worldSpaceCanvas.transform, false);
     }
 
     void GetAllUI() { }

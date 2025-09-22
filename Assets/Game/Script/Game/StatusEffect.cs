@@ -90,14 +90,12 @@ public class StatusEffect : CustomMonoPal
             float.MaxValue
         );
         customMono.stat.currentHealthPoint.Value -= finalTakenDamage;
-        StartCoroutine(
-            GameUIManagerRevamp
-                .Instance.PickOneTextPopupUI()
-                .TextPopupUI.StartDamagePopupIE(
-                    customMono.rotationAndCenterObject.transform.position,
-                    finalTakenDamage
-                )
-        );
+        GameUIManagerRevamp
+            .Instance.PickOneTextPopupUI()
+            .TextPopupUI.StartDamagePopup(
+                customMono.rotationAndCenterObject.transform.position,
+                finalTakenDamage
+            );
 
         if (CheckEffect(StatusEffectState.DamageEffect))
             currentDamageTime = 0;
@@ -357,12 +355,25 @@ public class StatusEffect : CustomMonoPal
     IEnumerator WeakenIE(FloatStatModifier p_damageModifier, float p_duration)
     {
         customMono.stat.damageModifier.AddModifier(p_damageModifier);
-        StartCoroutine(
-            GameUIManagerRevamp
-                .Instance.PickOneTextPopupUI()
-                .TextPopupUI.StartWeakenPopup(customMono.rotationAndCenterObject.transform.position)
-        );
+        GameUIManagerRevamp
+            .Instance.PickOneTextPopupUI()
+            .TextPopupUI.StartWeakenPopup(customMono.rotationAndCenterObject.transform.position);
         yield return new WaitForSeconds(p_duration);
         customMono.stat.damageModifier.RemoveModifier(p_damageModifier);
+    }
+
+    public void BuffArmor(float p_value, float p_duration)
+    {
+        StartCoroutine(BuffArmorIE(p_value, p_duration));
+    }
+
+    IEnumerator BuffArmorIE(float p_value, float p_duration)
+    {
+        GameUIManagerRevamp
+            .Instance.PickOneTextPopupUI()
+            .TextPopupUI.StartArmorBuffPopup(customMono.rotationAndCenterObject.transform.position);
+        customMono.stat.armor.BaseValue += p_value;
+        yield return new WaitForSeconds(p_duration);
+        customMono.stat.armor.BaseValue -= p_value;
     }
 }

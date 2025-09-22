@@ -81,7 +81,8 @@ public partial class GameManager
         virgilAttackImpactPool,
         virgilAttackSlashPool,
         rimuruCombo1SlashAWithColliderPool,
-        dimmingEdgeEffectPool;
+        dimmingEdgeEffectPool,
+        ironCladVFXPool;
     List<string> objectPoolNames = new()
     {
         "moonSlashExplodePool",
@@ -161,6 +162,7 @@ public partial class GameManager
         "virgilAttackSlashPool",
         "rimuruCombo1SlashAWithColliderPool",
         "dimmingEdgeEffectPool",
+        "ironCladVFXPool",
     };
 
     void InitAllEffectPools()
