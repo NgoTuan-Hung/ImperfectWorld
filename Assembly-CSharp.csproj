@@ -336,6 +336,7 @@
     <None Include="Assets\TextMesh Pro\Examples &amp; Extras\Fonts\Anton OFL.txt" />
     <None Include="Assets\TextMesh Pro\Shaders\TMPro_Mobile.cginc" />
     <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF SSD.shader" />
+    <None Include="Assets\Packages\OptimizedPriorityQueue.5.1.0\lib\netstandard1.0\PriorityQueue.xml" />
     <None Include="Assets\Game\Graphics\UIToolkit\PropertyDrawer\FloatStatWithModifierInspector.uxml" />
     <None Include="Assets\CustomPackage\Cainos\Pixel Art Top Down - Basic\Shader\SH Sprite Shadow.shader" />
     <None Include="Assets\Game\Graphics\UIToolkit\Debugger\Debugger.uxml" />
@@ -353,6 +354,7 @@
     <None Include="Assets\TextMesh Pro\Shaders\TMPro_Properties.cginc" />
     <None Include="Assets\CustomPackage\Dotween\DOTween.XML" />
     <None Include="Assets\TextMesh Pro\Shaders\TMPro_Surface.cginc" />
+    <None Include="Assets\Packages\OptimizedPriorityQueue.5.1.0\lib\netstandard1.0\PriorityQueue.dll" />
     <None Include="Assets\TextMesh Pro\Resources\LineBreaking Following Characters.txt" />
     <None Include="Assets\Game\Graphics\Material\Stylized Sky\Shaders\Stylized Sky.shader" />
     <None Include="Assets\Game\Graphics\UIToolkit\PropertyDrawer\FloatModifier.uxml" />
@@ -872,6 +874,10 @@
     </Reference>
     <Reference Include="System.Runtime.CompilerServices.Unsafe">
       <HintPath>Library\PackageCache\com.unity.collections@d49facba0036\Unity.Collections.Tests\System.Runtime.CompilerServices.Unsafe\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="PriorityQueue">
+      <HintPath>Assets\Packages\OptimizedPriorityQueue.5.1.0\lib\netstandard1.0\PriorityQueue.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Unity.Android.Types">

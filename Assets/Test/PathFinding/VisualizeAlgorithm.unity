@@ -357,6 +357,7 @@ GameObject:
   m_Component:
   - component: {fileID: 606707615}
   - component: {fileID: 606707614}
+  - component: {fileID: 606707616}
   m_Layer: 0
   m_Name: Visualizer
   m_TagString: Untagged
@@ -379,6 +380,10 @@ MonoBehaviour:
   bound: {x: -10, y: 10, z: 10, w: -10}
   gridSquare: {fileID: 1756856876707843698, guid: 102725c51caabf74d9f8539e921ea43d, type: 3}
   worldSpaceCanvas: {fileID: 0}
+  startPoint: {fileID: 0}
+  destPoint: {fileID: 0}
+  border: {fileID: 0}
+  done: 0
 --- !u!4 &606707615
 Transform:
   m_ObjectHideFlags: 0
@@ -394,6 +399,27 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &606707616
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 606707613}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6cf9b67524fdde646979688aabf9827e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GridSquare
+  isCalculated: 0
+  pos: {x: 0, y: 0}
+  state: 0
+  image: {fileID: 0}
+  obstacleIMG: {fileID: 0}
+  totalCostTMP: {fileID: 0}
+  originCostTMP: {fileID: 0}
+  destCostTMP: {fileID: 0}
+  neighbors: []
 --- !u!1 &714840615
 GameObject:
   m_ObjectHideFlags: 0

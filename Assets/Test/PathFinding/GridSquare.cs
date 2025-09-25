@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -25,10 +26,16 @@ public class GridSquare : MonoBehaviour, IPointerDownHandler, IPointerMoveHandle
         originCostTMP,
         destCostTMP;
     public static Color transparentWhite = new(1, 1, 1, 0);
+    public List<GridSquare> neighbors = new();
 
     public GridSquare Init(Vector2 pos)
     {
         this.pos = pos;
+        image = transform.Find("Image").GetComponent<Image>();
+        obstacleIMG = transform.Find("ObstacleIMG").GetComponent<Image>();
+        totalCostTMP = transform.Find("TotalCostTMP").GetComponent<TextMeshProUGUI>();
+        originCostTMP = transform.Find("OriginCostTMP").GetComponent<TextMeshProUGUI>();
+        destCostTMP = transform.Find("DestCostTMP").GetComponent<TextMeshProUGUI>();
         return this;
     }
 
@@ -40,15 +47,6 @@ public class GridSquare : MonoBehaviour, IPointerDownHandler, IPointerMoveHandle
             image.color = Color.red;
             VisualizeAlgorithm.Instance.OpenAvailable(this);
         }
-    }
-
-    private void Awake()
-    {
-        image = transform.Find("Image").GetComponent<Image>();
-        obstacleIMG = transform.Find("ObstacleIMG").GetComponent<Image>();
-        totalCostTMP = transform.Find("TotalCostTMP").GetComponent<TextMeshProUGUI>();
-        originCostTMP = transform.Find("OriginCostTMP").GetComponent<TextMeshProUGUI>();
-        destCostTMP = transform.Find("DestCostTMP").GetComponent<TextMeshProUGUI>();
     }
 
     public void OnPointerMove(PointerEventData eventData)
@@ -88,5 +86,10 @@ public class GridSquare : MonoBehaviour, IPointerDownHandler, IPointerMoveHandle
             image.color = Color.green;
             state = GridSquareState.Available;
         }
+    }
+
+    public void AddNeighbor(GridSquare neighbor)
+    {
+        neighbors.Add(neighbor);
     }
 }
