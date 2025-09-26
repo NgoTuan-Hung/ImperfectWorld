@@ -48,7 +48,6 @@ public class BotSensor : CustomMonoPal
         current_TOP_ChangePriority = (int)ModificationPriority.VeryLow,
         current_TCP_ChangePriority = (int)ModificationPriority.VeryLow;
     public float distanceToNearestEnemy;
-    Action senseDefault = () => { };
 
     /// <summary>
     /// A centralized storage for sensor data
@@ -58,19 +57,6 @@ public class BotSensor : CustomMonoPal
     public override void Awake()
     {
         base.Awake();
-        SetDefaultSense();
-    }
-
-    /// <summary>
-    /// If bot is player minions, default the target toward center,
-    /// else default target toward any player minion.
-    /// </summary>
-    private void SetDefaultSense()
-    {
-        if (customMono.isControllable)
-            senseDefault = SetTargetToCenterMap;
-        else
-            senseDefault = SetTargetToDetectEnemy;
     }
 
     void SetTargetToCenterMap()
@@ -88,7 +74,15 @@ public class BotSensor : CustomMonoPal
     void SetTargetToDetectEnemy()
     {
         if (detectEnemy == null)
-            detectEnemy = GameManager.Instance.GetRandomPlayerAlly();
+        {
+            detectEnemy = GameManager.Instance.GetRandomEnemy(customMono.tag);
+            if (detectEnemy == default)
+            {
+                SetTargetToCenterMap();
+                return;
+            }
+        }
+
         SetOriginToTargetOriginDirection(
             detectEnemy.transform.position - transform.position,
             ModificationPriority.VeryLow
@@ -121,7 +115,7 @@ public class BotSensor : CustomMonoPal
     {
         if (currentNearestEnemy == null)
         {
-            senseDefault();
+            SetTargetToDetectEnemy();
         }
         else
         {

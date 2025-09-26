@@ -40,7 +40,7 @@ public class NewAIBehavior : BaseAIBehavior
         // base.DoAction();
 
         if (
-            customMono.botSensor.centerToTargetCenterDirection.magnitude
+            customMono.botSensor.originToTargetOriginDirection.magnitude
             > attack.GetActionField<ActionFloatField>(ActionFieldName.Range).value
         )
         {

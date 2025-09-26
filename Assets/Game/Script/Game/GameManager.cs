@@ -11,7 +11,6 @@ public partial class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
     Dictionary<int, CustomMono> customMonos = new();
-    List<CustomMono> playerAllies = new();
     public int currentSpawn = 0;
     public float maxSpawn = 3;
     public float spawnInterval = 1f;
@@ -322,8 +321,6 @@ public partial class GameManager : MonoBehaviour
     public void AddCustomMono(CustomMono customMono)
     {
         customMonos.Add(customMono.gameObject.GetHashCode(), customMono);
-        if (customMono.allyTags.Contains("GamePlayer"))
-            playerAllies.Add(customMono);
     }
 
     public CustomMono GetCustomMono(GameObject p_gameObject)
@@ -336,5 +333,6 @@ public partial class GameManager : MonoBehaviour
         customMonos.Remove(p_gameObject.GetHashCode());
     }
 
-    public CustomMono GetRandomPlayerAlly() => playerAllies[Random.Range(0, playerAllies.Count)];
+    public CustomMono GetRandomEnemy(string p_yourTag) =>
+        customMonos.FirstOrDefault(kV => !kV.Value.allyTags.Contains(p_yourTag)).Value;
 }

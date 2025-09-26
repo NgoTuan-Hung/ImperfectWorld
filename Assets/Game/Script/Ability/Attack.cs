@@ -93,10 +93,8 @@ public class Attack : SkillBase
     )
     {
         if (
-            Vector2.Distance(
-                customMono.rotationAndCenterObject.transform.position,
-                p_customMono.rotationAndCenterObject.transform.position
-            ) > GetActionField<ActionFloatField>(ActionFieldName.Range).value
+            Vector2.Distance(customMono.transform.position, p_customMono.transform.position)
+            > GetActionField<ActionFloatField>(ActionFieldName.Range).value
         )
             return failResult;
         else if (canUse && !customMono.actionBlocking)

@@ -17,7 +17,6 @@ public class VisualizeAlgorithm : MonoBehaviour
     SimplePriorityQueue<GridSquare> queue = new();
     Dictionary<GridSquare, GridSquare> cameFrom = new();
     Dictionary<GridSquare, float> costSoFar = new();
-    public bool done = false;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -84,17 +83,52 @@ public class VisualizeAlgorithm : MonoBehaviour
 
     public void AssignStartPoint(GridSquare square)
     {
+        startPoint?.RemoveStart();
         startPoint = square;
+        PathFinding();
     }
 
     public void AssignDestPoint(GridSquare square)
     {
-        if (done)
-            return;
-
+        destPoint?.RemoveDestination();
         destPoint = square;
-        if (startPoint != null)
+        PathFinding();
+    }
+
+    public void AssignObstacle(GridSquare square)
+    {
+        PathFinding();
+    }
+
+    void DebugPath(GridSquare current)
+    {
+        if (current != startPoint)
         {
+            DebugPath(cameFrom[current]);
+            current.ChangeToPath();
+        }
+    }
+
+    void RemoveAllPath()
+    {
+        foreach (var list in gridSquares)
+        {
+            foreach (var square in list)
+            {
+                if (square.state == GridSquareState.Path)
+                    square.RemovePath();
+            }
+        }
+    }
+
+    public void PathFinding()
+    {
+        if (startPoint != null && destPoint != null)
+        {
+            RemoveAllPath();
+            queue = new();
+            cameFrom = new();
+            costSoFar = new();
             queue.Enqueue(startPoint, 0);
             cameFrom.Add(startPoint, null);
             costSoFar.Add(startPoint, 0);
@@ -104,7 +138,7 @@ public class VisualizeAlgorithm : MonoBehaviour
                 var current = queue.Dequeue();
                 if (current == destPoint)
                 {
-                    DebugPath(current);
+                    DebugPath(cameFrom[current]);
                     break;
                 }
 
@@ -129,27 +163,5 @@ public class VisualizeAlgorithm : MonoBehaviour
                 }
             }
         }
-
-        done = true;
-    }
-
-    void DebugPath(GridSquare current)
-    {
-        if (current != startPoint)
-        {
-            DebugPath(cameFrom[current]);
-            current.ChangeToAvailable();
-        }
-    }
-
-    public void OpenAvailable(GridSquare square)
-    {
-        // gridSquares
-        //     .Where(gS => Vector2.Distance(gS.pos, square.pos) <= sqrt2 && gS != square)
-        //     .ToList()
-        //     .ForEach(gS =>
-        //     {
-        //         gS.ChangeToAvailable();
-        //     });
     }
 }

@@ -52,6 +52,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_TextEventHandler.cs" />
+    <Compile Include="Assets\Game\Script\PathFinding\GridManager.cs" />
     <Compile Include="Assets\Game\Script\Game\CustomMono.cs" />
     <Compile Include="Assets\Game\Script\Game\CharAttackInfo.cs" />
     <Compile Include="Assets\Game\Script\Game\AnimationSignal.cs" />
@@ -147,6 +148,7 @@
     <Compile Include="Assets\Test\NoObjectPoolPerformance\NoObjectPoolPerformance.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\VertexZoom.cs" />
     <Compile Include="Assets\Game\Script\UI\Other\UsableScrollViewUIInfo.cs" />
+    <Compile Include="Assets\Test\PathFinding\PathFindingFinalTest.cs" />
     <Compile Include="Assets\Game\Script\UI\Revamp\UIImageEffect.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_TextSelector_B.cs" />
     <Compile Include="Assets\Game\Script\Ability\IronClad.cs" />
@@ -260,6 +262,7 @@
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\VertexColorCycler.cs" />
     <Compile Include="Assets\Game\Script\Game\Stat.cs" />
     <Compile Include="Assets\Game\Script\Ability\ArcaneSwarm.cs" />
+    <Compile Include="Assets\Game\Script\PathFinding\GridNode.cs" />
     <Compile Include="Assets\Game\Script\ActionField\ActionField.cs" />
     <Compile Include="Assets\Game\Script\UI\Revamp\TextPopupUI.cs" />
     <Compile Include="Assets\Test\TimelineSerializeTest\TimelineSerializeSO.cs" />
@@ -868,16 +871,16 @@
       <HintPath>Library\PackageCache\com.unity.visualscripting@b4d700247d4b\Runtime\VisualScripting.Flow\Dependencies\NCalc\Unity.VisualScripting.Antlr3.Runtime.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="PriorityQueue">
+      <HintPath>Assets\Packages\OptimizedPriorityQueue.5.1.0\lib\netstandard1.0\PriorityQueue.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="Mono.Cecil">
       <HintPath>Library\PackageCache\com.unity.nuget.mono-cecil@d78732e851eb\Mono.Cecil.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="System.Runtime.CompilerServices.Unsafe">
       <HintPath>Library\PackageCache\com.unity.collections@d49facba0036\Unity.Collections.Tests\System.Runtime.CompilerServices.Unsafe\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="PriorityQueue">
-      <HintPath>Assets\Packages\OptimizedPriorityQueue.5.1.0\lib\netstandard1.0\PriorityQueue.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Unity.Android.Types">

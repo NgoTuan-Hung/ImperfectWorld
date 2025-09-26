@@ -8,7 +8,7 @@ using UnityEngine.UI;
 public enum GridSquareState
 {
     Normal,
-    Available,
+    Path,
     Marked,
     Start,
     Dest,
@@ -27,6 +27,8 @@ public class GridSquare : MonoBehaviour, IPointerDownHandler, IPointerMoveHandle
         destCostTMP;
     public static Color transparentWhite = new(1, 1, 1, 0);
     public List<GridSquare> neighbors = new();
+    private float stateChangeCooldown = 0.2f; // Time in seconds between state changes
+    private float lastStateChangeTime = 0f;
 
     public GridSquare Init(Vector2 pos)
     {
@@ -45,12 +47,17 @@ public class GridSquare : MonoBehaviour, IPointerDownHandler, IPointerMoveHandle
         {
             state = GridSquareState.Marked;
             image.color = Color.red;
-            VisualizeAlgorithm.Instance.OpenAvailable(this);
         }
     }
 
     public void OnPointerMove(PointerEventData eventData)
     {
+        // Ensure the function is only called after a cooldown period
+        if (Time.time - lastStateChangeTime < stateChangeCooldown)
+            return;
+
+        lastStateChangeTime = Time.time;
+
         if (Keyboard.current.nKey.isPressed)
         {
             obstacleIMG.color = Color.white;
@@ -67,8 +74,18 @@ public class GridSquare : MonoBehaviour, IPointerDownHandler, IPointerMoveHandle
 
         if (Keyboard.current.bKey.isPressed)
         {
-            state = GridSquareState.Obstacle;
-            obstacleIMG.color = Color.black;
+            if (state == GridSquareState.Obstacle)
+            {
+                obstacleIMG.color = transparentWhite;
+                state = GridSquareState.Normal;
+            }
+            else
+            {
+                state = GridSquareState.Obstacle;
+                obstacleIMG.color = Color.black;
+            }
+
+            VisualizeAlgorithm.Instance.AssignObstacle(this);
         }
     }
 
@@ -79,17 +96,35 @@ public class GridSquare : MonoBehaviour, IPointerDownHandler, IPointerMoveHandle
         destCostTMP.text = destCost.ToString("F1");
     }
 
-    public void ChangeToAvailable()
+    public void ChangeToPath()
     {
         if (state != GridSquareState.Marked)
         {
             image.color = Color.green;
-            state = GridSquareState.Available;
+            state = GridSquareState.Path;
         }
     }
 
     public void AddNeighbor(GridSquare neighbor)
     {
         neighbors.Add(neighbor);
+    }
+
+    public void RemoveDestination()
+    {
+        obstacleIMG.color = transparentWhite;
+        state = GridSquareState.Normal;
+    }
+
+    public void RemoveStart()
+    {
+        obstacleIMG.color = transparentWhite;
+        state = GridSquareState.Normal;
+    }
+
+    public void RemovePath()
+    {
+        image.color = Color.black;
+        state = GridSquareState.Normal;
     }
 }
