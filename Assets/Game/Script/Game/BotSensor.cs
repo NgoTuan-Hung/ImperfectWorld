@@ -34,7 +34,8 @@ public class BotSensor : CustomMonoPal
     public Vector2 originToTargetOriginDirection,
         /* Center is the position of RotationAndCenterObject of a CustomMono */
         centerToTargetCenterDirection,
-        firePointToTargetCenterDirection;
+        firePointToTargetCenterDirection,
+        targetPathFindingDirection;
     public Vector3 targetOriginPosition,
         targetCenterPosition;
 
@@ -69,6 +70,11 @@ public class BotSensor : CustomMonoPal
             Vector3.zero - customMono.rotationAndCenterObject.transform.position,
             ModificationPriority.VeryLow
         );
+        targetPathFindingDirection = GameManager.Instance.GetPathFindingDirectionToTarget(
+            transform.position,
+            Vector2.zero,
+            customMono.boxCollider2D
+        );
     }
 
     void SetTargetToDetectEnemy()
@@ -91,6 +97,11 @@ public class BotSensor : CustomMonoPal
             detectEnemy.rotationAndCenterObject.transform.position
                 - customMono.rotationAndCenterObject.transform.position,
             ModificationPriority.VeryLow
+        );
+        targetPathFindingDirection = GameManager.Instance.GetPathFindingDirectionToTarget(
+            transform.position,
+            detectEnemy.transform.position,
+            customMono.boxCollider2D
         );
     }
 
@@ -145,6 +156,11 @@ public class BotSensor : CustomMonoPal
 
             /* IMPORTANT */
             distanceToNearestEnemy = originToTargetOriginDirection.magnitude;
+            targetPathFindingDirection = GameManager.Instance.GetPathFindingDirectionToTarget(
+                transform.position,
+                currentNearestEnemy.transform.position,
+                customMono.boxCollider2D
+            );
         }
     }
 

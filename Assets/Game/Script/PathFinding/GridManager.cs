@@ -1,8 +1,10 @@
+using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using Priority_Queue;
 using UnityEngine;
-using UnityEngine.InputSystem;
 
+[DefaultExecutionOrder(0)]
 public class GridManager : MonoBehaviour
 {
     public int xMin,
@@ -15,6 +17,7 @@ public class GridManager : MonoBehaviour
     SimplePriorityQueue<GridNode> queue = new();
     Dictionary<GridNode, GridNode> cameFrom = new();
     Dictionary<GridNode, float> costSoFar = new();
+    Action resetGrid = () => { };
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -33,6 +36,8 @@ public class GridManager : MonoBehaviour
                     .Add(
                         new(new(xMin + nodeSize * i + nodeOffset, yMax - nodeSize * j - nodeOffset))
                     );
+
+                resetGrid += gridNodes[i][j].Reset;
             }
         }
 
@@ -59,15 +64,14 @@ public class GridManager : MonoBehaviour
         }
     }
 
+    private void FixedUpdate()
+    {
+        ResetGrid();
+    }
+
     public void ResetGrid()
     {
-        for (int i = 0; i < gridNodes.Count; i++)
-        {
-            for (int j = 0; j < gridNodes[i].Count; j++)
-            {
-                gridNodes[i][j].Reset();
-            }
-        }
+        resetGrid();
     }
 
     public List<GridNode> SolvePath(GridNode start, GridNode end)

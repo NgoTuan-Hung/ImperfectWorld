@@ -5,8 +5,10 @@ using System.Diagnostics;
 using System.Linq;
 using Unity.Cinemachine;
 using UnityEngine;
+using UnityEngine.UIElements;
 using Random = UnityEngine.Random;
 
+[RequireComponent(typeof(GridManager))]
 public partial class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
@@ -50,6 +52,8 @@ public partial class GameManager : MonoBehaviour
     public List<ActionFieldInfo> actionFieldInfos = new();
     Dictionary<string, ActionFieldInfo> actionFieldInfoDict = new();
     Dictionary<ActionFieldName, Type> actionFieldMapper = new();
+    GridManager gridManager;
+    List<GridNode> returnPath;
 
     public void InitializeControllableCharacter(CustomMono p_customMono) { }
 
@@ -74,6 +78,7 @@ public partial class GameManager : MonoBehaviour
             spawnEnemyInfo.Init();
             unlockSkillSEI.Add(spawnEnemyInfo);
         }
+        gridManager = GetComponent<GridManager>();
 
         InitAllEffectPools();
         LoadOtherResources();
@@ -335,4 +340,37 @@ public partial class GameManager : MonoBehaviour
 
     public CustomMono GetRandomEnemy(string p_yourTag) =>
         customMonos.FirstOrDefault(kV => !kV.Value.allyTags.Contains(p_yourTag)).Value;
+
+    public Vector2 GetPathFindingDirectionToTarget(
+        Vector2 p_currentPos,
+        Vector2 targetPos,
+        BoxCollider2D p_boxCollider2D
+    )
+    {
+        /* Temporary removing self collider from grid because it will block the path */
+        gridManager.RemoveObstacleSquare(
+            p_boxCollider2D.bounds.center,
+            p_boxCollider2D.bounds.size.x,
+            p_boxCollider2D.bounds.size.y
+        );
+
+        returnPath = gridManager.SolvePath(
+            gridManager.GetNodeAtPosition(p_currentPos),
+            gridManager.GetNodeAtPosition(targetPos)
+        );
+
+        /* Adding self collider back */
+        SetObstacle(p_boxCollider2D);
+        if (returnPath.Count > 1)
+            return returnPath[^2].pos - p_currentPos;
+        else
+            return -p_currentPos;
+    }
+
+    public void SetObstacle(BoxCollider2D p_boxCollider2D) =>
+        gridManager.MarkObstacleSquare(
+            p_boxCollider2D.bounds.center,
+            p_boxCollider2D.bounds.size.x,
+            p_boxCollider2D.bounds.size.y
+        );
 }

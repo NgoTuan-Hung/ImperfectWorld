@@ -44,7 +44,7 @@ public class NewAIBehavior : BaseAIBehavior
             > attack.GetActionField<ActionFloatField>(ActionFieldName.Range).value
         )
         {
-            customMono.movable.Move(customMono.botSensor.originToTargetOriginDirection);
+            customMono.movable.Move(customMono.botSensor.targetPathFindingDirection);
         }
         else
         {
