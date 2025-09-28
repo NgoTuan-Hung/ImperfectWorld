@@ -14,10 +14,10 @@ public class GridManager : MonoBehaviour
     public float nodeSize = 1f;
     public List<List<GridNode>> gridNodes = new();
     GridNode border = new(Vector2.zero);
-    SimplePriorityQueue<GridNode> queue = new();
-    Dictionary<GridNode, GridNode> cameFrom = new();
-    Dictionary<GridNode, float> costSoFar = new();
-    Action resetGrid = () => { };
+    FastPriorityQueue<GridNode> queue;
+    Action resetGrid = () => { },
+        resetGridForPathFinding = () => { };
+    int gridCount;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -38,8 +38,10 @@ public class GridManager : MonoBehaviour
                     );
 
                 resetGrid += gridNodes[i][j].Reset;
+                resetGridForPathFinding += gridNodes[i][j].ResetForPathFinding;
             }
         }
+        gridCount = gridNodes.Count * gridNodes[0].Count;
 
         for (int i = 0; i < gridNodes.Count; i++)
         {
@@ -76,13 +78,14 @@ public class GridManager : MonoBehaviour
 
     public List<GridNode> SolvePath(GridNode start, GridNode end)
     {
-        queue = new();
-        cameFrom = new();
-        costSoFar = new();
-        queue.Enqueue(start, 0);
-        cameFrom.Add(start, null);
-        costSoFar.Add(start, 0);
         var path = new List<GridNode>();
+        float priority;
+        resetGridForPathFinding();
+        queue = new(gridCount);
+        queue.Enqueue(start, 0);
+        start.cameFrom = null;
+        start.costSoFar = 0;
+        start.visited = true;
 
         while (queue.Count > 0)
         {
@@ -90,9 +93,9 @@ public class GridManager : MonoBehaviour
             if (current == end)
             {
                 path.Add(current);
-                while (cameFrom[current] != null)
+                while (current.cameFrom != null)
                 {
-                    current = cameFrom[current];
+                    current = current.cameFrom;
                     path.Add(current);
                 }
                 return path;
@@ -105,16 +108,22 @@ public class GridManager : MonoBehaviour
                     continue;
                 }
 
-                var newCost = costSoFar[current] + Vector2.Distance(current.pos, neighbor.pos);
-                if (!costSoFar.ContainsKey(neighbor) || newCost < costSoFar[neighbor])
+                var newCost = current.costSoFar + Vector2.Distance(current.pos, neighbor.pos);
+
+                if (!neighbor.visited)
                 {
-                    costSoFar[neighbor] = newCost;
-                    var priority = newCost + Vector2.Distance(neighbor.pos, end.pos);
-                    if (!queue.Contains(neighbor))
-                        queue.Enqueue(neighbor, priority);
-                    else
-                        queue.UpdatePriority(neighbor, priority);
-                    cameFrom[neighbor] = current;
+                    neighbor.costSoFar = newCost;
+                    priority = newCost + Vector2.Distance(neighbor.pos, end.pos);
+                    queue.Enqueue(neighbor, priority);
+                    neighbor.cameFrom = current;
+                    neighbor.visited = true;
+                }
+                else if (newCost < neighbor.costSoFar)
+                {
+                    neighbor.costSoFar = newCost;
+                    priority = newCost + Vector2.Distance(neighbor.pos, end.pos);
+                    queue.UpdatePriority(neighbor, priority);
+                    neighbor.cameFrom = current;
                 }
             }
         }
