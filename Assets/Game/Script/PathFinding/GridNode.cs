@@ -16,6 +16,7 @@ public class GridNode : FastPriorityQueueNode
     public GridNode cameFrom = null;
     public float costSoFar = 0;
     public bool visited = false;
+    public bool inQueue = false;
 
     public GridNode(Vector2 pos)
     {
@@ -27,5 +28,6 @@ public class GridNode : FastPriorityQueueNode
     public void ResetForPathFinding()
     {
         visited = false;
+        inQueue = false;
     }
 }

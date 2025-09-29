@@ -72,8 +72,7 @@ public class BotSensor : CustomMonoPal
         );
         targetPathFindingDirection = GameManager.Instance.GetPathFindingDirectionToTarget(
             transform.position,
-            Vector2.zero,
-            customMono.boxCollider2D
+            Vector2.zero
         );
     }
 
@@ -100,8 +99,7 @@ public class BotSensor : CustomMonoPal
         );
         targetPathFindingDirection = GameManager.Instance.GetPathFindingDirectionToTarget(
             transform.position,
-            detectEnemy.transform.position,
-            customMono.boxCollider2D
+            detectEnemy.transform.position
         );
     }
 
@@ -158,8 +156,7 @@ public class BotSensor : CustomMonoPal
             distanceToNearestEnemy = originToTargetOriginDirection.magnitude;
             targetPathFindingDirection = GameManager.Instance.GetPathFindingDirectionToTarget(
                 transform.position,
-                currentNearestEnemy.transform.position,
-                customMono.boxCollider2D
+                currentNearestEnemy.transform.position
             );
         }
     }

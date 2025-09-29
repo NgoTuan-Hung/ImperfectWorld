@@ -1,20 +1,10 @@
 using UnityEngine;
 
 [DefaultExecutionOrder(-2)]
-public class GridNodeObstacle : CustomMonoPal
+public class GridNodeObstacle : MonoBehaviour
 {
-    public override void Start()
-    {
-        base.Start();
-    }
-
-    public override void Awake()
-    {
-        base.Awake();
-    }
-
     private void FixedUpdate()
     {
-        GameManager.Instance.SetObstacle(customMono.boxCollider2D);
+        GameManager.Instance.SetObstacle(transform.position);
     }
 }

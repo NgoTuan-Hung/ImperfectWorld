@@ -957,7 +957,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0.000030517578}
+  m_AnchoredPosition: {x: 0, y: -0.00045776367}
   m_SizeDelta: {x: 0, y: 50}
   m_Pivot: {x: 0, y: 1}
 --- !u!223 &12544552
@@ -3210,7 +3210,7 @@ Transform:
   m_GameObject: {fileID: 107064636}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -18, y: -11, z: 0}
+  m_LocalPosition: {x: -5.5, y: 7.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -3243,7 +3243,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &108618811
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3665,7 +3665,7 @@ Transform:
   m_GameObject: {fileID: 108618810}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -13, y: -4.06, z: 0}
+  m_LocalPosition: {x: -15, y: 8, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -3688,7 +3688,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d569473e47cf17243ab80ca74698f122, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GridNodeObstacle
-  customMono: {fileID: 0}
 --- !u!1 &110363459
 GameObject:
   m_ObjectHideFlags: 0
@@ -3848,11 +3847,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 4817529544994360386, guid: 8064d76ba5c2c0240a4dd99defa17075, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -16
+      value: -17
       objectReference: {fileID: 0}
     - target: {fileID: 4817529544994360386, guid: 8064d76ba5c2c0240a4dd99defa17075, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -4.746733
+      value: 7.9999995
       objectReference: {fileID: 0}
     - target: {fileID: 4817529544994360386, guid: 8064d76ba5c2c0240a4dd99defa17075, type: 3}
       propertyPath: m_LocalPosition.z
@@ -3892,7 +3891,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6920399575831899041, guid: 8064d76ba5c2c0240a4dd99defa17075, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6920399575831899041, guid: 8064d76ba5c2c0240a4dd99defa17075, type: 3}
       propertyPath: m_TagString
@@ -3923,7 +3922,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d569473e47cf17243ab80ca74698f122, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GridNodeObstacle
-  customMono: {fileID: 0}
 --- !u!1001 &139379052
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3978,7 +3976,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6724394765168942705, guid: bf51713cd4fcaec49a3b1d7d97dad157, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -4005,7 +4003,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d569473e47cf17243ab80ca74698f122, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GridNodeObstacle
-  customMono: {fileID: 0}
 --- !u!1 &141167856
 GameObject:
   m_ObjectHideFlags: 0
@@ -4021,6 +4018,7 @@ GameObject:
   - component: {fileID: 141167862}
   - component: {fileID: 141167861}
   - component: {fileID: 141167863}
+  - component: {fileID: 141167864}
   m_Layer: 0
   m_Name: GM-UI
   m_TagString: Untagged
@@ -4238,6 +4236,52 @@ MonoBehaviour:
   xMax: 18
   yMax: 12
   nodeSize: 0.5
+--- !u!61 &141167864
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 141167856}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_CompositeOperation: 0
+  m_CompositeOrder: 0
+  m_Offset: {x: 1000, y: 1000}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0, y: 0}
+    oldSize: {x: 0, y: 0}
+    newSize: {x: 0, y: 0}
+    adaptiveTilingThreshold: 0
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  m_Size: {x: 0.0001, y: 0.0001}
+  m_EdgeRadius: 0
 --- !u!1001 &141657759
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -6996,10 +7040,10 @@ RectTransform:
   - {fileID: 38622209}
   m_Father: {fileID: 1874200017}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 380, y: -70}
-  m_SizeDelta: {x: 100, y: 100}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &546532736
 MonoBehaviour:
@@ -7240,7 +7284,7 @@ Transform:
   m_GameObject: {fileID: 581064772}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 16.95, y: -10.16, z: 0}
+  m_LocalPosition: {x: 16, y: -9, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -7675,7 +7719,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d569473e47cf17243ab80ca74698f122, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GridNodeObstacle
-  customMono: {fileID: 0}
 --- !u!4 &599952577 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2963950236747058838, guid: a52b6edf4fe9b2947871eef3be9ff52a, type: 3}
@@ -7708,7 +7751,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &624270103
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8130,7 +8173,7 @@ Transform:
   m_GameObject: {fileID: 624270102}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 8.59, y: -2.67, z: 0}
+  m_LocalPosition: {x: 12, y: -2, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -8153,7 +8196,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d569473e47cf17243ab80ca74698f122, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GridNodeObstacle
-  customMono: {fileID: 0}
 --- !u!1001 &676138848
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -8711,7 +8753,7 @@ Transform:
   m_GameObject: {fileID: 778829337}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -13, y: -6.69, z: -10}
+  m_LocalPosition: {x: -17, y: 6, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -8904,7 +8946,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4586611637644722320, guid: 1dac2f8b93f9bc741a7abeba480ebb9c, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.92
+      value: -5.9999995
       objectReference: {fileID: 0}
     - target: {fileID: 4586611637644722320, guid: 1dac2f8b93f9bc741a7abeba480ebb9c, type: 3}
       propertyPath: m_LocalPosition.z
@@ -8944,7 +8986,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7338680796603692614, guid: 1dac2f8b93f9bc741a7abeba480ebb9c, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -8971,7 +9013,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d569473e47cf17243ab80ca74698f122, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GridNodeObstacle
-  customMono: {fileID: 0}
 --- !u!1 &787815773
 GameObject:
   m_ObjectHideFlags: 0
@@ -9359,7 +9400,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &889364758
 Transform:
   m_ObjectHideFlags: 0
@@ -9369,7 +9410,7 @@ Transform:
   m_GameObject: {fileID: 889364757}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -13, y: -6.69, z: 0}
+  m_LocalPosition: {x: -17, y: 6, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -9803,7 +9844,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d569473e47cf17243ab80ca74698f122, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GridNodeObstacle
-  customMono: {fileID: 0}
 --- !u!4 &892392505 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5794198503007716251, guid: 5050206fee006f94a9d0125e20c69398, type: 3}
@@ -9910,7 +9950,7 @@ Transform:
   m_GameObject: {fileID: 893338230}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -13, y: -6.69, z: -10}
+  m_LocalPosition: {x: -17, y: 6, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -10159,7 +10199,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &949659767
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10603,7 +10643,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d569473e47cf17243ab80ca74698f122, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GridNodeObstacle
-  customMono: {fileID: 0}
 --- !u!1 &994676307
 GameObject:
   m_ObjectHideFlags: 0
@@ -10833,10 +10872,10 @@ RectTransform:
   - {fileID: 1032758556}
   m_Father: {fileID: 1874200017}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 270, y: -70}
-  m_SizeDelta: {x: 100, y: 100}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1012798519
 MonoBehaviour:
@@ -16357,10 +16396,10 @@ RectTransform:
   - {fileID: 1638319142}
   m_Father: {fileID: 1874200017}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 50, y: -70}
-  m_SizeDelta: {x: 100, y: 100}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1122076159
 MonoBehaviour:
@@ -18317,7 +18356,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &1507028177
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -18739,7 +18778,7 @@ Transform:
   m_GameObject: {fileID: 1507028176}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -13, y: -1.25, z: 0}
+  m_LocalPosition: {x: -15, y: 6, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -18762,7 +18801,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d569473e47cf17243ab80ca74698f122, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GridNodeObstacle
-  customMono: {fileID: 0}
 --- !u!1 &1520863397
 GameObject:
   m_ObjectHideFlags: 0
@@ -21188,11 +21226,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8953793670832478207, guid: c2bffccbb78434844bbf9a760cf92d67, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -16.36
+      value: -17
       objectReference: {fileID: 0}
     - target: {fileID: 8953793670832478207, guid: c2bffccbb78434844bbf9a760cf92d67, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 10.16
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 8953793670832478207, guid: c2bffccbb78434844bbf9a760cf92d67, type: 3}
       propertyPath: m_LocalPosition.z
@@ -21251,7 +21289,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d569473e47cf17243ab80ca74698f122, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GridNodeObstacle
-  customMono: {fileID: 0}
 --- !u!1 &1631543764
 GameObject:
   m_ObjectHideFlags: 0
@@ -22591,10 +22628,10 @@ RectTransform:
   - {fileID: 1415293675}
   m_Father: {fileID: 1874200017}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 160, y: -70}
-  m_SizeDelta: {x: 100, y: 100}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1872287108
 MonoBehaviour:

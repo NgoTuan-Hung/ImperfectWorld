@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using Priority_Queue;
 using UnityEngine;
 
@@ -14,10 +13,12 @@ public class GridManager : MonoBehaviour
     public float nodeSize = 1f;
     public List<List<GridNode>> gridNodes = new();
     GridNode border = new(Vector2.zero);
+
     FastPriorityQueue<GridNode> queue;
     Action resetGrid = () => { },
         resetGridForPathFinding = () => { };
     int gridCount;
+    public static BoxCollider2D dummyBoxCollider2D;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -26,6 +27,7 @@ public class GridManager : MonoBehaviour
         var width = (int)((xMax - xMin) / nodeSize);
         var height = (int)((yMax - yMin) / nodeSize);
         var nodeOffset = nodeSize / 2f;
+        dummyBoxCollider2D = GetComponent<BoxCollider2D>();
 
         for (int i = 0; i < width; i++)
         {
@@ -85,11 +87,11 @@ public class GridManager : MonoBehaviour
         queue.Enqueue(start, 0);
         start.cameFrom = null;
         start.costSoFar = 0;
-        start.visited = true;
 
         while (queue.Count > 0)
         {
             var current = queue.Dequeue();
+            current.visited = true;
             if (current == end)
             {
                 path.Add(current);
@@ -103,20 +105,20 @@ public class GridManager : MonoBehaviour
 
             foreach (var neighbor in current.neighbors)
             {
-                if (neighbor.type == GridNodeType.Obstacle)
+                if (neighbor.visited || neighbor.type == GridNodeType.Obstacle)
                 {
                     continue;
                 }
 
                 var newCost = current.costSoFar + Vector2.Distance(current.pos, neighbor.pos);
 
-                if (!neighbor.visited)
+                if (!neighbor.inQueue)
                 {
                     neighbor.costSoFar = newCost;
                     priority = newCost + Vector2.Distance(neighbor.pos, end.pos);
                     queue.Enqueue(neighbor, priority);
+                    neighbor.inQueue = true;
                     neighbor.cameFrom = current;
-                    neighbor.visited = true;
                 }
                 else if (newCost < neighbor.costSoFar)
                 {
@@ -150,6 +152,32 @@ public class GridManager : MonoBehaviour
         {
             // If the mouse is out of bounds, return the border node
             return border;
+        }
+    }
+
+    public void MarkNodeAsObstacle(Vector2 pos)
+    {
+        // Step 2: Convert the world position to grid coordinates
+        int gridX = Mathf.FloorToInt((pos.x - xMin) / nodeSize);
+        int gridY = Mathf.FloorToInt((yMax - pos.y) / nodeSize);
+
+        // Step 3: Check if the position is within bounds of the grid
+        if (gridX >= 0 && gridX < gridNodes.Count && gridY >= 0 && gridY < gridNodes[gridX].Count)
+        {
+            gridNodes[gridX][gridY].type = GridNodeType.Obstacle;
+        }
+    }
+
+    public void MarkNodeAsNormal(Vector2 pos)
+    {
+        // Step 2: Convert the world position to grid coordinates
+        int gridX = Mathf.FloorToInt((pos.x - xMin) / nodeSize);
+        int gridY = Mathf.FloorToInt((yMax - pos.y) / nodeSize);
+
+        // Step 3: Check if the position is within bounds of the grid
+        if (gridX >= 0 && gridX < gridNodes.Count && gridY >= 0 && gridY < gridNodes[gridX].Count)
+        {
+            gridNodes[gridX][gridY].type = GridNodeType.Normal;
         }
     }
 

@@ -341,36 +341,33 @@ public partial class GameManager : MonoBehaviour
     public CustomMono GetRandomEnemy(string p_yourTag) =>
         customMonos.FirstOrDefault(kV => !kV.Value.allyTags.Contains(p_yourTag)).Value;
 
-    public Vector2 GetPathFindingDirectionToTarget(
-        Vector2 p_currentPos,
-        Vector2 targetPos,
-        BoxCollider2D p_boxCollider2D
-    )
+    public Vector2 GetPathFindingDirectionToTarget(Vector2 p_currentPos, Vector2 p_targetPos)
     {
-        /* Temporary removing self collider from grid because it will block the path */
-        gridManager.RemoveObstacleSquare(
-            p_boxCollider2D.bounds.center,
-            p_boxCollider2D.bounds.size.x,
-            p_boxCollider2D.bounds.size.y
-        );
+        /* Temporary removing self && target from grid because it will block the path */
+        RemoveObstacle(p_currentPos);
+        RemoveObstacle(p_targetPos);
 
         returnPath = gridManager.SolvePath(
             gridManager.GetNodeAtPosition(p_currentPos),
-            gridManager.GetNodeAtPosition(targetPos)
+            gridManager.GetNodeAtPosition(p_targetPos)
         );
 
-        /* Adding self collider back */
-        SetObstacle(p_boxCollider2D);
+        /* Adding self grid back */
+        SetObstacle(p_currentPos);
+        SetObstacle(p_targetPos);
+
         if (returnPath.Count > 1)
+        {
             return returnPath[^2].pos - p_currentPos;
+        }
         else
-            return -p_currentPos;
+        {
+            print("No path found");
+            return p_targetPos - p_currentPos;
+        }
     }
 
-    public void SetObstacle(BoxCollider2D p_boxCollider2D) =>
-        gridManager.MarkObstacleSquare(
-            p_boxCollider2D.bounds.center,
-            p_boxCollider2D.bounds.size.x,
-            p_boxCollider2D.bounds.size.y
-        );
+    public void SetObstacle(Vector2 p_pos) => gridManager.MarkNodeAsObstacle(p_pos);
+
+    public void RemoveObstacle(Vector2 p_pos) => gridManager.MarkNodeAsNormal(p_pos);
 }
