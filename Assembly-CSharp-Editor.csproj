@@ -51,26 +51,68 @@
     <Analyzer Include="D:\Program\unity\Editor\6000.2.0f1\Editor\Data\Tools\Unity.SourceGenerators\Unity.UIToolkit.SourceGenerator.dll" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\CustomPackage\STSMapGeneration\OneLine\OneLine\Editor\Drawers\Directory\RootDirectoryDrawer.cs" />
     <Compile Include="Assets\Game\Script\Editor\Debugger.cs" />
     <Compile Include="Assets\Game\Script\Editor\FloatStatWithModifierInspector.cs" />
     <Compile Include="Assets\Game\Script\Other\Editor\ListGameEffectBehavior.cs" />
     <Compile Include="Assets\Game\Script\Editor\AsepritePivotChangeForImporter.cs" />
-    <Compile Include="Assets\TutorialInfo\Scripts\Editor\ReadmeEditor.cs" />
+    <Compile Include="Assets\CustomPackage\STSMapGeneration\OneLine\OneLine\Editor\Utils\SerializedPropertyReflectionExtension.cs" />
+    <Compile Include="Assets\CustomPackage\STSMapGeneration\OneLine\OneLine\Editor\Settings\Primitives\TernaryBoolean.cs" />
+    <Compile Include="Assets\CustomPackage\STSMapGeneration\OneLine\OneLine\Editor\Utils\SerializedPropertyExtension.cs" />
+    <Compile Include="Assets\CustomPackage\STSMapGeneration\OneLine\OneLine\Editor\Slices\SlicesCache.cs" />
+    <Compile Include="Assets\CustomPackage\STSMapGeneration\OneLine\OneLine\Editor\Drawers\Array\ArrayButtonsDrawer.cs" />
     <Compile Include="Assets\Game\Script\Other\Editor\ListGameEffectSO.cs" />
     <Compile Include="Assets\Game\Script\Editor\GameEffectPrefabModifier.cs" />
     <Compile Include="Assets\Game\Script\Other\Editor\ListSpriteSO.cs" />
+    <Compile Include="Assets\CustomPackage\STSMapGeneration\OneLine\OneLine\Example\Details\Scripts\Editor\OneLineDrawerExampleEditor.cs" />
+    <Compile Include="Assets\CustomPackage\STSMapGeneration\OneLine\OneLine\Editor\Settings\LocalSettingsLayer.cs" />
+    <Compile Include="Assets\CustomPackage\STSMapGeneration\OneLine\OneLine\Editor\Utils\ArraysSizeObserver.cs" />
+    <Compile Include="Assets\CustomPackage\STSMapGeneration\OneLine\OneLine\Editor\Utils\GuiUtil.cs" />
     <Compile Include="Assets\Game\Script\Editor\BotAttackInspector.cs" />
+    <Compile Include="Assets\CustomPackage\STSMapGeneration\OneLine\OneLine\Editor\Settings\Tools\PreprocessorDirectives\PreprocessorDirectives.cs" />
+    <Compile Include="Assets\CustomPackage\STSMapGeneration\OneLine\OneLine\Editor\Settings\GlobalSettingsLayer.cs" />
+    <Compile Include="Assets\CustomPackage\STSMapGeneration\OneLine\OneLine\Editor\Slices\Slices.cs" />
+    <Compile Include="Assets\CustomPackage\STSMapGeneration\OneLine\OneLine\Editor\Settings\DefaultSettingsLayer.cs" />
     <Compile Include="Assets\Game\Script\Other\Editor\BoolSO.cs" />
+    <Compile Include="Assets\CustomPackage\STSMapGeneration\OneLine\OneLine\Editor\Utils\CustomPropertyDrawerExtension.cs" />
+    <Compile Include="Assets\CustomPackage\STSMapGeneration\OneLine\OneLine\Editor\Drawers\ComplexFieldDrawer.cs" />
+    <Compile Include="Assets\CustomPackage\STSMapGeneration\OneLine\OneLine\Editor\Drawers\Directory\DirectoryDrawer.cs" />
+    <Compile Include="Assets\CustomPackage\STSMapGeneration\OneLine\OneLine\Editor\Drawers\Decorators\TooltipDrawer.cs" />
     <Compile Include="Assets\Game\Script\Editor\AnimatorParameterCopyPaste.cs" />
     <Compile Include="Assets\Game\Script\Editor\WavUtility.cs" />
+    <Compile Include="Assets\CustomPackage\STSMapGeneration\OneLine\OneLine\Editor\Drawers\Decorators\HeaderDrawer.cs" />
     <Compile Include="Assets\Game\Script\Editor\GameEffectSOModifier.cs" />
     <Compile Include="Assets\Game\Script\Editor\AudioEditor.cs" />
+    <Compile Include="Assets\CustomPackage\STSMapGeneration\Scripts\Editor\MapManagerInspector.cs" />
     <Compile Include="Assets\Game\Script\Editor\StatInspector.cs" />
+    <Compile Include="Assets\CustomPackage\STSMapGeneration\OneLine\OneLine\Editor\OneLinePropertyDrawer.cs" />
+    <Compile Include="Assets\CustomPackage\STSMapGeneration\OneLine\OneLine\Editor\Settings\Settings.cs" />
     <Compile Include="Assets\Game\Script\Editor\AddSpriteToParticleSystem.cs" />
+    <Compile Include="Assets\CustomPackage\STSMapGeneration\OneLine\OneLine\Editor\Utils\InspectorUtil.cs" />
     <Compile Include="Assets\Game\Script\Editor\FloatModifierInspector.cs" />
     <Compile Include="Assets\Game\Script\Other\Editor\ListGameObject.cs" />
+    <Compile Include="Assets\CustomPackage\STSMapGeneration\OneLine\OneLine\Editor\Drawers\Decorators\HighlightDrawer.cs" />
+    <Compile Include="Assets\CustomPackage\STSMapGeneration\OneLine\OneLine\Editor\SeparatorAttributeDrawer.cs" />
+    <Compile Include="Assets\CustomPackage\STSMapGeneration\OneLine\OneLine\Editor\Drawers\Decorators\SeparatorDrawer.cs" />
+    <Compile Include="Assets\CustomPackage\STSMapGeneration\OneLine\OneLine\Editor\Slices\Drawable.cs" />
+    <Compile Include="Assets\CustomPackage\STSMapGeneration\OneLine\OneLine\Editor\Drawers\Drawer.cs" />
+    <Compile Include="Assets\CustomPackage\STSMapGeneration\OneLine\OneLine\Editor\Settings\Tools\SettingsMenu.cs" />
+    <Compile Include="Assets\CustomPackage\STSMapGeneration\OneLine\OneLine\Editor\Drawers\Array\FixedArrayDrawer.cs" />
+    <Compile Include="Assets\CustomPackage\STSMapGeneration\OneLine\OneLine\Editor\Drawers\CustomDrawer\CustomPropertyTypesCache.cs" />
+    <Compile Include="Assets\CustomPackage\STSMapGeneration\OneLine\OneLine\Editor\Slices\Slice.cs" />
+    <Compile Include="Assets\CustomPackage\STSMapGeneration\OneLine\OneLine\Editor\ExpandableAttributeDrawer.cs" />
     <Compile Include="Assets\Game\Script\Editor\FloatStatWithCapInspector.cs" />
+    <Compile Include="Assets\CustomPackage\STSMapGeneration\OneLine\OneLine\Editor\Drawers\Array\DynamicArrayDrawer.cs" />
     <Compile Include="Assets\Game\Script\Editor\GameEffectBuilder.cs" />
+    <Compile Include="Assets\CustomPackage\STSMapGeneration\OneLine\OneLine\Editor\Drawers\SimpleFieldDrawer.cs" />
+    <Compile Include="Assets\CustomPackage\STSMapGeneration\OneLine\OneLine\Editor\Utils\IEnumerableExtension.cs" />
+    <Compile Include="Assets\CustomPackage\STSMapGeneration\OneLine\OneLine\Editor\Drawers\Decorators\SpaceDrawer.cs" />
+    <Compile Include="Assets\CustomPackage\STSMapGeneration\OneLine\OneLine\Editor\Drawers\CustomDrawer.cs" />
+    <Compile Include="Assets\CustomPackage\STSMapGeneration\OneLine\OneLine\Editor\Utils\NullableObjectExtension.cs" />
+    <Compile Include="Assets\CustomPackage\STSMapGeneration\OneLine\OneLine\Editor\Drawers\CustomDrawer\TypeForDrawing.cs" />
+    <Compile Include="Assets\CustomPackage\STSMapGeneration\OneLine\OneLine\Editor\Drawers\CustomDrawer\CustomPropertyDrawers.cs" />
+    <Compile Include="Assets\CustomPackage\STSMapGeneration\OneLine\OneLine\Editor\Settings\ISettings.cs" />
+    <Compile Include="Assets\CustomPackage\STSMapGeneration\OneLine\OneLine\Editor\Settings\SettingsEditor.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\TMPEffects\Editor\StyleSheets\Extensions\light.uss" />
@@ -638,6 +680,10 @@
     </Reference>
     <Reference Include="DOTweenEditor">
       <HintPath>Assets\CustomPackage\Dotween\Editor\DOTweenEditor.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>Assets\Packages\Newtonsoft.Json.13.0.4\lib\netstandard2.0\Newtonsoft.Json.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Unity.Android.Types">

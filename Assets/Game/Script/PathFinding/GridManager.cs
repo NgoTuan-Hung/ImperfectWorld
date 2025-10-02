@@ -45,25 +45,16 @@ public class GridManager : MonoBehaviour
         }
         gridCount = gridNodes.Count * gridNodes[0].Count;
 
-        for (int i = 0; i < gridNodes.Count; i++)
+        for (int i = 0; i < width; i++)
         {
-            for (int j = 0; j < gridNodes[i].Count; j++)
+            for (int j = 0; j < height; j++)
             {
-                for (int x = i - 1; x < i + 2; x++)
-                {
-                    for (int y = j - 1; y < j + 2; y++)
-                    {
-                        if (x >= 0 && x < width && y >= 0 && y < height)
-                        {
-                            if (x != i || y != j)
-                            {
-                                gridNodes[i][j].neighbors.Add(gridNodes[x][y]);
-                            }
-                        }
-                        else
-                            gridNodes[i][j].neighbors.Add(border);
-                    }
-                }
+                var node = gridNodes[i][j];
+
+                node.neighbors.Add(i > 0 ? gridNodes[i - 1][j] : border);
+                node.neighbors.Add(i < width - 1 ? gridNodes[i + 1][j] : border);
+                node.neighbors.Add(j > 0 ? gridNodes[i][j - 1] : border);
+                node.neighbors.Add(j < height - 1 ? gridNodes[i][j + 1] : border);
             }
         }
     }
