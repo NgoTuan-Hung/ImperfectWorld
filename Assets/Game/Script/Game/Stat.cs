@@ -87,8 +87,9 @@ public partial class Stat : MonoEditor, INotifyBindablePropertyChanged
 
     void InitUI()
     {
-        healthAndManaIndicatorPO =
-            GameUIManagerRevamp.Instance.CreateAndHandleHPAndMPUIWithFollowing(transform);
+        healthAndManaIndicatorPO = GameUIManager.Instance.CreateAndHandleHPAndMPUIWithFollowing(
+            transform
+        );
     }
 
     public void InitProperty()

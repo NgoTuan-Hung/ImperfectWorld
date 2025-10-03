@@ -178,6 +178,7 @@ GameObject:
   - component: {fileID: 1319466979024103620}
   - component: {fileID: 5022457340166956942}
   - component: {fileID: 9028881113676336322}
+  - component: {fileID: 603412092444917336}
   m_Layer: 0
   m_Name: JapaneseSamurai
   m_TagString: GameBot
@@ -444,6 +445,9 @@ MonoBehaviour:
     finalValue: 2
     referenceModifiers: []
     modifiers: []
+  damageModifier:
+    referenceModifiers: []
+    modifiers: []
   actionMoveSpeedReduceRate:
     baseValue: -0.9
     finalValue: -0.9
@@ -589,6 +593,7 @@ MonoBehaviour:
   originToTargetOriginDirection: {x: 0, y: 0}
   centerToTargetCenterDirection: {x: 0, y: 0}
   firePointToTargetCenterDirection: {x: 0, y: 0}
+  targetPathFindingDirection: {x: 0, y: 0}
   targetOriginPosition: {x: 0, y: 0, z: 0}
   targetCenterPosition: {x: 0, y: 0, z: 0}
   current_OTTOD_ChangePriority: 4
@@ -612,6 +617,18 @@ MonoBehaviour:
   customMono: {fileID: 0}
   useBotAIBehavior: 0
   aiBehavior: {fileID: 0}
+--- !u!114 &603412092444917336
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6724394765168942705}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d569473e47cf17243ab80ca74698f122, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GridNodeObstacle
 --- !u!1 &8463561500055322668
 GameObject:
   m_ObjectHideFlags: 0

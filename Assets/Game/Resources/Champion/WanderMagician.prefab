@@ -180,6 +180,7 @@ GameObject:
   - component: {fileID: 1277164082142199727}
   - component: {fileID: 7978585790228963272}
   - component: {fileID: 2732926531096220209}
+  - component: {fileID: 2711932522945746205}
   m_Layer: 0
   m_Name: WanderMagician
   m_TagString: GameBot
@@ -446,6 +447,9 @@ MonoBehaviour:
     finalValue: 2
     referenceModifiers: []
     modifiers: []
+  damageModifier:
+    referenceModifiers: []
+    modifiers: []
   actionMoveSpeedReduceRate:
     baseValue: -0.9
     finalValue: -0.9
@@ -591,6 +595,7 @@ MonoBehaviour:
   originToTargetOriginDirection: {x: 0, y: 0}
   centerToTargetCenterDirection: {x: 0, y: 0}
   firePointToTargetCenterDirection: {x: 0, y: 0}
+  targetPathFindingDirection: {x: 0, y: 0}
   targetOriginPosition: {x: 0, y: 0, z: 0}
   targetCenterPosition: {x: 0, y: 0, z: 0}
   current_OTTOD_ChangePriority: 4
@@ -614,6 +619,18 @@ MonoBehaviour:
   customMono: {fileID: 0}
   useBotAIBehavior: 0
   aiBehavior: {fileID: 0}
+--- !u!114 &2711932522945746205
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6920399575831899041}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d569473e47cf17243ab80ca74698f122, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GridNodeObstacle
 --- !u!1001 &814628871469298295
 PrefabInstance:
   m_ObjectHideFlags: 0

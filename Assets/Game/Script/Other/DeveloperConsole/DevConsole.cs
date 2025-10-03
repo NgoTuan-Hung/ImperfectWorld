@@ -14,12 +14,6 @@ public class DevConsole : MonoBehaviour
             "Find all game objects with CustomMono component",
             GetAllPeople
         );
-
-        DebugLogConsole.AddCommand<int>(
-            "unlock-all-skill",
-            "Unlock all skills for a CustomMono",
-            UnlockAllSkillFor
-        );
     }
 
     void GetAllPeople(bool p_includeInactive)
@@ -36,20 +30,5 @@ public class DevConsole : MonoBehaviour
             output += t.name + "-" + $"<color=#00FF00>{t.GetHashCode()}</color>" + "\n";
 
         Debug.Log(output);
-    }
-
-    void UnlockAllSkillFor(int p_hashCode)
-    {
-        CustomMono t_customMono = FindObjectsByType<CustomMono>(FindObjectsSortMode.None)
-            .FirstOrDefault(cM => cM.gameObject.GetHashCode() == p_hashCode);
-
-        if (t_customMono != null)
-        {
-            t_customMono.skill.skillBases.ForEach(sB => t_customMono.skill.UnlockSkill(sB));
-
-            Debug.Log($"<color=#00FF00>Unlocked</color>");
-        }
-        else
-            Debug.Log($"<color=#fc0303>Invalid HashCode</color>");
     }
 }

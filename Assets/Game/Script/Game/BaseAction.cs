@@ -38,7 +38,6 @@ public partial class BaseAction : MonoEditor
     public static ActionResult failResult = new();
     public ActionResult successResult = new(true, ActionResultType.Cooldown, default);
     Dictionary<ActionFieldName, ActionField> actionFields = new();
-    public bool unlocked = false;
 
     public virtual void Awake()
     {
@@ -149,12 +148,6 @@ public partial class BaseAction : MonoEditor
     public virtual void ActionInterrupt()
     {
         customMono.currentAction = null;
-    }
-
-    public virtual void Unlock()
-    {
-        unlocked = true;
-        AddActionManuals();
     }
 
     /// <summary>

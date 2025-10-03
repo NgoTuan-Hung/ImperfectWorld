@@ -1545,7 +1545,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1018981142}
   m_HandleRect: {fileID: 1018981141}
   m_Direction: 2
-  m_Value: 0
+  m_Value: 1
   m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
@@ -1633,6 +1633,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 3015013619643396332, guid: f3d397d8780414037811524dd988a62e, type: 3}
+      propertyPath: orientation
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 3015013619643396332, guid: f3d397d8780414037811524dd988a62e, type: 3}
       propertyPath: scrollRectVertical
       value: 
@@ -1906,7 +1910,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7721379314303246883, guid: d75ab2aed486b42e6b8d4f177babbda2, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

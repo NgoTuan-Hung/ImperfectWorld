@@ -3,9 +3,11 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using Map;
 using Unity.Cinemachine;
 using UnityEngine;
 using UnityEngine.UIElements;
+using Debug = UnityEngine.Debug;
 using Random = UnityEngine.Random;
 
 [RequireComponent(typeof(GridManager))]
@@ -13,21 +15,6 @@ public partial class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
     Dictionary<int, CustomMono> customMonos = new();
-    public int currentSpawn = 0;
-    public float maxSpawn = 3;
-    public float spawnInterval = 1f;
-    int round = 0;
-    public List<SpawnEnemyInfo> spawnEnemyInfos = new();
-    List<SpawnEnemyInfo> unlockSkillSEI = new();
-    List<ObjectPool> spawnObjectPools = new();
-    Dictionary<CustomMono, SpawnedPawnInfo> spawnedPawnsThisRound = new();
-    ObjectPool pickedObjectPool;
-    int rand;
-    bool newRound = false;
-    public float nextRoundInterval = 5f;
-    public SpriteRenderer spawnRangeObject;
-    Stopwatch stopwatch = new();
-    public float roundDuration = 15f;
     public new Camera camera;
     public CinemachineCamera cinemachineCamera;
     public Dictionary<GameEffectSO, ObjectPool> poolLink = new();
@@ -48,36 +35,26 @@ public partial class GameManager : MonoBehaviour
         walkBoolHash = Animator.StringToHash("Walk"),
         dieBoolHash = Animator.StringToHash("Die");
     public Dictionary<int, GameObject> colliderOwner = new();
-    IEnumerator roundTimerCountDownIE;
     public List<ActionFieldInfo> actionFieldInfos = new();
     Dictionary<string, ActionFieldInfo> actionFieldInfoDict = new();
     Dictionary<ActionFieldName, Type> actionFieldMapper = new();
     GridManager gridManager;
     List<GridNode> returnPath;
+    public RoomSystem roomSystem;
+    Dictionary<GameObject, ObjectPool> enemyPools = new();
+    int enemyCount = 0;
 
     public void InitializeControllableCharacter(CustomMono p_customMono) { }
 
     public void InitializeControllableCharacterRevamp(CustomMono p_customMono)
     {
-        GameUIManagerRevamp.Instance.InitializeCharacterUI(p_customMono);
+        GameUIManager.Instance.InitializeCharacterUI(p_customMono);
     }
 
     private void Awake()
     {
         Instance = this;
         camera = Camera.main;
-        foreach (SpawnEnemyInfo spawnEnemyInfo in spawnEnemyInfos)
-        {
-            spawnObjectPools.Add(
-                new ObjectPool(
-                    spawnEnemyInfo.prefab,
-                    new PoolArgument(ComponentType.CustomMono, PoolArgument.WhereComponent.Self)
-                )
-            );
-
-            spawnEnemyInfo.Init();
-            unlockSkillSEI.Add(spawnEnemyInfo);
-        }
         gridManager = GetComponent<GridManager>();
 
         InitAllEffectPools();
@@ -159,167 +136,81 @@ public partial class GameManager : MonoBehaviour
         Application.targetFrameRate = 60;
         QualitySettings.vSyncCount = 0;
 
-        for (int i = 0; i < spawnEnemyInfos.Count; i++)
-        {
-            SpawnEnemyInfo t_spawnEnemyInfo = spawnEnemyInfos[i];
-
-            spawnObjectPools[i].handleCachedComponentRefs += (p_poolObject) =>
-            {
-                p_poolObject.CustomMono.stat.currentHealthPointReachZeroEvent += () =>
-                    PawnDeathHandler(p_poolObject.CustomMono);
-            };
-        }
-
-        // InitRound();
+        HandleMapInteraction();
     }
 
-    void InitRound()
+    private void HandleMapInteraction()
     {
-        roundTimerCountDownIE = RoundTimerCountdown();
-        stopwatch.Restart();
-        StartCoroutine(roundTimerCountDownIE);
-        StartCoroutine(HandleRound());
-    }
-
-    IEnumerator HandleRound()
-    {
-        while (true)
+        MapPlayerTracker.Instance.onNodeEnter += (p_mapNode) =>
         {
-            if (newRound)
+            switch (p_mapNode.Node.nodeType)
             {
-                newRound = false;
-                round++;
-
-                HandleEndRound();
-                StopCoroutine(roundTimerCountDownIE);
-                yield return NewRoundIE();
-                StartCoroutine(roundTimerCountDownIE);
-            }
-
-            rand = Random.Range(0, spawnObjectPools.Count);
-            pickedObjectPool = spawnObjectPools[rand];
-
-            if (currentSpawn < (int)maxSpawn)
-            {
-                CustomMono p_customMono = pickedObjectPool.PickOne().CustomMono;
-                p_customMono.transform.position = new Vector3(
-                    Random.Range(spawnRangeObject.bounds.min.x, spawnRangeObject.bounds.max.x),
-                    Random.Range(spawnRangeObject.bounds.min.y, spawnRangeObject.bounds.max.y)
-                );
-                HandlePawnStatThisRound(p_customMono);
-                StartCoroutine(
-                    HandleSpawnSkill(p_customMono, spawnEnemyInfos[rand].spawnEnemySkillInfos)
-                );
-
-                currentSpawn++;
-
-                if (spawnedPawnsThisRound.TryGetValue(p_customMono, out var t_spawnedPawnInfo))
+                case NodeType.MinorEnemy:
                 {
-                    t_spawnedPawnInfo.alive = true;
+                    Debug.Log("Room Minor Enemy Encountered");
+                    LoadNormalEnemyRoom();
+                    break;
                 }
-                else
-                    spawnedPawnsThisRound.Add(p_customMono, new(p_customMono));
-
-                yield return new WaitForSeconds(spawnInterval);
+                case NodeType.EliteEnemy:
+                    break;
+                case NodeType.RestSite:
+                    break;
+                case NodeType.Treasure:
+                    break;
+                case NodeType.Store:
+                    break;
+                case NodeType.Boss:
+                    break;
+                case NodeType.Mystery:
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
             }
-            else
-                yield return new WaitForSeconds(Time.fixedDeltaTime);
-
-            if (stopwatch.Elapsed.TotalSeconds > roundDuration)
-                newRound = true;
-        }
+        };
     }
 
-    BasicSpawnSchemeEnemyStat basicSpawnSchemeEnemyStat = new();
-
-    private void HandleEndRound()
+    void LoadNormalEnemyRoom()
     {
-        foreach (var pawn in spawnedPawnsThisRound.Values)
+        GameUIManager.Instance.TurnOffMap();
+        enemyCount = 0;
+        roomSystem.allNormalEnemyRooms.Shuffle();
+        var nERI = roomSystem.allNormalEnemyRooms[0];
+
+        for (int i = 0; i < nERI.roomEnemyInfos.Count; i++)
         {
-            if (pawn.alive)
-                pawn.customMono.stat.currentHealthPoint.Value = 0;
+            ObjectPool t_pool;
+            if (!enemyPools.TryGetValue(nERI.roomEnemyInfos[i].prefab, out t_pool))
+            {
+                enemyPools.Add(
+                    nERI.roomEnemyInfos[i].prefab,
+                    new ObjectPool(
+                        nERI.roomEnemyInfos[i].prefab,
+                        new PoolArgument(ComponentType.CustomMono, PoolArgument.WhereComponent.Self)
+                    )
+                );
+
+                enemyPools[nERI.roomEnemyInfos[i].prefab].handleCachedComponentRefs += (
+                    p_poolObject
+                ) =>
+                {
+                    p_poolObject.CustomMono.stat.currentHealthPointReachZeroEvent += () =>
+                        PawnDeathHandler(p_poolObject.CustomMono);
+                };
+            }
+
+            var t_customMono = enemyPools[nERI.roomEnemyInfos[i].prefab].PickOne().CustomMono;
+            t_customMono.transform.position = nERI.roomEnemyInfos[i].position;
+            enemyCount++;
         }
-
-        currentSpawn = 0;
-        spawnedPawnsThisRound.Clear();
-
-        basicSpawnSchemeEnemyStat.currentMight += 0.5f;
-        basicSpawnSchemeEnemyStat.currentReflex += 0.5f;
-        basicSpawnSchemeEnemyStat.currentWisdom += 0.5f;
-        basicSpawnSchemeEnemyStat.currentMoveSpeed += 0.5f;
-        UnlockSpawnSkillEvery3Round();
-    }
-
-    void HandlePawnStatThisRound(CustomMono p_customMono)
-    {
-        p_customMono.stat.might.BaseValue = basicSpawnSchemeEnemyStat.currentMight;
-        p_customMono.stat.reflex.BaseValue = basicSpawnSchemeEnemyStat.currentReflex;
-        p_customMono.stat.wisdom.BaseValue = basicSpawnSchemeEnemyStat.currentWisdom;
-        p_customMono.stat.moveSpeed.BaseValue = basicSpawnSchemeEnemyStat.currentMoveSpeed;
     }
 
     void PawnDeathHandler(CustomMono p_customMono)
     {
-        currentSpawn--;
-        spawnedPawnsThisRound[p_customMono].alive = false;
-    }
-
-    IEnumerator RoundTimerCountdown()
-    {
-        while (true)
+        enemyCount--;
+        if (enemyCount <= 0)
         {
-            GameUIManagerRevamp.Instance.roundTimer.text = (
-                (int)(roundDuration - stopwatch.Elapsed.TotalSeconds)
-            ).ToString();
-            yield return new WaitForSeconds(Time.fixedDeltaTime);
-        }
-    }
-
-    IEnumerator NewRoundIE()
-    {
-        GameUIManagerRevamp.Instance.roundText.text = "NEXT ROUND IN";
-        stopwatch.Restart();
-        while (stopwatch.Elapsed.TotalSeconds < nextRoundInterval)
-        {
-            GameUIManagerRevamp.Instance.roundTimer.text = (
-                (int)(nextRoundInterval - stopwatch.Elapsed.TotalSeconds)
-            ).ToString();
-            yield return null;
-        }
-
-        GameUIManagerRevamp.Instance.roundText.text = "ROUND " + round;
-        stopwatch.Restart();
-    }
-
-    /// <summary>
-    /// Unlock skills for spawned enemies if any
-    /// </summary>
-    /// <param name="p_customMono"></param>
-    /// <param name="p_sEKI"></param>
-    /// <returns></returns>
-    IEnumerator HandleSpawnSkill(CustomMono p_customMono, List<SpawnEnemySkillInfo> p_sEKI)
-    {
-        /* Since customMono might awake or start at this point, we should wait for
-        a frame before continuing */
-        yield return null;
-
-        p_customMono.skill.HandleSkillUnlock(p_sEKI);
-    }
-
-    void UnlockSpawnSkillEvery3Round()
-    {
-        if (round % 3 == 0 && round > 0)
-        {
-            if (unlockSkillSEI.Count > 0)
-            {
-                rand = Random.Range(0, unlockSkillSEI.Count);
-
-                while (!unlockSkillSEI[rand].UnlockNextSkill())
-                {
-                    unlockSkillSEI.RemoveAt(rand);
-                    rand = Random.Range(0, unlockSkillSEI.Count);
-                }
-            }
+            GameUIManager.Instance.TurnOnMap();
+            ;
         }
     }
 
