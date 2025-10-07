@@ -10,7 +10,7 @@ using UnityEngine.UIElements;
 using Debug = UnityEngine.Debug;
 using Random = UnityEngine.Random;
 
-[RequireComponent(typeof(GridManager))]
+[RequireComponent(typeof(HexGridManager))]
 public partial class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
@@ -38,8 +38,8 @@ public partial class GameManager : MonoBehaviour
     public List<ActionFieldInfo> actionFieldInfos = new();
     Dictionary<string, ActionFieldInfo> actionFieldInfoDict = new();
     Dictionary<ActionFieldName, Type> actionFieldMapper = new();
-    GridManager gridManager;
-    List<GridNode> returnPath;
+    HexGridManager gridManager;
+    List<HexGridNode> returnPath;
     public RoomSystem roomSystem;
     Dictionary<GameObject, ObjectPool> enemyPools = new();
     int enemyCount = 0;
@@ -55,7 +55,7 @@ public partial class GameManager : MonoBehaviour
     {
         Instance = this;
         camera = Camera.main;
-        gridManager = GetComponent<GridManager>();
+        gridManager = GetComponent<HexGridManager>();
 
         InitAllEffectPools();
         LoadOtherResources();
