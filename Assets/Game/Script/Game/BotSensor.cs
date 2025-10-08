@@ -54,10 +54,19 @@ public class BotSensor : CustomMonoPal
     /// A centralized storage for sensor data
     /// </summary>
     DoActionParamInfo doActionParamInfo = new();
+    public PausableScript pausableScript = new();
 
     public override void Awake()
     {
         base.Awake();
+        pausableScript.pauseFixedUpdate = () =>
+        {
+            pausableScript.fixedUpdate = EmptyFixedUpdate;
+        };
+        pausableScript.resumeFixedUpdate = () =>
+        {
+            pausableScript.fixedUpdate = DoFixedUpdate;
+        };
     }
 
     void SetTargetToCenterMap()
@@ -113,9 +122,16 @@ public class BotSensor : CustomMonoPal
 
     private void FixedUpdate()
     {
+        pausableScript.fixedUpdate();
+    }
+
+    void DoFixedUpdate()
+    {
         ResetField();
         EnemySensing();
     }
+
+    void EmptyFixedUpdate() { }
 
     /// <summary>
     /// Update info about currentNearestEnemy, if there is none, apply default sense.

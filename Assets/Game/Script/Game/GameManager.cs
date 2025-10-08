@@ -1,14 +1,11 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using Map;
 using Unity.Cinemachine;
 using UnityEngine;
-using UnityEngine.UIElements;
+using UnityEngine.EventSystems;
 using Debug = UnityEngine.Debug;
-using Random = UnityEngine.Random;
 
 [RequireComponent(typeof(HexGridManager))]
 public partial class GameManager : MonoBehaviour
@@ -43,6 +40,8 @@ public partial class GameManager : MonoBehaviour
     public RoomSystem roomSystem;
     Dictionary<GameObject, ObjectPool> enemyPools = new();
     int enemyCount = 0;
+    public List<CustomMono> playerChampions = new(),
+        currentRoomEnemies;
 
     public void InitializeControllableCharacter(CustomMono p_customMono) { }
 
@@ -137,12 +136,19 @@ public partial class GameManager : MonoBehaviour
         QualitySettings.vSyncCount = 0;
 
         HandleMapInteraction();
+        BattleInitialize();
+    }
+
+    private void BattleInitialize()
+    {
+        GameUIManager.Instance.startBattleButton.pointerClickEvent += BattleRoomStart;
     }
 
     private void HandleMapInteraction()
     {
         MapPlayerTracker.Instance.onNodeEnter += (p_mapNode) =>
         {
+            GameUIManager.Instance.startBattleButton.Show();
             switch (p_mapNode.Node.nodeType)
             {
                 case NodeType.MinorEnemy:
@@ -175,6 +181,7 @@ public partial class GameManager : MonoBehaviour
         enemyCount = 0;
         roomSystem.allNormalEnemyRooms.Shuffle();
         var nERI = roomSystem.allNormalEnemyRooms[0];
+        currentRoomEnemies = new();
 
         for (int i = 0; i < nERI.roomEnemyInfos.Count; i++)
         {
@@ -200,8 +207,31 @@ public partial class GameManager : MonoBehaviour
 
             var t_customMono = enemyPools[nERI.roomEnemyInfos[i].prefab].PickOne().CustomMono;
             t_customMono.transform.position = nERI.roomEnemyInfos[i].position;
+            currentRoomEnemies.Add(t_customMono);
             enemyCount++;
         }
+
+        currentRoomEnemies.ForEach(cRE =>
+        {
+            cRE.botAIManager.aiBehavior.pausableScript.pauseFixedUpdate();
+            cRE.botSensor.pausableScript.pauseFixedUpdate();
+        });
+    }
+
+    void BattleRoomStart(PointerEventData p_pED)
+    {
+        GameUIManager.Instance.startBattleButton.Hide();
+        currentRoomEnemies.ForEach(cRE =>
+        {
+            cRE.botAIManager.aiBehavior.pausableScript.resumeFixedUpdate();
+            cRE.botSensor.pausableScript.resumeFixedUpdate();
+        });
+
+        playerChampions.ForEach(pC =>
+        {
+            pC.botAIManager.aiBehavior.pausableScript.resumeFixedUpdate();
+            pC.botSensor.pausableScript.resumeFixedUpdate();
+        });
     }
 
     void PawnDeathHandler(CustomMono p_customMono)
@@ -209,6 +239,11 @@ public partial class GameManager : MonoBehaviour
         enemyCount--;
         if (enemyCount <= 0)
         {
+            playerChampions.ForEach(pC =>
+            {
+                pC.botAIManager.aiBehavior.pausableScript.pauseFixedUpdate();
+                pC.botSensor.pausableScript.pauseFixedUpdate();
+            });
             GameUIManager.Instance.TurnOnMap();
             ;
         }

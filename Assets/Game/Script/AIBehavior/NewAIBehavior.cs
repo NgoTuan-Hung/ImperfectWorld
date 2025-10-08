@@ -87,4 +87,10 @@ public class NewAIBehavior : BaseAIBehavior
     }
 
     DoActionParamInfo GetDAPI() => customMono.botSensor.GetDoActionParamInfo();
+
+    protected override void PauseFixedUpdate()
+    {
+        base.PauseFixedUpdate();
+        customMono.movable.StopMove();
+    }
 }

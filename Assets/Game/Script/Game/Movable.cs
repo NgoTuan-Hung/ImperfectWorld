@@ -4,6 +4,10 @@ using UnityEngine;
 public class Movable : BaseAction
 {
     public Vector2 moveVector;
+
+    /// <summary>
+    /// Should be used to toggle between player controlling and AI controlling
+    /// </summary>
     public PausableScript pausableScript = new();
 
     public override void Awake()
@@ -12,8 +16,7 @@ public class Movable : BaseAction
         AddActionManuals();
 
         pausableScript.resumeFixedUpdate = () => pausableScript.fixedUpdate = MoveByController;
-        pausableScript.pauseFixedUpdate = () => pausableScript.fixedUpdate = () => { };
-        pausableScript.pauseFixedUpdate();
+        pausableScript.pauseFixedUpdate = () => pausableScript.fixedUpdate = EmptyFixedUpdate;
     }
 
     public override void OnEnable()
@@ -67,36 +70,5 @@ public class Movable : BaseAction
 
     public bool GetMoveBool() => GetBool(GameManager.Instance.walkBoolHash);
 
-    public void MoveTo(Vector2 direction, float duration)
-    {
-        StartCoroutine(MoveToCoroutine(direction, duration));
-    }
-
-    IEnumerator MoveToCoroutine(Vector2 direction, float duration)
-    {
-        float currentTime = 0;
-        customMono.movementActionInterval = true;
-        while (currentTime < duration)
-        {
-            customMono.movable.Move(direction);
-
-            yield return new WaitForSeconds(Time.fixedDeltaTime);
-            currentTime += Time.fixedDeltaTime;
-        }
-        customMono.movementActionInterval = false;
-    }
-
-    public void Idle(Vector2 direction, float duration)
-    {
-        StartCoroutine(IdleCoroutine(direction, duration));
-    }
-
-    IEnumerator IdleCoroutine(Vector2 direction, float duration)
-    {
-        customMono.movementActionInterval = true;
-        customMono.movable.ToggleMoveAnim(false);
-        yield return new WaitForSeconds(duration);
-
-        customMono.movementActionInterval = false;
-    }
+    void EmptyFixedUpdate() { }
 }

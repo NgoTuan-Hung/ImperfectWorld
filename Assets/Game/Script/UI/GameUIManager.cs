@@ -35,6 +35,7 @@ public class GameUIManager : MonoEditorSingleton<GameUIManager>
         textPopupUIPool;
     Vector2 screenTooltipRectSize;
     public MapViewUI mapViewUI;
+    public InteractiveButtonUI startBattleButton;
 
     private void Awake()
     {

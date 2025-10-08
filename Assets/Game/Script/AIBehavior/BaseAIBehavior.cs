@@ -27,7 +27,6 @@ public class BaseAIBehavior : CustomMonoPal
         yield return null;
         pausableScript.resumeFixedUpdate = ResumeFixedUpdate;
         pausableScript.pauseFixedUpdate = PauseFixedUpdate;
-        pausableScript.resumeFixedUpdate();
     }
 
     public virtual void DoFixedUpdate() { }
@@ -37,9 +36,17 @@ public class BaseAIBehavior : CustomMonoPal
         pausableScript.fixedUpdate();
     }
 
-    void PauseFixedUpdate() => pausableScript.fixedUpdate = NoFixedUpdate;
+    /// <summary>
+    /// Reuse method for better performance (negligible), avoid alloc lambda everytime
+    /// new Entity is instantiated. Compare calling pausableScript.pauseFixedUpdate = PauseFixedUpdate;
+    /// to calling pausableScript.pauseFixedUpdate = () =>
+    /// {
+    ///     pausableScript.fixedUpdate = EmptyFixedUpdate;
+    /// }; inside LateStart, you'll see.
+    /// </summary>
+    protected virtual void PauseFixedUpdate() => pausableScript.fixedUpdate = NoFixedUpdate;
 
-    void ResumeFixedUpdate() => pausableScript.fixedUpdate = DoFixedUpdate;
+    protected virtual void ResumeFixedUpdate() => pausableScript.fixedUpdate = DoFixedUpdate;
 
     public static void NoFixedUpdate() { }
 }
