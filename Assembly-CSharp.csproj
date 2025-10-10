@@ -207,6 +207,7 @@
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\VertexShakeA.cs" />
     <Compile Include="Assets\Game\Script\Other\Misc\Test\RectSizeTest.cs" />
     <Compile Include="Assets\Game\Script\MapGeneration\UI Lines\UIPrimitiveBase.cs" />
+    <Compile Include="Assets\Game\Script\Game\GameEventData.cs" />
     <Compile Include="Assets\CustomPackage\STSMapGeneration\OneLine\OneLine\Example\Benchmark\Scripts\SeparateFieldsBenchmark.cs" />
     <Compile Include="Assets\Game\Script\Other\RoomSystem\RoomSystem.cs" />
     <Compile Include="Assets\Game\Script\UI\Model\ItemData.cs" />
@@ -251,6 +252,7 @@
     <Compile Include="Assets\Game\Script\Game\AnimationEventFunctionCaller.cs" />
     <Compile Include="Assets\Game\Script\ActionField\ActionBoolField.cs" />
     <Compile Include="Assets\Test\MultipleColliderOnOneObject\MultipleColliderOnOneObjectTest.cs" />
+    <Compile Include="Assets\Game\Script\Ability\Trait\TheHollowShepherd.cs" />
     <Compile Include="Assets\CustomPackage\STSMapGeneration\OneLine\OneLine\Attributes\WidthAttribute.cs" />
     <Compile Include="Assets\CustomPackage\STSMapGeneration\OneLine\OneLine\Example\Details\Scripts\FixedLengthExample.cs" />
     <Compile Include="Assets\CustomPackage\STSMapGeneration\OneLine\OneLine\Attributes\HideButtonsAttribute.cs" />
@@ -345,6 +347,7 @@
     <Compile Include="Assets\Game\Script\Other\ComboAction.cs" />
     <Compile Include="Assets\Test\TimelineSerializeTest\ColliderCopier.cs" />
     <Compile Include="Assets\Game\Script\Other\PoisonInfo.cs" />
+    <Compile Include="Assets\Game\Script\Game\GameEvent.cs" />
     <Compile Include="Assets\Game\Script\Other\GameEffectBehaviour\SovereignFlowBehaviour.cs" />
     <Compile Include="Assets\Test\PierceStrike\PierceStrikeTest.cs" />
     <Compile Include="Assets\Game\Script\Ability\RimuruSummonFireball.cs" />
@@ -1703,10 +1706,6 @@
       <HintPath>Library\ScriptAssemblies\Unity.Collections.Editor.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="Unity.ShaderGraph.Editor">
-      <HintPath>Library\ScriptAssemblies\Unity.ShaderGraph.Editor.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
     <Reference Include="Unity.2D.Sprite.AIIntegration.Editor">
       <HintPath>Library\ScriptAssemblies\Unity.2D.Sprite.AIIntegration.Editor.dll</HintPath>
       <Private>False</Private>
@@ -1715,12 +1714,12 @@
       <HintPath>Library\ScriptAssemblies\Unity.RenderPipelines.Core.Editor.Shared.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="Unity.2D.SpriteShape.Editor">
-      <HintPath>Library\ScriptAssemblies\Unity.2D.SpriteShape.Editor.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
     <Reference Include="Unity.InputSystem">
       <HintPath>Library\ScriptAssemblies\Unity.InputSystem.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Unity.2D.SpriteShape.Editor">
+      <HintPath>Library\ScriptAssemblies\Unity.2D.SpriteShape.Editor.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Unity.Settings.Editor">
@@ -1739,8 +1738,11 @@
   <ItemGroup>
     <ProjectReference Include="Assembly-CSharp-firstpass.csproj" />
     <ProjectReference Include="Plugins.BackgroundRecompiler.Editor.csproj" />
+    <ProjectReference Include="Unity.UI.Shaders.Sample.Editor.csproj" />
     <ProjectReference Include="Wingman.csproj" />
     <ProjectReference Include="IngameDebugConsole.Runtime.csproj" />
+    <ProjectReference Include="Unity.ShaderGraph.Editor.csproj" />
+    <ProjectReference Include="Unity.UI.Shaders.Sample.csproj" />
     <ProjectReference Include="IngameDebugConsole.Editor.csproj" />
   </ItemGroup>
   <Import Project="Sdk.targets" Sdk="Microsoft.NET.Sdk" />

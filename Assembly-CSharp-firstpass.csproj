@@ -51,7 +51,9 @@
     <Analyzer Include="D:\Program\unity\Editor\6000.2.0f1\Editor\Data\Tools\Unity.SourceGenerators\Unity.UIToolkit.SourceGenerator.dll" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\Plugins\Samples\Shader Graph\17.2.0\UGUI Shaders\Scripts\Timer.cs" />
     <Compile Include="Assets\Plugins\2D-Thousand Moon\ThousandMoon.cs" />
+    <Compile Include="Assets\Plugins\Samples\Shader Graph\17.2.0\UGUI Shaders\Scripts\BlurredHexagonController.cs" />
     <Compile Include="Assets\Plugins\2D-Thousand Moon\SlashEffect.cs" />
     <Compile Include="Assets\Plugins\2D-Thousand Moon\SamuraiEffect.cs" />
   </ItemGroup>
@@ -91,7 +93,9 @@
     <None Include="Assets\Plugins\UIBeginner\Resources\UI\Config\ConfigCheckbox.uxml" />
     <None Include="Assets\Plugins\UIBeginner\Resources\EquippableItem.uxml" />
     <None Include="Assets\Plugins\UIBeginner\Resources\UI\Config\ConfigDropdown.uxml" />
+    <None Include="Assets\Plugins\Samples\Shader Graph\17.2.0\UGUI Shaders\Subgraphs\Helpers\SafeHDSceneColor.hlsl" />
     <None Include="Assets\Plugins\UIBeginner\ToolTipProject\ConfigMenu.uss" />
+    <None Include="Assets\Plugins\Samples\Shader Graph\17.2.0\UGUI Shaders\Subgraphs\Inputs\CanvasLinearSpaceConversion.hlsl" />
     <None Include="Assets\Plugins\UIBeginner\ToolTipProject\Test\ScrollViewTest.uxml" />
     <None Include="Assets\Plugins\UIBeginner\ToolTipProject\Test\test.uss" />
     <None Include="Assets\Plugins\UIBeginner\Resources\ItemHolder.uxml" />
@@ -1387,10 +1391,6 @@
       <HintPath>Library\ScriptAssemblies\Unity.Collections.Editor.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="Unity.ShaderGraph.Editor">
-      <HintPath>Library\ScriptAssemblies\Unity.ShaderGraph.Editor.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
     <Reference Include="Unity.2D.Sprite.AIIntegration.Editor">
       <HintPath>Library\ScriptAssemblies\Unity.2D.Sprite.AIIntegration.Editor.dll</HintPath>
       <Private>False</Private>
@@ -1399,12 +1399,12 @@
       <HintPath>Library\ScriptAssemblies\Unity.RenderPipelines.Core.Editor.Shared.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="Unity.2D.SpriteShape.Editor">
-      <HintPath>Library\ScriptAssemblies\Unity.2D.SpriteShape.Editor.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
     <Reference Include="Unity.InputSystem">
       <HintPath>Library\ScriptAssemblies\Unity.InputSystem.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Unity.2D.SpriteShape.Editor">
+      <HintPath>Library\ScriptAssemblies\Unity.2D.SpriteShape.Editor.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Unity.Settings.Editor">
@@ -1422,8 +1422,11 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="Plugins.BackgroundRecompiler.Editor.csproj" />
+    <ProjectReference Include="Unity.UI.Shaders.Sample.Editor.csproj" />
     <ProjectReference Include="Wingman.csproj" />
     <ProjectReference Include="IngameDebugConsole.Runtime.csproj" />
+    <ProjectReference Include="Unity.ShaderGraph.Editor.csproj" />
+    <ProjectReference Include="Unity.UI.Shaders.Sample.csproj" />
     <ProjectReference Include="IngameDebugConsole.Editor.csproj" />
   </ItemGroup>
   <Import Project="Sdk.targets" Sdk="Microsoft.NET.Sdk" />

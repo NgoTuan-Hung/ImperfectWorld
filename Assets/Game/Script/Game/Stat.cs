@@ -46,6 +46,7 @@ public partial class Stat : MonoEditor, INotifyBindablePropertyChanged
             InitUI();
             StartCoroutine(LateStart());
         };
+        SetBroadcastGameEvent();
     }
 
     IEnumerator LateStart()
@@ -143,6 +144,19 @@ public partial class Stat : MonoEditor, INotifyBindablePropertyChanged
 
         moveSpeed.finalValueChangeEvent += MoveSpeedChangeMoveSpeedPerFrame;
         actionMoveSpeedReduceRate.finalValueChangeEvent += ChangeActionSlow;
+    }
+
+    private void SetBroadcastGameEvent()
+    {
+        hpChangeED = new(customMono);
+        currentHealthPoint.valueChangeEvent += () =>
+        {
+            hpChangeED.currentValue = currentHealthPoint.Value;
+            hpChangeED.maxValue = healthPoint.FinalValue;
+            GameManager
+                .Instance.GetTeamBasedEvent(customMono.tag, GameEventType.HPChange)
+                .action(hpChangeED);
+        };
     }
 
     void CheckCurrentHPBelowZero()

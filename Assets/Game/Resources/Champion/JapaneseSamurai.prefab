@@ -181,7 +181,7 @@ GameObject:
   - component: {fileID: 603412092444917336}
   m_Layer: 0
   m_Name: JapaneseSamurai
-  m_TagString: GameBot
+  m_TagString: Team2
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -516,7 +516,6 @@ MonoBehaviour:
   defaultStateSpeed: 0
   canUse: 1
   audioClip: {fileID: 0}
-  unlocked: 0
   moveVector: {x: 0, y: 0}
 --- !u!114 &7859021448824365601
 MonoBehaviour:
@@ -546,6 +545,7 @@ MonoBehaviour:
   customMono: {fileID: 0}
   skillDataSOs:
   - {fileID: 11400000, guid: d956062efdfc6274d972e2ef0fc25827, type: 2}
+  - {fileID: 11400000, guid: ab4bb2c4c372da04db12c9f8cb4a3ebe, type: 2}
   skillBases: []
 --- !u!114 &1319466979024103620
 MonoBehaviour:

@@ -77,4 +77,5 @@ public partial class Stat
     public ActionWrapper sizeChangeEvent = new();
     public Dictionary<string, ActionWrapper> propertyChangeEventDictionary = new();
     public ActionWrapper notifyAW;
+    public GameEventData hpChangeED;
 }

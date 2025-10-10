@@ -6,6 +6,12 @@ using Unity.Cinemachine;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using Debug = UnityEngine.Debug;
+using Random = UnityEngine.Random;
+
+public enum GameEventType
+{
+    HPChange,
+}
 
 [RequireComponent(typeof(HexGridManager))]
 public partial class GameManager : MonoBehaviour
@@ -35,13 +41,26 @@ public partial class GameManager : MonoBehaviour
     public List<ActionFieldInfo> actionFieldInfos = new();
     Dictionary<string, ActionFieldInfo> actionFieldInfoDict = new();
     Dictionary<ActionFieldName, Type> actionFieldMapper = new();
-    HexGridManager gridManager;
+    public HexGridManager gridManager;
     List<HexGridNode> returnPath;
     public RoomSystem roomSystem;
     Dictionary<GameObject, ObjectPool> enemyPools = new();
     int enemyCount = 0;
     public List<CustomMono> playerChampions = new(),
         currentRoomEnemies;
+
+    /// <summary>
+    /// Hex grid nodes where enemy stand
+    /// </summary>
+    public List<HexGridNode> enemyNodes = new();
+
+    /// <summary>
+    /// When clicking start battle button, this will be set to false, meaning we can't position
+    /// characters around anymore. When battle finish, this will be set to true.
+    /// </summary>
+    public bool positioningPhase = true;
+    public Dictionary<GameEventType, GameEvent> ok;
+    public Dictionary<string, Dictionary<GameEventType, GameEvent>> teamBasedEvents = new();
 
     public void InitializeControllableCharacter(CustomMono p_customMono) { }
 
@@ -60,7 +79,19 @@ public partial class GameManager : MonoBehaviour
         LoadOtherResources();
         ConstructActionFieldInfoDict();
         MapActionFieldName();
+        InitGameEvents();
     }
+
+    private void InitGameEvents()
+    {
+        teamBasedEvents.Add("Team1", new Dictionary<GameEventType, GameEvent>());
+        teamBasedEvents.Add("Team2", new Dictionary<GameEventType, GameEvent>());
+        teamBasedEvents["Team1"].Add(GameEventType.HPChange, new GameEvent());
+        teamBasedEvents["Team2"].Add(GameEventType.HPChange, new GameEvent());
+    }
+
+    public GameEvent GetTeamBasedEvent(string p_teamName, GameEventType p_gameEventType) =>
+        teamBasedEvents[p_teamName][p_gameEventType];
 
     void LoadOtherResources() { }
 
@@ -179,8 +210,9 @@ public partial class GameManager : MonoBehaviour
     {
         GameUIManager.Instance.TurnOffMap();
         enemyCount = 0;
-        roomSystem.allNormalEnemyRooms.Shuffle();
-        var nERI = roomSystem.allNormalEnemyRooms[0];
+        var nERI = roomSystem.allNormalEnemyRooms[
+            Random.Range(0, roomSystem.allNormalEnemyRooms.Count)
+        ];
         currentRoomEnemies = new();
 
         for (int i = 0; i < nERI.roomEnemyInfos.Count; i++)
@@ -207,6 +239,7 @@ public partial class GameManager : MonoBehaviour
 
             var t_customMono = enemyPools[nERI.roomEnemyInfos[i].prefab].PickOne().CustomMono;
             t_customMono.transform.position = nERI.roomEnemyInfos[i].position;
+            MarkGridNodeAsEnemyNode(t_customMono.transform.position);
             currentRoomEnemies.Add(t_customMono);
             enemyCount++;
         }
@@ -218,8 +251,29 @@ public partial class GameManager : MonoBehaviour
         });
     }
 
+    /// <summary>
+    /// Paint enemies hex grid node as red and remember them
+    /// </summary>
+    /// <param name="p_pos"></param>
+    void MarkGridNodeAsEnemyNode(Vector3 p_pos)
+    {
+        var t_node = gridManager.GetNodeAtPosition(p_pos);
+        t_node.SetAsEnemyPosition();
+        enemyNodes.Add(t_node);
+    }
+
+    /// <summary>
+    /// Paint enemies hex grid node back to normal
+    /// </summary>
+    void ClearEnemyNodes()
+    {
+        enemyNodes.ForEach(eN => eN.ClearEnemyPosition());
+        enemyNodes.Clear();
+    }
+
     void BattleRoomStart(PointerEventData p_pED)
     {
+        positioningPhase = false;
         GameUIManager.Instance.startBattleButton.Hide();
         currentRoomEnemies.ForEach(cRE =>
         {
@@ -245,7 +299,8 @@ public partial class GameManager : MonoBehaviour
                 pC.botSensor.pausableScript.pauseFixedUpdate();
             });
             GameUIManager.Instance.TurnOnMap();
-            ;
+            positioningPhase = true;
+            ClearEnemyNodes();
         }
     }
 

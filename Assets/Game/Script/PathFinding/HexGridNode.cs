@@ -19,6 +19,8 @@ public class HexGridNode : FastPriorityQueueNode
     public float costSoFar = 0;
     public bool visited = false;
     public bool inQueue = false;
+    public SpriteRenderer visual;
+    public bool isEnemyPosition = false;
 
     public HexGridNode(AxialCoord axialCoord)
     {
@@ -37,5 +39,47 @@ public class HexGridNode : FastPriorityQueueNode
     {
         visited = false;
         inQueue = false;
+    }
+
+    public void ShowVisual() => visual.gameObject.SetActive(true);
+
+    public void HideVisual() => visual.gameObject.SetActive(false);
+
+    public void SetVisual(GameObject visual)
+    {
+        this.visual = visual.GetComponent<SpriteRenderer>();
+        visual.transform.position = pos;
+    }
+
+    public void SetAsPermanentObstacle()
+    {
+        type = HexGridNodeType.Obstacle;
+        visual.color = Color.black;
+        HexGridManager.Instance.RemoveFromResetGrid(this);
+    }
+
+    public void SwitchToDefaultVisual()
+    {
+        visual.color = HexGridManager.defaultNodeColor;
+        visual.sharedMaterial = HexGridManager.defaultNodeMaterial;
+    }
+
+    public void SwitchToHighlightedVisual()
+    {
+        visual.color = HexGridManager.highlightedNodeColor;
+        visual.sharedMaterial = HexGridManager.highlightedNodeMaterial;
+    }
+
+    public void SetAsEnemyPosition()
+    {
+        isEnemyPosition = true;
+        visual.color = HexGridManager.enemyPositionColor;
+        visual.sharedMaterial = HexGridManager.enemyNodeMaterial;
+    }
+
+    public void ClearEnemyPosition()
+    {
+        isEnemyPosition = false;
+        SwitchToDefaultVisual();
     }
 }

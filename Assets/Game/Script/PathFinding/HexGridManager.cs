@@ -1,13 +1,16 @@
 using System;
 using System.Collections.Generic;
 using Priority_Queue;
+using Unity.VisualScripting;
 using UnityEngine;
 
 [DefaultExecutionOrder(0)]
 public class HexGridManager : MonoBehaviour
 {
+    public static HexGridManager Instance;
     public SpriteRenderer bound;
-    public GameObject debugPrefab;
+    GameObject hexNodeParent;
+    public GameObject hexNodePrefab;
     Dictionary<AxialCoord, HexGridNode> grid = new();
     FastPriorityQueue<HexGridNode> queue;
     HashSet<HexGridNode> visited = new();
@@ -37,15 +40,27 @@ public class HexGridManager : MonoBehaviour
         ry1,
         rz1;
     Action resetGrid = () => { },
-        resetGridForPathFinding = () => { };
-    HexGridNode border = new(new AxialCoord(int.MaxValue, int.MaxValue));
+        resetGridForPathFinding = () => { },
+        showVisual = () => { },
+        hideVisual = () => { };
+    public static HexGridNode border = new(new AxialCoord(int.MaxValue, int.MaxValue));
+    public static Color defaultNodeColor = Color.green.WithAlpha(0.5f);
+    public static Color highlightedNodeColor = Color.white,
+        enemyPositionColor = Color.white;
+    public static Material defaultNodeMaterial,
+        highlightedNodeMaterial,
+        enemyNodeMaterial;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Awake()
     {
+        Instance = this;
+        defaultNodeMaterial = Resources.Load("Material/HexNode") as Material;
+        highlightedNodeMaterial = Resources.Load("Material/HexNodeHighlighted") as Material;
+        enemyNodeMaterial = Resources.Load("Material/HexNodeEnemy") as Material;
+        hexNodeParent = GameObject.Find("HexGrid");
         border.type = HexGridNodeType.Obstacle;
-        HexGridNode origin = new(new AxialCoord(0, 0));
-        grid.Add(origin.axialCoord, origin);
+        HexGridNode origin = SetupNewNode(new AxialCoord(0, 0));
         open.Add(origin);
         visited.Add(origin);
 
@@ -116,17 +131,21 @@ public class HexGridManager : MonoBehaviour
                 parent.axialCoord.R + neighborOffsets[i][1]
             );
             if (!grid.ContainsKey(axialCoord))
-            {
-                grid.Add(axialCoord, new HexGridNode(axialCoord));
-                resetGrid += grid[axialCoord].Reset;
-                resetGridForPathFinding += grid[axialCoord].ResetForPathFinding;
-                // debugNodeDict.Add(
-                //     grid[axialCoord],
-                //     Instantiate(debugPrefab, grid[axialCoord].pos, Quaternion.identity)
-                // );
-            }
+                SetupNewNode(axialCoord);
             parent.neighbors.Add(grid[axialCoord]);
         }
+    }
+
+    HexGridNode SetupNewNode(AxialCoord axialCoord)
+    {
+        var hGN = new HexGridNode(axialCoord);
+        grid.Add(axialCoord, hGN);
+        resetGrid += hGN.Reset;
+        resetGridForPathFinding += hGN.ResetForPathFinding;
+        hGN.SetVisual(Instantiate(hexNodePrefab, hexNodeParent.transform));
+        showVisual += hGN.ShowVisual;
+        hideVisual += hGN.HideVisual;
+        return hGN;
     }
 
     void Generate()
@@ -148,10 +167,7 @@ public class HexGridManager : MonoBehaviour
                         if (CheckPosInsideBound(nB.pos))
                             next.Add(nB);
                         else
-                        {
-                            nB.type = HexGridNodeType.Obstacle;
-                            // GetHexSpriteDebug(nB.pos).color = Color.black;
-                        }
+                            nB.SetAsPermanentObstacle();
                     }
                 });
             });
@@ -191,7 +207,7 @@ public class HexGridManager : MonoBehaviour
             rz1 = -rx1 - ry1;
 
         // Step 4: Convert back to axial
-        return grid[new(rx1, rz1)];
+        return grid.GetValueOrDefault(new(rx1, rz1)) ?? border;
     }
 
     public void MarkNodeAsObstacle(Vector2 pos) =>
@@ -221,5 +237,14 @@ public class HexGridManager : MonoBehaviour
             && pos.x <= bound.bounds.max.x
             && pos.y >= bound.bounds.min.y
             && pos.y <= bound.bounds.max.y;
+    }
+
+    public void ShowVisual() => showVisual();
+
+    public void HideVisual() => hideVisual();
+
+    public void RemoveFromResetGrid(HexGridNode node)
+    {
+        resetGrid -= node.Reset;
     }
 }
