@@ -1,0 +1,28 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1cb3ed3e615e53240964c7767178a777, type: 3}
+  m_Name: ZukoCAI
+  m_EditorClassIdentifier: Assembly-CSharp::CharAttackInfo
+  attackType: 0
+  meleeAttackInfos:
+  - meleeAttackEffectSO: {fileID: 0}
+    meleeImpactEffectSO: {fileID: 11400000, guid: 2eae3984e6940f445ad36ac278adc723, type: 2}
+  - meleeAttackEffectSO: {fileID: 11400000, guid: 36c3a857dc6bbfd478013126d725a599, type: 2}
+    meleeImpactEffectSO: {fileID: 11400000, guid: b7c9d6c8e3b23be488cda4df08cb4afd, type: 2}
+  - meleeAttackEffectSO: {fileID: 11400000, guid: a61b35e7fe7a3de4a873402d2da16748, type: 2}
+    meleeImpactEffectSO: {fileID: 11400000, guid: cbab4570b105ff04a8d18fd66a2b8f1d, type: 2}
+  - meleeAttackEffectSO: {fileID: 11400000, guid: bb6cd0baf21ffec4b9fec5555d73d83c, type: 2}
+    meleeImpactEffectSO: {fileID: 11400000, guid: 3d2e538974f96a9498911e2c63557682, type: 2}
+  variant: 4
+  rangedProjectileEffectSO: {fileID: 0}
+  rangedImpactEffectSO: {fileID: 0}
+  attackRange: 1.25

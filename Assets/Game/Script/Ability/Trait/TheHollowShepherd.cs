@@ -56,17 +56,17 @@ public class TheHollowShepherd : SkillBase
 
     public void Trigger(GameEventData p_gED)
     {
-        if (p_gED.owner == customMono)
+        if (p_gED.owner.Equals(customMono))
             return;
         if (!handledAllies.Contains(p_gED.owner))
         {
             if (p_gED.currentValue / p_gED.maxValue < 0.2f)
             {
+                handledAllies.Add(p_gED.owner);
                 var t_mod = new FloatStatModifier(3f, FloatStatModifierType.Multiplicative);
                 customMono.stat.attackSpeed.AddModifier(t_mod);
                 modifiers.Add(t_mod);
                 p_gED.owner.statusEffect.GetHit(p_gED.maxValue * 0.1f);
-                handledAllies.Add(p_gED.owner);
             }
         }
     }

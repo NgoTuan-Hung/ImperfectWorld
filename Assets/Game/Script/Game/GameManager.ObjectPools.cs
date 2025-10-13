@@ -82,7 +82,21 @@ public partial class GameManager
         virgilAttackSlashPool,
         rimuruCombo1SlashAWithColliderPool,
         dimmingEdgeEffectPool,
-        ironCladVFXPool;
+        ironCladVFXPool,
+        zukoAttack1ImpactPool,
+        zukoAttack2SlashPool,
+        zukoAttack2ImpactPool,
+        zukoAttack3SlashPool,
+        zukoAttack3ImpactPool,
+        zukoAttack4SlashPool,
+        zukoAttack4ImpactPool,
+        forceBreakerFirstPunchPool,
+        forceBreakerKickPool,
+        forceBreakerProjectilePool,
+        forceBreakerProjectileImpactPool,
+        forceBreakerPunchImpactPool,
+        forceBreakerSecondPunchPool,
+        forceBreakerWavePool;
     List<string> objectPoolNames = new()
     {
         "moonSlashExplodePool",
@@ -163,6 +177,20 @@ public partial class GameManager
         "rimuruCombo1SlashAWithColliderPool",
         "dimmingEdgeEffectPool",
         "ironCladVFXPool",
+        "zukoAttack1ImpactPool",
+        "zukoAttack2SlashPool",
+        "zukoAttack2ImpactPool",
+        "zukoAttack3SlashPool",
+        "zukoAttack3ImpactPool",
+        "zukoAttack4SlashPool",
+        "zukoAttack4ImpactPool",
+        "forceBreakerFirstPunchPool",
+        "forceBreakerKickPool",
+        "forceBreakerProjectilePool",
+        "forceBreakerProjectileImpactPool",
+        "forceBreakerPunchImpactPool",
+        "forceBreakerSecondPunchPool",
+        "forceBreakerWavePool",
     };
 
     void InitAllEffectPools()

@@ -10,6 +10,7 @@ using Random = UnityEngine.Random;
 public enum EasingType
 {
     OutQuint,
+    No,
 }
 
 public enum EGameEffectBehaviour
@@ -30,7 +31,7 @@ public class GameEffect : MonoSelfAware
     public TrailRenderer trailRenderer;
     Dictionary<EGameEffectBehaviour, IGameEffectBehaviour> behaviours = new();
     public GameEffectSO gameEffectSO;
-    public Func<float, float> easingFunction;
+    public Func<float, float> easingMod;
     public List<BoxCollider2D> boxCollider2Ds = new();
     public List<CircleCollider2D> circleCollider2Ds = new();
     public List<PolygonCollider2D> polygonCollider2Ds = new();
@@ -158,7 +159,11 @@ public class GameEffect : MonoSelfAware
         }
     }
 
-    public void KeepFlyingAt(Vector3 p_direction, bool p_rotateToDirection, EasingType p_easingType)
+    public void KeepFlyingAt(
+        Vector3 p_direction,
+        bool p_rotateToDirection,
+        EasingType p_easingType = EasingType.No
+    )
     {
         if (p_rotateToDirection)
         {
@@ -176,7 +181,10 @@ public class GameEffect : MonoSelfAware
         switch (p_easingType)
         {
             case EasingType.OutQuint:
-                easingFunction = EasingFunctions.OutQuint;
+                easingMod = (t) => 1 - EasingFunctions.OutQuint(t / gameEffectSO.deactivateTime);
+                break;
+            case EasingType.No:
+                easingMod = (t) => 1;
                 break;
             default:
                 yield break;
@@ -189,8 +197,7 @@ public class GameEffect : MonoSelfAware
         float currentTime = 0;
         while (true)
         {
-            transform.position +=
-                p_direction * (1 - easingFunction(currentTime / gameEffectSO.deactivateTime));
+            transform.position += p_direction * easingMod(currentTime);
             yield return new WaitForSeconds(Time.fixedDeltaTime);
             currentTime += Time.fixedDeltaTime;
         }

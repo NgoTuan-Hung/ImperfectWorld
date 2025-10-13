@@ -78,10 +78,7 @@ public class CustomMono : MonoSelfAware
     public new Rigidbody2D rigidbody2D;
     public Action startPhase1 = () => { };
     public AudioClip attackAudioClip;
-    public GameEffectSO meleeCollisionEffectSO,
-        longRangeProjectileEffectSO;
     public CharAttackInfo charAttackInfo;
-    public AttackType attackType;
     public StatusEffect statusEffect;
     public GameObject rotationAndCenterObject,
         directionModifier;

@@ -82,7 +82,21 @@ public partial class GameManager
         virgilAttackSlash,
         rimuruCombo1SlashAWithCollider,
         dimmingEdgeEffect,
-        ironCladVFX;
+        ironCladVFX,
+        zukoAttack1Impact,
+        zukoAttack2Slash,
+        zukoAttack2Impact,
+        zukoAttack3Slash,
+        zukoAttack3Impact,
+        zukoAttack4Slash,
+        zukoAttack4Impact,
+        forceBreakerFirstPunch,
+        forceBreakerKick,
+        forceBreakerProjectile,
+        forceBreakerProjectileImpact,
+        forceBreakerPunchImpact,
+        forceBreakerSecondPunch,
+        forceBreakerWave;
 
     List<string> prefabNames = new()
     {
@@ -164,6 +178,20 @@ public partial class GameManager
         "rimuruCombo1SlashAWithCollider",
         "dimmingEdgeEffect",
         "ironCladVFX",
+        "zukoAttack1Impact",
+        "zukoAttack2Slash",
+        "zukoAttack2Impact",
+        "zukoAttack3Slash",
+        "zukoAttack3Impact",
+        "zukoAttack4Slash",
+        "zukoAttack4Impact",
+        "forceBreakerFirstPunch",
+        "forceBreakerKick",
+        "forceBreakerProjectile",
+        "forceBreakerProjectileImpact",
+        "forceBreakerPunchImpact",
+        "forceBreakerSecondPunch",
+        "forceBreakerWave",
     };
 
     void LoadGameEffectPrefabs()
