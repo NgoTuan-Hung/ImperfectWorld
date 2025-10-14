@@ -55,6 +55,9 @@ public partial class Stat
     [Header("<color='#FFC107'>DAMAGE MODIFIER")]
     public FloatModifier damageModifier = new();
 
+    [Header("<color='#C62828'>OMNIVAMP")]
+    public FloatModifier omnivamp = new();
+
     [HideInInspector]
     public FloatStatWithModifier actionMoveSpeedReduceRate = new();
 

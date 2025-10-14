@@ -306,12 +306,12 @@ public partial class GameManager : MonoBehaviour
 
     public void AddCustomMono(CustomMono customMono)
     {
-        customMonos.Add(customMono.gameObject.GetHashCode(), customMono);
+        customMonos.Add(customMono.combatCollider2D.GetHashCode(), customMono);
     }
 
-    public CustomMono GetCustomMono(GameObject p_gameObject)
+    public CustomMono GetCustomMono(Collider2D p_cld)
     {
-        return customMonos.GetValueOrDefault(p_gameObject.GetHashCode());
+        return customMonos.GetValueOrDefault(p_cld.GetHashCode());
     }
 
     public void RemoveCustomMono(GameObject p_gameObject)

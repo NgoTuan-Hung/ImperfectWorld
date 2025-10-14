@@ -20,6 +20,7 @@ public enum EGameEffectBehaviour
     BlueHole,
     InfernalTideFanReceiver,
     SovereignFlowBehaviour,
+    PullingMissile,
 }
 
 public class GameEffect : MonoSelfAware
@@ -160,11 +161,13 @@ public class GameEffect : MonoSelfAware
     }
 
     public void KeepFlyingAt(
+        Vector3 p_origin,
         Vector3 p_direction,
         bool p_rotateToDirection,
         EasingType p_easingType = EasingType.No
     )
     {
+        transform.position = p_origin;
         if (p_rotateToDirection)
         {
             transform.rotation = Quaternion.Euler(
@@ -283,17 +286,21 @@ public class GameEffect : MonoSelfAware
         Vector3 p_origin,
         float p_damage,
         CustomMono p_target,
-        GameEffectSO p_impactEffect
+        GameEffectSO p_impactEffect,
+        HitCallback p_hitCallback = null
     )
     {
-        StartCoroutine(FireAsRangedAttackEffectIE(p_origin, p_damage, p_target, p_impactEffect));
+        StartCoroutine(
+            FireAsRangedAttackEffectIE(p_origin, p_damage, p_target, p_impactEffect, p_hitCallback)
+        );
     }
 
     IEnumerator FireAsRangedAttackEffectIE(
         Vector3 p_origin,
         float p_damage,
         CustomMono p_target,
-        GameEffectSO p_impactEffect
+        GameEffectSO p_impactEffect,
+        HitCallback p_hitCallback = null
     )
     {
         transform.position = p_origin;
@@ -321,8 +328,25 @@ public class GameEffect : MonoSelfAware
         }
 
         p_target.statusEffect.GetHit(p_damage);
+        if (p_hitCallback != null)
+        {
+            p_hitCallback.count++;
+            p_hitCallback.target = p_target;
+            p_hitCallback.callback(p_hitCallback);
+        }
         GameManager.Instance.poolLink[p_impactEffect].PickOneGameEffect().transform.position =
             p_target.rotationAndCenterObject.transform.position;
         deactivate();
+    }
+
+    public void FireAsBasicCombatProjectile(
+        HashSet<string> p_allyTags,
+        float p_damage,
+        Vector3 p_origin,
+        Vector2 p_dir
+    )
+    {
+        SetUpCollideAndDamage(p_allyTags, p_damage);
+        KeepFlyingAt(p_origin, p_dir, true);
     }
 }

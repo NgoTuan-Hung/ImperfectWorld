@@ -9,7 +9,7 @@ public class ForceBreaker : SkillBase
     public override void Awake()
     {
         base.Awake();
-        botActionManual = new(BotDoAction, BotDoActionContinous, 1.35f, true);
+        botActionManual = new(BotDoAction, BotDoActionContinous, 1.7f, true);
     }
 
     public override void OnEnable()
@@ -40,13 +40,12 @@ public class ForceBreaker : SkillBase
 
         GetActionField<ActionFloatField>(ActionFieldName.Cooldown).value = 0f;
         GetActionField<ActionFloatField>(ActionFieldName.ManaCost).value = 100f;
-        GetActionField<ActionFloatField>(ActionFieldName.Speed).value = 0.25f;
-        GetActionField<ActionFloatField>(ActionFieldName.Duration).value = 0.1f;
         successResult = new(
             true,
             ActionResultType.Cooldown,
             GetActionField<ActionFloatField>(ActionFieldName.Cooldown).value
         );
+        /* Also use damage, actionie */
     }
 
     public override void StatChangeRegister()
@@ -87,8 +86,8 @@ public class ForceBreaker : SkillBase
             customMono.statusEffect.Slow(customMono.stat.actionSlowModifier);
             ToggleAnim(GameManager.Instance.mainSkill1BoolHash, true);
             StartCoroutine(
-                GetActionField<ActionIEnumeratorField>(ActionFieldName.ActionIE).value = WaitCombo1(
-                    direction
+                GetActionField<ActionIEnumeratorField>(ActionFieldName.ActionIE).value = TriggerIE(
+                    direction: direction
                 )
             );
             StartCoroutine(CooldownCoroutine());
@@ -118,6 +117,11 @@ public class ForceBreaker : SkillBase
             )
                 yield return null;
 
+            customMono.animationEventFunctionCaller.SetSignal(
+                EAnimationSignal.MainSkill1Signal,
+                false
+            );
+
             if (effectPools[i] != null)
                 SpawnBasicCombatEffectAsChild(
                     customMono.GetDirection(),
@@ -129,14 +133,22 @@ public class ForceBreaker : SkillBase
                 case 2:
                 {
                     var t_wave = GameManager.Instance.forceBreakerWavePool.PickOneGameEffect();
-                    t_wave.KeepFlyingAt(customMono.GetDirection(), true);
+                    (
+                        t_wave.GetBehaviour(EGameEffectBehaviour.PullingMissile) as PullingMissile
+                    ).allyTags = customMono.allyTags;
+                    t_wave.KeepFlyingAt(transform.position, customMono.GetDirection(), true);
                     break;
                 }
                 case 3:
                 {
-                    var t_projectile =
-                        GameManager.Instance.forceBreakerProjectilePool.PickOneGameEffect();
-                    t_projectile.KeepFlyingAt(customMono.GetDirection(), true);
+                    GameManager
+                        .Instance.forceBreakerProjectilePool.PickOneGameEffect()
+                        .FireAsBasicCombatProjectile(
+                            customMono.allyTags,
+                            GetActionField<ActionFloatField>(ActionFieldName.Damage).value,
+                            customMono.rotationAndCenterObject.transform.position,
+                            direction
+                        );
                     break;
                 }
                 default:
@@ -169,7 +181,7 @@ public class ForceBreaker : SkillBase
 
     public override void BotDoAction(DoActionParamInfo p_doActionParamInfo)
     {
-        Trigger();
+        Trigger(direction: p_doActionParamInfo.centerToTargetCenterDirection);
     }
 
     public override void BotDoActionContinous(DoActionParamInfo p_doActionParamInfo)

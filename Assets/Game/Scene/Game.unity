@@ -4100,6 +4100,8 @@ MonoBehaviour:
   - {fileID: 11400000, guid: c602ade96270d064489c478b27f4b57d, type: 2}
   - {fileID: 11400000, guid: 72d8fff83dbeb584fb1f2d7d43232d4a, type: 2}
   - {fileID: 11400000, guid: 8db944f4bda721c4887f42168e38e486, type: 2}
+  - {fileID: 11400000, guid: b4669a35eb8a4f344b5eb87215f60ccc, type: 2}
+  - {fileID: 11400000, guid: dadfc5f845ee0794db4fbdbaeb0229ff, type: 2}
   gridManager: {fileID: 0}
   roomSystem:
     allNormalEnemyRooms:
@@ -4130,24 +4132,53 @@ MonoBehaviour:
     - roomEnemyInfos:
       - prefab: {fileID: 4094656537320269057, guid: 1101f5e937155c74981daaa5e4cc1e67, type: 3}
         position: {x: -5.3, y: -7.1}
+      - prefab: {fileID: 8923836045810014238, guid: 3f6ccf2879d74cf4b8571304c7b252f0, type: 3}
+        position: {x: -5.3, y: -8.1}
     - roomEnemyInfos:
       - prefab: {fileID: 4094656537320269057, guid: 1101f5e937155c74981daaa5e4cc1e67, type: 3}
         position: {x: -5.3, y: -7.1}
+      - prefab: {fileID: 8923836045810014238, guid: 3f6ccf2879d74cf4b8571304c7b252f0, type: 3}
+        position: {x: -5.3, y: -8.1}
     - roomEnemyInfos:
       - prefab: {fileID: 4094656537320269057, guid: 1101f5e937155c74981daaa5e4cc1e67, type: 3}
         position: {x: -5.3, y: -7.1}
+      - prefab: {fileID: 8923836045810014238, guid: 3f6ccf2879d74cf4b8571304c7b252f0, type: 3}
+        position: {x: -5.3, y: -8.1}
     - roomEnemyInfos:
       - prefab: {fileID: 4094656537320269057, guid: 1101f5e937155c74981daaa5e4cc1e67, type: 3}
         position: {x: -5.3, y: -7.1}
+      - prefab: {fileID: 8923836045810014238, guid: 3f6ccf2879d74cf4b8571304c7b252f0, type: 3}
+        position: {x: -5.3, y: -8.1}
     - roomEnemyInfos:
       - prefab: {fileID: 4094656537320269057, guid: 1101f5e937155c74981daaa5e4cc1e67, type: 3}
         position: {x: -5.3, y: -7.1}
+      - prefab: {fileID: 8923836045810014238, guid: 3f6ccf2879d74cf4b8571304c7b252f0, type: 3}
+        position: {x: -5.3, y: -8.1}
     - roomEnemyInfos:
       - prefab: {fileID: 4094656537320269057, guid: 1101f5e937155c74981daaa5e4cc1e67, type: 3}
         position: {x: -5.3, y: -7.1}
+      - prefab: {fileID: 8923836045810014238, guid: 3f6ccf2879d74cf4b8571304c7b252f0, type: 3}
+        position: {x: -5.3, y: -8.1}
     - roomEnemyInfos:
       - prefab: {fileID: 4094656537320269057, guid: 1101f5e937155c74981daaa5e4cc1e67, type: 3}
         position: {x: -5.3, y: -7.1}
+      - prefab: {fileID: 8923836045810014238, guid: 3f6ccf2879d74cf4b8571304c7b252f0, type: 3}
+        position: {x: -5.3, y: -8.1}
+    - roomEnemyInfos:
+      - prefab: {fileID: 4094656537320269057, guid: 1101f5e937155c74981daaa5e4cc1e67, type: 3}
+        position: {x: -5.3, y: -7.1}
+      - prefab: {fileID: 8923836045810014238, guid: 3f6ccf2879d74cf4b8571304c7b252f0, type: 3}
+        position: {x: -5.3, y: -8.1}
+    - roomEnemyInfos:
+      - prefab: {fileID: 4094656537320269057, guid: 1101f5e937155c74981daaa5e4cc1e67, type: 3}
+        position: {x: -5.3, y: -7.1}
+      - prefab: {fileID: 8923836045810014238, guid: 3f6ccf2879d74cf4b8571304c7b252f0, type: 3}
+        position: {x: -5.3, y: -8.1}
+    - roomEnemyInfos:
+      - prefab: {fileID: 4094656537320269057, guid: 1101f5e937155c74981daaa5e4cc1e67, type: 3}
+        position: {x: -5.3, y: -7.1}
+      - prefab: {fileID: 8923836045810014238, guid: 3f6ccf2879d74cf4b8571304c7b252f0, type: 3}
+        position: {x: -5.3, y: -8.1}
   playerChampions:
   - {fileID: 108618814}
   currentRoomEnemies: []
@@ -7156,10 +7187,10 @@ RectTransform:
   - {fileID: 38622209}
   m_Father: {fileID: 1874200017}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 380, y: -70}
-  m_SizeDelta: {x: 100, y: 100}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &546532736
 MonoBehaviour:
@@ -10953,10 +10984,10 @@ RectTransform:
   - {fileID: 1032758556}
   m_Father: {fileID: 1874200017}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 270, y: -70}
-  m_SizeDelta: {x: 100, y: 100}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1012798519
 MonoBehaviour:
@@ -16492,10 +16523,10 @@ RectTransform:
   - {fileID: 1638319142}
   m_Father: {fileID: 1874200017}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 50, y: -70}
-  m_SizeDelta: {x: 100, y: 100}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1122076159
 MonoBehaviour:
@@ -17726,7 +17757,7 @@ GameObject:
   - component: {fileID: 1306131070}
   - component: {fileID: 1306131071}
   - component: {fileID: 1306131072}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: SpawnRangeObject
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -18909,7 +18940,7 @@ GameObject:
   - component: {fileID: 1520863398}
   - component: {fileID: 1520863399}
   - component: {fileID: 1520863400}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: InvisibleWall
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -20405,9 +20436,9 @@ GameObject:
   - component: {fileID: 1556771353}
   - component: {fileID: 1556771355}
   - component: {fileID: 1556771354}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: MapColliders
-  m_TagString: Untagged
+  m_TagString: InvisibleWall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -23194,10 +23225,10 @@ RectTransform:
   - {fileID: 1415293675}
   m_Father: {fileID: 1874200017}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 160, y: -70}
-  m_SizeDelta: {x: 100, y: 100}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1872287108
 MonoBehaviour:
@@ -40148,7 +40179,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &7028375573421283480
 MonoBehaviour:
   m_ObjectHideFlags: 0

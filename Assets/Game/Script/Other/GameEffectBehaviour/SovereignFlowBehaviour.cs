@@ -33,9 +33,7 @@ public class SovereignFlowBehaviour : MonoBehaviour, IGameEffectBehaviour
         if (other.transform.parent != null)
         {
             /* Since parent will have customMono, not this */
-            CustomMono t_customMono = GameManager.Instance.GetCustomMono(
-                other.transform.parent.gameObject
-            );
+            CustomMono t_customMono = GameManager.Instance.GetCustomMono(other);
             if (t_customMono != null)
             {
                 if (!allyTags.Contains(t_customMono.tag))

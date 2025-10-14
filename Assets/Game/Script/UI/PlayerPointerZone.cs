@@ -29,9 +29,7 @@ public class PlayerPointerZone : MonoBehaviour, IDragHandler, IEndDragHandler, I
             );
             if (raycastHit2D.collider != null)
             {
-                currentRaycastCM = GameManager.Instance.GetCustomMono(
-                    raycastHit2D.collider.transform.parent.gameObject
-                );
+                currentRaycastCM = GameManager.Instance.GetCustomMono(raycastHit2D.collider);
 
                 GameManager.Instance.gridManager.ShowVisual();
             }

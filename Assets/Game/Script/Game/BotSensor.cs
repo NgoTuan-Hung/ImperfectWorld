@@ -179,10 +179,7 @@ public class BotSensor : CustomMonoPal
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (
-            (onTriggerCM = GameManager.Instance.GetCustomMono(other.transform.parent.gameObject))
-            != null
-        )
+        if ((onTriggerCM = GameManager.Instance.GetCustomMono(other)) != null)
         {
             /* if we see a new enemy, remember him. */
             if (!customMono.allyTags.Contains(onTriggerCM.tag))
@@ -192,10 +189,7 @@ public class BotSensor : CustomMonoPal
 
     private void OnTriggerExit2D(Collider2D other)
     {
-        if (
-            (onTriggerCM = GameManager.Instance.GetCustomMono(other.transform.parent.gameObject))
-            != null
-        )
+        if ((onTriggerCM = GameManager.Instance.GetCustomMono(other)) != null)
         {
             /* Erase enemy from see list.. */
             enemiesWeSee.Remove(onTriggerCM);
@@ -213,10 +207,7 @@ public class BotSensor : CustomMonoPal
 
     private void OnTriggerStay2D(Collider2D other)
     {
-        if (
-            (onTriggerCM = GameManager.Instance.GetCustomMono(other.transform.parent.gameObject))
-            != null
-        )
+        if ((onTriggerCM = GameManager.Instance.GetCustomMono(other)) != null)
         {
             if (!customMono.allyTags.Contains(onTriggerCM.tag))
             {

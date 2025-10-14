@@ -6,6 +6,7 @@ using Random = UnityEngine.Random;
 public class Attack : SkillBase
 {
     Func<Vector2, Vector2, CustomMono, IEnumerator> triggerIE;
+    public HitCallback hitCallback = new();
 
     public override void Awake()
     {
@@ -156,6 +157,9 @@ public class Attack : SkillBase
         p_customMono.statusEffect.GetHit(
             CalculateFinalDamage(GetActionField<ActionFloatField>(ActionFieldName.Damage).value)
         );
+        hitCallback.count++;
+        hitCallback.target = p_customMono;
+        hitCallback.callback(hitCallback);
 
         SpawnEffectAtLoc(
             p_customMono.rotationAndCenterObject.transform.position,
@@ -195,7 +199,8 @@ public class Attack : SkillBase
                     GetActionField<ActionFloatField>(ActionFieldName.Damage).value
                 ),
                 p_customMono,
-                customMono.charAttackInfo.rangedImpactEffectSO
+                customMono.charAttackInfo.rangedImpactEffectSO,
+                hitCallback
             );
 
         while (!customMono.animationEventFunctionCaller.GetSignalVals(EAnimationSignal.EndAttack))

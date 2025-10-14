@@ -172,9 +172,7 @@ public class CollideAndDamage : MonoEditor, IGameEffectBehaviour
         if (p_collider2D.transform.parent != null)
         {
             /* Since parent will have customMono, not this */
-            CustomMono t_customMono = GameManager.Instance.GetCustomMono(
-                p_collider2D.transform.parent.gameObject
-            );
+            CustomMono t_customMono = GameManager.Instance.GetCustomMono(p_collider2D);
             if (t_customMono != null)
             {
                 if (!allyTags.Contains(t_customMono.tag))
@@ -198,9 +196,7 @@ public class CollideAndDamage : MonoEditor, IGameEffectBehaviour
         if (p_collider2D.transform.parent != null)
         {
             /* Since parent will have customMono, not this */
-            CustomMono t_customMono = GameManager.Instance.GetCustomMono(
-                p_collider2D.transform.parent.gameObject
-            );
+            CustomMono t_customMono = GameManager.Instance.GetCustomMono(p_collider2D);
             if (t_customMono != null)
             {
                 if (!allyTags.Contains(t_customMono.tag))

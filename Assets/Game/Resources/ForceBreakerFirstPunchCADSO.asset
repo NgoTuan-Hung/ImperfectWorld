@@ -10,11 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8afef54b9e0ada645b96a28c86c1d370, type: 3}
-  m_Name: ForceBreakerKickCADSO
+  m_Name: ForceBreakerFirstPunchCADSO
   m_EditorClassIdentifier: Assembly-CSharp::CollideAndDamageSO
   collideType: 0
   oneTimeContactInteraction: 0
   pushEnemyOnCollideType: 0
   deactivateOnCollide: 0
   spawnEffectOnCollide: 1
-  spawnedEffectOnCollide: {fileID: 0}
+  spawnedEffectOnCollide: {fileID: 11400000, guid: c12e102f97b1612468f83ff8684ff71d, type: 2}
