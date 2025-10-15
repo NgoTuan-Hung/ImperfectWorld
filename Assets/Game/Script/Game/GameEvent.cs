@@ -2,5 +2,5 @@ using System;
 
 public class GameEvent
 {
-    public Action<GameEventData> action = (p_gED) => { };
+    public Action<IGameEventData> action = (p_gED) => { };
 }

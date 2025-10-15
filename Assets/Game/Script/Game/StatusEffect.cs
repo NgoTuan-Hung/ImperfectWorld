@@ -82,7 +82,7 @@ public class StatusEffect : CustomMonoPal
             StopPoison();
     }
 
-    public void GetHit(float p_damage)
+    public float GetHit(float p_damage)
     {
         finalTakenDamage = Math.Clamp(
             p_damage - customMono.stat.armor.FinalValue,
@@ -103,6 +103,8 @@ public class StatusEffect : CustomMonoPal
             StartCoroutine(DamageEffect());
         if (!CheckEffect(StatusEffectState.HitColorEffect))
             StartCoroutine(HitColorEffect());
+
+        return finalTakenDamage;
     }
 
     /// <summary>
@@ -375,5 +377,29 @@ public class StatusEffect : CustomMonoPal
         customMono.stat.armor.BaseValue += p_value;
         yield return new WaitForSeconds(p_duration);
         customMono.stat.armor.BaseValue -= p_value;
+    }
+
+    public void BuffAttackSpeed(FloatStatModifier p_fSM, float p_duration)
+    {
+        StartCoroutine(BuffAttackSpeedIE(p_fSM, p_duration));
+    }
+
+    private IEnumerator BuffAttackSpeedIE(FloatStatModifier p_fSM, float p_duration)
+    {
+        customMono.stat.attackSpeed.AddModifier(p_fSM);
+        yield return new WaitForSeconds(p_duration);
+        customMono.stat.attackSpeed.RemoveModifier(p_fSM);
+    }
+
+    public void BuffOmnivamp(FloatStatModifier p_fSM, float p_duration)
+    {
+        StartCoroutine(BuffOmnivampIE(p_fSM, p_duration));
+    }
+
+    private IEnumerator BuffOmnivampIE(FloatStatModifier p_fSM, float p_duration)
+    {
+        customMono.stat.omnivamp.AddModifier(p_fSM);
+        yield return new WaitForSeconds(p_duration);
+        customMono.stat.omnivamp.RemoveModifier(p_fSM);
     }
 }

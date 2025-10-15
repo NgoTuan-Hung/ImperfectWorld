@@ -1,5 +1,8 @@
 public class BattleTempo : SkillBase
 {
+    AttackGameEventData attackGameEventData = new();
+    DealDamageGameEventData dealDamageGED = new();
+
     public override void Awake()
     {
         base.Awake();
@@ -19,7 +22,7 @@ public class BattleTempo : SkillBase
 
     public override void Config()
     {
-        (customMono.skill.skillBases[0] as Attack).hitCallback.callback = Proc;
+        GameManager.Instance.GetSelfEvent(customMono, GameEventType.Attack).action += Proc;
     }
 
     public override void StatChangeRegister()
@@ -35,11 +38,20 @@ public class BattleTempo : SkillBase
             customMono.stat.reflex.FinalValue * 2.5f;
     }
 
-    void Proc(HitCallback p_hC)
+    void Proc(IGameEventData p_gED)
     {
-        if (p_hC.count % 4 == 0)
-            p_hC.target.statusEffect.GetHit(
+        attackGameEventData = p_gED.As<AttackGameEventData>();
+
+        if (attackGameEventData.count % 4 == 0)
+        {
+            dealDamageGED.damage = attackGameEventData.target.statusEffect.GetHit(
                 GetActionField<ActionFloatField>(ActionFieldName.Damage).value
             );
+            dealDamageGED.dealer = attackGameEventData.attacker;
+            dealDamageGED.target = attackGameEventData.target;
+            GameManager
+                .Instance.GetSelfEvent(dealDamageGED.dealer, GameEventType.DealDamage)
+                .action(dealDamageGED);
+        }
     }
 }

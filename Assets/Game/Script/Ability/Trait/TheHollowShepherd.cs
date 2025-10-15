@@ -6,6 +6,7 @@ public class TheHollowShepherd : SkillBase
 {
     HashSet<CustomMono> handledAllies;
     List<FloatStatModifier> modifiers;
+    ValueChangeGameEventData hpChangeGED;
 
     public override void Awake()
     {
@@ -54,19 +55,21 @@ public class TheHollowShepherd : SkillBase
         base.RecalculateStat();
     }
 
-    public void Trigger(GameEventData p_gED)
+    public void Trigger(IGameEventData p_gED)
     {
-        if (p_gED.owner.Equals(customMono))
+        hpChangeGED = p_gED.As<ValueChangeGameEventData>();
+
+        if (hpChangeGED.owner.Equals(customMono))
             return;
-        if (!handledAllies.Contains(p_gED.owner))
+        if (!handledAllies.Contains(hpChangeGED.owner))
         {
-            if (p_gED.currentValue / p_gED.maxValue < 0.2f)
+            if (hpChangeGED.currentValue / hpChangeGED.maxValue < 0.2f)
             {
-                handledAllies.Add(p_gED.owner);
+                handledAllies.Add(hpChangeGED.owner);
                 var t_mod = new FloatStatModifier(3f, FloatStatModifierType.Multiplicative);
                 customMono.stat.attackSpeed.AddModifier(t_mod);
                 modifiers.Add(t_mod);
-                p_gED.owner.statusEffect.GetHit(p_gED.maxValue * 0.1f);
+                hpChangeGED.owner.statusEffect.GetHit(hpChangeGED.maxValue * 0.1f);
             }
         }
     }

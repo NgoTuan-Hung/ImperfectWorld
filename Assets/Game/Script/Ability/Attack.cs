@@ -6,7 +6,8 @@ using Random = UnityEngine.Random;
 public class Attack : SkillBase
 {
     Func<Vector2, Vector2, CustomMono, IEnumerator> triggerIE;
-    public HitCallback hitCallback = new();
+    AttackGameEventData attackGED = new();
+    public DealDamageGameEventData dealDamageGED = new();
 
     public override void Awake()
     {
@@ -154,12 +155,17 @@ public class Attack : SkillBase
                 )
             );
 
-        p_customMono.statusEffect.GetHit(
+        dealDamageGED.damage = p_customMono.statusEffect.GetHit(
             CalculateFinalDamage(GetActionField<ActionFloatField>(ActionFieldName.Damage).value)
         );
-        hitCallback.count++;
-        hitCallback.target = p_customMono;
-        hitCallback.callback(hitCallback);
+
+        dealDamageGED.dealer = attackGED.attacker = customMono;
+        dealDamageGED.count = attackGED.count++;
+        dealDamageGED.target = attackGED.target = p_customMono;
+        GameManager.Instance.GetSelfEvent(customMono, GameEventType.Attack).action(attackGED);
+        GameManager
+            .Instance.GetSelfEvent(customMono, GameEventType.DealDamage)
+            .action(dealDamageGED);
 
         SpawnEffectAtLoc(
             p_customMono.rotationAndCenterObject.transform.position,
@@ -191,6 +197,7 @@ public class Attack : SkillBase
 
         customMono.animationEventFunctionCaller.SetSignal(EAnimationSignal.Attack, false);
 
+        dealDamageGED.dealer = attackGED.attacker = customMono;
         customMono
             .charAttackInfo.GetRangedProjectileEffect()
             .FireAsRangedAttackEffect(
@@ -200,7 +207,8 @@ public class Attack : SkillBase
                 ),
                 p_customMono,
                 customMono.charAttackInfo.rangedImpactEffectSO,
-                hitCallback
+                attackGED,
+                dealDamageGED
             );
 
         while (!customMono.animationEventFunctionCaller.GetSignalVals(EAnimationSignal.EndAttack))

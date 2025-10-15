@@ -11,9 +11,12 @@ using Random = UnityEngine.Random;
 public enum GameEventType
 {
     HPChange,
+    Attack,
+    DealDamage,
 }
 
 [RequireComponent(typeof(HexGridManager))]
+[DefaultExecutionOrder(-1)]
 public partial class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
@@ -59,7 +62,7 @@ public partial class GameManager : MonoBehaviour
     /// characters around anymore. When battle finish, this will be set to true.
     /// </summary>
     public bool positioningPhase = true;
-    public Dictionary<GameEventType, GameEvent> ok;
+    public Dictionary<CustomMono, Dictionary<GameEventType, GameEvent>> selfEvents = new();
     public Dictionary<string, Dictionary<GameEventType, GameEvent>> teamBasedEvents = new();
 
     public void InitializeControllableCharacter(CustomMono p_customMono) { }
@@ -307,6 +310,10 @@ public partial class GameManager : MonoBehaviour
     public void AddCustomMono(CustomMono customMono)
     {
         customMonos.Add(customMono.combatCollider2D.GetHashCode(), customMono);
+        selfEvents.Add(
+            customMono,
+            new() { { GameEventType.Attack, new() }, { GameEventType.DealDamage, new() } }
+        );
     }
 
     public CustomMono GetCustomMono(Collider2D p_cld)
@@ -314,9 +321,10 @@ public partial class GameManager : MonoBehaviour
         return customMonos.GetValueOrDefault(p_cld.GetHashCode());
     }
 
-    public void RemoveCustomMono(GameObject p_gameObject)
+    public void RemoveCustomMono(CustomMono p_customMono)
     {
-        customMonos.Remove(p_gameObject.GetHashCode());
+        customMonos.Remove(p_customMono.combatCollider2D.GetHashCode());
+        selfEvents.Remove(p_customMono);
     }
 
     public CustomMono GetRandomEnemy(string p_yourTag) =>
@@ -351,4 +359,7 @@ public partial class GameManager : MonoBehaviour
     public void SetObstacle(Vector2 p_pos) => gridManager.MarkNodeAsObstacle(p_pos);
 
     public void RemoveObstacle(Vector2 p_pos) => gridManager.MarkNodeAsNormal(p_pos);
+
+    public GameEvent GetSelfEvent(CustomMono p_customMono, GameEventType p_gameEventType) =>
+        selfEvents[p_customMono][p_gameEventType];
 }

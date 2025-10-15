@@ -54,7 +54,7 @@ public class GameObjectInjector : AssetPostprocessor
             return;
         }
 
-        int heightChange = 8;
+        int heightChange = 53;
         for (int i = 0; i < arrayProp.arraySize; i++)
         {
             var elem = arrayProp.GetArrayElementAtIndex(i);

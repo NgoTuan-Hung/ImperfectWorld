@@ -46,7 +46,7 @@ public partial class Stat : MonoEditor, INotifyBindablePropertyChanged
             InitUI();
             StartCoroutine(LateStart());
         };
-        SetBroadcastGameEvent();
+        SetupGameEvent();
     }
 
     IEnumerator LateStart()
@@ -146,7 +146,7 @@ public partial class Stat : MonoEditor, INotifyBindablePropertyChanged
         actionMoveSpeedReduceRate.finalValueChangeEvent += ChangeActionSlow;
     }
 
-    private void SetBroadcastGameEvent()
+    private void SetupGameEvent()
     {
         hpChangeED = new(customMono);
         currentHealthPoint.valueChangeEvent += () =>
@@ -157,6 +157,9 @@ public partial class Stat : MonoEditor, INotifyBindablePropertyChanged
                 .Instance.GetTeamBasedEvent(customMono.tag, GameEventType.HPChange)
                 .action(hpChangeED);
         };
+
+        GameManager.Instance.GetSelfEvent(customMono, GameEventType.DealDamage).action +=
+            OnDealDamage;
     }
 
     void CheckCurrentHPBelowZero()
@@ -333,5 +336,13 @@ public partial class Stat : MonoEditor, INotifyBindablePropertyChanged
             currentHealthPoint.Value += healthRegen.FinalValue * Time.deltaTime;
             yield return null;
         }
+    }
+
+    public void OnDealDamage(IGameEventData p_gED)
+    {
+        dealDamageGameEventData = p_gED.As<DealDamageGameEventData>();
+
+        /* Omnivamp */
+        currentHealthPoint.Value += dealDamageGameEventData.damage * omnivamp.FinalValue;
     }
 }

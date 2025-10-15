@@ -287,11 +287,19 @@ public class GameEffect : MonoSelfAware
         float p_damage,
         CustomMono p_target,
         GameEffectSO p_impactEffect,
-        HitCallback p_hitCallback = null
+        AttackGameEventData p_attackGED = null,
+        DealDamageGameEventData p_dealDamageGED = null
     )
     {
         StartCoroutine(
-            FireAsRangedAttackEffectIE(p_origin, p_damage, p_target, p_impactEffect, p_hitCallback)
+            FireAsRangedAttackEffectIE(
+                p_origin,
+                p_damage,
+                p_target,
+                p_impactEffect,
+                p_attackGED,
+                p_dealDamageGED
+            )
         );
     }
 
@@ -300,7 +308,8 @@ public class GameEffect : MonoSelfAware
         float p_damage,
         CustomMono p_target,
         GameEffectSO p_impactEffect,
-        HitCallback p_hitCallback = null
+        AttackGameEventData p_attackGED = null,
+        DealDamageGameEventData p_dealDamageGED = null
     )
     {
         transform.position = p_origin;
@@ -327,13 +336,16 @@ public class GameEffect : MonoSelfAware
             yield return new WaitForSeconds(Time.fixedDeltaTime);
         }
 
-        p_target.statusEffect.GetHit(p_damage);
-        if (p_hitCallback != null)
-        {
-            p_hitCallback.count++;
-            p_hitCallback.target = p_target;
-            p_hitCallback.callback(p_hitCallback);
-        }
+        p_dealDamageGED.damage = p_target.statusEffect.GetHit(p_damage);
+        p_dealDamageGED.count = p_attackGED.count++;
+        p_dealDamageGED.target = p_attackGED.target = p_target;
+        GameManager
+            .Instance.GetSelfEvent(p_attackGED.attacker, GameEventType.Attack)
+            .action(p_attackGED);
+        GameManager
+            .Instance.GetSelfEvent(p_dealDamageGED.dealer, GameEventType.DealDamage)
+            .action(p_dealDamageGED);
+
         GameManager.Instance.poolLink[p_impactEffect].PickOneGameEffect().transform.position =
             p_target.rotationAndCenterObject.transform.position;
         deactivate();

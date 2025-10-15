@@ -19,6 +19,7 @@ public enum AttackType
 }
 
 [RequireComponent(typeof(BotSensor), typeof(BotAIManager))]
+[DefaultExecutionOrder(0)]
 public class CustomMono : MonoSelfAware
 {
     public CharUIData charUIData;
@@ -99,6 +100,7 @@ public class CustomMono : MonoSelfAware
         GetAllComponents();
         PrepareValues();
         StatChangeRegister();
+        GameManager.Instance.AddCustomMono(this);
     }
 
     private void OnEnable()
@@ -171,7 +173,6 @@ public class CustomMono : MonoSelfAware
 
     public override void Start()
     {
-        GameManager.Instance.AddCustomMono(this);
         if (isControllable)
             GameManager.Instance.InitializeControllableCharacterRevamp(this);
 
@@ -251,7 +252,7 @@ public class CustomMono : MonoSelfAware
 
     private void OnDestroy()
     {
-        GameManager.Instance.RemoveCustomMono(gameObject);
+        GameManager.Instance.RemoveCustomMono(this);
     }
 
     /// <summary>

@@ -56,7 +56,7 @@ public partial class Stat
     public FloatModifier damageModifier = new();
 
     [Header("<color='#C62828'>OMNIVAMP")]
-    public FloatModifier omnivamp = new();
+    public FloatStatWithModifier omnivamp = new();
 
     [HideInInspector]
     public FloatStatWithModifier actionMoveSpeedReduceRate = new();
@@ -80,5 +80,6 @@ public partial class Stat
     public ActionWrapper sizeChangeEvent = new();
     public Dictionary<string, ActionWrapper> propertyChangeEventDictionary = new();
     public ActionWrapper notifyAW;
-    public GameEventData hpChangeED;
+    public ValueChangeGameEventData hpChangeED;
+    DealDamageGameEventData dealDamageGameEventData;
 }

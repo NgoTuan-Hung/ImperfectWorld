@@ -164,6 +164,7 @@
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\VertexZoom.cs" />
     <Compile Include="Assets\Game\Script\PathFinding\GridNodeObstacle.cs" />
     <Compile Include="Assets\Test\PathFinding\PathFindingFinalTest.cs" />
+    <Compile Include="Assets\Game\Script\Ability\UnbrokenVigor.cs" />
     <Compile Include="Assets\Game\Script\Other\GameEffectBehaviour\PullingMissile.cs" />
     <Compile Include="Assets\Game\Script\Other\RoomSystem\RoomEnemyInfo.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_TextSelector_B.cs" />
@@ -191,6 +192,7 @@
     <Compile Include="Assets\CustomPackage\Dotween\Modules\DOTweenModuleEPOOutline.cs" />
     <Compile Include="Assets\Test\C#\Test.cs" />
     <Compile Include="Assets\Test\TimelineSerializeTest\BoxCollider1.cs" />
+    <Compile Include="Assets\Game\Script\GameEventData\DealDamageGameEventData.cs" />
     <Compile Include="Assets\CustomPackage\STSMapGeneration\OneLine\OneLine\Example\Details\Scripts\Nested\NestedSimpleExample.cs" />
     <Compile Include="Assets\Test\BladeOfPhong\BladeOfPhongTest.cs" />
     <Compile Include="Assets\Game\Script\MapGeneration\MinMax.cs" />
@@ -209,7 +211,6 @@
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\VertexShakeA.cs" />
     <Compile Include="Assets\Game\Script\Other\Misc\Test\RectSizeTest.cs" />
     <Compile Include="Assets\Game\Script\MapGeneration\UI Lines\UIPrimitiveBase.cs" />
-    <Compile Include="Assets\Game\Script\Game\GameEventData.cs" />
     <Compile Include="Assets\CustomPackage\STSMapGeneration\OneLine\OneLine\Example\Benchmark\Scripts\SeparateFieldsBenchmark.cs" />
     <Compile Include="Assets\Game\Script\Other\RoomSystem\RoomSystem.cs" />
     <Compile Include="Assets\Game\Script\UI\Model\ItemData.cs" />
@@ -232,7 +233,6 @@
     <Compile Include="Assets\Game\Script\Other\ObjectPool.cs" />
     <Compile Include="Assets\Game\Script\Other\CustomMonoPal.cs" />
     <Compile Include="Assets\Game\Script\Game\AnimatorWrapper.cs" />
-    <Compile Include="Assets\Game\Script\Other\HitCallback.cs" />
     <Compile Include="Assets\Test\TestOnTriggerStay\TestOnTriggerStay.cs" />
     <Compile Include="Assets\Game\Script\ActionField\ActionGameObjectField.cs" />
     <Compile Include="Assets\Test\JapaneseSamuraiDash\EasingFunctions.cs" />
@@ -243,6 +243,7 @@
     <Compile Include="Assets\Test\TestCulmulativeDistribution\TestCulmulativeDistribution.cs" />
     <Compile Include="Assets\Game\Script\Other\ActionWaitInfo.cs" />
     <Compile Include="Assets\Game\Script\MapGeneration\MapManager.cs" />
+    <Compile Include="Assets\Game\Script\Interface\IGameEventData.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\Benchmark01.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TextMeshSpawner.cs" />
     <Compile Include="Assets\Game\Script\Ability\NuclearBomb.cs" />
@@ -271,6 +272,7 @@
     <Compile Include="Assets\Game\Script\Ability\HeliosGaze.cs" />
     <Compile Include="Assets\Game\Script\Game\GameEffectPrefab.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\Benchmark03.cs" />
+    <Compile Include="Assets\Game\Script\Interface\IGameEffectBehaviour.cs" />
     <Compile Include="Assets\CustomPackage\STSMapGeneration\OneLine\OneLine\Attributes\HighlightAttribute.cs" />
     <Compile Include="Assets\Game\Script\MapGeneration\NodeBlueprint.cs" />
     <Compile Include="Assets\Game\Script\UI\HealthAndManaIndicator.cs" />
@@ -292,6 +294,7 @@
     <Compile Include="Assets\Game\Script\Other\MonoSelfAware.cs" />
     <Compile Include="Assets\Game\Script\UI\UIImageEffect.cs" />
     <Compile Include="Assets\CustomPackage\STSMapGeneration\OneLine\OneLine\Example\Details\Scripts\OneLineExample.cs" />
+    <Compile Include="Assets\Game\Script\GameEventData\AttackGameEventData.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\DropdownSample.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\VertexColorCycler.cs" />
     <Compile Include="Assets\Game\Script\Game\Stat.cs" />
@@ -315,6 +318,7 @@
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_TextEventCheck.cs" />
     <Compile Include="Assets\Game\Script\ActionField\ActionListComboActionField.cs" />
     <Compile Include="Assets\CustomPackage\STSMapGeneration\OneLine\OneLine\Example\Tests\Scripts\ExtendedGenericTest.cs" />
+    <Compile Include="Assets\Game\Script\GameEventData\ValueChangeGameEventData.cs" />
     <Compile Include="Assets\CustomPackage\STSMapGeneration\OneLine\RectEx\CutFromExtensions.cs" />
     <Compile Include="Assets\Test\MethodAllocTest\MethodAllocTest.cs" />
     <Compile Include="Assets\CustomPackage\STSMapGeneration\OneLine\OneLine\Example\Details\Scripts\ExpandableExample.cs" />
@@ -332,7 +336,6 @@
     <Compile Include="Assets\Game\Script\MapGeneration\LineConnection.cs" />
     <Compile Include="Assets\CustomPackage\STSMapGeneration\OneLine\OneLine\Example\Details\Scripts\CustomPropertyDrawerExample.cs" />
     <Compile Include="Assets\Test\C#\TestThrow.cs" />
-    <Compile Include="Assets\Game\Script\Other\Interface\IGameEffectBehaviour.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TextMeshProFloatingText.cs" />
     <Compile Include="Assets\Game\Script\Ability\RayOfJungle.cs" />
     <Compile Include="Assets\Game\Script\AIBehavior\NewAIBehavior.cs" />
