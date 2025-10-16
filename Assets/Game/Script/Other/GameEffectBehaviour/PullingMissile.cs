@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -6,13 +7,17 @@ public class PullingMissile : MonoBehaviour, IGameEffectBehaviour
 {
     public HashSet<string> allyTags = new();
     Action<Collider2D> onTriggerStay2D = other => { };
-
     public GameEffect GameEffect { get; set; }
-    GameObject capturePoint;
+    Dictionary<Collider2D, Vector3> localPos = new();
 
     private void Awake()
     {
-        capturePoint = transform.Find("CapturePoint").gameObject;
+        //
+    }
+
+    private void OnEnable()
+    {
+        localPos.Clear();
     }
 
     public void Initialize(GameEffect gameEffect)
@@ -30,7 +35,6 @@ public class PullingMissile : MonoBehaviour, IGameEffectBehaviour
 
     private void OnTriggerStay2DLogic(Collider2D other)
     {
-        print(other.tag);
         if (other.CompareTag("InvisibleWall"))
             GameEffect.deactivate();
 
@@ -43,7 +47,12 @@ public class PullingMissile : MonoBehaviour, IGameEffectBehaviour
                 if (!allyTags.Contains(t_customMono.tag))
                 {
                     t_customMono.statusEffect.Stun(Time.fixedDeltaTime);
-                    t_customMono.transform.position = capturePoint.transform.position;
+                    if (!localPos.ContainsKey(other))
+                    {
+                        localPos.Add(other, t_customMono.transform.position - transform.position);
+                    }
+                    else
+                        t_customMono.transform.position = transform.position + localPos[other];
                 }
                 else { }
             }

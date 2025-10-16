@@ -233,12 +233,12 @@ public class GameEffect : MonoSelfAware
             );
     }
 
-    public void SetUpCollideAndDamage(HashSet<string> p_allyTags, float p_damage)
+    public void SetUpCollideAndDamage(CustomMono p_owner, float p_damage)
     {
         var t_collideAndDamage = (CollideAndDamage)GetBehaviour(
             EGameEffectBehaviour.CollideAndDamage
         );
-        t_collideAndDamage.allyTags = p_allyTags;
+        t_collideAndDamage.owner = p_owner;
         t_collideAndDamage.collideDamage = p_damage;
     }
 
@@ -352,13 +352,13 @@ public class GameEffect : MonoSelfAware
     }
 
     public void FireAsBasicCombatProjectile(
-        HashSet<string> p_allyTags,
+        CustomMono p_owner,
         float p_damage,
         Vector3 p_origin,
         Vector2 p_dir
     )
     {
-        SetUpCollideAndDamage(p_allyTags, p_damage);
+        SetUpCollideAndDamage(p_owner, p_damage);
         KeepFlyingAt(p_origin, p_dir, true);
     }
 }

@@ -16,7 +16,7 @@ public enum OneTimeContactInteraction
 
 public class CollideAndDamage : MonoEditor, IGameEffectBehaviour
 {
-    public HashSet<string> allyTags = new();
+    public CustomMono owner;
     public float collideDamage = 1f;
     public float multipleCollideInterval = 0.05f;
     Action<Collider2D> onTriggerEnter2D = (other) => { };
@@ -36,6 +36,7 @@ public class CollideAndDamage : MonoEditor, IGameEffectBehaviour
     public float healAmmount;
     public PoisonInfo poisonInfo;
     public SlowInfo slowInfo;
+    DealDamageGameEventData dealDamageGameEventData = new();
 
     public void Awake() { }
 
@@ -175,7 +176,7 @@ public class CollideAndDamage : MonoEditor, IGameEffectBehaviour
             CustomMono t_customMono = GameManager.Instance.GetCustomMono(p_collider2D);
             if (t_customMono != null)
             {
-                if (!allyTags.Contains(t_customMono.tag))
+                if (!owner.allyTags.Contains(t_customMono.tag))
                 {
                     onTriggerEnterWithEnemyCM(t_customMono, p_collider2D);
                 }
@@ -199,7 +200,7 @@ public class CollideAndDamage : MonoEditor, IGameEffectBehaviour
             CustomMono t_customMono = GameManager.Instance.GetCustomMono(p_collider2D);
             if (t_customMono != null)
             {
-                if (!allyTags.Contains(t_customMono.tag))
+                if (!owner.allyTags.Contains(t_customMono.tag))
                 {
                     onTriggerStayWithEnemyCM(t_customMono, p_collider2D);
                 }
@@ -210,7 +211,12 @@ public class CollideAndDamage : MonoEditor, IGameEffectBehaviour
 
     void DealDamageOnTriggerEnter(CustomMono p_customMono, Collider2D p_collider2D)
     {
-        p_customMono.statusEffect.GetHit(collideDamage);
+        dealDamageGameEventData.damage = p_customMono.statusEffect.GetHit(collideDamage);
+        dealDamageGameEventData.dealer = owner;
+        dealDamageGameEventData.target = p_customMono;
+        GameManager
+            .Instance.selfEvents[dealDamageGameEventData.dealer][GameEventType.DealDamage]
+            .action(dealDamageGameEventData);
         dealDamageEvent(collideDamage);
     }
 
@@ -226,14 +232,24 @@ public class CollideAndDamage : MonoEditor, IGameEffectBehaviour
             {
                 p_customMono.multipleCollideTimersDict[GetHashCode()].currentTime =
                     multipleCollideInterval;
-                p_customMono.statusEffect.GetHit(collideDamage);
+                dealDamageGameEventData.damage = p_customMono.statusEffect.GetHit(collideDamage);
+                dealDamageGameEventData.dealer = owner;
+                dealDamageGameEventData.target = p_customMono;
+                GameManager
+                    .Instance.selfEvents[dealDamageGameEventData.dealer][GameEventType.DealDamage]
+                    .action(dealDamageGameEventData);
                 dealDamageEvent(collideDamage);
             }
         }
         catch (KeyNotFoundException)
         {
             p_customMono.AddMultipleCollideTimer(GetHashCode(), multipleCollideInterval);
-            p_customMono.statusEffect.GetHit(collideDamage);
+            dealDamageGameEventData.damage = p_customMono.statusEffect.GetHit(collideDamage);
+            dealDamageGameEventData.dealer = owner;
+            dealDamageGameEventData.target = p_customMono;
+            GameManager
+                .Instance.selfEvents[dealDamageGameEventData.dealer][GameEventType.DealDamage]
+                .action(dealDamageGameEventData);
             dealDamageEvent(collideDamage);
         }
     }

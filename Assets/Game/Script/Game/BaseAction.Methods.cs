@@ -226,7 +226,7 @@ public partial class BaseAction
         );
 
         p_gameEffect.SetUpCollideAndDamage(
-            customMono.allyTags,
+            customMono,
             GetActionField<ActionFloatField>(ActionFieldName.Damage).value
         );
 

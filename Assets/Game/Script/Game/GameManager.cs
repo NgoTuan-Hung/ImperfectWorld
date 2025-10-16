@@ -321,6 +321,28 @@ public partial class GameManager : MonoBehaviour
         return customMonos.GetValueOrDefault(p_cld.GetHashCode());
     }
 
+    public CustomMono FindLowestHPEnemy(CustomMono p_self)
+    {
+        float minHP = float.MaxValue;
+        CustomMono t_target = null;
+        foreach (var kvp in customMonos)
+        {
+            if (
+                p_self.allyTags.Contains(kvp.Value.tag)
+                || kvp.Value.stat.currentHealthPoint.Value <= 0
+            )
+                continue;
+
+            if (kvp.Value.stat.currentHealthPoint.Value < minHP)
+            {
+                minHP = kvp.Value.stat.currentHealthPoint.Value;
+                t_target = kvp.Value;
+            }
+        }
+
+        return t_target;
+    }
+
     public void RemoveCustomMono(CustomMono p_customMono)
     {
         customMonos.Remove(p_customMono.combatCollider2D.GetHashCode());

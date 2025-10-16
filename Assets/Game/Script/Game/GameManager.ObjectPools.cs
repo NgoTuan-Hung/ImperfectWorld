@@ -96,7 +96,13 @@ public partial class GameManager
         forceBreakerProjectileImpactPool,
         forceBreakerPunchImpactPool,
         forceBreakerSecondPunchPool,
-        forceBreakerWavePool;
+        forceBreakerWavePool,
+        pitSlash1Pool,
+        pitSlash2Pool,
+        pitSlash3Pool,
+        pitSlash4Pool,
+        pitSlashImpactPool,
+        pitSpinPool;
     List<string> objectPoolNames = new()
     {
         "moonSlashExplodePool",
@@ -191,6 +197,12 @@ public partial class GameManager
         "forceBreakerPunchImpactPool",
         "forceBreakerSecondPunchPool",
         "forceBreakerWavePool",
+        "pitSlash1Pool",
+        "pitSlash2Pool",
+        "pitSlash3Pool",
+        "pitSlash4Pool",
+        "pitSlashImpactPool",
+        "pitSpinPool",
     };
 
     void InitAllEffectPools()

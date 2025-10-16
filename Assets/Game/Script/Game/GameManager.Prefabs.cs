@@ -96,7 +96,13 @@ public partial class GameManager
         forceBreakerProjectileImpact,
         forceBreakerPunchImpact,
         forceBreakerSecondPunch,
-        forceBreakerWave;
+        forceBreakerWave,
+        pitSlash1,
+        pitSlash2,
+        pitSlash3,
+        pitSlash4,
+        pitSlashImpact,
+        pitSpin;
 
     List<string> prefabNames = new()
     {
@@ -192,6 +198,12 @@ public partial class GameManager
         "forceBreakerPunchImpact",
         "forceBreakerSecondPunch",
         "forceBreakerWave",
+        "pitSlash1",
+        "pitSlash2",
+        "pitSlash3",
+        "pitSlash4",
+        "pitSlashImpact",
+        "pitSpin",
     };
 
     void LoadGameEffectPrefabs()

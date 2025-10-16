@@ -1,0 +1,28 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1cb3ed3e615e53240964c7767178a777, type: 3}
+  m_Name: PitCAI
+  m_EditorClassIdentifier: Assembly-CSharp::CharAttackInfo
+  attackType: 0
+  meleeAttackInfos:
+  - meleeAttackEffectSO: {fileID: 11400000, guid: 7b653dd44792df94abde97f8c32074a6, type: 2}
+    meleeImpactEffectSO: {fileID: 11400000, guid: 0c0e0553b818a9345880cfc6d447ccf4, type: 2}
+  - meleeAttackEffectSO: {fileID: 11400000, guid: c752799fae3393b4ca388412718222de, type: 2}
+    meleeImpactEffectSO: {fileID: 11400000, guid: 0c0e0553b818a9345880cfc6d447ccf4, type: 2}
+  - meleeAttackEffectSO: {fileID: 11400000, guid: 0f3ae342b3e1b8440be4584ceb8ee8a1, type: 2}
+    meleeImpactEffectSO: {fileID: 11400000, guid: 0c0e0553b818a9345880cfc6d447ccf4, type: 2}
+  - meleeAttackEffectSO: {fileID: 11400000, guid: 5df865f55161bbf4290f38f70b402874, type: 2}
+    meleeImpactEffectSO: {fileID: 11400000, guid: 0c0e0553b818a9345880cfc6d447ccf4, type: 2}
+  variant: 4
+  rangedProjectileEffectSO: {fileID: 0}
+  rangedImpactEffectSO: {fileID: 0}
+  attackRange: 1.25

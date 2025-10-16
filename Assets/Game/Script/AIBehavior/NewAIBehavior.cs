@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Diagnostics;
 using UnityEngine;
@@ -7,6 +8,8 @@ public class NewAIBehavior : BaseAIBehavior
     Attack attack;
     SkillBase skill;
     Stopwatch stopwatch = new();
+    Action useSkill = () => { },
+        useSkillIfManaIsEnough = () => { };
 
     public override void Awake()
     {
@@ -27,6 +30,28 @@ public class NewAIBehavior : BaseAIBehavior
         {
             skill = customMono.skill.skillBases[1];
         }
+
+        if (skill != null)
+        {
+            if (skill.botActionManual.useSkillIfManaIsEnough)
+                useSkillIfManaIsEnough = () =>
+                {
+                    if (
+                        skill.GetActionField<ActionFloatField>(ActionFieldName.ManaCost).value
+                        <= customMono.stat.currentManaPoint.Value
+                    )
+                        UseSkill();
+                };
+            else
+                useSkill = () =>
+                {
+                    if (
+                        skill.GetActionField<ActionFloatField>(ActionFieldName.ManaCost).value
+                        <= customMono.stat.currentManaPoint.Value
+                    )
+                        UseSkill();
+                };
+        }
     }
 
     public override void FixedUpdate()
@@ -38,6 +63,8 @@ public class NewAIBehavior : BaseAIBehavior
     {
         // ThinkAndPrepare();
         // base.DoAction();
+
+        useSkillIfManaIsEnough();
 
         if (
             customMono.botSensor.originToTargetOriginDirection.magnitude
@@ -52,14 +79,7 @@ public class NewAIBehavior : BaseAIBehavior
 
             if (customMono.botSensor.currentNearestEnemy != null)
             {
-                if (skill != null)
-                {
-                    if (
-                        skill.GetActionField<ActionFloatField>(ActionFieldName.ManaCost).value
-                        <= customMono.stat.currentManaPoint.Value
-                    )
-                        UseSkill();
-                }
+                useSkill();
 
                 if (!attack.onCooldown)
                     attack.Trigger(

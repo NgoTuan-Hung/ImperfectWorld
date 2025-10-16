@@ -144,7 +144,7 @@ public class ForceBreaker : SkillBase
                     GameManager
                         .Instance.forceBreakerProjectilePool.PickOneGameEffect()
                         .FireAsBasicCombatProjectile(
-                            customMono.allyTags,
+                            customMono,
                             GetActionField<ActionFloatField>(ActionFieldName.Damage).value,
                             customMono.rotationAndCenterObject.transform.position,
                             direction

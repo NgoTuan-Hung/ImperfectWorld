@@ -23,7 +23,7 @@ public partial class BaseAction
     {
         SpawnEffectAsChild(p_dir, p_gameEffect);
         p_gameEffect.SetUpCollideAndDamage(
-            customMono.allyTags,
+            customMono,
             GetActionField<ActionFloatField>(ActionFieldName.Damage).value
         );
     }
@@ -81,7 +81,7 @@ public partial class BaseAction
 
         if (p_isCombat)
             p_gameEffect.SetUpCollideAndDamage(
-                customMono.allyTags,
+                customMono,
                 GetActionField<ActionFloatField>(ActionFieldName.Damage).value
             );
     }

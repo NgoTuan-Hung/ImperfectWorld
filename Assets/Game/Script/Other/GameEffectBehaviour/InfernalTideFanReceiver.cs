@@ -54,9 +54,9 @@ public class InfernalTideFanReceiver : MonoBehaviour, IGameEffectBehaviour
                     .GetBehaviour(EGameEffectBehaviour.CollideAndDamage) as CollideAndDamage;
             t_flame.transform.position =
                 transform.position + (i * spawnDistance * p_direction).AsVector3();
-            t_flame.allyTags = (
+            t_flame.owner = (
                 GameEffect.GetBehaviour(EGameEffectBehaviour.CollideAndDamage) as CollideAndDamage
-            ).allyTags;
+            ).owner;
             yield return new WaitForSeconds(spawnInterval);
         }
     }
