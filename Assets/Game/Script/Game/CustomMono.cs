@@ -173,6 +173,7 @@ public class CustomMono : MonoSelfAware
 
     public override void Start()
     {
+        GameUIManager.Instance.GenerateAndBindChampUI(this);
         if (isControllable)
             GameManager.Instance.InitializeControllableCharacterRevamp(this);
 

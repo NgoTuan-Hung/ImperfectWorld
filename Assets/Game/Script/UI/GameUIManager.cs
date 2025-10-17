@@ -25,7 +25,8 @@ public class GameUIManager : MonoEditorSingleton<GameUIManager>
         itemSkillTooltipPrefab,
         skillAndItemUseButtonsPrefab,
         skillAndItemUseZone,
-        mapBackground;
+        mapBackground,
+        champUIZone;
     public TextMeshProUGUI roundText,
         roundTimer;
     public RectTransform partyMenu;
@@ -36,9 +37,12 @@ public class GameUIManager : MonoEditorSingleton<GameUIManager>
     Vector2 screenTooltipRectSize;
     public MapViewUI mapViewUI;
     public InteractiveButtonUI startBattleButton;
+    GameObject champInfoPanel;
+    Dictionary<CustomMono, ChampInfoPanel> champInfoPanelDict = new();
 
     private void Awake()
     {
+        champInfoPanel = Resources.Load("UI/ChampInfoPanel") as GameObject;
         canvas = GetComponent<Canvas>();
         menuCharButton.onClick.AddListener(() =>
         {
@@ -417,5 +421,13 @@ public class GameUIManager : MonoEditorSingleton<GameUIManager>
     {
         mapBackground.SetActive(false);
         mapViewUI.GetScrollRectForMap().gameObject.SetActive(false);
+    }
+
+    public void GenerateAndBindChampUI(CustomMono p_customMono)
+    {
+        var t_champUIPanel = Instantiate(champInfoPanel).GetComponent<ChampInfoPanel>();
+        t_champUIPanel.transform.SetParent(champUIZone.transform, false);
+        t_champUIPanel.Init(p_customMono);
+        champInfoPanelDict[p_customMono] = t_champUIPanel;
     }
 }
