@@ -102,7 +102,12 @@ public partial class GameManager
         pitSlash3Pool,
         pitSlash4Pool,
         pitSlashImpactPool,
-        pitSpinPool;
+        pitSpinPool,
+        coleAttack1SlashPool,
+        coleAttack1ImpactPool,
+        coleAttackImpactPool,
+        bloodOfTheFallenCastPool,
+        bloodOfTheFallenEnergyPool;
     List<string> objectPoolNames = new()
     {
         "moonSlashExplodePool",
@@ -203,6 +208,11 @@ public partial class GameManager
         "pitSlash4Pool",
         "pitSlashImpactPool",
         "pitSpinPool",
+        "coleAttack1SlashPool",
+        "coleAttack1ImpactPool",
+        "coleAttackImpactPool",
+        "bloodOfTheFallenCastPool",
+        "bloodOfTheFallenEnergyPool",
     };
 
     void InitAllEffectPools()

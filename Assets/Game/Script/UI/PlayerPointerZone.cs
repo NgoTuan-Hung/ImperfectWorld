@@ -1,7 +1,13 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class PlayerPointerZone : MonoBehaviour, IDragHandler, IEndDragHandler, IBeginDragHandler
+public class PlayerPointerZone
+    : MonoBehaviour,
+        IPointerDownHandler,
+        IPointerUpHandler,
+        IDragHandler,
+        IEndDragHandler,
+        IBeginDragHandler
 {
     CustomMono currentRaycastCM;
     LayerMask layerMask;
@@ -14,11 +20,26 @@ public class PlayerPointerZone : MonoBehaviour, IDragHandler, IEndDragHandler, I
         layerMask = 1 << LayerMask.NameToLayer("CombatCollidee");
     }
 
-    public void OnDrag(PointerEventData eventData)
-    {
-        if (!GameManager.Instance.positioningPhase)
-            return;
+#if false
+    PointerDown(eventData){
+        raycastHit2D = Physics2D.Raycast(
+                Camera.main.ScreenToWorldPoint(eventData.position),
+                Vector3.forward,
+                10,
+                layerMask
+            );
+        
+            if (raycastHit2D.collider != null)
+            {
+                currentRaycastCM = GameManager.Instance.GetCustomMono(raycastHit2D.collider);
 
+                GameUIManager.Instance.ShowChampUI(currentRaycastCM);
+            }
+    }
+#endif
+
+    public void OnPointerDown(PointerEventData eventData)
+    {
         if (currentRaycastCM == null)
         {
             raycastHit2D = Physics2D.Raycast(
@@ -32,9 +53,17 @@ public class PlayerPointerZone : MonoBehaviour, IDragHandler, IEndDragHandler, I
                 currentRaycastCM = GameManager.Instance.GetCustomMono(raycastHit2D.collider);
 
                 GameManager.Instance.gridManager.ShowVisual();
+                GameUIManager.Instance.ShowChampUI(currentRaycastCM);
             }
         }
-        else
+    }
+
+    public void OnDrag(PointerEventData eventData)
+    {
+        if (!GameManager.Instance.positioningPhase)
+            return;
+
+        if (currentRaycastCM != null)
         {
             raycastNode = GameManager.Instance.gridManager.GetNodeAtPosition(
                 Camera.main.ScreenToWorldPoint(eventData.position)
@@ -52,10 +81,14 @@ public class PlayerPointerZone : MonoBehaviour, IDragHandler, IEndDragHandler, I
         }
     }
 
-    public void OnEndDrag(PointerEventData eventData)
+    public void OnPointerUp(PointerEventData eventData)
     {
         GameManager.Instance.gridManager.HideVisual();
         currentRaycastCM = null;
+    }
+
+    public void OnEndDrag(PointerEventData eventData)
+    {
         previousRaycastNode?.SwitchToDefaultVisual();
         previousRaycastNode = null;
     }

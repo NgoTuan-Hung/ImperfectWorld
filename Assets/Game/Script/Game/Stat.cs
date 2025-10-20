@@ -100,6 +100,8 @@ public partial class Stat : MonoEditor, INotifyBindablePropertyChanged
         wisdom.RecalculateFinalValue();
         actionMoveSpeedReduceRate.RecalculateFinalValue();
         moveSpeed.RecalculateFinalValue();
+        armor.RecalculateFinalValue();
+        omnivamp.RecalculateFinalValue();
 
         Notify("Size");
     }

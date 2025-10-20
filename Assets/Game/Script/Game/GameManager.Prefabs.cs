@@ -102,7 +102,12 @@ public partial class GameManager
         pitSlash3,
         pitSlash4,
         pitSlashImpact,
-        pitSpin;
+        pitSpin,
+        coleAttack1Slash,
+        coleAttack1Impact,
+        coleAttackImpact,
+        bloodOfTheFallenCast,
+        bloodOfTheFallenEnergy;
 
     List<string> prefabNames = new()
     {
@@ -204,6 +209,11 @@ public partial class GameManager
         "pitSlash4",
         "pitSlashImpact",
         "pitSpin",
+        "coleAttack1Slash",
+        "coleAttack1Impact",
+        "coleAttackImpact",
+        "bloodOfTheFallenCast",
+        "bloodOfTheFallenEnergy",
     };
 
     void LoadGameEffectPrefabs()

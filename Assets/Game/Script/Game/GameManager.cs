@@ -48,7 +48,7 @@ public partial class GameManager : MonoBehaviour
     List<HexGridNode> returnPath;
     public RoomSystem roomSystem;
     Dictionary<GameObject, ObjectPool> enemyPools = new();
-    int enemyCount = 0;
+    public int enemyCount = 0;
     public List<CustomMono> playerChampions = new(),
         currentRoomEnemies;
 

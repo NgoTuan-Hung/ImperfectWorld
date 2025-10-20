@@ -254,6 +254,7 @@ public class CustomMono : MonoSelfAware
     private void OnDestroy()
     {
         GameManager.Instance.RemoveCustomMono(this);
+        GameUIManager.Instance.DestroyChampUI(this);
     }
 
     /// <summary>

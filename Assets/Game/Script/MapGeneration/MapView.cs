@@ -12,39 +12,49 @@ namespace Map
             BottomToTop,
             TopToBottom,
             RightToLeft,
-            LeftToRight
+            LeftToRight,
         }
 
         public MapManager mapManager;
         public MapOrientation orientation;
 
         [Tooltip(
-            "List of all the MapConfig scriptable objects from the Assets folder that might be used to construct maps. " +
-            "Similar to Acts in Slay The Spire (define general layout, types of bosses.)")]
+            "List of all the MapConfig scriptable objects from the Assets folder that might be used to construct maps. "
+                + "Similar to Acts in Slay The Spire (define general layout, types of bosses.)"
+        )]
         public List<MapConfig> allMapConfigs;
         public GameObject nodePrefab;
+
         [Tooltip("Offset of the start/end nodes of the map from the edges of the screen")]
         public float orientationOffset;
+
         [Header("Background Settings")]
         [Tooltip("If the background sprite is null, background will not be shown")]
         public Sprite background;
         public Color32 backgroundColor = Color.white;
         public float xSize;
         public float yOffset;
+
         [Header("Line Settings")]
         public GameObject linePrefab;
+
         [Tooltip("Line point count should be > 2 to get smooth color gradients")]
         [Range(3, 10)]
         public int linePointsCount = 10;
+
         [Tooltip("Distance from the node till the line starting point")]
         public float offsetFromNodes = 0.5f;
+
         [Header("Colors")]
         [Tooltip("Node Visited or Attainable color")]
         public Color32 visitedColor = Color.white;
+
         [Tooltip("Locked node color")]
         public Color32 lockedColor = Color.gray;
+
         [Tooltip("Visited or available path color")]
         public Color32 lineVisitedColor = Color.white;
+
         [Tooltip("Unavailable path color")]
         public Color32 lineLockedColor = Color.gray;
 
@@ -52,6 +62,7 @@ namespace Map
         protected GameObject mapParent;
         private List<List<Vector2Int>> paths;
         private Camera cam;
+
         // ALL nodes:
         public readonly List<MapNode> MapNodes = new List<MapNode>();
         protected readonly List<LineConnection> lineConnections = new List<LineConnection>();
@@ -106,13 +117,18 @@ namespace Map
 
         protected virtual void CreateMapBackground(Map m)
         {
-            if (background == null) return;
+            if (background == null)
+                return;
 
             GameObject backgroundObject = new GameObject("Background");
             backgroundObject.transform.SetParent(mapParent.transform);
             MapNode bossNode = MapNodes.FirstOrDefault(node => node.Node.nodeType == NodeType.Boss);
             float span = m.DistanceBetweenFirstAndLastLayers();
-            backgroundObject.transform.localPosition = new Vector3(bossNode.transform.localPosition.x, span / 2f, 0f);
+            backgroundObject.transform.localPosition = new Vector3(
+                bossNode.transform.localPosition.x,
+                span / 2f,
+                0f
+            );
             backgroundObject.transform.localRotation = Quaternion.identity;
             SpriteRenderer sr = backgroundObject.AddComponent<SpriteRenderer>();
             sr.color = backgroundColor;
@@ -127,8 +143,12 @@ namespace Map
             mapParent = new GameObject("MapParentWithAScroll");
             mapParent.transform.SetParent(firstParent.transform);
             ScrollNonUI scrollNonUi = mapParent.AddComponent<ScrollNonUI>();
-            scrollNonUi.freezeX = orientation == MapOrientation.BottomToTop || orientation == MapOrientation.TopToBottom;
-            scrollNonUi.freezeY = orientation == MapOrientation.LeftToRight || orientation == MapOrientation.RightToLeft;
+            scrollNonUi.freezeX =
+                orientation == MapOrientation.BottomToTop
+                || orientation == MapOrientation.TopToBottom;
+            scrollNonUi.freezeY =
+                orientation == MapOrientation.LeftToRight
+                || orientation == MapOrientation.RightToLeft;
             BoxCollider boxCollider = mapParent.AddComponent<BoxCollider>();
             boxCollider.size = new Vector3(100, 100, 1);
         }
@@ -174,7 +194,9 @@ namespace Map
                         mapNode.SetState(NodeStates.Visited);
                 }
 
-                Vector2Int currentPoint = mapManager.CurrentMap.path[mapManager.CurrentMap.path.Count - 1];
+                Vector2Int currentPoint = mapManager.CurrentMap.path[
+                    mapManager.CurrentMap.path.Count - 1
+                ];
                 Node currentNode = mapManager.CurrentMap.GetNode(currentPoint);
 
                 // set all the nodes that we can travel to as attainable:
@@ -199,24 +221,29 @@ namespace Map
                 return;
 
             // in any case, we mark outgoing connections from the final node with visible/attainable color:
-            Vector2Int currentPoint = mapManager.CurrentMap.path[mapManager.CurrentMap.path.Count - 1];
+            Vector2Int currentPoint = mapManager.CurrentMap.path[
+                mapManager.CurrentMap.path.Count - 1
+            ];
             Node currentNode = mapManager.CurrentMap.GetNode(currentPoint);
 
             foreach (Vector2Int point in currentNode.outgoing)
             {
-                LineConnection lineConnection = lineConnections.FirstOrDefault(conn => conn.from.Node == currentNode &&
-                                                                            conn.to.Node.point.Equals(point));
+                LineConnection lineConnection = lineConnections.FirstOrDefault(conn =>
+                    conn.from.Node == currentNode && conn.to.Node.point.Equals(point)
+                );
                 lineConnection?.SetColor(lineVisitedColor);
             }
 
-            if (mapManager.CurrentMap.path.Count <= 1) return;
+            if (mapManager.CurrentMap.path.Count <= 1)
+                return;
 
             for (int i = 0; i < mapManager.CurrentMap.path.Count - 1; i++)
             {
                 Vector2Int current = mapManager.CurrentMap.path[i];
                 Vector2Int next = mapManager.CurrentMap.path[i + 1];
-                LineConnection lineConnection = lineConnections.FirstOrDefault(conn => conn.@from.Node.point.Equals(current) &&
-                                                                            conn.to.Node.point.Equals(next));
+                LineConnection lineConnection = lineConnections.FirstOrDefault(conn =>
+                    conn.@from.Node.point.Equals(current) && conn.to.Node.point.Equals(next)
+                );
                 lineConnection?.SetColor(lineVisitedColor);
             }
         }
@@ -229,7 +256,11 @@ namespace Map
             Debug.Log("Map span in set orientation: " + span + " camera aspect: " + cam.aspect);
 
             // setting first parent to be right in front of the camera first:
-            firstParent.transform.position = new Vector3(cam.transform.position.x, cam.transform.position.y, 0f);
+            firstParent.transform.position = new Vector3(
+                cam.transform.position.x,
+                cam.transform.position.y,
+                0f
+            );
             float offset = orientationOffset;
             switch (orientation)
             {
@@ -255,7 +286,11 @@ namespace Map
                     offset *= cam.aspect;
                     mapParent.transform.eulerAngles = new Vector3(0, 0, 90);
                     // factor in map span:
-                    firstParent.transform.localPosition -= new Vector3(offset, bossNode.transform.position.y, 0);
+                    firstParent.transform.localPosition -= new Vector3(
+                        offset,
+                        bossNode.transform.position.y,
+                        0
+                    );
                     if (scrollNonUi != null)
                     {
                         scrollNonUi.xConstraints.max = span + 2f * offset;
@@ -265,7 +300,11 @@ namespace Map
                 case MapOrientation.LeftToRight:
                     offset *= cam.aspect;
                     mapParent.transform.eulerAngles = new Vector3(0, 0, -90);
-                    firstParent.transform.localPosition += new Vector3(offset, -bossNode.transform.position.y, 0);
+                    firstParent.transform.localPosition += new Vector3(
+                        offset,
+                        -bossNode.transform.position.y,
+                        0
+                    );
                     if (scrollNonUi != null)
                     {
                         scrollNonUi.xConstraints.max = 0;
@@ -294,15 +333,18 @@ namespace Map
 
         protected virtual void AddLineConnection(MapNode from, MapNode to)
         {
-            if (linePrefab == null) return;
+            if (linePrefab == null)
+                return;
 
             GameObject lineObject = Instantiate(linePrefab, mapParent.transform);
             LineRenderer lineRenderer = lineObject.GetComponent<LineRenderer>();
-            Vector3 fromPoint = from.transform.position +
-                                (to.transform.position - from.transform.position).normalized * offsetFromNodes;
+            Vector3 fromPoint =
+                from.transform.position
+                + (to.transform.position - from.transform.position).normalized * offsetFromNodes;
 
-            Vector3 toPoint = to.transform.position +
-                              (from.transform.position - to.transform.position).normalized * offsetFromNodes;
+            Vector3 toPoint =
+                to.transform.position
+                + (from.transform.position - to.transform.position).normalized * offsetFromNodes;
 
             // drawing lines in local space:
             lineObject.transform.position = fromPoint;
@@ -312,12 +354,19 @@ namespace Map
             lineRenderer.positionCount = linePointsCount;
             for (int i = 0; i < linePointsCount; i++)
             {
-                lineRenderer.SetPosition(i,
-                    Vector3.Lerp(Vector3.zero, toPoint - fromPoint, (float)i / (linePointsCount - 1)));
+                lineRenderer.SetPosition(
+                    i,
+                    Vector3.Lerp(
+                        Vector3.zero,
+                        toPoint - fromPoint,
+                        (float)i / (linePointsCount - 1)
+                    )
+                );
             }
 
             DottedLineRenderer dottedLine = lineObject.GetComponent<DottedLineRenderer>();
-            if (dottedLine != null) dottedLine.ScaleMaterial();
+            if (dottedLine != null)
+                dottedLine.ScaleMaterial();
 
             lineConnections.Add(new LineConnection(lineRenderer, null, from, to));
         }

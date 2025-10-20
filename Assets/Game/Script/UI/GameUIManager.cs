@@ -429,5 +429,16 @@ public class GameUIManager : MonoEditorSingleton<GameUIManager>
         t_champUIPanel.transform.SetParent(champUIZone.transform, false);
         t_champUIPanel.Init(p_customMono);
         champInfoPanelDict[p_customMono] = t_champUIPanel;
+        t_champUIPanel.gameObject.SetActive(false);
     }
+
+    public void DestroyChampUI(CustomMono p_customMono)
+    {
+        var t_champUIPanel = champInfoPanelDict[p_customMono];
+        champInfoPanelDict.Remove(p_customMono);
+        Destroy(t_champUIPanel.gameObject);
+    }
+
+    public void ShowChampUI(CustomMono p_customMono) =>
+        champInfoPanelDict[p_customMono].gameObject.SetActive(true);
 }
