@@ -74,10 +74,6 @@ public class Attack : SkillBase
     public override void RecalculateStat()
     {
         base.RecalculateStat();
-        GetActionField<ActionFloatField>(ActionFieldName.Damage).value = customMono
-            .stat
-            .might
-            .FinalValue;
 
         customMono.AnimatorWrapper.animator.SetFloat(
             "AttackAnimSpeed",
@@ -155,9 +151,7 @@ public class Attack : SkillBase
                 )
             );
 
-        dealDamageGED.damage = p_customMono.statusEffect.GetHit(
-            CalculateFinalDamage(GetActionField<ActionFloatField>(ActionFieldName.Damage).value)
-        );
+        dealDamageGED.damage = p_customMono.statusEffect.GetHit(CalculateAttackDamage());
 
         dealDamageGED.dealer = attackGED.attacker = customMono;
         dealDamageGED.count = attackGED.count++;
@@ -202,9 +196,7 @@ public class Attack : SkillBase
             .charAttackInfo.GetRangedProjectileEffect()
             .FireAsRangedAttackEffect(
                 customMono.rotationAndCenterObject.transform.position,
-                CalculateFinalDamage(
-                    GetActionField<ActionFloatField>(ActionFieldName.Damage).value
-                ),
+                CalculateAttackDamage(),
                 p_customMono,
                 customMono.charAttackInfo.rangedImpactEffectSO,
                 attackGED,
@@ -231,4 +223,17 @@ public class Attack : SkillBase
         customMono.animationEventFunctionCaller.SetSignal(EAnimationSignal.EndAttack, false);
         customMono.statusEffect.RemoveSlow(customMono.stat.actionSlowModifier);
     }
+
+    float CalculateAttackDamage() =>
+        CalculateFinalDamage(
+            customMono.stat.attackDamage.FinalValue
+                * (
+                    1
+                    + (
+                        Random.Range(0, 1f) < customMono.stat.critChance.FinalValue
+                            ? customMono.stat.critDamageModifier.FinalValue
+                            : 0
+                    )
+                )
+        );
 }

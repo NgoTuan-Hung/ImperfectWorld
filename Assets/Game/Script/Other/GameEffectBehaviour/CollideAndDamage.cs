@@ -93,6 +93,11 @@ public class CollideAndDamage : MonoEditor, IGameEffectBehaviour
                         onTriggerEnterWithEnemyCM += PushEnemyBothSide;
                         break;
                     }
+                    case CollideAndDamageSO.PushEnemyOnCollideType.Outward:
+                    {
+                        onTriggerEnterWithEnemyCM += PushEnemyOutward;
+                        break;
+                    }
                     case CollideAndDamageSO.PushEnemyOnCollideType.LaterDecide:
                     {
                         onTriggerEnterWithEnemyCM += PushEnemyLaterDecide;
@@ -269,6 +274,15 @@ public class CollideAndDamage : MonoEditor, IGameEffectBehaviour
             pushEnemyOnCollideForce
                 * (Random.Range(-1, 1) == 0 ? 1 : -1)
                 * transform.TransformDirection(Vector3.up).normalized,
+            ForceMode2D.Impulse
+        );
+    }
+
+    void PushEnemyOutward(CustomMono p_customMono, Collider2D p_collider2D)
+    {
+        p_customMono.rigidbody2D.AddForce(
+            pushEnemyOnCollideForce
+                * (p_customMono.transform.position - transform.position).normalized,
             ForceMode2D.Impulse
         );
     }

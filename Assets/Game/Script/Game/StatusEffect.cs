@@ -135,11 +135,7 @@ public class StatusEffect : CustomMonoPal
     void StopDamageEffect()
     {
         RemoveEffect(StatusEffectState.DamageEffect);
-        customMono.spriteRenderer.transform.localScale = new Vector3(
-            customMono.stat.Size,
-            customMono.stat.Size,
-            1
-        );
+        customMono.spriteRenderer.transform.localScale = Vector3.one;
     }
 
     /// <summary>

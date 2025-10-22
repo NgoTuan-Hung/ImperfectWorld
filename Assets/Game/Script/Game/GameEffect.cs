@@ -5,6 +5,7 @@ using System.Linq;
 using Kryz.Tweening;
 using UnityEngine;
 using UnityEngine.Playables;
+using UnityEngine.Splines;
 using Random = UnityEngine.Random;
 
 public enum EasingType
@@ -360,5 +361,49 @@ public class GameEffect : MonoSelfAware
     {
         SetUpCollideAndDamage(p_owner, p_damage);
         KeepFlyingAt(p_origin, p_dir, true);
+    }
+
+    public static float ninetyDeg = FloatExtension.DegToRad(90);
+
+    public void Throw(Vector2 start, Vector2 end, ObjectPool gEPool, float damage, CustomMono owner)
+    {
+        StartCoroutine(ThrowIE(start, end, gEPool, damage, owner));
+    }
+
+    IEnumerator ThrowIE(
+        Vector2 start,
+        Vector2 end,
+        ObjectPool gEPool,
+        float damage,
+        CustomMono owner
+    )
+    {
+        float currentTime = 0;
+        Vector2 mid =
+            (start + end) / 2
+            + ((end - start) / 2).RotateZ((end - start).x > 0 ? ninetyDeg : -ninetyDeg);
+        transform.position = start;
+        float progress,
+            oneMinusProgress;
+
+        while (currentTime < gameEffectSO.deactivateTime)
+        {
+            progress = currentTime / gameEffectSO.deactivateTime;
+            oneMinusProgress = 1 - progress;
+            /* quadratic bezier formula */
+            transform.position =
+                oneMinusProgress * oneMinusProgress * start
+                + 2 * progress * oneMinusProgress * mid
+                + progress * progress * end;
+
+            yield return new WaitForSeconds(Time.fixedDeltaTime);
+            currentTime += Time.fixedDeltaTime;
+        }
+
+        var effect = gEPool.PickOneGameEffect();
+        effect.transform.position = transform.position;
+        effect.SetUpCollideAndDamage(owner, damage);
+
+        deactivate();
     }
 }

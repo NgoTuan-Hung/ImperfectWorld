@@ -70,11 +70,6 @@ public class CustomMono : MonoSelfAware
         firePoint;
     public BoxCollider2D boxCollider2D,
         combatCollider2D;
-    float boxColliderDefaultXSize,
-        directionIndicationDefaultScale,
-        firePointDefaultYPos;
-    Vector2 combatCollisionDefaultSize,
-        combatCollisionDefaultOffset;
     public AudioSource audioSource;
     public new Rigidbody2D rigidbody2D;
     public Action startPhase1 = () => { };
@@ -98,7 +93,6 @@ public class CustomMono : MonoSelfAware
         allyTags.Add(gameObject.tag);
         GetAllChildObject();
         GetAllComponents();
-        PrepareValues();
         StatChangeRegister();
         GameManager.Instance.AddCustomMono(this);
     }
@@ -136,39 +130,9 @@ public class CustomMono : MonoSelfAware
         rotationAndCenterObject = transform.Find("RotationAndCenterObject").gameObject;
     }
 
-    void PrepareValues()
-    {
-        boxColliderDefaultXSize = boxCollider2D.size.x;
-        combatCollisionDefaultSize = combatCollider2D.size;
-        combatCollisionDefaultOffset = combatCollider2D.offset;
-        directionIndicationDefaultScale = directionIndicator.transform.localScale.x;
-        firePointDefaultYPos = firePoint.transform.localPosition.y;
-    }
-
     void StatChangeRegister()
     {
-        stat.sizeChangeEvent.action += () =>
-        {
-            spriteRenderer.transform.localScale = new Vector3(stat.Size, stat.Size, 1);
-            boxCollider2D.size = new Vector2(
-                boxColliderDefaultXSize * stat.Size,
-                boxCollider2D.size.y
-            );
-            combatCollider2D.size = combatCollisionDefaultSize * stat.Size;
-            combatCollider2D.offset =
-                combatCollisionDefaultOffset
-                - new Vector2(0, (combatCollisionDefaultSize - combatCollider2D.size).y / 2);
-            directionIndicator.transform.localScale = new Vector3(
-                directionIndicationDefaultScale * stat.Size,
-                directionIndicationDefaultScale * stat.Size,
-                1
-            );
-            firePoint.transform.localPosition = new Vector3(
-                firePoint.transform.localPosition.x,
-                firePointDefaultYPos * stat.Size,
-                firePoint.transform.localPosition.z
-            );
-        };
+        //
     }
 
     public override void Start()

@@ -1,9 +1,6 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Runtime.CompilerServices;
 using UnityEngine;
-using UnityEngine.UIElements;
 
 /// <summary>
 /// Anything you want to change in the inspector, or to be
@@ -11,10 +8,8 @@ using UnityEngine.UIElements;
 /// convinience sake.
 /// DON'T REMOVE SERIALIZEFIELD, THEY ARE MEAN TO BE PERSISTED.
 /// </summary>
-public partial class Stat : MonoEditor, INotifyBindablePropertyChanged
+public partial class Stat : MonoEditor
 {
-    public event EventHandler<BindablePropertyChangedEventArgs> propertyChanged;
-
     private void Awake()
     {
         customMono = GetComponent<CustomMono>();
@@ -95,6 +90,7 @@ public partial class Stat : MonoEditor, INotifyBindablePropertyChanged
 
     public void InitProperty()
     {
+        alive = true;
         might.RecalculateFinalValue();
         reflex.RecalculateFinalValue();
         wisdom.RecalculateFinalValue();
@@ -102,8 +98,6 @@ public partial class Stat : MonoEditor, INotifyBindablePropertyChanged
         moveSpeed.RecalculateFinalValue();
         armor.RecalculateFinalValue();
         omnivamp.RecalculateFinalValue();
-
-        Notify("Size");
     }
 
     void AddPropertyChangeEvent()
@@ -166,8 +160,11 @@ public partial class Stat : MonoEditor, INotifyBindablePropertyChanged
 
     void CheckCurrentHPBelowZero()
     {
-        if (currentHealthPoint.Value <= 0)
+        if (currentHealthPoint.Value <= 0 && alive)
+        {
+            alive = false;
             currentHealthPointReachZeroEvent();
+        }
     }
 
     void SetHPOnUI() =>
@@ -269,13 +266,6 @@ public partial class Stat : MonoEditor, INotifyBindablePropertyChanged
         moveSpeedPerFrame = moveSpeed.FinalValue * Time.fixedDeltaTime;
 
     void ChangeActionSlow() => actionSlowModifier.value = actionMoveSpeedReduceRate.FinalValue;
-
-    void Notify([CallerMemberName] string property = "")
-    {
-        propertyChanged?.Invoke(this, new BindablePropertyChangedEventArgs(property));
-        if (propertyChangeEventDictionary.TryGetValue(property, out notifyAW))
-            notifyAW.action();
-    }
 
     IEnumerator DissolveCoroutine()
     {

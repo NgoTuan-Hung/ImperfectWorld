@@ -107,7 +107,11 @@ public partial class GameManager
         coleAttack1Impact,
         coleAttackImpact,
         bloodOfTheFallenCast,
-        bloodOfTheFallenEnergy;
+        bloodOfTheFallenEnergy,
+        novaKadeBullet,
+        novaKadeBulletHit,
+        novaKadeGrenade,
+        novaKadeGrenadeExplosion;
 
     List<string> prefabNames = new()
     {
@@ -214,6 +218,10 @@ public partial class GameManager
         "coleAttackImpact",
         "bloodOfTheFallenCast",
         "bloodOfTheFallenEnergy",
+        "novaKadeBullet",
+        "novaKadeBulletHit",
+        "novaKadeGrenade",
+        "novaKadeGrenadeExplosion",
     };
 
     void LoadGameEffectPrefabs()

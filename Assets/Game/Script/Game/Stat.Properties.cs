@@ -5,13 +5,10 @@ using UnityEngine;
 
 public partial class Stat
 {
+    public bool alive = true;
     CustomMono customMono;
     private PoolObject healthAndManaIndicatorPO;
-    public float actionMoveSpeedReduced;
     public float moveSpeedPerFrame;
-
-    [SerializeField]
-    float size = 1f;
     float dissolveTime = 5f;
     Action onEnable = () => { };
 
@@ -58,28 +55,20 @@ public partial class Stat
     [Header("<color='#C62828'>OMNIVAMP")]
     public FloatStatWithModifier omnivamp = new();
 
+    [Header("<color='#E53935'>ATTACK DAMAGE")]
+    public FloatStatWithModifier attackDamage = new();
+
+    [Header("<color='#FFD54F'>CRIT CHANCE")]
+    public FloatStatWithModifier critChance = new();
+
+    [Header("<color='#AB47BC'>CRIT DAMAGE MODIFIER")]
+    public FloatStatWithModifier critDamageModifier = new();
+
     [HideInInspector]
     public FloatStatWithModifier actionMoveSpeedReduceRate = new();
 
     [HideInInspector]
     public FloatStatModifier actionSlowModifier = new(0, FloatStatModifierType.Multiplicative);
-
-    [CreateProperty]
-    public float Size
-    {
-        get => size;
-        set
-        {
-            if (value == size)
-                return;
-
-            size = value;
-            Notify();
-        }
-    }
-    public ActionWrapper sizeChangeEvent = new();
-    public Dictionary<string, ActionWrapper> propertyChangeEventDictionary = new();
-    public ActionWrapper notifyAW;
     public ValueChangeGameEventData hpChangeED;
     DealDamageGameEventData dealDamageGameEventData;
 }

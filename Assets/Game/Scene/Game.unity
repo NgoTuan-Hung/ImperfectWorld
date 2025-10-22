@@ -3449,9 +3449,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9500879ad6b6755408f9c787c95fb42c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  actionMoveSpeedReduced: 0
+  alive: 1
   moveSpeedPerFrame: 0.039999984
-  size: 1
   currentHealthPoint:
     cap: 0
   healthPoint:
@@ -3512,6 +3511,21 @@ MonoBehaviour:
   omnivamp:
     baseValue: 0
     finalValue: 0
+    referenceModifiers: []
+    modifiers: []
+  attackDamage:
+    baseValue: 3.8
+    finalValue: 3.8
+    referenceModifiers: []
+    modifiers: []
+  critChance:
+    baseValue: 0.25
+    finalValue: 0.25
+    referenceModifiers: []
+    modifiers: []
+  critDamageModifier:
+    baseValue: 1
+    finalValue: 1
     referenceModifiers: []
     modifiers: []
   actionMoveSpeedReduceRate:
@@ -4144,6 +4158,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: f94e8f9263963b540ba7a386afaca6ac, type: 2}
   - {fileID: 11400000, guid: 399eb9aa668e59a478c36fb589f58d30, type: 2}
   - {fileID: 11400000, guid: cb27565f3e99dcf46bab3b15ebfc36c4, type: 2}
+  - {fileID: 11400000, guid: 3706d736f0e26204aafea0c2d11db2b5, type: 2}
   gridManager: {fileID: 0}
   roomSystem:
     allNormalEnemyRooms:
@@ -4177,6 +4192,11 @@ MonoBehaviour:
     - roomEnemyInfos:
       - prefab: {fileID: 2033591479864052884, guid: 1b59401a50e34ce44bcb98f4abd0146e, type: 3}
         position: {x: -0.97, y: -2.25}
+      - prefab: {fileID: 5009230093061811819, guid: 7ef67b4b816df2942a1918c3e0e2d27e, type: 3}
+        position: {x: 8, y: -2.25}
+    - roomEnemyInfos:
+      - prefab: {fileID: 5009230093061811819, guid: 15b3238cbed1ac0488e2925a48880215, type: 3}
+        position: {x: 8, y: -2.25}
   enemyCount: 0
   playerChampions:
   - {fileID: 108618814}
@@ -4486,9 +4506,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9500879ad6b6755408f9c787c95fb42c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  actionMoveSpeedReduced: 0
+  alive: 1
   moveSpeedPerFrame: 0.039999984
-  size: 1
   currentHealthPoint:
     cap: 0
   healthPoint:
@@ -4547,6 +4566,21 @@ MonoBehaviour:
     referenceModifiers: []
     modifiers: []
   omnivamp:
+    baseValue: 0
+    finalValue: 0
+    referenceModifiers: []
+    modifiers: []
+  attackDamage:
+    baseValue: 0
+    finalValue: 0
+    referenceModifiers: []
+    modifiers: []
+  critChance:
+    baseValue: 0
+    finalValue: 0
+    referenceModifiers: []
+    modifiers: []
+  critDamageModifier:
     baseValue: 0
     finalValue: 0
     referenceModifiers: []
@@ -7372,9 +7406,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9500879ad6b6755408f9c787c95fb42c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  actionMoveSpeedReduced: 0
+  alive: 1
   moveSpeedPerFrame: 0.05399998
-  size: 1
   currentHealthPoint:
     cap: 0
   healthPoint:
@@ -7433,6 +7466,21 @@ MonoBehaviour:
     referenceModifiers: []
     modifiers: []
   omnivamp:
+    baseValue: 0
+    finalValue: 0
+    referenceModifiers: []
+    modifiers: []
+  attackDamage:
+    baseValue: 0
+    finalValue: 0
+    referenceModifiers: []
+    modifiers: []
+  critChance:
+    baseValue: 0
+    finalValue: 0
+    referenceModifiers: []
+    modifiers: []
+  critDamageModifier:
     baseValue: 0
     finalValue: 0
     referenceModifiers: []
@@ -8072,9 +8120,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9500879ad6b6755408f9c787c95fb42c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  actionMoveSpeedReduced: 0
+  alive: 1
   moveSpeedPerFrame: 0.039999984
-  size: 1
   currentHealthPoint:
     cap: 0
   healthPoint:
@@ -8133,6 +8180,21 @@ MonoBehaviour:
     referenceModifiers: []
     modifiers: []
   omnivamp:
+    baseValue: 0
+    finalValue: 0
+    referenceModifiers: []
+    modifiers: []
+  attackDamage:
+    baseValue: 0
+    finalValue: 0
+    referenceModifiers: []
+    modifiers: []
+  critChance:
+    baseValue: 0
+    finalValue: 0
+    referenceModifiers: []
+    modifiers: []
+  critDamageModifier:
     baseValue: 0
     finalValue: 0
     referenceModifiers: []
@@ -9456,9 +9518,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9500879ad6b6755408f9c787c95fb42c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  actionMoveSpeedReduced: 0
+  alive: 1
   moveSpeedPerFrame: 0.039999984
-  size: 1
   currentHealthPoint:
     cap: 0
   healthPoint:
@@ -9517,6 +9578,21 @@ MonoBehaviour:
     referenceModifiers: []
     modifiers: []
   omnivamp:
+    baseValue: 0
+    finalValue: 0
+    referenceModifiers: []
+    modifiers: []
+  attackDamage:
+    baseValue: 0
+    finalValue: 0
+    referenceModifiers: []
+    modifiers: []
+  critChance:
+    baseValue: 0
+    finalValue: 0
+    referenceModifiers: []
+    modifiers: []
+  critDamageModifier:
     baseValue: 0
     finalValue: 0
     referenceModifiers: []
@@ -9991,6 +10067,37 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!1 &906807254
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 906807255}
+  m_Layer: 0
+  m_Name: GameObject (1)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &906807255
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 906807254}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 2.25996, y: -0.57957, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &911888979 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7263674896415103775, guid: f3d397d8780414037811524dd988a62e, type: 3}
@@ -10319,9 +10426,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9500879ad6b6755408f9c787c95fb42c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  actionMoveSpeedReduced: 0
+  alive: 1
   moveSpeedPerFrame: 0.039999984
-  size: 1
   currentHealthPoint:
     cap: 0
   healthPoint:
@@ -10380,6 +10486,21 @@ MonoBehaviour:
     referenceModifiers: []
     modifiers: []
   omnivamp:
+    baseValue: 0
+    finalValue: 0
+    referenceModifiers: []
+    modifiers: []
+  attackDamage:
+    baseValue: 0
+    finalValue: 0
+    referenceModifiers: []
+    modifiers: []
+  critChance:
+    baseValue: 0
+    finalValue: 0
+    referenceModifiers: []
+    modifiers: []
+  critDamageModifier:
     baseValue: 0
     finalValue: 0
     referenceModifiers: []
@@ -12611,9 +12732,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9500879ad6b6755408f9c787c95fb42c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  actionMoveSpeedReduced: 0
+  alive: 1
   moveSpeedPerFrame: 0.05399998
-  size: 1
   currentHealthPoint:
     cap: 0
   healthPoint:
@@ -12672,6 +12792,21 @@ MonoBehaviour:
     referenceModifiers: []
     modifiers: []
   omnivamp:
+    baseValue: 0
+    finalValue: 0
+    referenceModifiers: []
+    modifiers: []
+  attackDamage:
+    baseValue: 0
+    finalValue: 0
+    referenceModifiers: []
+    modifiers: []
+  critChance:
+    baseValue: 0
+    finalValue: 0
+    referenceModifiers: []
+    modifiers: []
+  critDamageModifier:
     baseValue: 0
     finalValue: 0
     referenceModifiers: []
@@ -15868,9 +16003,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9500879ad6b6755408f9c787c95fb42c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  actionMoveSpeedReduced: 0
+  alive: 1
   moveSpeedPerFrame: 0.039999984
-  size: 1
   currentHealthPoint:
     cap: 0
   healthPoint:
@@ -15931,6 +16065,21 @@ MonoBehaviour:
   omnivamp:
     baseValue: 0
     finalValue: 0
+    referenceModifiers: []
+    modifiers: []
+  attackDamage:
+    baseValue: 5.3
+    finalValue: 5.3
+    referenceModifiers: []
+    modifiers: []
+  critChance:
+    baseValue: 0.25
+    finalValue: 0.25
+    referenceModifiers: []
+    modifiers: []
+  critDamageModifier:
+    baseValue: 1
+    finalValue: 1
     referenceModifiers: []
     modifiers: []
   actionMoveSpeedReduceRate:
@@ -16601,9 +16750,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9500879ad6b6755408f9c787c95fb42c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  actionMoveSpeedReduced: 0
+  alive: 1
   moveSpeedPerFrame: 0.039999984
-  size: 1
   currentHealthPoint:
     cap: 0
   healthPoint:
@@ -16662,6 +16810,21 @@ MonoBehaviour:
     referenceModifiers: []
     modifiers: []
   omnivamp:
+    baseValue: 0
+    finalValue: 0
+    referenceModifiers: []
+    modifiers: []
+  attackDamage:
+    baseValue: 0
+    finalValue: 0
+    referenceModifiers: []
+    modifiers: []
+  critChance:
+    baseValue: 0
+    finalValue: 0
+    referenceModifiers: []
+    modifiers: []
+  critDamageModifier:
     baseValue: 0
     finalValue: 0
     referenceModifiers: []
@@ -22799,9 +22962,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9500879ad6b6755408f9c787c95fb42c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  actionMoveSpeedReduced: 0
+  alive: 1
   moveSpeedPerFrame: 0.039999984
-  size: 1
   currentHealthPoint:
     cap: 0
   healthPoint:
@@ -22860,6 +23022,21 @@ MonoBehaviour:
     referenceModifiers: []
     modifiers: []
   omnivamp:
+    baseValue: 0
+    finalValue: 0
+    referenceModifiers: []
+    modifiers: []
+  attackDamage:
+    baseValue: 0
+    finalValue: 0
+    referenceModifiers: []
+    modifiers: []
+  critChance:
+    baseValue: 0
+    finalValue: 0
+    referenceModifiers: []
+    modifiers: []
+  critDamageModifier:
     baseValue: 0
     finalValue: 0
     referenceModifiers: []
@@ -25906,9 +26083,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9500879ad6b6755408f9c787c95fb42c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  actionMoveSpeedReduced: 0
+  alive: 1
   moveSpeedPerFrame: 0
-  size: 1
   currentHealthPoint:
     cap: 0
   healthPoint:
@@ -25967,6 +26143,21 @@ MonoBehaviour:
     referenceModifiers: []
     modifiers: []
   omnivamp:
+    baseValue: 0
+    finalValue: 0
+    referenceModifiers: []
+    modifiers: []
+  attackDamage:
+    baseValue: 0
+    finalValue: 0
+    referenceModifiers: []
+    modifiers: []
+  critChance:
+    baseValue: 0
+    finalValue: 0
+    referenceModifiers: []
+    modifiers: []
+  critDamageModifier:
     baseValue: 0
     finalValue: 0
     referenceModifiers: []
@@ -29504,9 +29695,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9500879ad6b6755408f9c787c95fb42c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  actionMoveSpeedReduced: 0
+  alive: 1
   moveSpeedPerFrame: 0
-  size: 1
   currentHealthPoint:
     cap: 0
   healthPoint:
@@ -29565,6 +29755,21 @@ MonoBehaviour:
     referenceModifiers: []
     modifiers: []
   omnivamp:
+    baseValue: 0
+    finalValue: 0
+    referenceModifiers: []
+    modifiers: []
+  attackDamage:
+    baseValue: 0
+    finalValue: 0
+    referenceModifiers: []
+    modifiers: []
+  critChance:
+    baseValue: 0
+    finalValue: 0
+    referenceModifiers: []
+    modifiers: []
+  critDamageModifier:
     baseValue: 0
     finalValue: 0
     referenceModifiers: []
@@ -30390,9 +30595,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9500879ad6b6755408f9c787c95fb42c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  actionMoveSpeedReduced: 0
+  alive: 1
   moveSpeedPerFrame: 0.04799998
-  size: 1
   currentHealthPoint:
     cap: 0
   healthPoint:
@@ -30451,6 +30655,21 @@ MonoBehaviour:
     referenceModifiers: []
     modifiers: []
   omnivamp:
+    baseValue: 0
+    finalValue: 0
+    referenceModifiers: []
+    modifiers: []
+  attackDamage:
+    baseValue: 0
+    finalValue: 0
+    referenceModifiers: []
+    modifiers: []
+  critChance:
+    baseValue: 0
+    finalValue: 0
+    referenceModifiers: []
+    modifiers: []
+  critDamageModifier:
     baseValue: 0
     finalValue: 0
     referenceModifiers: []
@@ -30967,9 +31186,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9500879ad6b6755408f9c787c95fb42c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  actionMoveSpeedReduced: 0
+  alive: 1
   moveSpeedPerFrame: 0
-  size: 1
   currentHealthPoint:
     cap: 0
   healthPoint:
@@ -31028,6 +31246,21 @@ MonoBehaviour:
     referenceModifiers: []
     modifiers: []
   omnivamp:
+    baseValue: 0
+    finalValue: 0
+    referenceModifiers: []
+    modifiers: []
+  attackDamage:
+    baseValue: 0
+    finalValue: 0
+    referenceModifiers: []
+    modifiers: []
+  critChance:
+    baseValue: 0
+    finalValue: 0
+    referenceModifiers: []
+    modifiers: []
+  critDamageModifier:
     baseValue: 0
     finalValue: 0
     referenceModifiers: []
@@ -32809,3 +33042,4 @@ SceneRoots:
   - {fileID: 107064637}
   - {fileID: 7878350318659047830}
   - {fileID: 7878350320228248799}
+  - {fileID: 906807255}

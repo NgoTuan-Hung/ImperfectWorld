@@ -107,7 +107,11 @@ public partial class GameManager
         coleAttack1ImpactPool,
         coleAttackImpactPool,
         bloodOfTheFallenCastPool,
-        bloodOfTheFallenEnergyPool;
+        bloodOfTheFallenEnergyPool,
+        novaKadeBulletPool,
+        novaKadeBulletHitPool,
+        novaKadeGrenadePool,
+        novaKadeGrenadeExplosionPool;
     List<string> objectPoolNames = new()
     {
         "moonSlashExplodePool",
@@ -213,6 +217,10 @@ public partial class GameManager
         "coleAttackImpactPool",
         "bloodOfTheFallenCastPool",
         "bloodOfTheFallenEnergyPool",
+        "novaKadeBulletPool",
+        "novaKadeBulletHitPool",
+        "novaKadeGrenadePool",
+        "novaKadeGrenadeExplosionPool",
     };
 
     void InitAllEffectPools()

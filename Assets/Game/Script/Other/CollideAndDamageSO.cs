@@ -16,6 +16,7 @@ public class CollideAndDamageSO : ScriptableObject
     {
         Random,
         BothSide,
+        Outward,
         LaterDecide,
     };
 
