@@ -8,6 +8,7 @@ public class Attack : SkillBase
     Func<Vector2, Vector2, CustomMono, IEnumerator> triggerIE;
     AttackGameEventData attackGED = new();
     public DealDamageGameEventData dealDamageGED = new();
+    public Action<Vector2, Vector2, CustomMono> endAttackAction = (_, _, _) => { };
 
     public override void Awake()
     {
@@ -176,6 +177,7 @@ public class Attack : SkillBase
         customMono.actionBlocking = false;
         ToggleAnim(GameManager.Instance.attackBoolHash, false);
         customMono.currentAction = null;
+        endAttackAction(p_location, p_direction, p_customMono);
     }
 
     IEnumerator RangedTriggerIE(
@@ -211,6 +213,7 @@ public class Attack : SkillBase
         customMono.actionBlocking = false;
         ToggleAnim(GameManager.Instance.attackBoolHash, false);
         customMono.currentAction = null;
+        endAttackAction(p_location, p_direction, p_customMono);
     }
 
     public override void ActionInterrupt()

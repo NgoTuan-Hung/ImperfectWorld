@@ -24,6 +24,46 @@ public class BatchStatModifier : EditorWindow
         ListStatSO listStatSO = CreateInstance<ListStatSO>();
         inspectorListView.Bind(new SerializedObject(listStatSO));
 
+        Toggle hpToggle = new();
+        hpToggle.label = "HP";
+        hpToggle.value = false;
+
+        FloatField hpFloatField = new();
+        hpFloatField.label = "HP";
+        hpFloatField.value = 0f;
+
+        Toggle mightToggle = new();
+        mightToggle.label = "Might";
+        mightToggle.value = false;
+
+        FloatField mightFloatField = new();
+        mightFloatField.label = "Might";
+        mightFloatField.value = 0f;
+
+        Toggle reflexToggle = new();
+        reflexToggle.label = "Reflex";
+        reflexToggle.value = false;
+
+        FloatField reflexFloatField = new();
+        reflexFloatField.label = "Reflex";
+        reflexFloatField.value = 0f;
+
+        Toggle wisdomToggle = new();
+        wisdomToggle.label = "Wisdom";
+        wisdomToggle.value = false;
+
+        FloatField wisdomFloatField = new();
+        wisdomFloatField.label = "Wisdom";
+        wisdomFloatField.value = 0f;
+
+        Toggle attackDamageToggle = new();
+        attackDamageToggle.label = "Attack Damage";
+        attackDamageToggle.value = false;
+
+        FloatField attackDamageFloatField = new();
+        attackDamageFloatField.label = "Attack Damage";
+        attackDamageFloatField.value = 0f;
+
         Toggle critChanceToggle = new();
         critChanceToggle.label = "Critical Chance";
         critChanceToggle.value = false;
@@ -41,11 +81,21 @@ public class BatchStatModifier : EditorWindow
         critDamageModifierFloatField.value = 0f;
 
         Button button = new();
-        button.text = "Modify Game Effect SO";
+        button.text = "Modify";
         button.clicked += () =>
         {
             listStatSO.stats.ForEach(stat =>
             {
+                if (hpToggle.value)
+                    stat.healthPoint.BaseValue = hpFloatField.value;
+                if (mightToggle.value)
+                    stat.might.BaseValue = mightFloatField.value;
+                if (reflexToggle.value)
+                    stat.reflex.BaseValue = reflexFloatField.value;
+                if (wisdomToggle.value)
+                    stat.wisdom.BaseValue = wisdomFloatField.value;
+                if (attackDamageToggle.value)
+                    stat.attackDamage.BaseValue = attackDamageFloatField.value;
                 if (critChanceToggle.value)
                     stat.critChance.BaseValue = critChanceFloatField.value;
                 if (critDamageModifierToggle.value)
@@ -54,6 +104,16 @@ public class BatchStatModifier : EditorWindow
         };
 
         rootVisualElement.Add(inspectorListView);
+        rootVisualElement.Add(hpToggle);
+        rootVisualElement.Add(hpFloatField);
+        rootVisualElement.Add(mightToggle);
+        rootVisualElement.Add(mightFloatField);
+        rootVisualElement.Add(reflexToggle);
+        rootVisualElement.Add(reflexFloatField);
+        rootVisualElement.Add(wisdomToggle);
+        rootVisualElement.Add(wisdomFloatField);
+        rootVisualElement.Add(attackDamageToggle);
+        rootVisualElement.Add(attackDamageFloatField);
         rootVisualElement.Add(critChanceToggle);
         rootVisualElement.Add(critChanceFloatField);
         rootVisualElement.Add(critDamageModifierToggle);
