@@ -113,7 +113,8 @@ public partial class GameManager
         novaKadeGrenade,
         novaKadeGrenadeExplosion,
         aquaenAttack1Impact,
-        twinsOfCataclysmEffect;
+        twinsOfCataclysmEffect,
+        glacistreamEffect;
 
     List<string> prefabNames = new()
     {
@@ -226,6 +227,7 @@ public partial class GameManager
         "novaKadeGrenadeExplosion",
         "aquaenAttack1Impact",
         "twinsOfCataclysmEffect",
+        "glacistreamEffect",
     };
 
     void LoadGameEffectPrefabs()

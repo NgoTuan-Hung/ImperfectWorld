@@ -280,6 +280,21 @@ public class GameEffectBuilder : EditorWindow
                         build.AddComponent<InfernalTideFanReceiver>();
                         break;
                     }
+                    case EGameEffectBehaviour.SovereignFlowBehaviour:
+                    {
+                        build.AddComponent<SovereignFlowBehaviour>();
+                        break;
+                    }
+                    case EGameEffectBehaviour.PullingMissile:
+                    {
+                        build.AddComponent<PullingMissile>();
+                        break;
+                    }
+                    case EGameEffectBehaviour.GlacistreamBehaviour:
+                    {
+                        build.AddComponent<GlacistreamBehaviour>();
+                        break;
+                    }
                     default:
                         break;
                 }

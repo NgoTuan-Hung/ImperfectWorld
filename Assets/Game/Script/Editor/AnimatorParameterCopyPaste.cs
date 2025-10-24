@@ -26,14 +26,21 @@ public static class AnimatorParameterCopyPaste
 
     /// <summary>Menu path for copying parameters from the Inspector context menu.</summary>
     private const string CopyMenu = "CONTEXT/AnimatorController/Copy Parameters";
+
     /// <summary>Menu path for additive paste in the Inspector context menu.</summary>
-    private const string PasteMenuAdditive = "CONTEXT/AnimatorController/Paste Parameters (Additive)";
+    private const string PasteMenuAdditive =
+        "CONTEXT/AnimatorController/Paste Parameters (Additive)";
+
     /// <summary>Menu path for replace paste in the Inspector context menu.</summary>
     private const string PasteMenuReplace = "CONTEXT/AnimatorController/Paste Parameters (Replace)";
+
     /// <summary>Menu path for additive paste in the Project window context menu.</summary>
-    private const string AssetsPasteMenuAdditive = "Assets/Animator Controller/Paste Parameters (Additive)";
+    private const string AssetsPasteMenuAdditive =
+        "Assets/Animator Controller/Paste Parameters (Additive)";
+
     /// <summary>Menu path for replace paste in the Project window context menu.</summary>
-    private const string AssetsPasteMenuReplace = "Assets/Animator Controller/Paste Parameters (Replace)";
+    private const string AssetsPasteMenuReplace =
+        "Assets/Animator Controller/Paste Parameters (Replace)";
 
     #endregion
 
@@ -47,16 +54,41 @@ public static class AnimatorParameterCopyPaste
     private static void CopyParameters(MenuCommand command)
     {
         var controller = command.context as AnimatorController;
-        if (controller == null) return;
+        if (controller == null)
+            return;
 
-        var parameters = controller.parameters.Select(p => new AnimatorParameterData
-        {
-            name = p.name,
-            type = p.type,
-            defaultBool = p.defaultBool,
-            defaultFloat = p.defaultFloat,
-            defaultInt = p.defaultInt
-        }).ToList();
+        var parameters = controller
+            .parameters.Select(p => new AnimatorParameterData
+            {
+                name = p.name,
+                type = p.type,
+                defaultBool = p.defaultBool,
+                defaultFloat = p.defaultFloat,
+                defaultInt = p.defaultInt,
+            })
+            .ToList();
+
+        var json = JsonUtility.ToJson(new AnimatorParameterList { parameters = parameters });
+        EditorGUIUtility.systemCopyBuffer = json;
+        Debug.Log("Animator parameters copied to clipboard.");
+    }
+
+    public static void CopyParameters(AnimatorController ac)
+    {
+        var controller = ac;
+        if (controller == null)
+            return;
+
+        var parameters = controller
+            .parameters.Select(p => new AnimatorParameterData
+            {
+                name = p.name,
+                type = p.type,
+                defaultBool = p.defaultBool,
+                defaultFloat = p.defaultFloat,
+                defaultInt = p.defaultInt,
+            })
+            .ToList();
 
         var json = JsonUtility.ToJson(new AnimatorParameterList { parameters = parameters });
         EditorGUIUtility.systemCopyBuffer = json;
@@ -94,7 +126,8 @@ public static class AnimatorParameterCopyPaste
     private static void CopyParametersAsset()
     {
         var controller = Selection.activeObject as AnimatorController;
-        if (controller == null) return;
+        if (controller == null)
+            return;
         CopyParameters(new MenuCommand(controller));
     }
 
@@ -105,7 +138,8 @@ public static class AnimatorParameterCopyPaste
     private static void PasteParametersAssetAdditive()
     {
         var controller = Selection.activeObject as AnimatorController;
-        if (controller == null) return;
+        if (controller == null)
+            return;
         PasteParametersInternal(new MenuCommand(controller), false);
     }
 
@@ -116,7 +150,8 @@ public static class AnimatorParameterCopyPaste
     private static void PasteParametersAssetReplace()
     {
         var controller = Selection.activeObject as AnimatorController;
-        if (controller == null) return;
+        if (controller == null)
+            return;
         PasteParametersInternal(new MenuCommand(controller), true);
     }
 
@@ -129,11 +164,14 @@ public static class AnimatorParameterCopyPaste
     /// </summary>
     private static bool IsValidParameterJson(string json)
     {
-        if (string.IsNullOrEmpty(json)) return false;
+        if (string.IsNullOrEmpty(json))
+            return false;
         // Quick structure check: must contain "parameters" array
-        if (!json.Contains("\"parameters\"")) return false;
+        if (!json.Contains("\"parameters\""))
+            return false;
         // Optionally, check for at least one parameter object
-        if (!json.Contains("\"name\"") || !json.Contains("\"type\"")) return false;
+        if (!json.Contains("\"name\"") || !json.Contains("\"type\""))
+            return false;
         return true;
     }
 
@@ -155,7 +193,8 @@ public static class AnimatorParameterCopyPaste
             // Validate each parameter
             foreach (var p in deserialized.parameters)
             {
-                if (string.IsNullOrEmpty(p.name)) return false;
+                if (string.IsNullOrEmpty(p.name))
+                    return false;
                 // Type must be a valid enum value
                 if (!System.Enum.IsDefined(typeof(AnimatorControllerParameterType), p.type))
                     return false;
@@ -177,7 +216,8 @@ public static class AnimatorParameterCopyPaste
     private static void PasteParametersInternal(MenuCommand command, bool replace)
     {
         var controller = command.context as AnimatorController;
-        if (controller == null) return;
+        if (controller == null)
+            return;
 
         var json = EditorGUIUtility.systemCopyBuffer;
         if (!TryGetParameterList(json, out var paramList))
@@ -186,7 +226,10 @@ public static class AnimatorParameterCopyPaste
             return;
         }
 
-        Undo.RecordObject(controller, replace ? "Replace Animator Parameters" : "Paste Animator Parameters");
+        Undo.RecordObject(
+            controller,
+            replace ? "Replace Animator Parameters" : "Paste Animator Parameters"
+        );
 
         if (replace)
         {
@@ -199,7 +242,8 @@ public static class AnimatorParameterCopyPaste
 
         foreach (var param in paramList.parameters)
         {
-            if (!replace && controller.parameters.Any(p => p.name == param.name)) continue; // Avoid duplicates in additive mode
+            if (!replace && controller.parameters.Any(p => p.name == param.name))
+                continue; // Avoid duplicates in additive mode
 
             controller.AddParameter(param.name, param.type);
 
@@ -218,7 +262,64 @@ public static class AnimatorParameterCopyPaste
                     case AnimatorControllerParameterType.Int:
                         addedParam.defaultInt = param.defaultInt;
                         break;
-                        // Triggers do not have a default value
+                    // Triggers do not have a default value
+                }
+            }
+        }
+
+        Debug.Log(replace ? "Animator parameters replaced." : "Animator parameters pasted.");
+    }
+
+    public static void PasteParameters(AnimatorController ac, bool replace = false)
+    {
+        var controller = ac;
+        if (controller == null)
+            return;
+
+        var json = EditorGUIUtility.systemCopyBuffer;
+        if (!TryGetParameterList(json, out var paramList))
+        {
+            Debug.LogWarning("Clipboard does not contain valid animator parameters.");
+            return;
+        }
+
+        Undo.RecordObject(
+            controller,
+            replace ? "Replace Animator Parameters" : "Paste Animator Parameters"
+        );
+
+        if (replace)
+        {
+            // Remove all existing parameters from the end for safety
+            for (int i = controller.parameters.Length - 1; i >= 0; i--)
+            {
+                controller.RemoveParameter(i);
+            }
+        }
+
+        foreach (var param in paramList.parameters)
+        {
+            if (!replace && controller.parameters.Any(p => p.name == param.name))
+                continue; // Avoid duplicates in additive mode
+
+            controller.AddParameter(param.name, param.type);
+
+            // Set default value
+            var addedParam = controller.parameters.FirstOrDefault(p => p.name == param.name);
+            if (addedParam != null)
+            {
+                switch (param.type)
+                {
+                    case AnimatorControllerParameterType.Bool:
+                        addedParam.defaultBool = param.defaultBool;
+                        break;
+                    case AnimatorControllerParameterType.Float:
+                        addedParam.defaultFloat = param.defaultFloat;
+                        break;
+                    case AnimatorControllerParameterType.Int:
+                        addedParam.defaultInt = param.defaultInt;
+                        break;
+                    // Triggers do not have a default value
                 }
             }
         }
@@ -250,12 +351,16 @@ public static class AnimatorParameterCopyPaste
     {
         /// <summary>The name of the parameter.</summary>
         public string name;
+
         /// <summary>The type of the parameter.</summary>
         public AnimatorControllerParameterType type;
+
         /// <summary>The default value if the parameter is a bool.</summary>
         public bool defaultBool;
+
         /// <summary>The default value if the parameter is a float.</summary>
         public float defaultFloat;
+
         /// <summary>The default value if the parameter is an int.</summary>
         public int defaultInt;
     }

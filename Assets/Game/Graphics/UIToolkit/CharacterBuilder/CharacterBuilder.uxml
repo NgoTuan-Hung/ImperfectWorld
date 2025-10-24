@@ -1,0 +1,11 @@
+<ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="True">
+    <ui:ScrollView touch-scroll-type="Clamped">
+        <ui:VisualElement name="scroll-view-content" style="flex-grow: 1; flex-wrap: wrap;">
+            <ui:TextField label="Character Name" placeholder-text="filler text" name="name-tf" />
+            <uie:ObjectField label="Sprite" name="sprite-of" />
+            <ui:TextField label="Animator Name" placeholder-text="filler text" name="animator-name-tf" />
+            <ui:TextField label="Animator Path" placeholder-text="filler text" name="animator-path-tf" />
+            <ui:Button text="Build" name="build-b" />
+        </ui:VisualElement>
+    </ui:ScrollView>
+</ui:UXML>

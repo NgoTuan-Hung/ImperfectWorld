@@ -22,6 +22,7 @@ public enum EGameEffectBehaviour
     InfernalTideFanReceiver,
     SovereignFlowBehaviour,
     PullingMissile,
+    GlacistreamBehaviour,
 }
 
 public class GameEffect : MonoSelfAware
@@ -127,6 +128,12 @@ public class GameEffect : MonoSelfAware
 
     public IGameEffectBehaviour GetBehaviour(EGameEffectBehaviour p_behaviour) =>
         behaviours[p_behaviour];
+
+    public T GetBehaviour<T>(EGameEffectBehaviour p_behaviour)
+        where T : class, IGameEffectBehaviour
+    {
+        return behaviours[p_behaviour] as T;
+    }
 
     public void Init()
     {
