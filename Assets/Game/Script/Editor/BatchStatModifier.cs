@@ -56,6 +56,30 @@ public class BatchStatModifier : EditorWindow
         wisdomFloatField.label = "Wisdom";
         wisdomFloatField.value = 0f;
 
+        Toggle attackSpeedToggle = new();
+        attackSpeedToggle.label = "Attack Speed";
+        attackSpeedToggle.value = false;
+
+        FloatField attackSpeedFloatField = new();
+        attackSpeedFloatField.label = "Attack Speed";
+        attackSpeedFloatField.value = 0f;
+
+        Toggle armorToggle = new();
+        armorToggle.label = "Armor";
+        armorToggle.value = false;
+
+        FloatField armorFloatField = new();
+        armorFloatField.label = "Armor";
+        armorFloatField.value = 0f;
+
+        Toggle moveSpeedToggle = new();
+        moveSpeedToggle.label = "Move Speed";
+        moveSpeedToggle.value = false;
+
+        FloatField moveSpeedFloatField = new();
+        moveSpeedFloatField.label = "Move Speed";
+        moveSpeedFloatField.value = 0f;
+
         Toggle attackDamageToggle = new();
         attackDamageToggle.label = "Attack Damage";
         attackDamageToggle.value = false;
@@ -94,13 +118,21 @@ public class BatchStatModifier : EditorWindow
                     stat.reflex.BaseValue = reflexFloatField.value;
                 if (wisdomToggle.value)
                     stat.wisdom.BaseValue = wisdomFloatField.value;
+                if (attackSpeedToggle.value)
+                    stat.attackSpeed.BaseValue = attackSpeedFloatField.value;
+                if (armorToggle.value)
+                    stat.armor.BaseValue = armorFloatField.value;
+                if (moveSpeedToggle.value)
+                    stat.moveSpeed.BaseValue = moveSpeedFloatField.value;
                 if (attackDamageToggle.value)
                     stat.attackDamage.BaseValue = attackDamageFloatField.value;
                 if (critChanceToggle.value)
                     stat.critChance.BaseValue = critChanceFloatField.value;
                 if (critDamageModifierToggle.value)
                     stat.critDamageModifier.BaseValue = critDamageModifierFloatField.value;
+                EditorUtility.SetDirty(stat);
             });
+            AssetDatabase.SaveAssets();
         };
 
         rootVisualElement.Add(inspectorListView);
@@ -112,6 +144,12 @@ public class BatchStatModifier : EditorWindow
         rootVisualElement.Add(reflexFloatField);
         rootVisualElement.Add(wisdomToggle);
         rootVisualElement.Add(wisdomFloatField);
+        rootVisualElement.Add(attackSpeedToggle);
+        rootVisualElement.Add(attackSpeedFloatField);
+        rootVisualElement.Add(armorToggle);
+        rootVisualElement.Add(armorFloatField);
+        rootVisualElement.Add(moveSpeedToggle);
+        rootVisualElement.Add(moveSpeedFloatField);
         rootVisualElement.Add(attackDamageToggle);
         rootVisualElement.Add(attackDamageFloatField);
         rootVisualElement.Add(critChanceToggle);

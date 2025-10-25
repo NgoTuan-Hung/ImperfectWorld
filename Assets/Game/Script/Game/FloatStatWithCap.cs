@@ -1,11 +1,11 @@
 using System;
-using System.Runtime.CompilerServices;
 using Unity.Properties;
-using UnityEngine.UIElements;
+using UnityEngine;
 
 [Serializable]
-public class FloatStatWithCap : INotifyBindablePropertyChanged
+public class FloatStatWithCap
 {
+    [SerializeField]
     float value;
     public float cap;
 
@@ -21,15 +21,7 @@ public class FloatStatWithCap : INotifyBindablePropertyChanged
                 this.value = value;
 
             valueChangeEvent();
-            Notify();
         }
     }
     public Action valueChangeEvent = () => { };
-
-    public event EventHandler<BindablePropertyChangedEventArgs> propertyChanged;
-
-    void Notify([CallerMemberName] string property = "")
-    {
-        propertyChanged?.Invoke(this, new BindablePropertyChangedEventArgs(property));
-    }
 }

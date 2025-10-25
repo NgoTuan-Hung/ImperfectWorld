@@ -4,6 +4,7 @@ public partial class GameManager
 {
     public bool LoadNormalEnemyRoomVariant(int p_index)
     {
+        GameUIManager.Instance.startBattleButton.Show();
         if (enemyCount > 0)
             return false;
         else

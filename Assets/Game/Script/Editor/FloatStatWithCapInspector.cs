@@ -1,7 +1,7 @@
 #if UNITY_EDITOR
-using Unity.Properties;
 using Unity.VisualScripting;
 using UnityEditor;
+using UnityEditor.UIElements;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -20,16 +20,15 @@ public class FloatStatWithCapInspector : PropertyDrawer
 
         floatField = root.Q<FloatField>("inspector__float-field");
 
-        floatField.dataSource = property.GetUnderlyingValue();
-        floatField.SetBinding(
-            "value",
-            new DataBinding()
+        SerializedProperty baseValueProperty = property.FindPropertyRelative("value");
+        floatField.BindProperty(baseValueProperty);
+
+        floatField.RegisterValueChangedCallback(
+            (evt) =>
             {
-                dataSourcePath = new PropertyPath(nameof(FloatStatWithCap.Value)),
-                bindingMode = BindingMode.TwoWay,
+                property.GetValue<FloatStatWithCap>().valueChangeEvent();
             }
         );
-
         return root;
     }
 }

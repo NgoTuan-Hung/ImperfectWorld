@@ -3452,6 +3452,7 @@ MonoBehaviour:
   alive: 1
   moveSpeedPerFrame: 0.039999984
   currentHealthPoint:
+    value: 0
     cap: 0
   healthPoint:
     baseValue: 50
@@ -3464,10 +3465,11 @@ MonoBehaviour:
     referenceModifiers: []
     modifiers: []
   currentManaPoint:
+    value: 0
     cap: 0
   manaPoint:
     baseValue: 100
-    finalValue: 0
+    finalValue: 100
     referenceModifiers: []
     modifiers: []
   manaRegen:
@@ -3477,17 +3479,17 @@ MonoBehaviour:
     modifiers: []
   might:
     baseValue: 1
-    finalValue: 0
+    finalValue: 1
     referenceModifiers: []
     modifiers: []
   reflex:
     baseValue: 1
-    finalValue: 0
+    finalValue: 1
     referenceModifiers: []
     modifiers: []
   wisdom:
     baseValue: 1
-    finalValue: 0
+    finalValue: 1
     referenceModifiers: []
     modifiers: []
   attackSpeed:
@@ -3509,8 +3511,8 @@ MonoBehaviour:
     referenceModifiers: []
     modifiers: []
   omnivamp:
-    baseValue: 0
-    finalValue: 0
+    baseValue: 1
+    finalValue: 1
     referenceModifiers: []
     modifiers: []
   attackDamage:
@@ -4205,6 +4207,11 @@ MonoBehaviour:
         position: {x: 8, y: -2.25}
       - prefab: {fileID: 4829317318285372089, guid: cd25eb6fc5efb074885bd2f2d6c9b850, type: 3}
         position: {x: 5, y: -2.25}
+    - roomEnemyInfos:
+      - prefab: {fileID: 4829317318285372089, guid: cd25eb6fc5efb074885bd2f2d6c9b850, type: 3}
+        position: {x: 5, y: -2.25}
+      - prefab: {fileID: 1137679943407864959, guid: a0991262f8f93ed42aa3dc1d0412ca79, type: 3}
+        position: {x: 5, y: -3.25}
   enemyCount: 0
   playerChampions:
   - {fileID: 108618814}
@@ -4517,6 +4524,7 @@ MonoBehaviour:
   alive: 1
   moveSpeedPerFrame: 0.039999984
   currentHealthPoint:
+    value: 0
     cap: 0
   healthPoint:
     baseValue: 1000
@@ -4529,6 +4537,7 @@ MonoBehaviour:
     referenceModifiers: []
     modifiers: []
   currentManaPoint:
+    value: 0
     cap: 0
   manaPoint:
     baseValue: 100
@@ -7450,6 +7459,7 @@ MonoBehaviour:
   alive: 1
   moveSpeedPerFrame: 0.05399998
   currentHealthPoint:
+    value: 0
     cap: 0
   healthPoint:
     baseValue: 20
@@ -7462,6 +7472,7 @@ MonoBehaviour:
     referenceModifiers: []
     modifiers: []
   currentManaPoint:
+    value: 0
     cap: 0
   manaPoint:
     baseValue: 100
@@ -8164,6 +8175,7 @@ MonoBehaviour:
   alive: 1
   moveSpeedPerFrame: 0.039999984
   currentHealthPoint:
+    value: 0
     cap: 0
   healthPoint:
     baseValue: 50
@@ -8176,6 +8188,7 @@ MonoBehaviour:
     referenceModifiers: []
     modifiers: []
   currentManaPoint:
+    value: 0
     cap: 0
   manaPoint:
     baseValue: 100
@@ -9562,6 +9575,7 @@ MonoBehaviour:
   alive: 1
   moveSpeedPerFrame: 0.039999984
   currentHealthPoint:
+    value: 0
     cap: 0
   healthPoint:
     baseValue: 50
@@ -9574,6 +9588,7 @@ MonoBehaviour:
     referenceModifiers: []
     modifiers: []
   currentManaPoint:
+    value: 0
     cap: 0
   manaPoint:
     baseValue: 100
@@ -10439,6 +10454,7 @@ MonoBehaviour:
   alive: 1
   moveSpeedPerFrame: 0.039999984
   currentHealthPoint:
+    value: 0
     cap: 0
   healthPoint:
     baseValue: 50
@@ -10451,6 +10467,7 @@ MonoBehaviour:
     referenceModifiers: []
     modifiers: []
   currentManaPoint:
+    value: 0
     cap: 0
   manaPoint:
     baseValue: 100
@@ -12745,6 +12762,7 @@ MonoBehaviour:
   alive: 1
   moveSpeedPerFrame: 0.05399998
   currentHealthPoint:
+    value: 0
     cap: 0
   healthPoint:
     baseValue: 400
@@ -12757,6 +12775,7 @@ MonoBehaviour:
     referenceModifiers: []
     modifiers: []
   currentManaPoint:
+    value: 0
     cap: 0
   manaPoint:
     baseValue: 100
@@ -16016,6 +16035,7 @@ MonoBehaviour:
   alive: 1
   moveSpeedPerFrame: 0.039999984
   currentHealthPoint:
+    value: 0
     cap: 0
   healthPoint:
     baseValue: 50
@@ -16028,6 +16048,7 @@ MonoBehaviour:
     referenceModifiers: []
     modifiers: []
   currentManaPoint:
+    value: 0
     cap: 0
   manaPoint:
     baseValue: 100
@@ -16763,6 +16784,7 @@ MonoBehaviour:
   alive: 1
   moveSpeedPerFrame: 0.039999984
   currentHealthPoint:
+    value: 0
     cap: 0
   healthPoint:
     baseValue: 50
@@ -16775,6 +16797,7 @@ MonoBehaviour:
     referenceModifiers: []
     modifiers: []
   currentManaPoint:
+    value: 0
     cap: 0
   manaPoint:
     baseValue: 100
@@ -23007,6 +23030,7 @@ MonoBehaviour:
   alive: 1
   moveSpeedPerFrame: 0.039999984
   currentHealthPoint:
+    value: 0
     cap: 0
   healthPoint:
     baseValue: 500
@@ -23019,6 +23043,7 @@ MonoBehaviour:
     referenceModifiers: []
     modifiers: []
   currentManaPoint:
+    value: 0
     cap: 0
   manaPoint:
     baseValue: 100
@@ -26231,6 +26256,7 @@ MonoBehaviour:
   alive: 1
   moveSpeedPerFrame: 0
   currentHealthPoint:
+    value: 0
     cap: 0
   healthPoint:
     baseValue: 5000
@@ -26243,6 +26269,7 @@ MonoBehaviour:
     referenceModifiers: []
     modifiers: []
   currentManaPoint:
+    value: 0
     cap: 0
   manaPoint:
     baseValue: 100
@@ -30151,6 +30178,7 @@ MonoBehaviour:
   alive: 1
   moveSpeedPerFrame: 0
   currentHealthPoint:
+    value: 0
     cap: 0
   healthPoint:
     baseValue: 50000
@@ -30163,6 +30191,7 @@ MonoBehaviour:
     referenceModifiers: []
     modifiers: []
   currentManaPoint:
+    value: 0
     cap: 0
   manaPoint:
     baseValue: 100
@@ -31089,6 +31118,7 @@ MonoBehaviour:
   alive: 1
   moveSpeedPerFrame: 0.04799998
   currentHealthPoint:
+    value: 0
     cap: 0
   healthPoint:
     baseValue: 50
@@ -31101,6 +31131,7 @@ MonoBehaviour:
     referenceModifiers: []
     modifiers: []
   currentManaPoint:
+    value: 0
     cap: 0
   manaPoint:
     baseValue: 100
@@ -31680,6 +31711,7 @@ MonoBehaviour:
   alive: 1
   moveSpeedPerFrame: 0
   currentHealthPoint:
+    value: 0
     cap: 0
   healthPoint:
     baseValue: 5000
@@ -31692,6 +31724,7 @@ MonoBehaviour:
     referenceModifiers: []
     modifiers: []
   currentManaPoint:
+    value: 0
     cap: 0
   manaPoint:
     baseValue: 100

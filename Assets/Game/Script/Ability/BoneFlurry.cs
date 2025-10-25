@@ -53,7 +53,7 @@ public class BoneFlurry : SkillBase
     public override void RecalculateStat()
     {
         base.RecalculateStat();
-        chance = Math.Clamp(0.35f + customMono.stat.might.FinalValue, 0, 1);
+        chance = Math.Clamp(0.35f + customMono.stat.might.FinalValue * 0.01f, 0, 1);
     }
 
     public new void Trigger(

@@ -1,7 +1,6 @@
 #if UNITY_EDITOR
-using Unity.Properties;
-using Unity.VisualScripting;
 using UnityEditor;
+using UnityEditor.UIElements;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -19,16 +18,17 @@ public class FloatStatWithModifierInspector : PropertyDrawer
             root.Add(floatStatWithModifierInspectorAsset.CloneTree());
 
         baseValueFloatField = root.Q<FloatField>("inspector__base-value-float-field");
-        baseValueFloatField.dataSource = property.GetUnderlyingValue();
 
-        baseValueFloatField.SetBinding(
-            "value",
-            new DataBinding()
+        SerializedProperty baseValueProperty = property.FindPropertyRelative("baseValue");
+        baseValueFloatField.BindProperty(baseValueProperty);
+
+        baseValueFloatField.RegisterValueChangedCallback(
+            (evt) =>
             {
-                dataSourcePath = new PropertyPath(nameof(FloatStatWithModifier.BaseValue)),
-                bindingMode = BindingMode.TwoWay,
+                property.GetValue<FloatStatWithModifier>().RecalculateFinalValue();
             }
         );
+
         return root;
     }
 }

@@ -127,7 +127,7 @@ GameObject:
   - component: {fileID: 7971818780252832742}
   m_Layer: 0
   m_Name: CharacterTemplate
-  m_TagString: GamePlayer
+  m_TagString: Team2
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -337,6 +337,7 @@ MonoBehaviour:
   alive: 1
   moveSpeedPerFrame: 0.039999984
   currentHealthPoint:
+    value: 0
     cap: 0
   healthPoint:
     baseValue: 50
@@ -349,35 +350,36 @@ MonoBehaviour:
     referenceModifiers: []
     modifiers: []
   currentManaPoint:
+    value: 0
     cap: 0
   manaPoint:
     baseValue: 100
-    finalValue: 0
+    finalValue: 100
     referenceModifiers: []
     modifiers: []
   manaRegen:
-    baseValue: 5
-    finalValue: 5
+    baseValue: 10
+    finalValue: 10
     referenceModifiers: []
     modifiers: []
   might:
     baseValue: 1
-    finalValue: 0
+    finalValue: 1
     referenceModifiers: []
     modifiers: []
   reflex:
     baseValue: 1
-    finalValue: 0
+    finalValue: 1
     referenceModifiers: []
     modifiers: []
   wisdom:
     baseValue: 1
-    finalValue: 0
+    finalValue: 1
     referenceModifiers: []
     modifiers: []
   attackSpeed:
     baseValue: 1
-    finalValue: 0
+    finalValue: 1
     referenceModifiers: []
     modifiers: []
   armor:
@@ -399,18 +401,18 @@ MonoBehaviour:
     referenceModifiers: []
     modifiers: []
   attackDamage:
-    baseValue: 0
-    finalValue: 0
+    baseValue: 3.8
+    finalValue: 3.8
     referenceModifiers: []
     modifiers: []
   critChance:
-    baseValue: 0
-    finalValue: 0
+    baseValue: 0.25
+    finalValue: 0.25
     referenceModifiers: []
     modifiers: []
   critDamageModifier:
-    baseValue: 0
-    finalValue: 0
+    baseValue: 1
+    finalValue: 1
     referenceModifiers: []
     modifiers: []
   actionMoveSpeedReduceRate:
@@ -482,7 +484,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   charUIData: {fileID: 11400000, guid: 07b70e5aaf21d684fa8359c800d72dba, type: 2}
-  isControllable: 1
+  isControllable: 0
   spriteRenderer: {fileID: 0}
   animationEventFunctionCaller: {fileID: 0}
   movable: {fileID: 0}

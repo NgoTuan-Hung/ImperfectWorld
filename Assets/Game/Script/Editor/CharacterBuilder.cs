@@ -16,6 +16,7 @@ public class CharacterBuilder : EditorWindow
     Animator animator;
     SpriteRenderer spriteRenderer;
     ObjectField spriteObjectField;
+    CustomMono customMono;
     Toggle isDeactivateAterTimeToggle,
         isTimelineToggle,
         randomRotationToggle,
@@ -83,24 +84,49 @@ public class CharacterBuilder : EditorWindow
         build = Instantiate(basePrefab);
         build.name = nameTextField.text;
         mainComp = build.transform.Find("DirectionModifier/MainComponent").gameObject;
+        customMono = build.GetComponent<CustomMono>();
+
+        CharAttackInfo charAttackInfo = CreateInstance<CharAttackInfo>();
+        charAttackInfo.name = nameTextField.text + "CAI";
+        customMono.charAttackInfo = charAttackInfo;
 
         animator = mainComp.GetComponent<Animator>();
         var templateAC = animator.runtimeAnimatorController;
         string srcPath = AssetDatabase.GetAssetPath(templateAC);
         Debug.Log(srcPath);
-        AnimatorParameterCopyPaste.CopyParameters(templateAC as AnimatorController);
-        AnimatorController t_animatorController = AnimatorController.CreateAnimatorControllerAtPath(
+        AssetDatabase.CopyAsset(
+            srcPath,
             "Assets/Game/Graphics/Aseprite/Char/"
                 + animatorPathTextField.text
                 + "/"
                 + animatorNameTextField.text
                 + ".controller"
         );
-        AnimatorParameterCopyPaste.PasteParameters(t_animatorController);
+
+        var t_animatorController = AssetDatabase.LoadAssetAtPath<RuntimeAnimatorController>(
+            "Assets/Game/Graphics/Aseprite/Char/"
+                + animatorPathTextField.text
+                + "/"
+                + animatorNameTextField.text
+                + ".controller"
+        );
+
         animator.runtimeAnimatorController = t_animatorController;
 
         spriteRenderer = mainComp.GetComponent<SpriteRenderer>();
         spriteRenderer.sprite = spriteObjectField.value as Sprite;
+
+        AssetDatabase.CreateAsset(
+            charAttackInfo,
+            "Assets/Game/Resources/AttackInfo/" + charAttackInfo.name + ".asset"
+        );
+        PrefabUtility.SaveAsPrefabAssetAndConnect(
+            build,
+            "Assets/Game/Resources/Champion/" + build.name + ".prefab",
+            InteractionMode.UserAction
+        );
+        AssetDatabase.SaveAssets();
+        AssetDatabase.Refresh();
     }
 }
 #endif
