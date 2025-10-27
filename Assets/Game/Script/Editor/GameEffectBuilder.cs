@@ -40,6 +40,8 @@ public class GameEffectBuilder : EditorWindow
     DropdownField addColliderDropdownField;
     GameObject build;
     int combatColliderLayer;
+    ObjectField spriteObjectField,
+        newAnimationObjectSpriteObjectField;
 
     private void OnEnable()
     {
@@ -78,6 +80,7 @@ public class GameEffectBuilder : EditorWindow
         t_animationObject.name = "AnimationObject";
 
         SpriteRenderer t_sR = t_animationObject.AddComponent<SpriteRenderer>();
+        t_sR.sprite = newAnimationObjectSpriteObjectField.value as Sprite;
         t_sR.sortingOrder = 3;
         t_sR.sortingLayerName = "Base";
 
@@ -168,6 +171,7 @@ public class GameEffectBuilder : EditorWindow
         defaultAnimationObjectControllerNameTextField = scrollViewContent.Q<TextField>(
             "default-animation-object-controller-name-tf"
         );
+        spriteObjectField = scrollViewContent.Q<ObjectField>("sprite-of");
         seperator1 = scrollViewContent.Q("seperator-1");
 
         var gameEffectBehavioursIE = new InspectorElement();
@@ -188,6 +192,9 @@ public class GameEffectBuilder : EditorWindow
 
         newAnimationObjectControllerNameTextField = scrollViewContent.Q<TextField>(
             "new-animation-object-controller-name-tf"
+        );
+        newAnimationObjectSpriteObjectField = scrollViewContent.Q<ObjectField>(
+            "new-animation-object-sprite-of"
         );
         addAnimationObjectButton = scrollViewContent.Q<Button>("add-animation-object-b");
 
@@ -252,6 +259,11 @@ public class GameEffectBuilder : EditorWindow
                         + ".controller"
                 );
             t_animater.runtimeAnimatorController = t_animatorController;
+            #endregion
+
+            #region Add Sprite
+            t_animater.gameObject.GetComponent<SpriteRenderer>().sprite =
+                spriteObjectField.value as Sprite;
             #endregion
 
             t_buildSO.gameEffectBehaviours?.ForEach(behaviour =>

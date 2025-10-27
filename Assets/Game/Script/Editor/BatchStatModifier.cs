@@ -20,6 +20,8 @@ public class BatchStatModifier : EditorWindow
 
     void CreateGUI()
     {
+        ScrollView root = new ScrollView();
+
         var inspectorListView = new InspectorElement();
         ListStatSO listStatSO = CreateInstance<ListStatSO>();
         inspectorListView.Bind(new SerializedObject(listStatSO));
@@ -135,28 +137,29 @@ public class BatchStatModifier : EditorWindow
             AssetDatabase.SaveAssets();
         };
 
-        rootVisualElement.Add(inspectorListView);
-        rootVisualElement.Add(hpToggle);
-        rootVisualElement.Add(hpFloatField);
-        rootVisualElement.Add(mightToggle);
-        rootVisualElement.Add(mightFloatField);
-        rootVisualElement.Add(reflexToggle);
-        rootVisualElement.Add(reflexFloatField);
-        rootVisualElement.Add(wisdomToggle);
-        rootVisualElement.Add(wisdomFloatField);
-        rootVisualElement.Add(attackSpeedToggle);
-        rootVisualElement.Add(attackSpeedFloatField);
-        rootVisualElement.Add(armorToggle);
-        rootVisualElement.Add(armorFloatField);
-        rootVisualElement.Add(moveSpeedToggle);
-        rootVisualElement.Add(moveSpeedFloatField);
-        rootVisualElement.Add(attackDamageToggle);
-        rootVisualElement.Add(attackDamageFloatField);
-        rootVisualElement.Add(critChanceToggle);
-        rootVisualElement.Add(critChanceFloatField);
-        rootVisualElement.Add(critDamageModifierToggle);
-        rootVisualElement.Add(critDamageModifierFloatField);
-        rootVisualElement.Add(button);
+        root.Add(inspectorListView);
+        root.Add(hpToggle);
+        root.Add(hpFloatField);
+        root.Add(mightToggle);
+        root.Add(mightFloatField);
+        root.Add(reflexToggle);
+        root.Add(reflexFloatField);
+        root.Add(wisdomToggle);
+        root.Add(wisdomFloatField);
+        root.Add(attackSpeedToggle);
+        root.Add(attackSpeedFloatField);
+        root.Add(armorToggle);
+        root.Add(armorFloatField);
+        root.Add(moveSpeedToggle);
+        root.Add(moveSpeedFloatField);
+        root.Add(attackDamageToggle);
+        root.Add(attackDamageFloatField);
+        root.Add(critChanceToggle);
+        root.Add(critChanceFloatField);
+        root.Add(critDamageModifierToggle);
+        root.Add(critDamageModifierFloatField);
+        root.Add(button);
+        rootVisualElement.Add(root);
     }
 }
 #endif

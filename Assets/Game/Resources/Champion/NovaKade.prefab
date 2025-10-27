@@ -187,10 +187,11 @@ MonoBehaviour:
   alive: 1
   moveSpeedPerFrame: 0
   currentHealthPoint:
+    value: 0
     cap: 0
   healthPoint:
-    baseValue: 38
-    finalValue: 38
+    baseValue: 20
+    finalValue: 20
     referenceModifiers: []
     modifiers: []
   healthRegen:
@@ -199,6 +200,7 @@ MonoBehaviour:
     referenceModifiers: []
     modifiers: []
   currentManaPoint:
+    value: 0
     cap: 0
   manaPoint:
     baseValue: 100

@@ -114,7 +114,9 @@ public partial class GameManager
         novaKadeGrenadeExplosionPool,
         aquaenAttack1ImpactPool,
         twinsOfCataclysmEffectPool,
-        glacistreamEffectPool;
+        glacistreamEffectPool,
+        raikenDartPool,
+        jinseiKunaiPool;
     List<string> objectPoolNames = new()
     {
         "moonSlashExplodePool",
@@ -227,6 +229,8 @@ public partial class GameManager
         "aquaenAttack1ImpactPool",
         "twinsOfCataclysmEffectPool",
         "glacistreamEffectPool",
+        "raikenDartPool",
+        "jinseiKunaiPool",
     };
 
     void InitAllEffectPools()

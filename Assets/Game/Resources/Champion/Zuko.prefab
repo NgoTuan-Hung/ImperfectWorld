@@ -460,10 +460,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9500879ad6b6755408f9c787c95fb42c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  actionMoveSpeedReduced: 0
+  alive: 1
   moveSpeedPerFrame: 0.039999984
-  size: 1
   currentHealthPoint:
+    value: 0
     cap: 0
   healthPoint:
     baseValue: 50
@@ -476,6 +476,7 @@ MonoBehaviour:
     referenceModifiers: []
     modifiers: []
   currentManaPoint:
+    value: 0
     cap: 0
   manaPoint:
     baseValue: 100
@@ -518,6 +519,26 @@ MonoBehaviour:
     referenceModifiers: []
     modifiers: []
   damageModifier:
+    referenceModifiers: []
+    modifiers: []
+  omnivamp:
+    baseValue: 0
+    finalValue: 0
+    referenceModifiers: []
+    modifiers: []
+  attackDamage:
+    baseValue: 3.8
+    finalValue: 3.8
+    referenceModifiers: []
+    modifiers: []
+  critChance:
+    baseValue: 0.25
+    finalValue: 0.25
+    referenceModifiers: []
+    modifiers: []
+  critDamageModifier:
+    baseValue: 1
+    finalValue: 1
     referenceModifiers: []
     modifiers: []
   actionMoveSpeedReduceRate:

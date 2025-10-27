@@ -220,7 +220,7 @@ public class CollideAndDamage : MonoEditor, IGameEffectBehaviour
         dealDamageGameEventData.dealer = owner;
         dealDamageGameEventData.target = p_customMono;
         GameManager
-            .Instance.selfEvents[dealDamageGameEventData.dealer][GameEventType.DealDamage]
+            .Instance.GetSelfEvent(dealDamageGameEventData.dealer, GameEventType.DealDamage)
             .action(dealDamageGameEventData);
         dealDamageEvent(collideDamage);
     }
@@ -241,7 +241,7 @@ public class CollideAndDamage : MonoEditor, IGameEffectBehaviour
                 dealDamageGameEventData.dealer = owner;
                 dealDamageGameEventData.target = p_customMono;
                 GameManager
-                    .Instance.selfEvents[dealDamageGameEventData.dealer][GameEventType.DealDamage]
+                    .Instance.GetSelfEvent(dealDamageGameEventData.dealer, GameEventType.DealDamage)
                     .action(dealDamageGameEventData);
                 dealDamageEvent(collideDamage);
             }
@@ -253,7 +253,7 @@ public class CollideAndDamage : MonoEditor, IGameEffectBehaviour
             dealDamageGameEventData.dealer = owner;
             dealDamageGameEventData.target = p_customMono;
             GameManager
-                .Instance.selfEvents[dealDamageGameEventData.dealer][GameEventType.DealDamage]
+                .Instance.GetSelfEvent(dealDamageGameEventData.dealer, GameEventType.DealDamage)
                 .action(dealDamageGameEventData);
             dealDamageEvent(collideDamage);
         }

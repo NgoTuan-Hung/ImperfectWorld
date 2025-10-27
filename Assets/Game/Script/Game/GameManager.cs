@@ -13,6 +13,7 @@ public enum GameEventType
     HPChange,
     Attack,
     DealDamage,
+    TakeDamage,
 }
 
 [RequireComponent(typeof(HexGridManager))]
@@ -62,8 +63,8 @@ public partial class GameManager : MonoBehaviour
     /// characters around anymore. When battle finish, this will be set to true.
     /// </summary>
     public bool positioningPhase = true;
-    public Dictionary<CustomMono, Dictionary<GameEventType, GameEvent>> selfEvents = new();
-    public Dictionary<string, Dictionary<GameEventType, GameEvent>> teamBasedEvents = new();
+    Dictionary<CustomMono, Dictionary<GameEventType, GameEvent>> selfEvents = new();
+    Dictionary<string, Dictionary<GameEventType, GameEvent>> teamBasedEvents = new();
 
     public void InitializeControllableCharacter(CustomMono p_customMono) { }
 

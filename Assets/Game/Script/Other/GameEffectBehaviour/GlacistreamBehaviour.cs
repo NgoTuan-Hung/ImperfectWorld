@@ -55,9 +55,10 @@ public class GlacistreamBehaviour : MonoEditor, IGameEffectBehaviour
                             dealDamageGameEventData.dealer = owner;
                             dealDamageGameEventData.target = t_customMono;
                             GameManager
-                                .Instance.selfEvents[dealDamageGameEventData.dealer][
+                                .Instance.GetSelfEvent(
+                                    dealDamageGameEventData.dealer,
                                     GameEventType.DealDamage
-                                ]
+                                )
                                 .action(dealDamageGameEventData);
                             dealDamageEvent(firstCollisionDamage);
                         }
@@ -98,9 +99,10 @@ public class GlacistreamBehaviour : MonoEditor, IGameEffectBehaviour
                                     dealDamageGameEventData.dealer = owner;
                                     dealDamageGameEventData.target = t_customMono;
                                     GameManager
-                                        .Instance.selfEvents[dealDamageGameEventData.dealer][
+                                        .Instance.GetSelfEvent(
+                                            dealDamageGameEventData.dealer,
                                             GameEventType.DealDamage
-                                        ]
+                                        )
                                         .action(dealDamageGameEventData);
                                     dealDamageEvent(secondCollisionDamage);
                                 }
@@ -117,9 +119,10 @@ public class GlacistreamBehaviour : MonoEditor, IGameEffectBehaviour
                                 dealDamageGameEventData.dealer = owner;
                                 dealDamageGameEventData.target = t_customMono;
                                 GameManager
-                                    .Instance.selfEvents[dealDamageGameEventData.dealer][
+                                    .Instance.GetSelfEvent(
+                                        dealDamageGameEventData.dealer,
                                         GameEventType.DealDamage
-                                    ]
+                                    )
                                     .action(dealDamageGameEventData);
                                 dealDamageEvent(secondCollisionDamage);
                             }

@@ -390,14 +390,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9500879ad6b6755408f9c787c95fb42c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  actionMoveSpeedReduced: 0
+  alive: 1
   moveSpeedPerFrame: 0
-  size: 1
   currentHealthPoint:
+    value: 0
     cap: 0
   healthPoint:
-    baseValue: 15
-    finalValue: 15
+    baseValue: 20
+    finalValue: 20
     referenceModifiers: []
     modifiers: []
   healthRegen:
@@ -406,6 +406,7 @@ MonoBehaviour:
     referenceModifiers: []
     modifiers: []
   currentManaPoint:
+    value: 0
     cap: 0
   manaPoint:
     baseValue: 100
@@ -450,6 +451,26 @@ MonoBehaviour:
   damageModifier:
     referenceModifiers: []
     modifiers: []
+  omnivamp:
+    baseValue: 0
+    finalValue: 0
+    referenceModifiers: []
+    modifiers: []
+  attackDamage:
+    baseValue: 3.8
+    finalValue: 3.8
+    referenceModifiers: []
+    modifiers: []
+  critChance:
+    baseValue: 0.25
+    finalValue: 0.25
+    referenceModifiers: []
+    modifiers: []
+  critDamageModifier:
+    baseValue: 1
+    finalValue: 1
+    referenceModifiers: []
+    modifiers: []
   actionMoveSpeedReduceRate:
     baseValue: -0.9
     finalValue: -0.9
@@ -490,10 +511,7 @@ MonoBehaviour:
   audioSource: {fileID: 0}
   rigidbody2D: {fileID: 0}
   attackAudioClip: {fileID: 8300000, guid: 1831f3e85531e554081da581aac0d078, type: 3}
-  meleeCollisionEffectSO: {fileID: 0}
-  longRangeProjectileEffectSO: {fileID: 11400000, guid: 0152fa7a68a379f4dabe1a7053af1754, type: 2}
   charAttackInfo: {fileID: 11400000, guid: 44c56ed2c3d73bd4d84b6a9e906c5b5e, type: 2}
-  attackType: 1
   statusEffect: {fileID: 0}
   rotationAndCenterObject: {fileID: 0}
   directionModifier: {fileID: 0}

@@ -1,4 +1,5 @@
 <ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="True">
+    <Style src="project://database/Assets/Game/Graphics/UIToolkit/GameEffectBuilder/GameEffectBuilder.uss?fileID=7433441132597879392&amp;guid=d1301b6470ae8c24991c52141f3be09f&amp;type=3#GameEffectBuilder" />
     <ui:ScrollView touch-scroll-type="Clamped">
         <ui:VisualElement name="scroll-view-content" style="flex-grow: 1; flex-wrap: wrap;">
             <ui:TextField label="Effect Name" placeholder-text="filler text" name="name-tf" />
@@ -18,15 +19,19 @@
             <uie:LayerMaskField label="Collision Exclude LayerMask" name="collision-exclude-layer-mask-lmf" value="247" />
             <ui:Toggle label="Use Particle System" name="use-particle-system-t" />
             <ui:TextField label="Default Animation Object Controller Name" placeholder-text="default is nothing" name="default-animation-object-controller-name-tf" />
+            <uie:ObjectField label="Sprite" name="sprite-of" />
             <ui:VisualElement name="seperator-1" style="background-color: rgb(255, 0, 0); height: 1px;" />
             <ui:VisualElement name="seperator-2" style="background-color: rgb(0, 255, 28); height: 1px;" />
             <ui:VisualElement style="flex-direction: row;">
                 <ui:DropdownField label="Add Collider" name="add-collider-df" choices="BoxCollider2D,CircleCollider2D,PolygonCollider2D" index="0" />
                 <ui:Button text="ADD" name="add-collider-b" />
             </ui:VisualElement>
-            <ui:VisualElement style="flex-direction: row;">
-                <ui:TextField label="New Animation Object Controller Name" placeholder-text="default is nothing" name="new-animation-object-controller-name-tf" />
-                <ui:Button text="ADD" name="add-animation-object-b" />
+            <ui:VisualElement style="flex-direction: column; border-top-width: 2px; border-right-width: 2px; border-bottom-width: 2px; border-left-width: 2px; border-top-left-radius: 0; border-top-right-radius: 0; border-bottom-right-radius: 0; border-bottom-left-radius: 0; border-left-color: rgb(0, 0, 0); border-right-color: rgb(0, 0, 0); border-top-color: rgb(0, 0, 0); border-bottom-color: rgb(0, 0, 0);">
+                <ui:TextField label="New Animation Object Controller Name" placeholder-text="default is nothing" name="new-animation-object-controller-name-tf" style="width: 70%;" />
+                <ui:VisualElement style="flex-grow: 1; flex-direction: row;">
+                    <uie:ObjectField label="Sprite" name="new-animation-object-sprite-of" style="width: 15%; flex-grow: 1;" />
+                    <ui:Button text="ADD" name="add-animation-object-b" />
+                </ui:VisualElement>
             </ui:VisualElement>
             <ui:Button text="Build" name="build-b" />
         </ui:VisualElement>

@@ -16,20 +16,20 @@ public enum StatusEffectState
 public class StatusEffect : CustomMonoPal
 {
     public int currentStates = 0;
-    public float osTime = 0,
-        damp = 0.5f;
-    public float speed = 10f,
+    public float osTime = 0;
+    static readonly float damp = 0.5f;
+    static readonly float speed = 10f,
         scaleRange = 0.25f;
-    public int frequency = 3;
+    static readonly int frequency = 3;
     float currentDamageTime = 0;
-    public float damageDuration = 0.25f;
+    static readonly float damageDuration = 0.25f;
     Vector3 currentSpriteLocalScale;
-    public float elementalEffectDuration = 0.2f;
-    public Color elementalEffectColor = Color.red;
+    static readonly float elementalEffectDuration = 0.2f;
+    static readonly Color elementalEffectColor = Color.red;
     public bool ccImmune = false;
-    public float knockUpInitialVelocity = 1.5f,
-        knockUpVelocity,
-        knockUpAcceleration = -10f;
+    float knockUpInitialVelocity = 1.5f,
+        knockUpVelocity;
+    static readonly float knockUpAcceleration = -10f;
     public float stunTime = 0f;
     GameObject statusEffectIndicator,
         stunIndicator;
@@ -39,7 +39,8 @@ public class StatusEffect : CustomMonoPal
     float poisonDamage;
     int actionBlockingFactors = 0,
         movementBlockingFactors = 0;
-    float finalTakenDamage;
+    float finalTakenDamage,
+        totalDamageTaken;
 
     public override void Awake()
     {
@@ -84,11 +85,10 @@ public class StatusEffect : CustomMonoPal
 
     public float GetHit(float p_damage)
     {
-        finalTakenDamage = Math.Clamp(
-            p_damage - customMono.stat.armor.FinalValue,
-            0f,
-            float.MaxValue
-        );
+        finalTakenDamage =
+            Math.Clamp(p_damage - customMono.stat.armor.FinalValue, 0f, float.MaxValue)
+            * (1 - customMono.stat.damageReduction.FinalValue);
+        totalDamageTaken += finalTakenDamage;
         customMono.stat.currentHealthPoint.Value -= finalTakenDamage;
         GameUIManager
             .Instance.PickOneTextPopupUI()
@@ -398,4 +398,21 @@ public class StatusEffect : CustomMonoPal
         yield return new WaitForSeconds(p_duration);
         customMono.stat.omnivamp.RemoveModifier(p_fSM);
     }
+
+    public void BuffDR(float p_value, float p_duration)
+    {
+        StartCoroutine(BuffDRIE(p_value, p_duration));
+    }
+
+    IEnumerator BuffDRIE(float p_value, float p_duration)
+    {
+        GameUIManager
+            .Instance.PickOneTextPopupUI()
+            .TextPopupUI.StartDRBuffPopup(customMono.rotationAndCenterObject.transform.position);
+        customMono.stat.damageReduction.BaseValue += p_value;
+        yield return new WaitForSeconds(p_duration);
+        customMono.stat.damageReduction.BaseValue -= p_value;
+    }
+
+    public float GetTotalDamageTaken() => totalDamageTaken;
 }

@@ -64,6 +64,9 @@ public partial class Stat
     [Header("<color='#AB47BC'>CRIT DAMAGE MODIFIER")]
     public FloatStatWithModifier critDamageModifier = new();
 
+    [Header("<color='#4A90E2'>DAMAGE REDUCTION")]
+    public FloatStatWithModifier damageReduction = new();
+
     [HideInInspector]
     public FloatStatWithModifier actionMoveSpeedReduceRate = new();
 

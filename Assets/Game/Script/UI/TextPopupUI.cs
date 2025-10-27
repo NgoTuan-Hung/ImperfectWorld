@@ -99,4 +99,20 @@ public class TextPopupUI : MonoSelfAware
             .WaitForCompletion();
         deactivate();
     }
+
+    public void StartDRBuffPopup(Vector3 p_initialPos) =>
+        StartCoroutine(StartDRBuffPopupIE(p_initialPos));
+
+    IEnumerator StartDRBuffPopupIE(Vector3 p_initialPos)
+    {
+        textMeshProUGUI.fontSharedMaterial = armorBuffPopupMat;
+        textMeshProUGUI.text = "DR⬆";
+        transform.position = p_initialPos;
+        textMeshProUGUI.DOColor(transparentWhite, 0.5f).SetEase(Ease.InCubic);
+        yield return textMeshProUGUI
+            .transform.DOMove(p_initialPos + 2 * Vector3.up, 0.5f)
+            .SetEase(Ease.InCubic)
+            .WaitForCompletion();
+        deactivate();
+    }
 }

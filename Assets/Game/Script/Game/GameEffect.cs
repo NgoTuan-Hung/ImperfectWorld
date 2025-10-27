@@ -5,7 +5,6 @@ using System.Linq;
 using Kryz.Tweening;
 using UnityEngine;
 using UnityEngine.Playables;
-using UnityEngine.Splines;
 using Random = UnityEngine.Random;
 
 public enum EasingType

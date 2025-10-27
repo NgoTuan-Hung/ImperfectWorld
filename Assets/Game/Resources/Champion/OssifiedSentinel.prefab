@@ -10048,8 +10048,8 @@ MonoBehaviour:
     referenceModifiers: []
     modifiers: []
   manaRegen:
-    baseValue: 5
-    finalValue: 5
+    baseValue: 10
+    finalValue: 10
     referenceModifiers: []
     modifiers: []
   might:
@@ -10103,6 +10103,11 @@ MonoBehaviour:
   critDamageModifier:
     baseValue: 1
     finalValue: 1
+    referenceModifiers: []
+    modifiers: []
+  damageReduction:
+    baseValue: 0
+    finalValue: 0
     referenceModifiers: []
     modifiers: []
   actionMoveSpeedReduceRate:
@@ -10160,6 +10165,7 @@ MonoBehaviour:
   customMono: {fileID: 0}
   skillDataSOs:
   - {fileID: 11400000, guid: d956062efdfc6274d972e2ef0fc25827, type: 2}
+  - {fileID: 11400000, guid: c6a29b0de3de7b04595c1b2a687a12bc, type: 2}
   skillBases: []
 --- !u!114 &9095429685223172647
 MonoBehaviour:
