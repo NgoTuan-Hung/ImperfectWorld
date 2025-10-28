@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "ScriptableObject", menuName = "CollideAndDamageSO", order = 0)]
@@ -24,4 +25,6 @@ public class CollideAndDamageSO : ScriptableObject
     public bool deactivateOnCollide = false;
     public bool spawnEffectOnCollide = false;
     public GameEffectSO spawnedEffectOnCollide = null;
+    public List<GameEffectBehaviourField> gameEffectBehaviourFields = new();
+    public float strikeLockDuration = 0f;
 }

@@ -95,10 +95,20 @@ public partial class BaseAction : MonoEditor
 
     public IEnumerator CooldownCoroutine()
     {
+        canUse = false;
         onCooldown = true;
-        yield return new WaitForSecondsRealtime(
+        yield return new WaitForSeconds(
             GetActionField<ActionFloatField>(ActionFieldName.Cooldown).value
         );
+        onCooldown = false;
+        canUse = true;
+    }
+
+    public IEnumerator CooldownCoroutine(float duration)
+    {
+        canUse = false;
+        onCooldown = true;
+        yield return new WaitForSeconds(duration);
         onCooldown = false;
         canUse = true;
     }

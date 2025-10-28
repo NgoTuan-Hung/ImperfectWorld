@@ -30,13 +30,13 @@ public class SilentDraw : SkillBase
     {
         GetActionField<ActionFloatField>(ActionFieldName.Cooldown).value = 0f;
         GetActionField<ActionFloatField>(ActionFieldName.ManaCost).value = 100f;
-        GetActionField<ActionIntField>(ActionFieldName.EffectCount).value = 11;
+        GetActionField<ActionIntField>(ActionFieldName.EffectCount).value = 5;
         successResult = new(
             true,
             ActionResultType.Cooldown,
             GetActionField<ActionFloatField>(ActionFieldName.Cooldown).value
         );
-        /* Also use damage, actionie */
+        /* Also use damage, actionie, gameeff */
     }
 
     public override void StatChangeRegister()
@@ -122,7 +122,7 @@ public class SilentDraw : SkillBase
                 ActionFieldName.GameEffect
             ).value.transform.position +=
                 GetActionField<ActionGameEffectField>(ActionFieldName.GameEffect).value.transform.up
-                * (i % 2 == 0 ? i / 2 : (i + 1) / -2);
+                * (i % 2 == 0 ? i / 4 : (i + 1) / -4);
             GetActionField<ActionGameEffectField>(ActionFieldName.GameEffect)
                 .value.SetUpCollideAndDamage(
                     customMono,

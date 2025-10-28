@@ -9,6 +9,7 @@ public class Attack : SkillBase
     AttackGameEventData attackGED = new();
     public DealDamageGameEventData dealDamageGED = new();
     public Action<Vector2, Vector2, CustomMono> endAttackAction = (_, _, _) => { };
+    IEnumerator cooldownIE = GameManager.VoidIE();
 
     public override void Awake()
     {
@@ -98,7 +99,6 @@ public class Attack : SkillBase
             return failResult;
         else if (canUse && !customMono.actionBlocking)
         {
-            canUse = false;
             customMono.actionBlocking = true;
             customMono.statusEffect.Slow(customMono.stat.actionSlowModifier);
             ToggleAnim(GameManager.Instance.attackBoolHash, true);
@@ -109,7 +109,7 @@ public class Attack : SkillBase
                     p_customMono
                 )
             );
-            StartCoroutine(CooldownCoroutine());
+            StartCoroutine(cooldownIE = CooldownCoroutine());
             customMono.currentAction = this;
             return successResult;
         }
@@ -239,4 +239,10 @@ public class Attack : SkillBase
                     )
                 )
         );
+
+    public void StrikeLock(float duration)
+    {
+        StopCoroutine(cooldownIE);
+        StartCoroutine(cooldownIE = CooldownCoroutine(duration));
+    }
 }

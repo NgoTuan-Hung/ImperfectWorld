@@ -116,7 +116,8 @@ public partial class GameManager
         twinsOfCataclysmEffect,
         glacistreamEffect,
         raikenDart,
-        jinseiKunai;
+        jinseiKunai,
+        eyeOfTheReaperEffect;
 
     List<string> prefabNames = new()
     {
@@ -232,6 +233,7 @@ public partial class GameManager
         "glacistreamEffect",
         "raikenDart",
         "jinseiKunai",
+        "eyeOfTheReaperEffect",
     };
 
     void LoadGameEffectPrefabs()

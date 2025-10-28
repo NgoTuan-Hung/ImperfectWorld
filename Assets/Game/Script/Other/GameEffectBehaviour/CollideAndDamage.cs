@@ -12,6 +12,7 @@ public enum OneTimeContactInteraction
     Heal,
     Poison,
     Slow,
+    StrikeLock,
 }
 
 public class CollideAndDamage : MonoEditor, IGameEffectBehaviour
@@ -37,6 +38,7 @@ public class CollideAndDamage : MonoEditor, IGameEffectBehaviour
     public PoisonInfo poisonInfo;
     public SlowInfo slowInfo;
     DealDamageGameEventData dealDamageGameEventData = new();
+    Dictionary<GameEffectBehaviourField, object> gameEffectBehaviourFields = new();
 
     public void Awake() { }
 
@@ -74,6 +76,7 @@ public class CollideAndDamage : MonoEditor, IGameEffectBehaviour
     public void Initialize(GameEffect gameEffect)
     {
         GameEffect = gameEffect;
+        InitFields();
 
         var p_collideAndDamageSO = GameEffect.gameEffectSO.collideAndDamageSO;
         #region Contact Action
@@ -134,6 +137,11 @@ public class CollideAndDamage : MonoEditor, IGameEffectBehaviour
             case OneTimeContactInteraction.Slow:
             {
                 onTriggerEnterWithEnemyCM += SlowEnemy;
+                break;
+            }
+            case OneTimeContactInteraction.StrikeLock:
+            {
+                onTriggerEnterWithEnemyCM += StrikeLockEnemy;
                 break;
             }
             default:
@@ -320,6 +328,34 @@ public class CollideAndDamage : MonoEditor, IGameEffectBehaviour
         p_customMono.statusEffect.Slow(slowInfo);
     }
 
+    void StrikeLockEnemy(CustomMono mono, Collider2D d)
+    {
+        (mono.skill.skillBases[0] as Attack).StrikeLock(GetStrikeLockDuration());
+    }
+
     void DeactivateOnCollide(CustomMono p_customMono, Collider2D p_collider2D) =>
         GameEffect.deactivate();
+
+    void InitFields()
+    {
+        GameEffect.gameEffectSO.collideAndDamageSO.gameEffectBehaviourFields.ForEach(f =>
+        {
+            switch (f)
+            {
+                case GameEffectBehaviourField.StrikeLock:
+                {
+                    gameEffectBehaviourFields.Add(
+                        GameEffectBehaviourField.StrikeLock,
+                        GameEffect.gameEffectSO.collideAndDamageSO.strikeLockDuration
+                    );
+                    break;
+                }
+                default:
+                    break;
+            }
+        });
+    }
+
+    float GetStrikeLockDuration() =>
+        (float)gameEffectBehaviourFields[GameEffectBehaviourField.StrikeLock];
 }

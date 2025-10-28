@@ -67,6 +67,7 @@
     <Compile Include="Assets\Test\TestExecutionOrder\TestExecutionOrder2.cs" />
     <Compile Include="Assets\Test\UIRevamp\UIRManager.cs" />
     <Compile Include="Assets\Game\Script\Ability\BladeOfPhong.cs" />
+    <Compile Include="Assets\Game\Script\Other\Extension\SerializedPropertyExtensions.cs" />
     <Compile Include="Assets\Game\Script\Game\Skill.cs" />
     <Compile Include="Assets\Game\Script\ActionField\ActionActionField.cs" />
     <Compile Include="Assets\Game\Script\UI\EnhancedOnScreenStickEditor.cs" />
@@ -96,6 +97,7 @@
     <Compile Include="Assets\Game\Script\PathFinding\HexGridManager.cs" />
     <Compile Include="Assets\Game\Script\Other\GameEffectBehaviour\CollideAndDamage.cs" />
     <Compile Include="Assets\Game\Script\Other\GameEffectBehaviour\BlueHole.cs" />
+    <Compile Include="Assets\Test\SerializationTest\SerializationTestObject.cs" />
     <Compile Include="Assets\CustomPackage\STSMapGeneration\OneLine\OneLine\Example\Tests\Scripts\ExtendedClassTest.cs" />
     <Compile Include="Assets\Game\Script\Game\ActionFieldInfo.cs" />
     <Compile Include="Assets\Game\Script\MapGeneration\DottedLineRenderer.cs" />
@@ -236,6 +238,7 @@
     <Compile Include="Assets\Game\Script\UI\PlayerPointerZone.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\ChatController.cs" />
     <Compile Include="Assets\Test\StopNullIE\StopNullIE.cs" />
+    <Compile Include="Assets\Game\Script\Ability\SilentDraw.cs" />
     <Compile Include="Assets\Game\Script\Other\ObjectPool.cs" />
     <Compile Include="Assets\Game\Script\Other\CustomMonoPal.cs" />
     <Compile Include="Assets\Game\Script\Game\AnimatorWrapper.cs" />
@@ -263,13 +266,16 @@
     <Compile Include="Assets\Game\Script\Game\AnimationEventFunctionCaller.cs" />
     <Compile Include="Assets\Game\Script\ActionField\ActionBoolField.cs" />
     <Compile Include="Assets\Test\MultipleColliderOnOneObject\MultipleColliderOnOneObjectTest.cs" />
+    <Compile Include="Assets\Game\Script\Ability\PactOfStillness.cs" />
     <Compile Include="Assets\Game\Script\Ability\Trait\TheHollowShepherd.cs" />
     <Compile Include="Assets\CustomPackage\STSMapGeneration\OneLine\OneLine\Attributes\WidthAttribute.cs" />
     <Compile Include="Assets\CustomPackage\STSMapGeneration\OneLine\OneLine\Example\Details\Scripts\FixedLengthExample.cs" />
     <Compile Include="Assets\Game\Script\Other\GameEffectBehaviour\GlacistreamBehaviour.cs" />
     <Compile Include="Assets\Game\Script\Ability\BloodOfTheFallen.cs" />
     <Compile Include="Assets\CustomPackage\STSMapGeneration\OneLine\OneLine\Attributes\HideButtonsAttribute.cs" />
+    <Compile Include="Assets\Game\Script\GameEventData\TakeDamageGameEventData.cs" />
     <Compile Include="Assets\CustomPackage\Dotween\Modules\DOTweenModuleUnityVersion.cs" />
+    <Compile Include="Assets\Game\Script\Ability\EyeOfTheReaper.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\CameraController.cs" />
     <Compile Include="Assets\Game\Script\MapGeneration\MapLayer.cs" />
     <Compile Include="Assets\Game\Script\Other\Misc\BasicSpawnSchemeEnemyStat.cs" />
@@ -281,6 +287,7 @@
     <Compile Include="Assets\Game\Script\Ability\HeliosGaze.cs" />
     <Compile Include="Assets\Game\Script\Game\GameEffectPrefab.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\Benchmark03.cs" />
+    <Compile Include="Assets\Game\Script\Ability\GuardedVengence.cs" />
     <Compile Include="Assets\Game\Script\Interface\IGameEffectBehaviour.cs" />
     <Compile Include="Assets\CustomPackage\STSMapGeneration\OneLine\OneLine\Attributes\HighlightAttribute.cs" />
     <Compile Include="Assets\Game\Script\MapGeneration\NodeBlueprint.cs" />
@@ -311,6 +318,7 @@
     <Compile Include="Assets\Game\Script\ActionField\ActionField.cs" />
     <Compile Include="Assets\Game\Script\Ability\TwinsOfCataclysm.cs" />
     <Compile Include="Assets\Game\Script\MapGeneration\MapConfig.cs" />
+    <Compile Include="Assets\Test\SerializationTest\SerializationTest.cs" />
     <Compile Include="Assets\Test\TimelineSerializeTest\TimelineSerializeSO.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\ObjectSpin.cs" />
     <Compile Include="Assets\CustomPackage\STSMapGeneration\OneLine\OneLine\Attributes\HideLabelAttribute.cs" />
@@ -387,6 +395,7 @@
     <None Include="Assets\Game\Script\Other\Misc\note2.txt" />
     <None Include="Assets\CustomPackage\STSMapGeneration\Sprites\game-icons.net\license.txt" />
     <None Include="Assets\Game\Graphics\UIToolkit\Uxml\TestEvent.uxml" />
+    <None Include="Assets\Game\Graphics\UIToolkit\GameEffectBuilder\GameEffectBuilder.uss" />
     <None Include="Assets\Game\Graphics\UIToolkit\GameEffectBuilder\GameEffectBuilder.uxml" />
     <None Include="Assets\TextMesh Pro\Examples &amp; Extras\Fonts\Unity - OFL.txt" />
     <None Include="Assets\Game\Script\Other\Misc\AsepritePivotChangeForImporter.txt" />

@@ -437,6 +437,11 @@ MonoBehaviour:
     finalValue: 1
     referenceModifiers: []
     modifiers: []
+  damageReduction:
+    baseValue: 0
+    finalValue: 0
+    referenceModifiers: []
+    modifiers: []
   actionMoveSpeedReduceRate:
     baseValue: -0.9
     finalValue: -0.9
@@ -547,17 +552,7 @@ MonoBehaviour:
   customMono: {fileID: 0}
   currentStates: 0
   osTime: 0
-  damp: 0.5
-  speed: 10
-  scaleRange: 0.25
-  frequency: 3
-  damageDuration: 0.25
-  elementalEffectDuration: 0.2
-  elementalEffectColor: {r: 1, g: 0, b: 0, a: 1}
   ccImmune: 0
-  knockUpInitialVelocity: 1.5
-  knockUpVelocity: 0
-  knockUpAcceleration: -10
   stunTime: 0
 --- !u!114 &3281443010373902934
 MonoBehaviour:

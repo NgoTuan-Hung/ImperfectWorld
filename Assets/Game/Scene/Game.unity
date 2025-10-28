@@ -3445,8 +3445,8 @@ MonoBehaviour:
     value: 0
     cap: 0
   healthPoint:
-    baseValue: 50
-    finalValue: 50
+    baseValue: 1000
+    finalValue: 1000
     referenceModifiers: []
     modifiers: []
   healthRegen:
@@ -3483,8 +3483,8 @@ MonoBehaviour:
     referenceModifiers: []
     modifiers: []
   attackSpeed:
-    baseValue: 2
-    finalValue: 2
+    baseValue: 1
+    finalValue: 1
     referenceModifiers: []
     modifiers: []
   armor:
@@ -4039,6 +4039,8 @@ MonoBehaviour:
   - {fileID: 11400000, guid: e1016386c2a1d8840ada89de7c91120b, type: 2}
   - {fileID: 11400000, guid: db8d26846a3708e40aefc6bb2286544b, type: 2}
   - {fileID: 11400000, guid: 85ed44f1d829af34d89c08c55827f653, type: 2}
+  - {fileID: 11400000, guid: c96258ff396551343a859c98d60cb53c, type: 2}
+  - {fileID: 11400000, guid: 85655eee9d934634eb068e4f1d24847a, type: 2}
   gridManager: {fileID: 0}
   roomSystem:
     allNormalEnemyRooms:
@@ -4092,6 +4094,20 @@ MonoBehaviour:
         position: {x: 5, y: -2.25}
       - prefab: {fileID: 7894460055991367159, guid: 2c806b8149ca76d438768535adcb3522, type: 3}
         position: {x: 3, y: -2.25}
+      - prefab: {fileID: 7934922993043704625, guid: cbc268fadda78d549be3655a3fd1553d, type: 3}
+        position: {x: 3, y: 1.25}
+    - roomEnemyInfos:
+      - prefab: {fileID: 7934922993043704625, guid: d0750c477fcf93947a8d1d9913c9913d, type: 3}
+        position: {x: 0, y: 2.25}
+      - prefab: {fileID: 7934922993043704625, guid: d0750c477fcf93947a8d1d9913c9913d, type: 3}
+        position: {x: 3, y: 2.25}
+      - prefab: {fileID: 7934922993043704625, guid: d0750c477fcf93947a8d1d9913c9913d, type: 3}
+        position: {x: 3, y: 1.25}
+      - prefab: {fileID: 7934922993043704625, guid: d0750c477fcf93947a8d1d9913c9913d, type: 3}
+        position: {x: 0, y: 1.25}
+    - roomEnemyInfos:
+      - prefab: {fileID: 5614847785971858997, guid: 6bdde3a3aff603442b883e1a5c70f96c, type: 3}
+        position: {x: 0, y: 2.25}
   enemyCount: 0
   playerChampions:
   - {fileID: 108618814}
@@ -7870,7 +7886,7 @@ MonoBehaviour:
     cap: 0
   manaPoint:
     baseValue: 100
-    finalValue: 0
+    finalValue: 100
     referenceModifiers: []
     modifiers: []
   manaRegen:
@@ -7880,22 +7896,22 @@ MonoBehaviour:
     modifiers: []
   might:
     baseValue: 1
-    finalValue: 0
+    finalValue: 1
     referenceModifiers: []
     modifiers: []
   reflex:
     baseValue: 1
-    finalValue: 0
+    finalValue: 1
     referenceModifiers: []
     modifiers: []
   wisdom:
     baseValue: 1
-    finalValue: 0
+    finalValue: 1
     referenceModifiers: []
     modifiers: []
   attackSpeed:
     baseValue: 1
-    finalValue: 0
+    finalValue: 1
     referenceModifiers: []
     modifiers: []
   armor:
@@ -15377,8 +15393,8 @@ MonoBehaviour:
     referenceModifiers: []
     modifiers: []
   attackSpeed:
-    baseValue: 2
-    finalValue: 2
+    baseValue: 1
+    finalValue: 1
     referenceModifiers: []
     modifiers: []
   armor:

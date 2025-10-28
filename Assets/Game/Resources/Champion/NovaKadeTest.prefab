@@ -187,6 +187,7 @@ MonoBehaviour:
   alive: 1
   moveSpeedPerFrame: 0
   currentHealthPoint:
+    value: 0
     cap: 0
   healthPoint:
     baseValue: 38
@@ -199,6 +200,7 @@ MonoBehaviour:
     referenceModifiers: []
     modifiers: []
   currentManaPoint:
+    value: 0
     cap: 0
   manaPoint:
     baseValue: 100
@@ -261,6 +263,11 @@ MonoBehaviour:
   critDamageModifier:
     baseValue: 1
     finalValue: 1
+    referenceModifiers: []
+    modifiers: []
+  damageReduction:
+    baseValue: 0
+    finalValue: 0
     referenceModifiers: []
     modifiers: []
   actionMoveSpeedReduceRate:
@@ -374,17 +381,7 @@ MonoBehaviour:
   customMono: {fileID: 0}
   currentStates: 0
   osTime: 0
-  damp: 0.5
-  speed: 10
-  scaleRange: 0.25
-  frequency: 3
-  damageDuration: 0.25
-  elementalEffectDuration: 0.2
-  elementalEffectColor: {r: 1, g: 0, b: 0, a: 1}
   ccImmune: 0
-  knockUpInitialVelocity: 1.5
-  knockUpVelocity: 0
-  knockUpAcceleration: -10
   stunTime: 0
 --- !u!61 &286406915546302702
 BoxCollider2D:

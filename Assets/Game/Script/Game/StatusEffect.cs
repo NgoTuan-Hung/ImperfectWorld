@@ -41,6 +41,7 @@ public class StatusEffect : CustomMonoPal
         movementBlockingFactors = 0;
     float finalTakenDamage,
         totalDamageTaken;
+    TakeDamageGameEventData takeDamageGameEventData = new(0);
 
     public override void Awake()
     {
@@ -96,6 +97,10 @@ public class StatusEffect : CustomMonoPal
                 customMono.rotationAndCenterObject.transform.position,
                 finalTakenDamage
             );
+        takeDamageGameEventData.Setup(finalTakenDamage);
+        GameManager
+            .Instance.GetSelfEvent(customMono, GameEventType.TakeDamage)
+            .action(takeDamageGameEventData);
 
         if (CheckEffect(StatusEffectState.DamageEffect))
             currentDamageTime = 0;

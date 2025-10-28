@@ -1,3 +1,8 @@
+public enum GameEffectBehaviourField
+{
+    StrikeLock,
+}
+
 public interface IGameEffectBehaviour
 {
     public GameEffect GameEffect { get; set; }

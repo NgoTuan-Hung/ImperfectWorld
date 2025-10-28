@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Map;
@@ -65,6 +66,11 @@ public partial class GameManager : MonoBehaviour
     public bool positioningPhase = true;
     Dictionary<CustomMono, Dictionary<GameEventType, GameEvent>> selfEvents = new();
     Dictionary<string, Dictionary<GameEventType, GameEvent>> teamBasedEvents = new();
+
+    public static IEnumerator VoidIE()
+    {
+        yield return null;
+    }
 
     public void InitializeControllableCharacter(CustomMono p_customMono) { }
 
@@ -313,7 +319,12 @@ public partial class GameManager : MonoBehaviour
         customMonos.Add(customMono.combatCollider2D.GetHashCode(), customMono);
         selfEvents.Add(
             customMono,
-            new() { { GameEventType.Attack, new() }, { GameEventType.DealDamage, new() } }
+            new()
+            {
+                { GameEventType.Attack, new() },
+                { GameEventType.DealDamage, new() },
+                { GameEventType.TakeDamage, new() },
+            }
         );
     }
 
@@ -339,6 +350,21 @@ public partial class GameManager : MonoBehaviour
                 minHP = kvp.Value.stat.currentHealthPoint.Value;
                 t_target = kvp.Value;
             }
+        }
+
+        return t_target;
+    }
+
+    public CustomMono FindAliveEnemyNotInList(CustomMono self, List<CustomMono> list)
+    {
+        CustomMono t_target = null;
+        foreach (var kvp in customMonos)
+        {
+            if (self.allyTags.Contains(kvp.Value.tag) || !kvp.Value.stat.alive)
+                continue;
+
+            if (!list.Contains(kvp.Value))
+                t_target = kvp.Value;
         }
 
         return t_target;
