@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 
 public enum UpdateDirectionIndicatorPriority
@@ -34,6 +33,7 @@ public class CustomMono : MonoSelfAware
     public BotAIManager botAIManager;
     public Stat stat;
     GameObject directionIndicator;
+    SpriteRenderer arrowIndicator;
     float directionIndicatorAngle;
     Vector2[] updateDirectionIndicatorQueue = new Vector2[5];
 
@@ -116,6 +116,9 @@ public class CustomMono : MonoSelfAware
         skill = GetComponent<Skill>();
         botSensor = GetComponent<BotSensor>();
         botAIManager = GetComponent<BotAIManager>();
+        arrowIndicator = directionIndicator
+            .transform.Find("ArrowIndicator")
+            .GetComponent<SpriteRenderer>();
     }
 
     void GetAllChildObject()
@@ -226,4 +229,25 @@ public class CustomMono : MonoSelfAware
     /// </summary>
     /// <returns></returns>
     public Vector2 GetDirection() => directionIndicator.transform.right;
+
+    public void SwitchTeam(string teamTag)
+    {
+        switch (teamTag)
+        {
+            case "Team1":
+            {
+                tag = "Team1";
+                arrowIndicator.material = GameManager.Instance.team1DirectionIndicatorMat;
+                break;
+            }
+            case "Team2":
+            {
+                tag = "Team2";
+                arrowIndicator.material = GameManager.Instance.team2DirectionIndicatorMat;
+                break;
+            }
+            default:
+                break;
+        }
+    }
 }

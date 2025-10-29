@@ -15,7 +15,7 @@ public partial class GameManager
             GameUIManager.Instance.TurnOffMap();
             enemyCount = 0;
             var nERI = roomSystem.allNormalEnemyRooms[p_index];
-            currentRoomEnemies = new();
+            GetEnemyTeamChampions().Clear();
 
             for (int i = 0; i < nERI.roomEnemyInfos.Count; i++)
             {
@@ -45,17 +45,41 @@ public partial class GameManager
                 var t_customMono = enemyPools[nERI.roomEnemyInfos[i].prefab].PickOne().CustomMono;
                 t_customMono.transform.position = nERI.roomEnemyInfos[i].position;
                 MarkGridNodeAsEnemyNode(t_customMono.transform.position);
-                currentRoomEnemies.Add(t_customMono);
+                GetEnemyTeamChampions().Add(t_customMono);
                 enemyCount++;
             }
 
-            currentRoomEnemies.ForEach(cRE =>
-            {
-                cRE.botAIManager.aiBehavior.pausableScript.pauseFixedUpdate();
-                cRE.botSensor.pausableScript.pauseFixedUpdate();
-            });
+            GetEnemyTeamChampions()
+                .ForEach(cRE =>
+                {
+                    cRE.botAIManager.aiBehavior.pausableScript.pauseFixedUpdate();
+                    cRE.botSensor.pausableScript.pauseFixedUpdate();
+                });
         }
 
+        return true;
+    }
+
+    public bool SpawnChampionForPlayer(GameObject champPrefab)
+    {
+        if (champPrefab == null)
+            return false;
+
+        var t_customMono = Instantiate(champPrefab).GetComponent<CustomMono>();
+        t_customMono.transform.position = new Vector3(0, 0, 0);
+        t_customMono.SwitchTeam("Team1");
+        return true;
+    }
+
+    public bool SpawnChampionForPlayerForBattle(GameObject champPrefab)
+    {
+        if (champPrefab == null)
+            return false;
+
+        var t_customMono = Instantiate(champPrefab).GetComponent<CustomMono>();
+        t_customMono.transform.position = new Vector3(0, 0, 0);
+        t_customMono.SwitchTeam("Team1");
+        EnableBattleMode(t_customMono);
         return true;
     }
 }

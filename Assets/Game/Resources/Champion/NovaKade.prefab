@@ -1031,10 +1031,20 @@ PrefabInstance:
       value: DirectionIndicator
       objectReference: {fileID: 0}
     - target: {fileID: 8796382656734288872, guid: c2ccbcfbd5d9d4f4f8c3d525e034dc53, type: 3}
+      propertyPath: m_SortingLayer
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8796382656734288872, guid: c2ccbcfbd5d9d4f4f8c3d525e034dc53, type: 3}
+      propertyPath: m_SortingLayerID
+      value: 1774004605
+      objectReference: {fileID: 0}
+    - target: {fileID: 8796382656734288872, guid: c2ccbcfbd5d9d4f4f8c3d525e034dc53, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 2100000, guid: 2a1a0cd3c9b04724bb1ffbf29d7f9914, type: 2}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 6865068975558897994, guid: c2ccbcfbd5d9d4f4f8c3d525e034dc53, type: 3}
+    - {fileID: 2505409205952646092, guid: c2ccbcfbd5d9d4f4f8c3d525e034dc53, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []

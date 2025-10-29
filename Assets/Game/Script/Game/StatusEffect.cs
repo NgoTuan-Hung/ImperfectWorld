@@ -392,6 +392,18 @@ public class StatusEffect : CustomMonoPal
         customMono.stat.attackSpeed.RemoveModifier(p_fSM);
     }
 
+    public void BuffAttackSpeed(float value, float p_duration)
+    {
+        StartCoroutine(BuffAttackSpeedIE(value, p_duration));
+    }
+
+    private IEnumerator BuffAttackSpeedIE(float value, float p_duration)
+    {
+        customMono.stat.attackSpeed.BaseValue += value;
+        yield return new WaitForSeconds(p_duration);
+        customMono.stat.attackSpeed.BaseValue -= value;
+    }
+
     public void BuffOmnivamp(FloatStatModifier p_fSM, float p_duration)
     {
         StartCoroutine(BuffOmnivampIE(p_fSM, p_duration));
@@ -420,4 +432,18 @@ public class StatusEffect : CustomMonoPal
     }
 
     public float GetTotalDamageTaken() => totalDamageTaken;
+
+    public float ChangeManaWithDiff(float amount)
+    {
+        // 25, -30 = 0 => -25
+        var difference = customMono.stat.currentManaPoint.Value;
+        customMono.stat.currentManaPoint.Value = Math.Clamp(
+            customMono.stat.currentManaPoint.Value + amount,
+            0,
+            float.MaxValue
+        );
+        difference = customMono.stat.currentManaPoint.Value - difference;
+
+        return difference;
+    }
 }

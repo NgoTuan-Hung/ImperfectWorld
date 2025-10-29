@@ -51,8 +51,12 @@ public partial class GameManager : MonoBehaviour
     public RoomSystem roomSystem;
     Dictionary<GameObject, ObjectPool> enemyPools = new();
     public int enemyCount = 0;
-    public List<CustomMono> playerChampions = new(),
-        currentRoomEnemies;
+
+    /// <summary>
+    /// Team 1 = Player
+    /// Team 2 = Enemy
+    /// </summary>
+    public Dictionary<string, List<CustomMono>> teamChampions = new();
 
     /// <summary>
     /// Hex grid nodes where enemy stand
@@ -90,6 +94,13 @@ public partial class GameManager : MonoBehaviour
         ConstructActionFieldInfoDict();
         MapActionFieldName();
         InitGameEvents();
+        AddTeam();
+    }
+
+    private void AddTeam()
+    {
+        teamChampions.Add("Team1", new List<CustomMono>());
+        teamChampions.Add("Team2", new List<CustomMono>());
     }
 
     private void InitGameEvents()
@@ -103,7 +114,11 @@ public partial class GameManager : MonoBehaviour
     public GameEvent GetTeamBasedEvent(string p_teamName, GameEventType p_gameEventType) =>
         teamBasedEvents[p_teamName][p_gameEventType];
 
-    void LoadOtherResources() { }
+    void LoadOtherResources()
+    {
+        team1DirectionIndicatorMat = Resources.Load<Material>("Material/Team1DirectionIndicator");
+        team2DirectionIndicatorMat = Resources.Load<Material>("Material/Team2DirectionIndicator");
+    }
 
     void ConstructActionFieldInfoDict()
     {
@@ -223,7 +238,7 @@ public partial class GameManager : MonoBehaviour
         var nERI = roomSystem.allNormalEnemyRooms[
             Random.Range(0, roomSystem.allNormalEnemyRooms.Count)
         ];
-        currentRoomEnemies = new();
+        GetEnemyTeamChampions().Clear();
 
         for (int i = 0; i < nERI.roomEnemyInfos.Count; i++)
         {
@@ -250,15 +265,11 @@ public partial class GameManager : MonoBehaviour
             var t_customMono = enemyPools[nERI.roomEnemyInfos[i].prefab].PickOne().CustomMono;
             t_customMono.transform.position = nERI.roomEnemyInfos[i].position;
             MarkGridNodeAsEnemyNode(t_customMono.transform.position);
-            currentRoomEnemies.Add(t_customMono);
+            GetEnemyTeamChampions().Add(t_customMono);
             enemyCount++;
         }
 
-        currentRoomEnemies.ForEach(cRE =>
-        {
-            cRE.botAIManager.aiBehavior.pausableScript.pauseFixedUpdate();
-            cRE.botSensor.pausableScript.pauseFixedUpdate();
-        });
+        GetEnemyTeamChampions().ForEach(cRE => DisableBattleMode(cRE));
     }
 
     /// <summary>
@@ -285,17 +296,9 @@ public partial class GameManager : MonoBehaviour
     {
         positioningPhase = false;
         GameUIManager.Instance.startBattleButton.Hide();
-        currentRoomEnemies.ForEach(cRE =>
-        {
-            cRE.botAIManager.aiBehavior.pausableScript.resumeFixedUpdate();
-            cRE.botSensor.pausableScript.resumeFixedUpdate();
-        });
+        GetEnemyTeamChampions().ForEach(cRE => EnableBattleMode(cRE));
 
-        playerChampions.ForEach(pC =>
-        {
-            pC.botAIManager.aiBehavior.pausableScript.resumeFixedUpdate();
-            pC.botSensor.pausableScript.resumeFixedUpdate();
-        });
+        GetPlayerTeamChampions().ForEach(pC => EnableBattleMode(pC));
     }
 
     void PawnDeathHandler(CustomMono p_customMono)
@@ -303,11 +306,7 @@ public partial class GameManager : MonoBehaviour
         enemyCount--;
         if (enemyCount <= 0)
         {
-            playerChampions.ForEach(pC =>
-            {
-                pC.botAIManager.aiBehavior.pausableScript.pauseFixedUpdate();
-                pC.botSensor.pausableScript.pauseFixedUpdate();
-            });
+            GetPlayerTeamChampions().ForEach(pC => DisableBattleMode(pC));
             GameUIManager.Instance.TurnOnMap();
             positioningPhase = true;
             ClearEnemyNodes();
@@ -326,6 +325,7 @@ public partial class GameManager : MonoBehaviour
                 { GameEventType.TakeDamage, new() },
             }
         );
+        teamChampions[customMono.tag].Add(customMono);
     }
 
     public CustomMono GetCustomMono(Collider2D p_cld)
@@ -355,6 +355,28 @@ public partial class GameManager : MonoBehaviour
         return t_target;
     }
 
+    public CustomMono FindLowestMPEnemy(CustomMono p_self)
+    {
+        float minHP = float.MaxValue;
+        CustomMono t_target = null;
+        foreach (var kvp in customMonos)
+        {
+            if (
+                p_self.allyTags.Contains(kvp.Value.tag)
+                || kvp.Value.stat.currentManaPoint.Value <= 0
+            )
+                continue;
+
+            if (kvp.Value.stat.currentManaPoint.Value < minHP)
+            {
+                minHP = kvp.Value.stat.currentManaPoint.Value;
+                t_target = kvp.Value;
+            }
+        }
+
+        return t_target;
+    }
+
     public CustomMono FindAliveEnemyNotInList(CustomMono self, List<CustomMono> list)
     {
         CustomMono t_target = null;
@@ -374,6 +396,7 @@ public partial class GameManager : MonoBehaviour
     {
         customMonos.Remove(p_customMono.combatCollider2D.GetHashCode());
         selfEvents.Remove(p_customMono);
+        teamChampions[p_customMono.tag].Remove(p_customMono);
     }
 
     public CustomMono GetRandomEnemy(string p_yourTag) =>
@@ -411,4 +434,20 @@ public partial class GameManager : MonoBehaviour
 
     public GameEvent GetSelfEvent(CustomMono p_customMono, GameEventType p_gameEventType) =>
         selfEvents[p_customMono][p_gameEventType];
+
+    public List<CustomMono> GetPlayerTeamChampions() => teamChampions["Team1"];
+
+    public List<CustomMono> GetEnemyTeamChampions() => teamChampions["Team2"];
+
+    void EnableBattleMode(CustomMono customMono)
+    {
+        customMono.botAIManager.aiBehavior.pausableScript.resumeFixedUpdate();
+        customMono.botSensor.pausableScript.resumeFixedUpdate();
+    }
+
+    void DisableBattleMode(CustomMono customMono)
+    {
+        customMono.botAIManager.aiBehavior.pausableScript.pauseFixedUpdate();
+        customMono.botSensor.pausableScript.pauseFixedUpdate();
+    }
 }

@@ -3,10 +3,6 @@ using UnityEngine;
 using UnityEditor;
 using UnityEngine.UIElements;
 using UnityEditor.UIElements;
-using UnityEngine.Playables;
-using UnityEngine.Timeline;
-using System;
-using UnityEditor.Animations;
 
 public class CharacterBuilder : EditorWindow
 {
@@ -17,38 +13,11 @@ public class CharacterBuilder : EditorWindow
     SpriteRenderer spriteRenderer;
     ObjectField spriteObjectField;
     CustomMono customMono;
-    Toggle isDeactivateAterTimeToggle,
-        isTimelineToggle,
-        randomRotationToggle,
-        playSoundToggle,
-        isColoredOverLifetimeToggle,
-        useParticleSystemToggle;
-    FloatField deactivateTimeFloatField,
-        flyAtSpeedFloatField,
-        followSlowlyPositionLerpTimeFloatField;
-    Vector3Field followOffsetVector3Field,
-        effectLocalPositionVector3Field,
-        effectLocalRotationVector3Field;
-    GradientField colorOverLifetimeGradientField;
-    Button buildButton,
-        addColliderButton,
-        addAnimationObjectButton;
+    Button buildButton;
     TextField nameTextField,
         animatorNameTextField,
         animatorPathTextField;
-    LayerMaskField collisionExcludeLayerMaskLayerMaskField;
-    ListGameEffectBehavior listGameEffectBehavior;
-    CollideAndDamageSO collideAndDamageSO;
-    VisualElement scrollViewContent,
-        seperator1;
-    DropdownField addColliderDropdownField;
     GameObject build;
-    int combatColliderLayer;
-
-    private void OnEnable()
-    {
-        combatColliderLayer = LayerMask.NameToLayer("CombatCollider");
-    }
 
     [MenuItem("Tools/CharacterBuilder")]
     private static void ShowWindow()

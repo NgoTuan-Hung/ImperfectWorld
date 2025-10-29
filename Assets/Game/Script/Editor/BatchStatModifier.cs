@@ -34,6 +34,15 @@ public class BatchStatModifier : EditorWindow
         hpFloatField.label = "HP";
         hpFloatField.value = 0f;
 
+        // also mana regen
+        Toggle mpRegenToggle = new();
+        mpRegenToggle.label = "MP Regen";
+        mpRegenToggle.value = false;
+
+        FloatField mpRegenFloatField = new();
+        mpRegenFloatField.label = "MP Regen";
+        mpRegenFloatField.value = 0f;
+
         Toggle mightToggle = new();
         mightToggle.label = "Might";
         mightToggle.value = false;
@@ -114,6 +123,8 @@ public class BatchStatModifier : EditorWindow
             {
                 if (hpToggle.value)
                     stat.healthPoint.BaseValue = hpFloatField.value;
+                if (mpRegenToggle.value)
+                    stat.manaRegen.BaseValue = mpRegenFloatField.value;
                 if (mightToggle.value)
                     stat.might.BaseValue = mightFloatField.value;
                 if (reflexToggle.value)
@@ -140,6 +151,8 @@ public class BatchStatModifier : EditorWindow
         root.Add(inspectorListView);
         root.Add(hpToggle);
         root.Add(hpFloatField);
+        root.Add(mpRegenToggle);
+        root.Add(mpRegenFloatField);
         root.Add(mightToggle);
         root.Add(mightFloatField);
         root.Add(reflexToggle);

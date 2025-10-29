@@ -9,8 +9,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1410795108291930811}
-  - component: {fileID: 5852170126859035683}
-  - component: {fileID: 6486879815258436507}
   m_Layer: 0
   m_Name: DirectionIndicator
   m_TagString: Untagged
@@ -34,76 +32,6 @@ Transform:
   - {fileID: 8501622568870792225}
   m_Father: {fileID: 8114355960067286994}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!212 &5852170126859035683
-SpriteRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 377893579979853900}
-  m_Enabled: 0
-  m_CastShadows: 0
-  m_ReceiveShadows: 0
-  m_DynamicOccludee: 1
-  m_StaticShadowCaster: 0
-  m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
-  m_RayTracingMode: 0
-  m_RayTraceProcedural: 0
-  m_RayTracingAccelStructBuildFlagsOverride: 0
-  m_RayTracingAccelStructBuildFlags: 1
-  m_SmallMeshCulling: 1
-  m_ForceMeshLod: -1
-  m_MeshLodSelectionBias: 0
-  m_RenderingLayerMask: 1
-  m_RendererPriority: 0
-  m_Materials:
-  - {fileID: 2100000, guid: 27c6ad3fe89fbb441921d8146a52245c, type: 2}
-  m_StaticBatchInfo:
-    firstSubMesh: 0
-    subMeshCount: 0
-  m_StaticBatchRoot: {fileID: 0}
-  m_ProbeAnchor: {fileID: 0}
-  m_LightProbeVolumeOverride: {fileID: 0}
-  m_ScaleInLightmap: 1
-  m_ReceiveGI: 1
-  m_PreserveUVs: 0
-  m_IgnoreNormalsForChartDetection: 0
-  m_ImportantGI: 0
-  m_StitchLightmapSeams: 1
-  m_SelectedEditorRenderState: 0
-  m_MinimumChartSize: 4
-  m_AutoUVMaxDistance: 0.5
-  m_AutoUVMaxAngle: 89
-  m_LightmapParameters: {fileID: 0}
-  m_GlobalIlluminationMeshLod: 0
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 3cb647a2e8d7eca4cb4491bf85a7fb48, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_FlipX: 0
-  m_FlipY: 0
-  m_DrawMode: 0
-  m_Size: {x: 5.12, y: 5.12}
-  m_AdaptiveModeThreshold: 0.5
-  m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
-  m_MaskInteraction: 0
-  m_SpriteSortPoint: 0
---- !u!210 &6486879815258436507
-SortingGroup:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 377893579979853900}
-  m_Enabled: 1
-  m_SortingLayerID: 1774004605
-  m_SortingLayer: 1
-  m_SortingOrder: 0
-  m_SortAtRoot: 0
 --- !u!1 &3895887065904430510
 GameObject:
   m_ObjectHideFlags: 0
@@ -118,7 +46,7 @@ GameObject:
   - component: {fileID: 8949596946075140228}
   m_Layer: 0
   m_Name: MainComponent
-  m_TagString: Untagged
+  m_TagString: Team2
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -480,7 +408,7 @@ MonoBehaviour:
     cap: 0
   manaPoint:
     baseValue: 100
-    finalValue: 0
+    finalValue: 100
     referenceModifiers: []
     modifiers: []
   manaRegen:
@@ -490,17 +418,17 @@ MonoBehaviour:
     modifiers: []
   might:
     baseValue: 1
-    finalValue: 0
+    finalValue: 1
     referenceModifiers: []
     modifiers: []
   reflex:
     baseValue: 1
-    finalValue: 0
+    finalValue: 1
     referenceModifiers: []
     modifiers: []
   wisdom:
     baseValue: 1
-    finalValue: 0
+    finalValue: 1
     referenceModifiers: []
     modifiers: []
   attackSpeed:
@@ -824,8 +752,8 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_GlobalIlluminationMeshLod: 0
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: 1774004605
+  m_SortingLayer: 1
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: a891486229d54ef49b07eaa22050fbe6, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -1104,19 +1032,19 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3670567590379804379, guid: 5050206fee006f94a9d0125e20c69398, type: 3}
       propertyPath: m_Size.x
-      value: 0.5470673
+      value: 0.47
       objectReference: {fileID: 0}
     - target: {fileID: 3670567590379804379, guid: 5050206fee006f94a9d0125e20c69398, type: 3}
       propertyPath: m_Size.y
-      value: 1.6206486
+      value: 1.68
       objectReference: {fileID: 0}
     - target: {fileID: 3670567590379804379, guid: 5050206fee006f94a9d0125e20c69398, type: 3}
       propertyPath: m_Offset.x
-      value: 0.00028723478
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3670567590379804379, guid: 5050206fee006f94a9d0125e20c69398, type: 3}
       propertyPath: m_Offset.y
-      value: 0.87585795
+      value: 0.84
       objectReference: {fileID: 0}
     - target: {fileID: 3885978442449926570, guid: 5050206fee006f94a9d0125e20c69398, type: 3}
       propertyPath: m_Name
