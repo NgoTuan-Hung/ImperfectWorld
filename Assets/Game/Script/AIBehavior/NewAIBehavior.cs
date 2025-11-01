@@ -20,6 +20,7 @@ public class NewAIBehavior : BaseAIBehavior
     {
         base.Start();
         StartCoroutine(LateStart());
+        pausableScript.pauseFixedUpdate += StopMove;
     }
 
     IEnumerator LateStart()
@@ -108,9 +109,8 @@ public class NewAIBehavior : BaseAIBehavior
 
     DoActionParamInfo GetDAPI() => customMono.botSensor.GetDoActionParamInfo();
 
-    protected override void PauseFixedUpdate()
+    void StopMove()
     {
-        base.PauseFixedUpdate();
         customMono.movable.StopMove();
     }
 }

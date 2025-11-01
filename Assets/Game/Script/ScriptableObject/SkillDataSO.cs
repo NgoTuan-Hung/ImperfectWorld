@@ -22,7 +22,7 @@ public class SkillDataSO : ScriptableObject
     public string skillName;
     public Sprite skillImage;
 
-    [TextArea]
-    public string skillHelperDescription;
+    [TextArea(1, 15)]
+    public string skillDescription;
     public SkillType skillType;
 }

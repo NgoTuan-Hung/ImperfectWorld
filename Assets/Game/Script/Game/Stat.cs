@@ -99,6 +99,9 @@ public partial class Stat : MonoEditor
         moveSpeed.RecalculateFinalValue();
         armor.RecalculateFinalValue();
         omnivamp.RecalculateFinalValue();
+        attackDamage.RecalculateFinalValue();
+        critChance.RecalculateFinalValue();
+        critDamageModifier.RecalculateFinalValue();
     }
 
     void AddPropertyChangeEvent()

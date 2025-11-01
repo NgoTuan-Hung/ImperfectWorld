@@ -72,8 +72,6 @@ public class CustomMono : MonoSelfAware
         combatCollider2D;
     public AudioSource audioSource;
     public new Rigidbody2D rigidbody2D;
-    public Action startPhase1 = () => { };
-    public AudioClip attackAudioClip;
     public CharAttackInfo charAttackInfo;
     public StatusEffect statusEffect;
     public GameObject rotationAndCenterObject,
@@ -90,7 +88,6 @@ public class CustomMono : MonoSelfAware
     public override void Awake()
     {
         base.Awake();
-        allyTags.Add(gameObject.tag);
         GetAllChildObject();
         GetAllComponents();
         StatChangeRegister();
@@ -143,8 +140,7 @@ public class CustomMono : MonoSelfAware
         GameUIManager.Instance.GenerateAndBindChampUI(this);
         if (isControllable)
             GameManager.Instance.InitializeControllableCharacterRevamp(this);
-
-        startPhase1();
+        allyTags.Add(gameObject.tag);
     }
 
     public void PauseBot()

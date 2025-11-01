@@ -59,14 +59,7 @@ public class BotSensor : CustomMonoPal
     public override void Awake()
     {
         base.Awake();
-        pausableScript.pauseFixedUpdate = () =>
-        {
-            pausableScript.fixedUpdate = EmptyFixedUpdate;
-        };
-        pausableScript.resumeFixedUpdate = () =>
-        {
-            pausableScript.fixedUpdate = DoFixedUpdate;
-        };
+        pausableScript.Setup(EmptyFixedUpdate, DoFixedUpdate);
     }
 
     void SetTargetToCenterMap()

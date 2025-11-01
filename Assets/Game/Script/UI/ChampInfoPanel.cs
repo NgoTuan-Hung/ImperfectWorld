@@ -1,31 +1,20 @@
 using System;
+using System.Collections.Generic;
+using System.Text;
+using System.Text.RegularExpressions;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UIElements;
 
 public class ChampInfoPanel : MonoBehaviour
 {
-    //
-#if false
-    CustomMono.Start
-        GenerateAndBindChampUI => GUIM.GenerateAndBindChampUI
-
-    GUIM.GenerateAndBindChampUI
-        champUI = instantiate
-        ChampUIDict.Add(customMono, champUI)
-
-    ChampUI
-        customMono
-        Init()
-            customMomo = cM
-            name = name
-            ValueChangeRegister
-        FixUpdate
-            transform.pos = cM.pos
-#endif
     CustomMono owner;
     GameObject container,
-        statContent;
+        statSV,
+        statContent,
+        abilitySV,
+        activeContent,
+        tooltip;
     TextMeshProUGUI nameTMP,
         hpTMP,
         mpTMP,
@@ -34,7 +23,12 @@ public class ChampInfoPanel : MonoBehaviour
         wisdomTMP,
         aspdTMP,
         armorTMP,
-        omnivampTMP;
+        omnivampTMP,
+        aTKTMP,
+        critTMP,
+        critModTMP,
+        abilityTMP,
+        tooltipTMP;
     public static Vector3 offset = new(1.33942f, 2.614366f);
     ChampInfoPanelTabButton selectedCIPTB;
 
@@ -42,7 +36,8 @@ public class ChampInfoPanel : MonoBehaviour
     {
         container = transform.Find("Container").gameObject;
         nameTMP = container.transform.Find("Name").GetComponent<TextMeshProUGUI>();
-        statContent = container.transform.Find("StatSV/Viewport/Content").gameObject;
+        statSV = container.transform.Find("StatSV").gameObject;
+        statContent = statSV.transform.Find("Viewport/Content").gameObject;
         hpTMP = statContent.transform.Find("HP").GetComponent<TextMeshProUGUI>();
         mpTMP = statContent.transform.Find("MP").GetComponent<TextMeshProUGUI>();
         mightTMP = statContent.transform.Find("Might").GetComponent<TextMeshProUGUI>();
@@ -51,7 +46,43 @@ public class ChampInfoPanel : MonoBehaviour
         aspdTMP = statContent.transform.Find("ASPD").GetComponent<TextMeshProUGUI>();
         armorTMP = statContent.transform.Find("Armor").GetComponent<TextMeshProUGUI>();
         omnivampTMP = statContent.transform.Find("Omnivamp").GetComponent<TextMeshProUGUI>();
+        aTKTMP = statContent.transform.Find("ATK").GetComponent<TextMeshProUGUI>();
+        critTMP = statContent.transform.Find("Crit").GetComponent<TextMeshProUGUI>();
+        critModTMP = statContent.transform.Find("CritMod").GetComponent<TextMeshProUGUI>();
+        abilitySV = container.transform.Find("AbilitySV").gameObject;
+        abilityTMP = abilitySV
+            .transform.Find("Viewport/Content")
+            .transform.GetComponent<TextMeshProUGUI>();
+        activeContent = statSV;
+        tooltip = transform.Find("Tooltip").gameObject;
+        tooltipTMP = tooltip
+            .transform.Find("Background/TooltipSV/Viewport/Content")
+            .GetComponent<TextMeshProUGUI>();
         InitTabButtons();
+        AddEvents();
+        InitOtherButtons();
+    }
+
+    private void InitOtherButtons()
+    {
+        tooltip.transform.Find("Background/X").GetComponent<PointerDownUI>().pointerDownEvent = (
+            evt
+        ) => tooltip.SetActive(false);
+    }
+
+    private void AddEvents()
+    {
+        abilityTMP.GetComponent<DoubleTapUI>().doubleTapEvent = (evt) =>
+        {
+            tooltip.SetActive(true);
+            tooltipTMP.text = TooltipHelper.GenerateTooltip(abilityTMP.text);
+        };
+
+        tooltipTMP.GetComponent<DoubleTapUI>().doubleTapEvent = (evt) =>
+        {
+            if (TooltipHelper.GenerateTooltip(tooltipTMP.text) is { Length: > 0 } result)
+                tooltipTMP.text = result;
+        };
     }
 
     private void InitTabButtons()
@@ -78,11 +109,13 @@ public class ChampInfoPanel : MonoBehaviour
             case "Stat":
             {
                 SwitchTab(p_ciptb);
+                SwitchActiveContent(statSV);
                 break;
             }
             case "Ability":
             {
                 SwitchTab(p_ciptb);
+                SwitchActiveContent(abilitySV);
                 break;
             }
             case "Other":
@@ -105,10 +138,21 @@ public class ChampInfoPanel : MonoBehaviour
         selectedCIPTB.ChangeToHighLight();
     }
 
+    void SwitchActiveContent(GameObject newActiveContent)
+    {
+        activeContent.SetActive(false);
+        activeContent = newActiveContent;
+        activeContent.SetActive(true);
+    }
+
     public void Init(CustomMono p_owner)
     {
         owner = p_owner;
         nameTMP.text = owner.name;
+        for (int i = 1; i < owner.skill.skillDataSOs.Count; i++)
+        {
+            abilityTMP.text += $"{owner.skill.skillDataSOs[i].skillDescription}\n\n";
+        }
         DataBinding(p_owner);
     }
 
@@ -122,6 +166,9 @@ public class ChampInfoPanel : MonoBehaviour
         p_owner.stat.attackSpeed.finalValueChangeEvent += ASPDChange;
         p_owner.stat.armor.finalValueChangeEvent += ArmorChange;
         p_owner.stat.omnivamp.finalValueChangeEvent += OmnivampChange;
+        p_owner.stat.attackDamage.finalValueChangeEvent += ATKChange;
+        p_owner.stat.critChance.finalValueChangeEvent += CritChange;
+        p_owner.stat.critDamageModifier.finalValueChangeEvent += CritModChange;
     }
 
     void HPChange()
@@ -136,17 +183,17 @@ public class ChampInfoPanel : MonoBehaviour
 
     void MightChange()
     {
-        mightTMP.text = $"Might: {owner.stat.might.FinalValue} 💪";
+        mightTMP.text = $"MIGHT: {owner.stat.might.FinalValue} 💪";
     }
 
     void ReflexChange()
     {
-        reflexTMP.text = $"Reflex: {owner.stat.reflex.FinalValue} ⚡";
+        reflexTMP.text = $"REFLEX: {owner.stat.reflex.FinalValue} ⚡";
     }
 
     void WisdomChange()
     {
-        wisdomTMP.text = $"Wisdom: {owner.stat.wisdom.FinalValue} 🧠";
+        wisdomTMP.text = $"WISDOM: {owner.stat.wisdom.FinalValue} 🧠";
     }
 
     void ASPDChange()
@@ -156,12 +203,27 @@ public class ChampInfoPanel : MonoBehaviour
 
     void ArmorChange()
     {
-        armorTMP.text = $"Armor: {owner.stat.armor.FinalValue} 🛡️";
+        armorTMP.text = $"ARMOR: {owner.stat.armor.FinalValue} 🛡️";
     }
 
     void OmnivampChange()
     {
-        omnivampTMP.text = $"Omnivamp: {owner.stat.omnivamp.FinalValue} 🍃";
+        omnivampTMP.text = $"OMNIVAMP: {owner.stat.omnivamp.FinalValue} 🍃";
+    }
+
+    void ATKChange()
+    {
+        aTKTMP.text = $"ATK: {owner.stat.attackDamage.FinalValue} 🗡️";
+    }
+
+    void CritChange()
+    {
+        critTMP.text = $"CRIT: {owner.stat.critChance.FinalValue} 🎯";
+    }
+
+    void CritModChange()
+    {
+        critModTMP.text = $"CRITMOD: {owner.stat.critDamageModifier.FinalValue} 💢";
     }
 
     void FixedUpdate()

@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public partial class GameManager
@@ -79,7 +80,13 @@ public partial class GameManager
         var t_customMono = Instantiate(champPrefab).GetComponent<CustomMono>();
         t_customMono.transform.position = new Vector3(0, 0, 0);
         t_customMono.SwitchTeam("Team1");
-        EnableBattleMode(t_customMono);
+        StartCoroutine(EnableBattleModeIE(t_customMono));
         return true;
+    }
+
+    IEnumerator EnableBattleModeIE(CustomMono customMono)
+    {
+        yield return null;
+        EnableBattleMode(customMono);
     }
 }

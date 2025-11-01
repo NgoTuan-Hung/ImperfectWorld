@@ -352,7 +352,7 @@ public class GameUIManager : MonoEditorSingleton<GameUIManager>
             if (screenTooltipRectSize == Vector2.zero)
                 screenTooltipRectSize = t_skillTooltip.rectTransform.rect.size * canvas.scaleFactor;
             t_skillTooltip.textName.text = t_skillDataSO.skillName;
-            t_skillTooltip.textDescription.text = t_skillDataSO.skillHelperDescription;
+            t_skillTooltip.textDescription.text = t_skillDataSO.skillDescription;
             t_skillTooltip.transform.SetParent(t_characterInfoUI.tooltips.transform, false);
             t_skillTooltip.gameObject.SetActive(false);
             t_skillTooltip.equipButton.pointerDownEvent += (p_eventData) =>

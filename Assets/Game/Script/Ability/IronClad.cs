@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class IronClad : SkillBase
 {
-    public float armorBuff = 10f;
+    public float armorBuff;
 
     public override void Awake()
     {
@@ -41,11 +41,14 @@ public class IronClad : SkillBase
     {
         base.StatChangeRegister();
         // customMono.stat.attackSpeed.finalValueChangeEvent += RecalculateStat;
+
+        customMono.stat.might.finalValueChangeEvent += RecalculateStat;
     }
 
     public override void RecalculateStat()
     {
         base.RecalculateStat();
+        armorBuff = 10 + customMono.stat.might.FinalValue;
     }
 
     public override ActionResult Trigger(

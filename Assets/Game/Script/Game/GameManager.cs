@@ -450,4 +450,6 @@ public partial class GameManager : MonoBehaviour
         customMono.botAIManager.aiBehavior.pausableScript.pauseFixedUpdate();
         customMono.botSensor.pausableScript.pauseFixedUpdate();
     }
+
+    public string GetDescription(string p_key) => descriptionDB.GetValueOrDefault(p_key);
 }
