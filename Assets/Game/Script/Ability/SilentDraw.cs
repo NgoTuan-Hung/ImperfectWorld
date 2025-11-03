@@ -49,7 +49,7 @@ public class SilentDraw : SkillBase
     {
         base.RecalculateStat();
         GetActionField<ActionFloatField>(ActionFieldName.Damage).value =
-            customMono.stat.reflex.FinalValue * 2.5f;
+            customMono.stat.reflex.FinalValue * 1.25f;
     }
 
     public override void TriggerContinuous(

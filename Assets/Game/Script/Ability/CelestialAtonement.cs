@@ -100,10 +100,15 @@ public class CelestialAtonement : SkillBase
             GameManager.Instance.FindLowestMPEnemy(customMono);
         if (GetActionField<ActionCustomMonoField>(ActionFieldName.Target).value != null)
         {
-            var diff = GetActionField<ActionCustomMonoField>(ActionFieldName.Target)
-                .value.statusEffect.ChangeManaWithDiff(-manaSteal);
+            var diff =
+                manaSteal
+                - GetActionField<ActionCustomMonoField>(
+                    ActionFieldName.Target
+                ).value.stat.currentManaPoint.Value;
+            GetActionField<ActionCustomMonoField>(ActionFieldName.Target)
+                .value.statusEffect.ChangeMana(-manaSteal);
             customMono.statusEffect.BuffAttackSpeed(
-                aspdBuff.value * (manaSteal + diff),
+                aspdBuff.value * (diff > 0 ? diff : 0),
                 GetActionField<ActionFloatField>(ActionFieldName.Duration).value
             );
         }

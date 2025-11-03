@@ -25,7 +25,7 @@ public class UnbrokenVigor : SkillBase
 
     public override void Config()
     {
-        attackSpeedBuff = new(1.25f, FloatStatModifierType.Multiplicative);
+        attackSpeedBuff = new(0.25f, FloatStatModifierType.Additive);
         omnivampBuff = new(0.2f, FloatStatModifierType.Additive);
         /* Debuff duration */
         GetActionField<ActionFloatField>(ActionFieldName.ManaCost).value = 100f;
@@ -37,12 +37,14 @@ public class UnbrokenVigor : SkillBase
     public override void StatChangeRegister()
     {
         base.StatChangeRegister();
-        // customMono.stat.attackSpeed.finalValueChangeEvent += RecalculateStat;
+        customMono.stat.reflex.finalValueChangeEvent += RecalculateStat;
     }
 
     public override void RecalculateStat()
     {
         base.RecalculateStat();
+        attackSpeedBuff.value = 1.25f + customMono.stat.reflex.FinalValue * 0.01f;
+        omnivampBuff.value = 0.2f + customMono.stat.wisdom.FinalValue * 0.01f;
     }
 
     public override ActionResult Trigger(

@@ -433,17 +433,12 @@ public class StatusEffect : CustomMonoPal
 
     public float GetTotalDamageTaken() => totalDamageTaken;
 
-    public float ChangeManaWithDiff(float amount)
+    public void ChangeMana(float amount)
     {
-        // 25, -30 = 0 => -25
-        var difference = customMono.stat.currentManaPoint.Value;
         customMono.stat.currentManaPoint.Value = Math.Clamp(
             customMono.stat.currentManaPoint.Value + amount,
             0,
             float.MaxValue
         );
-        difference = customMono.stat.currentManaPoint.Value - difference;
-
-        return difference;
     }
 }

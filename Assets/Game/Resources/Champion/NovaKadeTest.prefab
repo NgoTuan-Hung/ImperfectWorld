@@ -190,8 +190,8 @@ MonoBehaviour:
     value: 0
     cap: 0
   healthPoint:
-    baseValue: 38
-    finalValue: 38
+    baseValue: 200
+    finalValue: 200
     referenceModifiers: []
     modifiers: []
   healthRegen:
@@ -208,8 +208,8 @@ MonoBehaviour:
     referenceModifiers: []
     modifiers: []
   manaRegen:
-    baseValue: 0
-    finalValue: 0
+    baseValue: 30
+    finalValue: 30
     referenceModifiers: []
     modifiers: []
   might:
@@ -228,8 +228,8 @@ MonoBehaviour:
     referenceModifiers: []
     modifiers: []
   attackSpeed:
-    baseValue: 1
-    finalValue: 1
+    baseValue: 2
+    finalValue: 2
     referenceModifiers: []
     modifiers: []
   armor:
@@ -322,7 +322,6 @@ MonoBehaviour:
   combatCollider2D: {fileID: 0}
   audioSource: {fileID: 0}
   rigidbody2D: {fileID: 0}
-  attackAudioClip: {fileID: 8300000, guid: 1831f3e85531e554081da581aac0d078, type: 3}
   charAttackInfo: {fileID: 11400000, guid: 3c12a8eee1b28df4f94d0e5f788b38e6, type: 2}
   statusEffect: {fileID: 0}
   rotationAndCenterObject: {fileID: 0}

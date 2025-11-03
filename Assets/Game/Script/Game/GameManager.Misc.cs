@@ -12,6 +12,10 @@ public partial class GameManager
             "hp regen",
             "<link=hp regen><color=#FF6B6B>hp regen</color></link>: how many <link=hp><color=#C71F37>hp</color></link> is regenerated per second."
         },
+        {
+            "current mp",
+            "<link=current mp><color=#3E8EDE>current mp</color></link>: current mana point."
+        },
         { "mp", "<link=mp><color=#2F75C0>mp</color></link>: mana point." },
         {
             "mp regen",
@@ -31,6 +35,14 @@ public partial class GameManager
         },
         { "aspd", "<link=aspd><color=#E67E22>aspd</color></link>: attack speed." },
         { "armor", "<link=armor><color=#95A5A6>armor</color></link>: 1 armor mitigates 1 damage." },
+        {
+            "omnivamp",
+            "<link=omnivamp><color=#C62828>omnivamp</color></link>: heals from damage dealt."
+        },
         { "atk", "<link=atk><color=#E53935>atk</color></link>: attack damage." },
+        {
+            "strike lock",
+            "<link=strike lock><color=#fc03d7>strike lock</color></link>: one affected by strike lock cannot attack."
+        },
     };
 }
