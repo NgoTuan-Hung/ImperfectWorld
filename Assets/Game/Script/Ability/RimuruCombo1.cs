@@ -64,7 +64,7 @@ public class RimuruCombo1 : SkillBase
     {
         base.RecalculateStat();
         GetActionField<ActionFloatField>(ActionFieldName.Damage).value =
-            customMono.stat.reflex.FinalValue * 2.5f;
+            customMono.stat.reflex.FinalValue * 4.25f;
     }
 
     public override void TriggerContinuous(
@@ -97,7 +97,6 @@ public class RimuruCombo1 : SkillBase
                     direction
                 )
             );
-            StartCoroutine(CooldownCoroutine());
             customMono.currentAction = this;
             customMono.stat.currentManaPoint.Value -= GetActionField<ActionFloatField>(
                 ActionFieldName.ManaCost

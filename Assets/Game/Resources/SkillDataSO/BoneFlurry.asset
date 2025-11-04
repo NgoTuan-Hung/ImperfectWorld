@@ -16,5 +16,21 @@ MonoBehaviour:
   inputType: 0
   skillName: BoneFlurry
   skillImage: {fileID: 21300000, guid: dc49a4618c7839a4bab0f240a8d3cb8a, type: 3}
-  skillHelperDescription: Nope
+  skillDescription: '<color=#E67E22>BoneFlurry (Active + Passive)</color>
+
+    -
+    Passive: After each attack, there is a <color=green>(35 + <link=might><color=#F39C12>might</color></link>)%</color>
+    chance to unleash <color=green>3</color> bonus strikes.
+
+    Each bonus strike
+    deals <color=green>[125% / 150% / 175% <link=atk><color=#E53935>atk</color></link>]</color>
+    respectively.
+
+
+    - Active: For the next <color=green>1.5</color> seconds,
+    the 3 bonus strikes are empowered,
+
+    each dealing <color=green>(Base Percentage
+    + 100 + <link=might><color=#F39C12>might</color></link>)%</color> <link=atk><color=#E53935>atk</color></link>
+    instead.'
   skillType: 0

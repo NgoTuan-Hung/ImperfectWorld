@@ -75,7 +75,6 @@ public class BloodOfTheFallen : SkillBase
                     direction: direction
                 )
             );
-            StartCoroutine(CooldownCoroutine());
             customMono.currentAction = this;
             customMono.stat.currentManaPoint.Value -= GetActionField<ActionFloatField>(
                 ActionFieldName.ManaCost

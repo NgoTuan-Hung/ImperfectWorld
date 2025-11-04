@@ -80,7 +80,6 @@ public class EyeOfTheReaper : SkillBase
                     p_customMono: p_customMono
                 )
             );
-            StartCoroutine(CooldownCoroutine());
             customMono.currentAction = this;
             customMono.stat.currentManaPoint.Value -= GetActionField<ActionFloatField>(
                 ActionFieldName.ManaCost

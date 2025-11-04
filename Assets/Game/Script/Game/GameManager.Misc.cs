@@ -5,6 +5,9 @@ public partial class GameManager
 {
     public Material team1DirectionIndicatorMat;
     public Material team2DirectionIndicatorMat;
+    public Material damagePopupMat,
+        weakenPopupMat,
+        armorBuffPopupMat;
     Dictionary<string, string> descriptionDB = new()
     {
         { "hp", "<link=hp><color=#C71F37>hp</color></link>: health point." },
@@ -40,6 +43,10 @@ public partial class GameManager
             "<link=omnivamp><color=#C62828>omnivamp</color></link>: heals from damage dealt."
         },
         { "atk", "<link=atk><color=#E53935>atk</color></link>: attack damage." },
+        {
+            "damage reduction",
+            "<link=damage reduction><color=#4A90E2>damage reduction</color></link>: reduces total damage taken, applied after armor."
+        },
         {
             "strike lock",
             "<link=strike lock><color=#fc03d7>strike lock</color></link>: one affected by strike lock cannot attack."

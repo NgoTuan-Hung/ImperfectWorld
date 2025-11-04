@@ -22,7 +22,6 @@ public enum AttackType
 public class CustomMono : MonoSelfAware
 {
     public CharUIData charUIData;
-    public bool isControllable = true;
     public HashSet<string> allyTags = new();
     private GameObject mainComponent;
     public SpriteRenderer spriteRenderer;
@@ -90,7 +89,6 @@ public class CustomMono : MonoSelfAware
         base.Awake();
         GetAllChildObject();
         GetAllComponents();
-        StatChangeRegister();
         GameManager.Instance.AddCustomMono(this);
     }
 
@@ -130,29 +128,10 @@ public class CustomMono : MonoSelfAware
         rotationAndCenterObject = transform.Find("RotationAndCenterObject").gameObject;
     }
 
-    void StatChangeRegister()
-    {
-        //
-    }
-
     public override void Start()
     {
         GameUIManager.Instance.GenerateAndBindChampUI(this);
-        if (isControllable)
-            GameManager.Instance.InitializeControllableCharacterRevamp(this);
         allyTags.Add(gameObject.tag);
-    }
-
-    public void PauseBot()
-    {
-        botAIManager.aiBehavior.pausableScript.pauseFixedUpdate();
-        movable.pausableScript.resumeFixedUpdate();
-    }
-
-    public void ResumeBot()
-    {
-        botAIManager.aiBehavior.pausableScript.resumeFixedUpdate();
-        movable.pausableScript.pauseFixedUpdate();
     }
 
     private void FixedUpdate()

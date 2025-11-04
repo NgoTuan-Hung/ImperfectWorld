@@ -17,8 +17,6 @@ public class SkillDataSO : ScriptableObject
         HoldAndRelease,
     }
 
-    public SkillIndicatorType skillIndicatorType = SkillIndicatorType.None;
-    public InputType inputType;
     public string skillName;
     public Sprite skillImage;
 

@@ -88,6 +88,7 @@ GameObject:
   - component: {fileID: 5857108519500427890}
   - component: {fileID: 8364919503634308901}
   - component: {fileID: 3497515037500153892}
+  - component: {fileID: 519992501863099155}
   m_Layer: 5
   m_Name: Joystick
   m_TagString: Untagged
@@ -165,12 +166,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 184cdbbc5b5c44d92998557dc052cada, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  stickType: 1
+  stickType: 0
   movementRange: 100
   deadZone: 0
-  showOnlyWhenPressed: 1
+  showOnlyWhenPressed: 0
   background: {fileID: 2457347483333299555}
   handle: {fileID: 4241986892563094285}
+  canvas: {fileID: 0}
+--- !u!225 &519992501863099155
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4105702365784704838}
+  m_Enabled: 1
+  m_Alpha: 0.1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &4157320428493631804
 GameObject:
   m_ObjectHideFlags: 0

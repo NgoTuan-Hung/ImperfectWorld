@@ -32,7 +32,7 @@ public class GuardedVengence : SkillBase
     {
         GetActionField<ActionFloatField>(ActionFieldName.ManaCost).value = 100f;
         GetActionField<ActionIntField>(ActionFieldName.EffectCount).value = 11;
-        GetActionField<ActionFloatField>(ActionFieldName.Duration).value = 3.5f;
+        GetActionField<ActionFloatField>(ActionFieldName.Duration).value = 2.75f;
         successResult = new(
             true,
             ActionResultType.Cooldown,
@@ -51,7 +51,7 @@ public class GuardedVengence : SkillBase
     {
         base.RecalculateStat();
         GetActionField<ActionFloatField>(ActionFieldName.Damage).value =
-            customMono.stat.might.FinalValue * 5f;
+            0.3f + customMono.stat.might.FinalValue * 0.01f;
     }
 
     public override ActionResult Trigger(
@@ -73,7 +73,6 @@ public class GuardedVengence : SkillBase
             StartCoroutine(
                 GetActionField<ActionIEnumeratorField>(ActionFieldName.ActionIE).value = TriggerIE()
             );
-            StartCoroutine(CooldownCoroutine());
             customMono.currentAction = this;
             customMono.stat.currentManaPoint.Value -= GetActionField<ActionFloatField>(
                 ActionFieldName.ManaCost
@@ -119,7 +118,8 @@ public class GuardedVengence : SkillBase
             GetActionField<ActionGameEffectField>(ActionFieldName.GameEffect)
                 .value.SetUpCollideAndDamage(
                     customMono,
-                    (customMono.statusEffect.GetTotalDamageTaken() - savedTotalDamageTaken) * 0.3f
+                    (customMono.statusEffect.GetTotalDamageTaken() - savedTotalDamageTaken)
+                        * GetActionField<ActionFloatField>(ActionFieldName.Damage).value
                 );
             GetActionField<ActionGameEffectField>(ActionFieldName.GameEffect)
                 .value.KeepFlyingForward();

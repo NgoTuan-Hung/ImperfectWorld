@@ -24,13 +24,6 @@ public class PactOfStillness : SkillBase
 
     public override void Config()
     {
-        /* Stun duration */
-        // successResult = new(
-        //     true,
-        //     ActionResultType.Cooldown,
-        //     GetActionField<ActionFloatField>(ActionFieldName.Cooldown).value
-        // );
-        /* Debuff duration */
         GetActionField<ActionFloatField>(ActionFieldName.ManaCost).value = 100f;
         GetActionField<ActionFloatField>(ActionFieldName.Duration).value = 4f;
 
@@ -40,7 +33,6 @@ public class PactOfStillness : SkillBase
     public override void StatChangeRegister()
     {
         base.StatChangeRegister();
-        // customMono.stat.attackSpeed.finalValueChangeEvent += RecalculateStat;
     }
 
     public override void RecalculateStat()

@@ -7,7 +7,7 @@ public class BoneFlurry : SkillBase
 {
     float chance = 0.35f;
     DealDamageGameEventData dealDamageGED = new();
-    static float[] damageVariant = { 1.25f, 1.5f, 1.75f };
+    float[] damageVariant = { 1.25f, 1.5f, 1.75f };
 
     public override void Awake()
     {
@@ -33,13 +33,13 @@ public class BoneFlurry : SkillBase
 
     public override void Config()
     {
-        GetActionField<ActionFloatField>(ActionFieldName.ManaCost).value = 0f;
+        GetActionField<ActionFloatField>(ActionFieldName.ManaCost).value = 100f;
         successResult = new(
             true,
             ActionResultType.Cooldown,
             GetActionField<ActionFloatField>(ActionFieldName.Cooldown).value
         );
-        (customMono.skill.skillBases[0] as Attack).endAttackAction += Trigger;
+        (customMono.skill.skillBases[0] as Attack).endAttackAction += Proc;
         /* Also use actionie */
     }
 
@@ -47,7 +47,6 @@ public class BoneFlurry : SkillBase
     {
         base.StatChangeRegister();
         customMono.stat.might.finalValueChangeEvent += RecalculateStat;
-        customMono.stat.reflex.finalValueChangeEvent += RecalculateStat;
     }
 
     public override void RecalculateStat()
@@ -56,7 +55,37 @@ public class BoneFlurry : SkillBase
         chance = Math.Clamp(0.35f + customMono.stat.might.FinalValue * 0.01f, 0, 1);
     }
 
-    public new void Trigger(
+    public override ActionResult Trigger(
+        Vector2 location = default,
+        Vector2 direction = default,
+        CustomMono p_customMono = null
+    )
+    {
+        if (
+            customMono.stat.currentManaPoint.Value
+            < GetActionField<ActionFloatField>(ActionFieldName.ManaCost).value
+        )
+            return failResult;
+
+        StartCoroutine(BuffIE());
+        customMono.stat.currentManaPoint.Value -= GetActionField<ActionFloatField>(
+            ActionFieldName.ManaCost
+        ).value;
+
+        return successResult;
+    }
+
+    IEnumerator BuffIE()
+    {
+        var buff = 1 + customMono.stat.might.FinalValue * 0.01f;
+        for (int i = 0; i < 3; i++)
+            damageVariant[i] += buff;
+        yield return new WaitForSeconds(1.5f);
+        for (int i = 0; i < 3; i++)
+            damageVariant[i] -= buff;
+    }
+
+    public void Proc(
         Vector2 location = default,
         Vector2 direction = default,
         CustomMono p_customMono = null
@@ -136,5 +165,10 @@ public class BoneFlurry : SkillBase
         customMono.animationEventFunctionCaller.SetSignal(EAnimationSignal.MainSkill1Signal, false);
         customMono.animationEventFunctionCaller.SetSignal(EAnimationSignal.EndMainSkill1, false);
         customMono.statusEffect.RemoveSlow(customMono.stat.actionSlowModifier);
+    }
+
+    public override void BotDoAction(DoActionParamInfo p_doActionParamInfo)
+    {
+        Trigger();
     }
 }

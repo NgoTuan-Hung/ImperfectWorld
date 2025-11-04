@@ -71,7 +71,6 @@ public class Detonate : SkillBase
                     direction: direction
                 )
             );
-            StartCoroutine(CooldownCoroutine());
             customMono.currentAction = this;
             customMono.stat.currentManaPoint.Value -= GetActionField<ActionFloatField>(
                 ActionFieldName.ManaCost

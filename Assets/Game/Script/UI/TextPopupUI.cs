@@ -13,9 +13,6 @@ public class TextPopupUI : MonoSelfAware
     TMPAnimator tmpAnimator;
     static readonly float duration = 1f;
     static readonly Vector2 acceleration = new(0, -80f);
-    static Material damagePopupMat,
-        weakenPopupMat,
-        armorBuffPopupMat;
     float defaultFontSize;
     public static Color transparentWhite = new(1, 1, 1, 0);
 
@@ -25,9 +22,6 @@ public class TextPopupUI : MonoSelfAware
         textMeshProUGUI = GetComponent<TextMeshProUGUI>();
         defaultFontSize = textMeshProUGUI.fontSize;
         rectTransform = GetComponent<RectTransform>();
-        damagePopupMat = Resources.Load<Material>("Material/rimouski sb SDF - Damage");
-        weakenPopupMat = Resources.Load<Material>("Material/rimouski sb SDF - Weaken");
-        armorBuffPopupMat = Resources.Load<Material>("Material/rimouski sb SDF - Armor Buff");
         tmpAnimator = GetComponent<TMPAnimator>();
     }
 
@@ -36,7 +30,7 @@ public class TextPopupUI : MonoSelfAware
 
     IEnumerator StartDamagePopupIE(Vector3 p_initialPos, float p_damage)
     {
-        textMeshProUGUI.fontSharedMaterial = damagePopupMat;
+        textMeshProUGUI.fontSharedMaterial = GameManager.Instance.damagePopupMat;
         textMeshProUGUI.text = p_damage.ToString();
         transform.position = p_initialPos;
         float t_currentTime = 0;
@@ -64,7 +58,7 @@ public class TextPopupUI : MonoSelfAware
     IEnumerator StartWeakenPopupIE(Vector3 p_initialPos)
     {
         tmpAnimator.StartAnimating();
-        textMeshProUGUI.fontSharedMaterial = weakenPopupMat;
+        textMeshProUGUI.fontSharedMaterial = GameManager.Instance.weakenPopupMat;
         textMeshProUGUI.text = "<shake>WEAKEN";
         transform.position = p_initialPos;
         yield return rectTransform
@@ -89,7 +83,7 @@ public class TextPopupUI : MonoSelfAware
 
     IEnumerator StartArmorBuffPopupIE(Vector3 p_initialPos)
     {
-        textMeshProUGUI.fontSharedMaterial = armorBuffPopupMat;
+        textMeshProUGUI.fontSharedMaterial = GameManager.Instance.armorBuffPopupMat;
         textMeshProUGUI.text = "ARMOR⬆";
         transform.position = p_initialPos;
         textMeshProUGUI.DOColor(transparentWhite, 0.5f).SetEase(Ease.InCubic);
@@ -105,7 +99,7 @@ public class TextPopupUI : MonoSelfAware
 
     IEnumerator StartDRBuffPopupIE(Vector3 p_initialPos)
     {
-        textMeshProUGUI.fontSharedMaterial = armorBuffPopupMat;
+        textMeshProUGUI.fontSharedMaterial = GameManager.Instance.armorBuffPopupMat;
         textMeshProUGUI.text = "DR⬆";
         transform.position = p_initialPos;
         textMeshProUGUI.DOColor(transparentWhite, 0.5f).SetEase(Ease.InCubic);

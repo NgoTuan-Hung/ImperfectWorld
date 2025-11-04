@@ -76,13 +76,6 @@ public partial class GameManager : MonoBehaviour
         yield return null;
     }
 
-    public void InitializeControllableCharacter(CustomMono p_customMono) { }
-
-    public void InitializeControllableCharacterRevamp(CustomMono p_customMono)
-    {
-        GameUIManager.Instance.InitializeCharacterUI(p_customMono);
-    }
-
     private void Awake()
     {
         Instance = this;
@@ -118,6 +111,9 @@ public partial class GameManager : MonoBehaviour
     {
         team1DirectionIndicatorMat = Resources.Load<Material>("Material/Team1DirectionIndicator");
         team2DirectionIndicatorMat = Resources.Load<Material>("Material/Team2DirectionIndicator");
+        damagePopupMat = Resources.Load<Material>("Material/LiberationSans SDF - Damage");
+        weakenPopupMat = Resources.Load<Material>("Material/LiberationSans SDF - Weaken");
+        armorBuffPopupMat = Resources.Load<Material>("Material/LiberationSans SDF - Armor Buff");
     }
 
     void ConstructActionFieldInfoDict()

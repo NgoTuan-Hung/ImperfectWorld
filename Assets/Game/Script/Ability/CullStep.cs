@@ -69,7 +69,6 @@ public class CullStep : SkillBase
             StartCoroutine(
                 GetActionField<ActionIEnumeratorField>(ActionFieldName.ActionIE).value = TriggerIE()
             );
-            StartCoroutine(CooldownCoroutine());
             customMono.currentAction = this;
             customMono.stat.currentManaPoint.Value -= GetActionField<ActionFloatField>(
                 ActionFieldName.ManaCost
