@@ -117,7 +117,8 @@ public partial class GameManager
         glacistreamEffect,
         raikenDart,
         jinseiKunai,
-        eyeOfTheReaperEffect;
+        eyeOfTheReaperEffect,
+        rubyRoseProjectile;
 
     List<string> prefabNames = new()
     {
@@ -234,6 +235,7 @@ public partial class GameManager
         "raikenDart",
         "jinseiKunai",
         "eyeOfTheReaperEffect",
+        "rubyRoseProjectile",
     };
 
     void LoadGameEffectPrefabs()

@@ -9,8 +9,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5435024841415473918}
-  - component: {fileID: 4930152825743933449}
-  - component: {fileID: 1848655529994772072}
   m_Layer: 0
   m_Name: DirectionIndicator
   m_TagString: Untagged
@@ -34,76 +32,6 @@ Transform:
   - {fileID: 2883943721417793022}
   m_Father: {fileID: 8222763814971468014}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!212 &4930152825743933449
-SpriteRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2060460620299472358}
-  m_Enabled: 0
-  m_CastShadows: 0
-  m_ReceiveShadows: 0
-  m_DynamicOccludee: 1
-  m_StaticShadowCaster: 0
-  m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
-  m_RayTracingMode: 0
-  m_RayTraceProcedural: 0
-  m_RayTracingAccelStructBuildFlagsOverride: 0
-  m_RayTracingAccelStructBuildFlags: 1
-  m_SmallMeshCulling: 1
-  m_ForceMeshLod: -1
-  m_MeshLodSelectionBias: 0
-  m_RenderingLayerMask: 1
-  m_RendererPriority: 0
-  m_Materials:
-  - {fileID: 2100000, guid: 27c6ad3fe89fbb441921d8146a52245c, type: 2}
-  m_StaticBatchInfo:
-    firstSubMesh: 0
-    subMeshCount: 0
-  m_StaticBatchRoot: {fileID: 0}
-  m_ProbeAnchor: {fileID: 0}
-  m_LightProbeVolumeOverride: {fileID: 0}
-  m_ScaleInLightmap: 1
-  m_ReceiveGI: 1
-  m_PreserveUVs: 0
-  m_IgnoreNormalsForChartDetection: 0
-  m_ImportantGI: 0
-  m_StitchLightmapSeams: 1
-  m_SelectedEditorRenderState: 0
-  m_MinimumChartSize: 4
-  m_AutoUVMaxDistance: 0.5
-  m_AutoUVMaxAngle: 89
-  m_LightmapParameters: {fileID: 0}
-  m_GlobalIlluminationMeshLod: 0
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 3cb647a2e8d7eca4cb4491bf85a7fb48, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_FlipX: 0
-  m_FlipY: 0
-  m_DrawMode: 0
-  m_Size: {x: 5.12, y: 5.12}
-  m_AdaptiveModeThreshold: 0.5
-  m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
-  m_MaskInteraction: 0
-  m_SpriteSortPoint: 0
---- !u!210 &1848655529994772072
-SortingGroup:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2060460620299472358}
-  m_Enabled: 1
-  m_SortingLayerID: 1774004605
-  m_SortingLayer: 1
-  m_SortingOrder: 0
-  m_SortAtRoot: 0
 --- !u!1 &2097036569986859595
 GameObject:
   m_ObjectHideFlags: 0
@@ -489,7 +417,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   charUIData: {fileID: 11400000, guid: 07b70e5aaf21d684fa8359c800d72dba, type: 2}
-  isControllable: 0
   spriteRenderer: {fileID: 0}
   animationEventFunctionCaller: {fileID: 0}
   movable: {fileID: 0}
@@ -507,7 +434,6 @@ MonoBehaviour:
   combatCollider2D: {fileID: 0}
   audioSource: {fileID: 0}
   rigidbody2D: {fileID: 0}
-  attackAudioClip: {fileID: 8300000, guid: 1614f5e1bf42b054ca0b933399c6264e, type: 3}
   charAttackInfo: {fileID: 11400000, guid: fceebe446c4976c46bb690f2372d72b3, type: 2}
   statusEffect: {fileID: 0}
   rotationAndCenterObject: {fileID: 0}
@@ -530,17 +456,7 @@ MonoBehaviour:
   customMono: {fileID: 0}
   currentStates: 0
   osTime: 0
-  damp: 0.5
-  speed: 10
-  scaleRange: 0.25
-  frequency: 3
-  damageDuration: 0.25
-  elementalEffectDuration: 0.2
-  elementalEffectColor: {r: 1, g: 0, b: 0, a: 1}
   ccImmune: 0
-  knockUpInitialVelocity: 1.5
-  knockUpVelocity: 0
-  knockUpAcceleration: -10
   stunTime: 0
 --- !u!114 &8263612442362251236
 MonoBehaviour:

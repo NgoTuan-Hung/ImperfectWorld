@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public static class VectorExtension
 {
@@ -53,4 +54,9 @@ public static class VectorExtension
 
     public static Vector4 WithW(this Vector4 vector, float w) =>
         new Vector4(vector.x, vector.y, vector.z, w);
+
+    public static Vector3 RandomXYNormalized()
+    {
+        return new(Random.Range(-1f, 1f), Random.Range(-1f, 1f), 0);
+    }
 }

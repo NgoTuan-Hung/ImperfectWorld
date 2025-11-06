@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Map;
 using UnityEngine;
@@ -19,7 +20,9 @@ public class GameUIManager : MonoEditorSingleton<GameUIManager>
     public InteractiveButtonUI startBattleButton;
     GameObject champInfoPanel;
     Dictionary<CustomMono, ChampInfoPanel> champInfoPanelDict = new();
+    Vector3 cameraMoveVector;
     public float cameraMovementSpeed = 0.1f;
+    GameObject cameraFollowObject;
 
     private void Awake()
     {
@@ -37,6 +40,16 @@ public class GameUIManager : MonoEditorSingleton<GameUIManager>
     public override void Start()
     {
         base.Start();
+    }
+
+    private void FixedUpdate()
+    {
+        MoveCamera();
+    }
+
+    private void MoveCamera()
+    {
+        cameraFollowObject.transform.position += cameraMoveVector;
     }
 
     void InitPrefabAndPool()
@@ -71,14 +84,13 @@ public class GameUIManager : MonoEditorSingleton<GameUIManager>
         var joystick = Instantiate(joystickPrefab).GetComponent<EnhancedOnScreenStick>();
         joystick.transform.SetParent(joystickZone.transform, false);
 
-        var cameraFollowObject = new GameObject();
+        cameraFollowObject = new GameObject();
         cameraFollowObject.name = "CameraFollowObject";
         cameraFollowObject.transform.position = Vector3.zero;
         GameManager.Instance.cinemachineCamera.Target.TrackingTarget = cameraFollowObject.transform;
         joystick.OnMove = (vector2) =>
         {
-            cameraFollowObject.transform.position +=
-                vector2.AsVector3().normalized * cameraMovementSpeed;
+            cameraMoveVector = vector2.AsVector3() * cameraMovementSpeed;
         };
     }
 
