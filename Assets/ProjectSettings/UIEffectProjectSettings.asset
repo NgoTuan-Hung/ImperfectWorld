@@ -34,15 +34,53 @@ ShaderVariantCollection:
   - first: {fileID: 4800000, guid: 96246b1ead49a4c5a996fd477bc5a117, type: 3}
     second:
       variants:
+      - keywords: 
+        passType: 0
       - keywords: COLOR_FILTER
+        passType: 0
+      - keywords: COLOR_FILTER EDGE_PLAIN
+        passType: 0
+      - keywords: COLOR_FILTER EDGE_PLAIN TRANSITION_PATTERN
         passType: 0
       - keywords: COLOR_FILTER SAMPLING_BLUR_FAST
         passType: 0
+      - keywords: DETAIL_MULTIPLY_ADDITIVE
+        passType: 0
       - keywords: EDGE_PLAIN
+        passType: 0
+      - keywords: EDGE_PLAIN SAMPLING_BLUR_DETAIL
+        passType: 0
+      - keywords: EDGE_PLAIN SAMPLING_BLUR_FAST
+        passType: 0
+      - keywords: EDGE_PLAIN SAMPLING_BLUR_MEDIUM
+        passType: 0
+      - keywords: EDGE_PLAIN SAMPLING_PIXELATION
+        passType: 0
+      - keywords: EDGE_PLAIN TONE_GRAYSCALE
+        passType: 0
+      - keywords: EDGE_PLAIN TONE_SEPIA
+        passType: 0
+      - keywords: EDGE_PLAIN TRANSITION_BURN
+        passType: 0
+      - keywords: EDGE_PLAIN TRANSITION_CUTOFF
+        passType: 0
+      - keywords: EDGE_PLAIN TRANSITION_DISSOLVE
+        passType: 0
+      - keywords: EDGE_PLAIN TRANSITION_FADE
+        passType: 0
+      - keywords: EDGE_PLAIN TRANSITION_MASK
+        passType: 0
+      - keywords: EDGE_PLAIN TRANSITION_MELT
+        passType: 0
+      - keywords: EDGE_PLAIN TRANSITION_PATTERN
+        passType: 0
+      - keywords: EDGE_PLAIN TRANSITION_SHINY
         passType: 0
       - keywords: EDGE_PLAIN UNITY_UI_ALPHACLIP
         passType: 0
       - keywords: EDGE_SHINY
+        passType: 0
+      - keywords: EDGE_SHINY TRANSITION_FADE
         passType: 0
       - keywords: SAMPLING_BLUR_DETAIL
         passType: 0
@@ -73,6 +111,8 @@ ShaderVariantCollection:
       - keywords: TRANSITION_FADE
         passType: 0
       - keywords: TRANSITION_MELT
+        passType: 0
+      - keywords: TRANSITION_PATTERN
         passType: 0
       - keywords: TRANSITION_SHINY
         passType: 0

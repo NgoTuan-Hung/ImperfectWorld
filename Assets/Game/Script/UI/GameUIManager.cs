@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Map;
 using UnityEngine;
 using UnityEngine.UI;
@@ -13,7 +14,10 @@ public class GameUIManager : MonoEditorSingleton<GameUIManager>
         healthAndManaIndicatorPrefab,
         worldSpaceCanvas,
         mapBackground,
-        champUIZone;
+        champUIZone,
+        inventory,
+        inventoryContent,
+        freeZone;
     ObjectPool healthAndManaIndicator,
         textPopupUIPool;
     public MapViewUI mapViewUI;
@@ -23,6 +27,10 @@ public class GameUIManager : MonoEditorSingleton<GameUIManager>
     Vector3 cameraMoveVector;
     public float cameraMovementSpeed = 0.1f;
     GameObject cameraFollowObject;
+    public float planeDistance = 5f;
+    public List<GameObject> inventorySlots = new();
+    public List<ItemUI> playerItemUIs = new();
+    public Vector2 ItemInventoryAnchorPos = new(0.5f, 0.5f);
 
     private void Awake()
     {
@@ -34,7 +42,20 @@ public class GameUIManager : MonoEditorSingleton<GameUIManager>
 
         InitPrefabAndPool();
         Init();
+        FindChilds();
+    }
+
+    private void FindChilds()
+    {
         mapBackground = transform.Find("MapBackground").gameObject;
+        inventoryContent = inventory.transform.Find("Viewport/Content").gameObject;
+
+        /* Temp */
+        playerItemUIs = inventoryContent.transform.GetComponentsInChildren<ItemUI>().ToList();
+        for (int i = 0; i < inventoryContent.transform.childCount; i++)
+        {
+            inventorySlots.Add(inventoryContent.transform.GetChild(i).gameObject);
+        }
     }
 
     public override void Start()
@@ -92,6 +113,8 @@ public class GameUIManager : MonoEditorSingleton<GameUIManager>
         {
             cameraMoveVector = vector2.AsVector3() * cameraMovementSpeed;
         };
+
+        canvas.planeDistance = planeDistance;
     }
 
     public PoolObject CreateAndHandleHPAndMPUIWithFollowing(Transform transform)
@@ -133,4 +156,22 @@ public class GameUIManager : MonoEditorSingleton<GameUIManager>
 
     public void ShowChampUI(CustomMono p_customMono) =>
         champInfoPanelDict[p_customMono].gameObject.SetActive(true);
+
+    public void RemoveFromInventory(ItemUI itemUI)
+    {
+        itemUI.transform.parent.SetAsLastSibling();
+        inventorySlots.Remove(itemUI.transform.parent.gameObject);
+        inventorySlots.Add(itemUI.transform.parent.gameObject);
+        itemUI.transform.SetParent(freeZone.transform);
+        playerItemUIs.Remove(itemUI);
+    }
+
+    public void AddToInventory(ItemUI itemUI)
+    {
+        itemUI.transform.SetParent(inventorySlots[playerItemUIs.Count].transform);
+        itemUI.rectTransform.anchorMin = ItemInventoryAnchorPos;
+        itemUI.rectTransform.anchorMax = ItemInventoryAnchorPos;
+        itemUI.rectTransform.anchoredPosition = Vector2.zero;
+        playerItemUIs.Add(itemUI);
+    }
 }

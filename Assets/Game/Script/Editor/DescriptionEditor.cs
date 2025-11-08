@@ -3,13 +3,19 @@ using UnityEngine;
 using UnityEditor;
 using UnityEngine.UIElements;
 using UnityEditor.UIElements;
-using System;
 using System.Collections.Generic;
 
-public class SkillDescriptionEditor : EditorWindow
+public class DescriptionEditor : EditorWindow
 {
+    public enum CurrentSOType
+    {
+        Skill,
+        Item,
+    }
+
+    public CurrentSOType currentSOType = CurrentSOType.Skill;
     public VisualTreeAsset vTA;
-    ObjectField skillSOObjectField;
+    ObjectField scriptableObjectObjectField;
     TextField descTextField;
     Label descRenderedLabel;
     DropdownField addStylizedTextDropdownField;
@@ -36,16 +42,17 @@ public class SkillDescriptionEditor : EditorWindow
     };
     int lastCaretIndex = 0;
 
-    [MenuItem("Tools/SkillDescriptionEditor")]
+    [MenuItem("Tools/DescriptionEditor")]
     private static void ShowWindow()
     {
-        var window = GetWindow<SkillDescriptionEditor>();
-        window.titleContent = new GUIContent("SkillDescriptionEditor");
+        var window = GetWindow<DescriptionEditor>();
+        window.titleContent = new GUIContent("DescriptionEditor");
         window.Show();
     }
 
     void CreateGUI()
     {
+        vTA = Resources.Load<VisualTreeAsset>("VisualTreeAsset/DescriptionEditor");
         GetVisualElements();
         PopulateDropdown();
         AddEvents();
@@ -74,10 +81,18 @@ public class SkillDescriptionEditor : EditorWindow
 
     private void AddEvents()
     {
-        skillSOObjectField.RegisterValueChangedCallback(evt =>
+        scriptableObjectObjectField.RegisterValueChangedCallback(evt =>
         {
-            var skillSO = evt.newValue as SkillDataSO;
-            descTextField.value = skillSO.skillDescription;
+            if (evt.newValue is SkillDataSO)
+            {
+                descTextField.value = (evt.newValue as SkillDataSO).skillDescription;
+                currentSOType = CurrentSOType.Skill;
+            }
+            else if (evt.newValue is ItemDataSO)
+            {
+                descTextField.value = (evt.newValue as ItemDataSO).itemDescription;
+                currentSOType = CurrentSOType.Item;
+            }
         });
 
         descTextField.RegisterValueChangedCallback(evt =>
@@ -106,9 +121,19 @@ public class SkillDescriptionEditor : EditorWindow
 
         saveButton.clicked += () =>
         {
-            var skillSO = skillSOObjectField.value as SkillDataSO;
-            skillSO.skillDescription = descTextField.value;
-            EditorUtility.SetDirty(skillSO);
+            if (currentSOType == CurrentSOType.Skill)
+            {
+                (scriptableObjectObjectField.value as SkillDataSO).skillDescription =
+                    descTextField.value;
+                EditorUtility.SetDirty(scriptableObjectObjectField.value);
+            }
+            else if (currentSOType == CurrentSOType.Item)
+            {
+                (scriptableObjectObjectField.value as ItemDataSO).itemDescription =
+                    descTextField.value;
+                EditorUtility.SetDirty(scriptableObjectObjectField.value);
+            }
+
             AssetDatabase.SaveAssets();
         };
     }
@@ -116,7 +141,7 @@ public class SkillDescriptionEditor : EditorWindow
     void GetVisualElements()
     {
         vTA.CloneTree(rootVisualElement);
-        skillSOObjectField = rootVisualElement.Q<ObjectField>("skill-so-of");
+        scriptableObjectObjectField = rootVisualElement.Q<ObjectField>("so-of");
         descTextField = rootVisualElement.Q<TextField>("desc-tf");
         addStylizedTextDropdownField = rootVisualElement.Q<DropdownField>("add-stylized-text-df");
         descRenderedLabel = rootVisualElement.Q<Label>("desc-rendered-l");

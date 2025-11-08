@@ -1,18 +1,16 @@
-using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Text.RegularExpressions;
 using TMPro;
 using UnityEngine;
-using UnityEngine.UIElements;
+using UnityEngine.EventSystems;
 
-public class ChampInfoPanel : MonoBehaviour
+public class ChampInfoPanel : MonoBehaviour, IPointerDownHandler
 {
     CustomMono owner;
     GameObject container,
         statSV,
         statContent,
         abilitySV,
+        itemSV,
+        itemSVContent,
         activeContent,
         tooltip;
     TextMeshProUGUI nameTMP,
@@ -53,6 +51,8 @@ public class ChampInfoPanel : MonoBehaviour
         abilityTMP = abilitySV
             .transform.Find("Viewport/Content")
             .transform.GetComponent<TextMeshProUGUI>();
+        itemSV = container.transform.Find("ItemSV").gameObject;
+        itemSVContent = itemSV.transform.Find("Viewport/Content").gameObject;
         activeContent = statSV;
         tooltip = transform.Find("Tooltip").gameObject;
         tooltipTMP = tooltip
@@ -87,9 +87,8 @@ public class ChampInfoPanel : MonoBehaviour
 
     private void InitTabButtons()
     {
-        foreach (
-            ChampInfoPanelTabButton ciptb in GetComponentsInChildren<ChampInfoPanelTabButton>()
-        )
+        var tabButtons = GetComponentsInChildren<ChampInfoPanelTabButton>();
+        foreach (ChampInfoPanelTabButton ciptb in tabButtons)
         {
             if (ciptb.name.Equals("Stat"))
                 selectedCIPTB = ciptb;
@@ -118,9 +117,10 @@ public class ChampInfoPanel : MonoBehaviour
                 SwitchActiveContent(abilitySV);
                 break;
             }
-            case "Other":
+            case "Item":
             {
                 SwitchTab(p_ciptb);
+                SwitchActiveContent(itemSV);
                 break;
             }
             default:
@@ -229,5 +229,23 @@ public class ChampInfoPanel : MonoBehaviour
     void FixedUpdate()
     {
         transform.position = owner.transform.position + offset;
+    }
+
+    public void AttachItem(ItemUI itemUI)
+    {
+        itemUI.transform.SetParent(itemSVContent.transform);
+        itemUI.rectTransform.anchoredPosition = Vector2.zero;
+        owner.EquipItem(itemUI.itemDataSO);
+    }
+
+    public void DetachItem(ItemUI itemUI)
+    {
+        itemUI.transform.SetParent(GameUIManager.Instance.freeZone.transform);
+        owner.UnEquipItem(itemUI.itemDataSO);
+    }
+
+    public void OnPointerDown(PointerEventData eventData)
+    {
+        transform.SetAsLastSibling();
     }
 }

@@ -225,4 +225,46 @@ public class CustomMono : MonoSelfAware
                 break;
         }
     }
+
+    public void EquipItem(ItemDataSO itemDataSO)
+    {
+        itemDataSO.statBuffs.ForEach(sB =>
+        {
+            switch (sB.statBuffType)
+            {
+                case StatBuffType.Health:
+                    stat.healthPoint.AddModifier(sB.modifier);
+                    break;
+                case StatBuffType.Mana:
+                    stat.manaPoint.AddModifier(sB.modifier);
+                    break;
+                case StatBuffType.Damage:
+                    stat.attackDamage.AddModifier(sB.modifier);
+                    break;
+                default:
+                    break;
+            }
+        });
+    }
+
+    public void UnEquipItem(ItemDataSO itemDataSO)
+    {
+        itemDataSO.statBuffs.ForEach(sB =>
+        {
+            switch (sB.statBuffType)
+            {
+                case StatBuffType.Health:
+                    stat.healthPoint.RemoveModifier(sB.modifier);
+                    break;
+                case StatBuffType.Mana:
+                    stat.manaPoint.RemoveModifier(sB.modifier);
+                    break;
+                case StatBuffType.Damage:
+                    stat.attackDamage.RemoveModifier(sB.modifier);
+                    break;
+                default:
+                    break;
+            }
+        });
+    }
 }
