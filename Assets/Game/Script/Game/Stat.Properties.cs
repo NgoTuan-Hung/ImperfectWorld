@@ -14,6 +14,7 @@ public partial class Stat
 
     [Header("<color='#D72638'>CURRENT HP")]
     public FloatStatWithCap currentHealthPoint = new();
+    public Action beforeDeathCallback = () => { };
     public Action currentHealthPointReachZeroEvent = () => { };
 
     [Header("<color='#C71F37'>HP")]
@@ -72,6 +73,10 @@ public partial class Stat
 
     [HideInInspector]
     public FloatStatModifier actionSlowModifier = new(0, FloatStatModifierType.Multiplicative);
+
+    /// <summary>
+    /// Used to broadcast hp change event when health point change.
+    /// </summary>
     public ValueChangeGameEventData hpChangeED;
     DealDamageGameEventData dealDamageGameEventData;
 }

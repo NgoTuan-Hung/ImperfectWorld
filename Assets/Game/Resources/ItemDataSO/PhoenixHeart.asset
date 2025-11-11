@@ -1,0 +1,34 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c8394565e471a9e429770ab579f0bbd9, type: 3}
+  m_Name: PhoenixHeart
+  m_EditorClassIdentifier: Assembly-CSharp::ItemDataSO
+  itemName: Phoenix Heart
+  statBuffs:
+  - statBuffType: 0
+    modifier:
+      value: 450
+      type: 0
+  - statBuffType: 7
+    modifier:
+      value: 10
+      type: 0
+  itemBehaviours: 01000000
+  itemDescription: '<color=green>+450 <link=hp><color=#C71F37>hp</color></link></color>
+
+    <color=green>+10
+    <link=armor><color=#95A5A6>armor</color></link></color>
+
+    <color=#3498DB>passive:</color>
+
+    Upon
+    death, the wearer is revived with full health and mana. Activates once per battle.'

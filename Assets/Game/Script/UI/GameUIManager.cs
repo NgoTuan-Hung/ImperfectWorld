@@ -29,7 +29,7 @@ public class GameUIManager : MonoEditorSingleton<GameUIManager>
     GameObject cameraFollowObject;
     public float planeDistance = 5f;
     public List<GameObject> inventorySlots = new();
-    public List<ItemUI> playerItemUIs = new();
+    public List<Item> playerItemUIs = new();
     public Vector2 ItemInventoryAnchorPos = new(0.5f, 0.5f);
 
     private void Awake()
@@ -51,7 +51,7 @@ public class GameUIManager : MonoEditorSingleton<GameUIManager>
         inventoryContent = inventory.transform.Find("Viewport/Content").gameObject;
 
         /* Temp */
-        playerItemUIs = inventoryContent.transform.GetComponentsInChildren<ItemUI>().ToList();
+        playerItemUIs = inventoryContent.transform.GetComponentsInChildren<Item>().ToList();
         for (int i = 0; i < inventoryContent.transform.childCount; i++)
         {
             inventorySlots.Add(inventoryContent.transform.GetChild(i).gameObject);
@@ -157,7 +157,7 @@ public class GameUIManager : MonoEditorSingleton<GameUIManager>
     public void ShowChampUI(CustomMono p_customMono) =>
         champInfoPanelDict[p_customMono].gameObject.SetActive(true);
 
-    public void RemoveFromInventory(ItemUI itemUI)
+    public void RemoveFromInventory(Item itemUI)
     {
         itemUI.transform.parent.SetAsLastSibling();
         inventorySlots.Remove(itemUI.transform.parent.gameObject);
@@ -166,7 +166,7 @@ public class GameUIManager : MonoEditorSingleton<GameUIManager>
         playerItemUIs.Remove(itemUI);
     }
 
-    public void AddToInventory(ItemUI itemUI)
+    public void AddToInventory(Item itemUI)
     {
         itemUI.transform.SetParent(inventorySlots[playerItemUIs.Count].transform);
         itemUI.rectTransform.anchorMin = ItemInventoryAnchorPos;

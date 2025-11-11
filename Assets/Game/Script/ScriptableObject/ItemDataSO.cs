@@ -6,6 +6,7 @@ public class ItemDataSO : ScriptableObject
 {
     public string itemName;
     public List<StatBuff> statBuffs;
+    public List<ItemBehaviourType> itemBehaviours;
 
     [TextArea(1, 15)]
     public string itemDescription;

@@ -231,17 +231,17 @@ public class ChampInfoPanel : MonoBehaviour, IPointerDownHandler
         transform.position = owner.transform.position + offset;
     }
 
-    public void AttachItem(ItemUI itemUI)
+    public void AttachItem(Item itemUI)
     {
         itemUI.transform.SetParent(itemSVContent.transform);
         itemUI.rectTransform.anchoredPosition = Vector2.zero;
-        owner.EquipItem(itemUI.itemDataSO);
+        owner.EquipItem(itemUI);
     }
 
-    public void DetachItem(ItemUI itemUI)
+    public void DetachItem(Item itemUI)
     {
         itemUI.transform.SetParent(GameUIManager.Instance.freeZone.transform);
-        owner.UnEquipItem(itemUI.itemDataSO);
+        owner.UnEquipItem(itemUI);
     }
 
     public void OnPointerDown(PointerEventData eventData)

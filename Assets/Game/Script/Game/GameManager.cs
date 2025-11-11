@@ -71,6 +71,7 @@ public partial class GameManager : MonoBehaviour
     public bool positioningPhase = true;
     Dictionary<CustomMono, Dictionary<GameEventType, GameEvent>> selfEvents = new();
     Dictionary<string, Dictionary<GameEventType, GameEvent>> teamBasedEvents = new();
+    public Action battleEndCallback = () => { };
 
     public static IEnumerator VoidIE()
     {
@@ -115,6 +116,7 @@ public partial class GameManager : MonoBehaviour
         damagePopupMat = Resources.Load<Material>("Material/LiberationSans SDF - Damage");
         weakenPopupMat = Resources.Load<Material>("Material/LiberationSans SDF - Weaken");
         armorBuffPopupMat = Resources.Load<Material>("Material/LiberationSans SDF - Armor Buff");
+        itemTooltipPrefab = Resources.Load<GameObject>("ItemTooltip");
     }
 
     void ConstructActionFieldInfoDict()
@@ -307,6 +309,7 @@ public partial class GameManager : MonoBehaviour
             GameUIManager.Instance.TurnOnMap();
             positioningPhase = true;
             ClearEnemyNodes();
+            battleEndCallback();
         }
     }
 

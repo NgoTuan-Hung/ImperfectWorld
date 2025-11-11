@@ -32,7 +32,7 @@ public class DescriptionEditor : EditorWindow
         { "ASPD", "<link=aspd><color=#E67E22>aspd</color></link>" },
         { "Omnivamp", "<link=omnivamp><color=#C62828>omnivamp</color></link>" },
         { "ATK", "<link=atk><color=#E53935>atk</color></link>" },
-        { "Armor", "<link=damage reduction><color=#4A90E2>damage reduction</color></link>" },
+        { "Armor", "<link=armor><color=#95A5A6>armor</color></link>" },
         {
             "Damage Reduction",
             "<link=damage reduction><color=#4A90E2>damage reduction</color></link>"

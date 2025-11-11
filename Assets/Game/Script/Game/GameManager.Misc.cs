@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -52,4 +53,12 @@ public partial class GameManager
             "<link=strike lock><color=#fc03d7>strike lock</color></link>: one affected by strike lock cannot attack."
         },
     };
+    public GameObject itemTooltipPrefab;
+    Dictionary<ItemBehaviourType, Type> itemBehaviourMapper = new()
+    {
+        { ItemBehaviourType.KuraiKōraBehaviour, typeof(KuraiKōraBehaviour) },
+        { ItemBehaviourType.PhoenixHeartBehaviour, typeof(PhoenixHeartBehaviour) },
+    };
+
+    public Type MapItemBehaviour(ItemBehaviourType type) => itemBehaviourMapper[type];
 }

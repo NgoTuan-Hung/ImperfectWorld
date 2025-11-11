@@ -106,9 +106,8 @@ public partial class Stat : MonoEditor
 
     void AddPropertyChangeEvent()
     {
-        currentHealthPoint.valueChangeEvent += SetHPOnUI;
+        currentHealthPoint.valueChangeEvent += HPChangeCallback;
         currentManaPoint.valueChangeEvent += SetMPOnUI;
-        currentHealthPoint.valueChangeEvent += CheckCurrentHPBelowZero;
         healthPoint.finalValueChangeEvent += ChangeCurrentHPCap;
         manaPoint.finalValueChangeEvent += ChangeCurrentMPCap;
 
@@ -162,8 +161,10 @@ public partial class Stat : MonoEditor
             OnDealDamage;
     }
 
-    void CheckCurrentHPBelowZero()
+    void HPChangeCallback()
     {
+        SetHPOnUI();
+        beforeDeathCallback();
         if (currentHealthPoint.Value <= 0 && alive)
         {
             alive = false;
@@ -334,6 +335,10 @@ public partial class Stat : MonoEditor
         }
     }
 
+    /// <summary>
+    /// Used to handle mechanic like Omnivamp, ...
+    /// </summary>
+    /// <param name="p_gED"></param>U
     public void OnDealDamage(IGameEventData p_gED)
     {
         dealDamageGameEventData = p_gED.As<DealDamageGameEventData>();

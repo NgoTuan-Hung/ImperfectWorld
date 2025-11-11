@@ -4,7 +4,12 @@ public enum StatBuffType
 {
     Health,
     Mana,
+    Might,
+    Reflex,
+    Wisdom,
     Damage,
+    AttackSpeed,
+    Armor,
 }
 
 [Serializable]

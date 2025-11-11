@@ -19,7 +19,7 @@ public enum AttackType
 
 [RequireComponent(typeof(BotSensor), typeof(BotAIManager))]
 [DefaultExecutionOrder(0)]
-public class CustomMono : MonoSelfAware
+public partial class CustomMono : MonoSelfAware
 {
     public CharUIData charUIData;
     public HashSet<string> allyTags = new();
@@ -224,47 +224,5 @@ public class CustomMono : MonoSelfAware
             default:
                 break;
         }
-    }
-
-    public void EquipItem(ItemDataSO itemDataSO)
-    {
-        itemDataSO.statBuffs.ForEach(sB =>
-        {
-            switch (sB.statBuffType)
-            {
-                case StatBuffType.Health:
-                    stat.healthPoint.AddModifier(sB.modifier);
-                    break;
-                case StatBuffType.Mana:
-                    stat.manaPoint.AddModifier(sB.modifier);
-                    break;
-                case StatBuffType.Damage:
-                    stat.attackDamage.AddModifier(sB.modifier);
-                    break;
-                default:
-                    break;
-            }
-        });
-    }
-
-    public void UnEquipItem(ItemDataSO itemDataSO)
-    {
-        itemDataSO.statBuffs.ForEach(sB =>
-        {
-            switch (sB.statBuffType)
-            {
-                case StatBuffType.Health:
-                    stat.healthPoint.RemoveModifier(sB.modifier);
-                    break;
-                case StatBuffType.Mana:
-                    stat.manaPoint.RemoveModifier(sB.modifier);
-                    break;
-                case StatBuffType.Damage:
-                    stat.attackDamage.RemoveModifier(sB.modifier);
-                    break;
-                default:
-                    break;
-            }
-        });
     }
 }

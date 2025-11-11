@@ -126,7 +126,6 @@ public partial class BaseAction : MonoEditor
         {
             ActionInterrupt();
         }
-        // StopAllCoroutines();
     }
 
     public virtual ActionResult Trigger(

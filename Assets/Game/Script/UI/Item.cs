@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -9,17 +10,39 @@ public enum ItemState
     None,
 }
 
-public class ItemUI : MonoBehaviour, IDragHandler, IEndDragHandler, IBeginDragHandler
+public class Item : MonoBehaviour, IDragHandler, IEndDragHandler, IBeginDragHandler
 {
     public ItemDataSO itemDataSO;
     public RectTransform rectTransform;
     List<RaycastResult> rcResults = new();
     ChampInfoPanel attachedTo = null;
     public ItemState state = ItemState.Inventory;
+    DoubleTapUI doubleTapUI;
+    ItemTooltip itemTooltip;
+    public Dictionary<string, object> fields = new();
 
     private void Awake()
     {
         rectTransform = GetComponent<RectTransform>();
+        doubleTapUI = GetComponent<DoubleTapUI>();
+        RegisterCallback();
+    }
+
+    private void Start()
+    {
+        itemTooltip = Instantiate(GameManager.Instance.itemTooltipPrefab)
+            .GetComponent<ItemTooltip>();
+        itemTooltip.Init(this);
+        itemTooltip.gameObject.SetActive(false);
+    }
+
+    private void RegisterCallback()
+    {
+        doubleTapUI.doubleTapEvent = (evt) =>
+        {
+            itemTooltip.gameObject.SetActive(true);
+            itemTooltip.ResetText(itemDataSO.itemDescription);
+        };
     }
 
     public void OnDrag(PointerEventData eventData)
