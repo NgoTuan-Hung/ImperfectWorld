@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using UnityEngine;
 
@@ -32,6 +33,7 @@ public class IronClad : SkillBase
         // );
         /* Debuff duration */
         GetActionField<ActionFloatField>(ActionFieldName.ManaCost).value = 100f;
+        GetActionField<ActionFloatField>(ActionFieldName.Range).value = 1.25f;
         GetActionField<ActionFloatField>(ActionFieldName.Duration).value = 5f;
 
         /* Also use actionie */

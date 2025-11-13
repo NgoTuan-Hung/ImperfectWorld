@@ -29,6 +29,7 @@ public class UnbrokenVigor : SkillBase
         omnivampBuff = new(0.2f, FloatStatModifierType.Additive);
         /* Debuff duration */
         GetActionField<ActionFloatField>(ActionFieldName.ManaCost).value = 100f;
+        GetActionField<ActionFloatField>(ActionFieldName.Range).value = 1.25f;
         GetActionField<ActionFloatField>(ActionFieldName.Duration).value = 5f;
 
         /* Also use actionie */

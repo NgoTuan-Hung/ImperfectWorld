@@ -33,6 +33,7 @@ public class CelestialAtonement : SkillBase
         // );
         /* Debuff duration */
         GetActionField<ActionFloatField>(ActionFieldName.ManaCost).value = 100f;
+        GetActionField<ActionFloatField>(ActionFieldName.Range).value = float.PositiveInfinity;
         GetActionField<ActionFloatField>(ActionFieldName.Duration).value = 5f;
         aspdBuff = new(0.01f, FloatStatModifierType.Additive);
 

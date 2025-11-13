@@ -12,9 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8afef54b9e0ada645b96a28c86c1d370, type: 3}
   m_Name: BladeOfPhongTornadoEffectCADSO
   m_EditorClassIdentifier: 
-  collideType: 1
+  collideType: 0
   oneTimeContactInteraction: 2
   pushEnemyOnCollideType: 0
   deactivateOnCollide: 0
   spawnEffectOnCollide: 1
   spawnedEffectOnCollide: {fileID: 11400000, guid: 378f1e38c75f3e14981f8f0712347064, type: 2}
+  gameEffectBehaviourFields: 
+  strikeLockDuration: 0

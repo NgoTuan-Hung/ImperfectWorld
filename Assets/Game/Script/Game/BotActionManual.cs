@@ -13,20 +13,17 @@ public class BotActionManual
     public Action<DoActionParamInfo> botDoActionContinuous = (p_doActionParamInfo) => { };
     public float continousDuration;
     public bool requireContinuous = false;
-    public bool useSkillIfManaIsEnough = false;
 
     public BotActionManual(
         Action<DoActionParamInfo> botDoAction,
         Action<DoActionParamInfo> botDoActionContinuous,
         float continousDuration = 0,
-        bool requireContinuous = false,
-        bool useSkillIfManaIsEnough = false
+        bool requireContinuous = false
     )
     {
         this.botDoAction = botDoAction;
         this.botDoActionContinuous = botDoActionContinuous;
         this.continousDuration = continousDuration;
         this.requireContinuous = requireContinuous;
-        this.useSkillIfManaIsEnough = useSkillIfManaIsEnough;
     }
 }

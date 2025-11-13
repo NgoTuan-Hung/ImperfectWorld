@@ -1,3 +1,4 @@
+#if UNITY_EDITOR
 // <author>
 //   douduck08: https://github.com/douduck08
 //   Use Reflection to get instance of Unity's SerializedProperty in Custom Editor.
@@ -18,7 +19,8 @@ public static class SerializedPropertyExtension
 {
     static readonly Regex rgx = new Regex(@"\[\d+\]", RegexOptions.Compiled);
 
-    public static T GetValue<T>(this SerializedProperty property) where T : class
+    public static T GetValue<T>(this SerializedProperty property)
+        where T : class
     {
         object obj = property.serializedObject.targetObject;
         string path = property.propertyPath.Replace(".Array.data", "");
@@ -27,7 +29,9 @@ public static class SerializedPropertyExtension
         {
             if (fieldStructure[i].Contains("["))
             {
-                int index = System.Convert.ToInt32(new string(fieldStructure[i].Where(c => char.IsDigit(c)).ToArray()));
+                int index = System.Convert.ToInt32(
+                    new string(fieldStructure[i].Where(c => char.IsDigit(c)).ToArray())
+                );
                 obj = GetFieldValueWithIndex(rgx.Replace(fieldStructure[i], ""), obj, index);
             }
             else
@@ -38,7 +42,8 @@ public static class SerializedPropertyExtension
         return (T)obj;
     }
 
-    public static bool SetValue<T>(this SerializedProperty property, T value) where T : class
+    public static bool SetValue<T>(this SerializedProperty property, T value)
+        where T : class
     {
         object obj = property.serializedObject.targetObject;
         string path = property.propertyPath.Replace(".Array.data", "");
@@ -47,7 +52,9 @@ public static class SerializedPropertyExtension
         {
             if (fieldStructure[i].Contains("["))
             {
-                int index = System.Convert.ToInt32(new string(fieldStructure[i].Where(c => char.IsDigit(c)).ToArray()));
+                int index = System.Convert.ToInt32(
+                    new string(fieldStructure[i].Where(c => char.IsDigit(c)).ToArray())
+                );
                 obj = GetFieldValueWithIndex(rgx.Replace(fieldStructure[i], ""), obj, index);
             }
             else
@@ -59,7 +66,9 @@ public static class SerializedPropertyExtension
         string fieldName = fieldStructure.Last();
         if (fieldName.Contains("["))
         {
-            int index = System.Convert.ToInt32(new string(fieldName.Where(c => char.IsDigit(c)).ToArray()));
+            int index = System.Convert.ToInt32(
+                new string(fieldName.Where(c => char.IsDigit(c)).ToArray())
+            );
             return SetFieldValueWithIndex(rgx.Replace(fieldName, ""), obj, index, value);
         }
         else
@@ -68,7 +77,15 @@ public static class SerializedPropertyExtension
         }
     }
 
-    private static object GetFieldValue(string fieldName, object obj, BindingFlags bindings = BindingFlags.Instance | BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic)
+    private static object GetFieldValue(
+        string fieldName,
+        object obj,
+        BindingFlags bindings =
+            BindingFlags.Instance
+            | BindingFlags.Static
+            | BindingFlags.Public
+            | BindingFlags.NonPublic
+    )
     {
         FieldInfo field = obj.GetType().GetField(fieldName, bindings);
         if (field != null)
@@ -78,7 +95,16 @@ public static class SerializedPropertyExtension
         return default(object);
     }
 
-    private static object GetFieldValueWithIndex(string fieldName, object obj, int index, BindingFlags bindings = BindingFlags.Instance | BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic)
+    private static object GetFieldValueWithIndex(
+        string fieldName,
+        object obj,
+        int index,
+        BindingFlags bindings =
+            BindingFlags.Instance
+            | BindingFlags.Static
+            | BindingFlags.Public
+            | BindingFlags.NonPublic
+    )
     {
         FieldInfo field = obj.GetType().GetField(fieldName, bindings);
         if (field != null)
@@ -96,7 +122,17 @@ public static class SerializedPropertyExtension
         return default(object);
     }
 
-    public static bool SetFieldValue(string fieldName, object obj, object value, bool includeAllBases = false, BindingFlags bindings = BindingFlags.Instance | BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic)
+    public static bool SetFieldValue(
+        string fieldName,
+        object obj,
+        object value,
+        bool includeAllBases = false,
+        BindingFlags bindings =
+            BindingFlags.Instance
+            | BindingFlags.Static
+            | BindingFlags.Public
+            | BindingFlags.NonPublic
+    )
     {
         FieldInfo field = obj.GetType().GetField(fieldName, bindings);
         if (field != null)
@@ -107,7 +143,18 @@ public static class SerializedPropertyExtension
         return false;
     }
 
-    public static bool SetFieldValueWithIndex(string fieldName, object obj, int index, object value, bool includeAllBases = false, BindingFlags bindings = BindingFlags.Instance | BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic)
+    public static bool SetFieldValueWithIndex(
+        string fieldName,
+        object obj,
+        int index,
+        object value,
+        bool includeAllBases = false,
+        BindingFlags bindings =
+            BindingFlags.Instance
+            | BindingFlags.Static
+            | BindingFlags.Public
+            | BindingFlags.NonPublic
+    )
     {
         FieldInfo field = obj.GetType().GetField(fieldName, bindings);
         if (field != null)
@@ -127,3 +174,5 @@ public static class SerializedPropertyExtension
         return false;
     }
 }
+
+#endif

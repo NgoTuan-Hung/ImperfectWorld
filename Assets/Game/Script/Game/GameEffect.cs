@@ -159,7 +159,7 @@ public class GameEffect : MonoSelfAware
 
     IEnumerator KeepFlyingAtCoroutine(Vector3 direction)
     {
-        direction = direction.normalized * gameEffectSO.flyAtSpeed;
+        direction = gameEffectSO.flyAtSpeed * Time.fixedDeltaTime * direction.normalized;
         while (true)
         {
             transform.position += direction;
@@ -203,7 +203,7 @@ public class GameEffect : MonoSelfAware
         transform.localScale = transform.localScale.WithY(
             p_direction.x > 0 ? Math.Abs(transform.localScale.y) : -Math.Abs(transform.localScale.y)
         );
-        p_direction = p_direction.normalized * gameEffectSO.flyAtSpeed;
+        p_direction = gameEffectSO.flyAtSpeed * Time.fixedDeltaTime * p_direction.normalized;
         float currentTime = 0;
         while (true)
         {
@@ -213,33 +213,6 @@ public class GameEffect : MonoSelfAware
         }
     }
 
-    public void Follow(Transform master) => StartCoroutine(FollowCoroutine(master));
-
-    IEnumerator FollowCoroutine(Transform master)
-    {
-        while (true)
-        {
-            transform.position = master.position + gameEffectSO.followOffset;
-            yield return new WaitForSeconds(Time.fixedDeltaTime);
-        }
-    }
-
-    public void PlaceAndLookAt(Vector3 p_position, Vector3 p_lookDir)
-    {
-        transform.SetPositionAndRotation(
-            p_position,
-            Quaternion.Euler(
-                transform.rotation.eulerAngles.WithZ(Vector2.SignedAngle(Vector2.right, p_lookDir))
-            )
-        );
-        animateObjects[0].transform.localScale = animateObjects[0]
-            .transform.localScale.WithY(
-                p_lookDir.x > 0
-                    ? Math.Abs(animateObjects[0].transform.localScale.y)
-                    : -Math.Abs(animateObjects[0].transform.localScale.y)
-            );
-    }
-
     public void SetUpCollideAndDamage(CustomMono p_owner, float p_damage)
     {
         var t_collideAndDamage = (CollideAndDamage)GetBehaviour(
@@ -247,32 +220,6 @@ public class GameEffect : MonoSelfAware
         );
         t_collideAndDamage.owner = p_owner;
         t_collideAndDamage.collideDamage = p_damage;
-    }
-
-    public void PlaceAndLookAt(Vector3 p_position, Transform p_transform, float p_delay)
-    {
-        transform.position = p_position;
-        StartCoroutine(LookAtIE(p_transform, p_delay));
-    }
-
-    IEnumerator LookAtIE(Transform p_transform, float p_delay)
-    {
-        Vector2 t_lookDir;
-        while (true)
-        {
-            t_lookDir = p_transform.position - transform.position;
-
-            yield return new WaitForSeconds(p_delay);
-
-            transform.rotation = Quaternion.Euler(
-                transform.rotation.eulerAngles.WithZ(Vector2.SignedAngle(Vector2.right, t_lookDir))
-            );
-            transform.localScale = transform.localScale.WithY(
-                t_lookDir.x > 0
-                    ? Math.Abs(transform.localScale.y)
-                    : -Math.Abs(transform.localScale.y)
-            );
-        }
     }
 
     public CollideAndDamage GetCollideAndDamage() =>
@@ -321,7 +268,7 @@ public class GameEffect : MonoSelfAware
     {
         transform.position = p_origin;
         Vector3 targetDir;
-        float epsilon = gameEffectSO.flyAtSpeed + 0.1f;
+        float epsilon = gameEffectSO.flyAtSpeed * Time.fixedDeltaTime + 0.1f;
         while (
             Vector2.Distance(
                 transform.position,
@@ -339,7 +286,8 @@ public class GameEffect : MonoSelfAware
                     : -Math.Abs(transform.localScale.y)
             );
 
-            transform.position += targetDir.normalized * gameEffectSO.flyAtSpeed;
+            transform.position +=
+                gameEffectSO.flyAtSpeed * Time.fixedDeltaTime * targetDir.normalized;
             yield return new WaitForSeconds(Time.fixedDeltaTime);
         }
 

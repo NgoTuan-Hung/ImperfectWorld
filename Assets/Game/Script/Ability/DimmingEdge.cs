@@ -30,9 +30,7 @@ public class DimmingEdge : SkillBase
         //     ActionResultType.Cooldown,
         //     GetActionField<ActionFloatField>(ActionFieldName.Cooldown).value
         // );
-        GetActionField<ActionFloatField>(ActionFieldName.Range).value = customMono
-            .charAttackInfo
-            .attackRange;
+        GetActionField<ActionFloatField>(ActionFieldName.Range).value = 1.25f;
         damageDebuff = new(-0.25f, FloatStatModifierType.Multiplicative);
         /* Debuff duration */
         GetActionField<ActionFloatField>(ActionFieldName.Duration).value = 5f;

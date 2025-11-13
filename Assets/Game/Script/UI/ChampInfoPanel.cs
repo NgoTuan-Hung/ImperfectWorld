@@ -15,16 +15,20 @@ public class ChampInfoPanel : MonoBehaviour, IPointerDownHandler
         tooltip;
     TextMeshProUGUI nameTMP,
         hpTMP,
+        hpRegenTMP,
         mpTMP,
+        mpRegenTMP,
         mightTMP,
         reflexTMP,
         wisdomTMP,
         aspdTMP,
         armorTMP,
+        mspdTMP,
         omnivampTMP,
         aTKTMP,
         critTMP,
         critModTMP,
+        atkrangeTMP,
         abilityTMP,
         tooltipTMP;
     public static Vector3 offset = new(1.33942f, 2.614366f);
@@ -37,16 +41,20 @@ public class ChampInfoPanel : MonoBehaviour, IPointerDownHandler
         statSV = container.transform.Find("StatSV").gameObject;
         statContent = statSV.transform.Find("Viewport/Content").gameObject;
         hpTMP = statContent.transform.Find("HP").GetComponent<TextMeshProUGUI>();
+        hpRegenTMP = statContent.transform.Find("HPRegen").GetComponent<TextMeshProUGUI>();
         mpTMP = statContent.transform.Find("MP").GetComponent<TextMeshProUGUI>();
+        mpRegenTMP = statContent.transform.Find("MPRegen").GetComponent<TextMeshProUGUI>();
         mightTMP = statContent.transform.Find("Might").GetComponent<TextMeshProUGUI>();
         reflexTMP = statContent.transform.Find("Reflex").GetComponent<TextMeshProUGUI>();
         wisdomTMP = statContent.transform.Find("Wisdom").GetComponent<TextMeshProUGUI>();
         aspdTMP = statContent.transform.Find("ASPD").GetComponent<TextMeshProUGUI>();
         armorTMP = statContent.transform.Find("Armor").GetComponent<TextMeshProUGUI>();
+        mspdTMP = statContent.transform.Find("MSPD").GetComponent<TextMeshProUGUI>();
         omnivampTMP = statContent.transform.Find("Omnivamp").GetComponent<TextMeshProUGUI>();
         aTKTMP = statContent.transform.Find("ATK").GetComponent<TextMeshProUGUI>();
         critTMP = statContent.transform.Find("Crit").GetComponent<TextMeshProUGUI>();
         critModTMP = statContent.transform.Find("CritMod").GetComponent<TextMeshProUGUI>();
+        atkrangeTMP = statContent.transform.Find("ATKRange").GetComponent<TextMeshProUGUI>();
         abilitySV = container.transform.Find("AbilitySV").gameObject;
         abilityTMP = abilitySV
             .transform.Find("Viewport/Content")
@@ -159,16 +167,20 @@ public class ChampInfoPanel : MonoBehaviour, IPointerDownHandler
     private void DataBinding(CustomMono p_owner)
     {
         p_owner.stat.healthPoint.finalValueChangeEvent += HPChange;
+        p_owner.stat.healthRegen.finalValueChangeEvent += HPRegenChange;
         p_owner.stat.manaPoint.finalValueChangeEvent += MPChange;
+        p_owner.stat.manaRegen.finalValueChangeEvent += MPRegenChange;
         p_owner.stat.might.finalValueChangeEvent += MightChange;
         p_owner.stat.reflex.finalValueChangeEvent += ReflexChange;
         p_owner.stat.wisdom.finalValueChangeEvent += WisdomChange;
         p_owner.stat.attackSpeed.finalValueChangeEvent += ASPDChange;
         p_owner.stat.armor.finalValueChangeEvent += ArmorChange;
+        p_owner.stat.moveSpeed.finalValueChangeEvent += MoveSpeedChange;
         p_owner.stat.omnivamp.finalValueChangeEvent += OmnivampChange;
         p_owner.stat.attackDamage.finalValueChangeEvent += ATKChange;
         p_owner.stat.critChance.finalValueChangeEvent += CritChange;
         p_owner.stat.critDamageModifier.finalValueChangeEvent += CritModChange;
+        p_owner.stat.attackRange.finalValueChangeEvent += AttackRangeChange;
     }
 
     void HPChange()
@@ -176,9 +188,19 @@ public class ChampInfoPanel : MonoBehaviour, IPointerDownHandler
         hpTMP.text = $"HP: {owner.stat.healthPoint.FinalValue} ❤️";
     }
 
+    void HPRegenChange()
+    {
+        hpRegenTMP.text = $"HPREGEN: {owner.stat.healthRegen.FinalValue} 🌿";
+    }
+
     void MPChange()
     {
         mpTMP.text = $"MP: {owner.stat.manaPoint.FinalValue} 💙";
+    }
+
+    void MPRegenChange()
+    {
+        mpRegenTMP.text = $"MPREGEN: {owner.stat.manaRegen.FinalValue} 💧";
     }
 
     void MightChange()
@@ -206,6 +228,11 @@ public class ChampInfoPanel : MonoBehaviour, IPointerDownHandler
         armorTMP.text = $"ARMOR: {owner.stat.armor.FinalValue} 🛡️";
     }
 
+    void MoveSpeedChange()
+    {
+        mspdTMP.text = $"MSPD: {owner.stat.moveSpeed.FinalValue} 🏃";
+    }
+
     void OmnivampChange()
     {
         omnivampTMP.text = $"OMNIVAMP: {owner.stat.omnivamp.FinalValue} 🍃";
@@ -224,6 +251,11 @@ public class ChampInfoPanel : MonoBehaviour, IPointerDownHandler
     void CritModChange()
     {
         critModTMP.text = $"CRITMOD: {owner.stat.critDamageModifier.FinalValue} 💢";
+    }
+
+    void AttackRangeChange()
+    {
+        atkrangeTMP.text = $"ATKRANGE: {owner.stat.attackRange.FinalValue} 🎯";
     }
 
     void FixedUpdate()

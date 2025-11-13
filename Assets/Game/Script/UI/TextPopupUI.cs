@@ -31,7 +31,7 @@ public class TextPopupUI : MonoSelfAware
     IEnumerator StartDamagePopupIE(Vector3 p_initialPos, float p_damage)
     {
         textMeshProUGUI.fontSharedMaterial = GameManager.Instance.damagePopupMat;
-        textMeshProUGUI.text = p_damage.ToString();
+        textMeshProUGUI.text = p_damage.ToString("0.##");
         transform.position = p_initialPos;
         float t_currentTime = 0;
         initialVelocity =

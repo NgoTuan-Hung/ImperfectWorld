@@ -28,7 +28,6 @@ public class CharAttackInfo : ScriptableObject
     public int variant;
     public GameEffectSO rangedProjectileEffectSO,
         rangedImpactEffectSO;
-    public float attackRange = 1.25f;
 
     public GameEffect GetMeleeAttackEffect(int p_variant) =>
         GameManager

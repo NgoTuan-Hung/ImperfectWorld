@@ -236,7 +236,6 @@ Transform:
   - {fileID: 4386104119139155872}
   - {fileID: 7655791434083302704}
   - {fileID: 425931144372543991}
-  - {fileID: 3210423525893189068}
   - {fileID: 4582628033562142284}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -442,7 +441,7 @@ MonoBehaviour:
     cap: 0
   manaPoint:
     baseValue: 100
-    finalValue: 0
+    finalValue: 100
     referenceModifiers: []
     modifiers: []
   manaRegen:
@@ -452,17 +451,17 @@ MonoBehaviour:
     modifiers: []
   might:
     baseValue: 1
-    finalValue: 0
+    finalValue: 1
     referenceModifiers: []
     modifiers: []
   reflex:
     baseValue: 1
-    finalValue: 0
+    finalValue: 1
     referenceModifiers: []
     modifiers: []
   wisdom:
     baseValue: 1
-    finalValue: 0
+    finalValue: 1
     referenceModifiers: []
     modifiers: []
   attackSpeed:
@@ -506,6 +505,11 @@ MonoBehaviour:
   damageReduction:
     baseValue: 0
     finalValue: 0
+    referenceModifiers: []
+    modifiers: []
+  attackRange:
+    baseValue: 1.25
+    finalValue: 1.25
     referenceModifiers: []
     modifiers: []
   actionMoveSpeedReduceRate:
@@ -578,7 +582,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   charUIData: {fileID: 11400000, guid: 07b70e5aaf21d684fa8359c800d72dba, type: 2}
-  isControllable: 1
   spriteRenderer: {fileID: 0}
   animationEventFunctionCaller: {fileID: 0}
   movable: {fileID: 0}
@@ -589,14 +592,12 @@ MonoBehaviour:
   movementActionInterval: 0
   actionBlocking: 0
   movementActionBlocking: 0
-  fieldOfView: {fileID: 0}
   combatCollision: {fileID: 0}
   firePoint: {fileID: 0}
   boxCollider2D: {fileID: 0}
   combatCollider2D: {fileID: 0}
   audioSource: {fileID: 0}
   rigidbody2D: {fileID: 0}
-  attackAudioClip: {fileID: 8300000, guid: 1614f5e1bf42b054ca0b933399c6264e, type: 3}
   charAttackInfo: {fileID: 11400000, guid: ba531f5d338c8884198c8bee5c147962, type: 2}
   statusEffect: {fileID: 0}
   rotationAndCenterObject: {fileID: 0}
@@ -635,8 +636,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   customMono: {fileID: 0}
   currentNearestEnemy: {fileID: 0}
-  detectEnemy: {fileID: 0}
-  enemiesWeSee: []
   originToTargetOriginDirection: {x: 0, y: 0}
   centerToTargetCenterDirection: {x: 0, y: 0}
   firePointToTargetCenterDirection: {x: 0, y: 0}
@@ -901,68 +900,6 @@ PrefabInstance:
 Transform:
   m_CorrespondingSourceObject: {fileID: 5794198503007716251, guid: 5050206fee006f94a9d0125e20c69398, type: 3}
   m_PrefabInstance: {fileID: 6160949341025067628}
-  m_PrefabAsset: {fileID: 0}
---- !u!1001 &6463968301786184214
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 7055171127655272947}
-    m_Modifications:
-    - target: {fileID: 5340537740526616859, guid: a01d42408dbbfb94c9e11a98f5405181, type: 3}
-      propertyPath: m_Name
-      value: FieldOfView
-      objectReference: {fileID: 0}
-    - target: {fileID: 8446808705285101530, guid: a01d42408dbbfb94c9e11a98f5405181, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8446808705285101530, guid: a01d42408dbbfb94c9e11a98f5405181, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8446808705285101530, guid: a01d42408dbbfb94c9e11a98f5405181, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8446808705285101530, guid: a01d42408dbbfb94c9e11a98f5405181, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8446808705285101530, guid: a01d42408dbbfb94c9e11a98f5405181, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8446808705285101530, guid: a01d42408dbbfb94c9e11a98f5405181, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8446808705285101530, guid: a01d42408dbbfb94c9e11a98f5405181, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8446808705285101530, guid: a01d42408dbbfb94c9e11a98f5405181, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8446808705285101530, guid: a01d42408dbbfb94c9e11a98f5405181, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8446808705285101530, guid: a01d42408dbbfb94c9e11a98f5405181, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: a01d42408dbbfb94c9e11a98f5405181, type: 3}
---- !u!4 &3210423525893189068 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 8446808705285101530, guid: a01d42408dbbfb94c9e11a98f5405181, type: 3}
-  m_PrefabInstance: {fileID: 6463968301786184214}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &8804539005159658688
 PrefabInstance:

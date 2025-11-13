@@ -68,6 +68,9 @@ public partial class Stat
     [Header("<color='#4A90E2'>DAMAGE REDUCTION")]
     public FloatStatWithModifier damageReduction = new();
 
+    [Header("<color='#FFD447'>ATTACK RANGE")]
+    public FloatStatWithModifier attackRange = new();
+
     [HideInInspector]
     public FloatStatWithModifier actionMoveSpeedReduceRate = new();
 

@@ -36,9 +36,6 @@ public class Attack : SkillBase
             ActionResultType.Cooldown,
             GetActionField<ActionFloatField>(ActionFieldName.Cooldown).value
         );
-        GetActionField<ActionFloatField>(ActionFieldName.Range).value = customMono
-            .charAttackInfo
-            .attackRange;
 
         GetActionField<ActionFloatField>(ActionFieldName.Blend).value =
             1f
@@ -94,7 +91,7 @@ public class Attack : SkillBase
     {
         if (
             Vector2.Distance(customMono.transform.position, p_customMono.transform.position)
-            > GetActionField<ActionFloatField>(ActionFieldName.Range).value
+            > customMono.stat.attackRange.FinalValue
         )
             return failResult;
         else if (canUse && !customMono.actionBlocking)

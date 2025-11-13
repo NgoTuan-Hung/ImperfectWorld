@@ -25,6 +25,7 @@ public class PactOfStillness : SkillBase
     public override void Config()
     {
         GetActionField<ActionFloatField>(ActionFieldName.ManaCost).value = 100f;
+        GetActionField<ActionFloatField>(ActionFieldName.Range).value = 1.25f;
         GetActionField<ActionFloatField>(ActionFieldName.Duration).value = 4f;
 
         /* Also use actionie */

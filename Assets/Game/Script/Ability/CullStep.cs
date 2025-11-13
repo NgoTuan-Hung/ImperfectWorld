@@ -7,7 +7,7 @@ public class CullStep : SkillBase
     public override void Awake()
     {
         base.Awake();
-        botActionManual = new(BotDoAction, null, useSkillIfManaIsEnough: true);
+        botActionManual = new(BotDoAction, null);
     }
 
     public override void OnEnable()
@@ -29,6 +29,7 @@ public class CullStep : SkillBase
     public override void Config()
     {
         GetActionField<ActionFloatField>(ActionFieldName.ManaCost).value = 100f;
+        GetActionField<ActionFloatField>(ActionFieldName.Range).value = float.PositiveInfinity;
         successResult = new(
             true,
             ActionResultType.Cooldown,

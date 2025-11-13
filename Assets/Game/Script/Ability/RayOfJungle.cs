@@ -1,145 +1,134 @@
-// using System.Collections;
-// using UnityEngine;
+using System.Collections;
+using UnityEngine;
 
-// public class RayOfJungle : SkillBase
-// {
-//     public override void Awake()
-//     {
-//         base.Awake();
-//     }
+public class RayOfJungle : SkillBase
+{
+    public override void Awake()
+    {
+        base.Awake();
+        botActionManual = new(BotDoAction, null);
+    }
 
-//     public override void OnEnable()
-//     {
-//         base.OnEnable();
-//     }
+    public override void OnEnable()
+    {
+        base.OnEnable();
+    }
 
-//     public override void AddActionManuals()
-//     {
-//         base.AddActionManuals();
-//         botActionManuals.Add(
-//             new(
-//                 ActionUse.RangedDamage,
-//                 (p_doActionParamInfo) =>
-//                     BotTrigger(
-//                         p_doActionParamInfo.centerToTargetCenterDirection,
-//                         p_doActionParamInfo.nextActionChoosingIntervalProposal
-//                     ),
-//                 new(nextActionChoosingIntervalProposal: 0.4f)
-//             )
-//         );
-//     }
+    public override void AddActionManuals()
+    {
+        base.AddActionManuals();
+    }
 
-//     public override void Start()
-//     {
-//         base.Start();
-//         StatChangeRegister();
-//     }
+    public override void Start()
+    {
+        base.Start();
+        StatChangeRegister();
+    }
 
-//     public override void Config()
-//     {
-//         GetActionField<ActionFloatField>(ActionFieldName.Cooldown).value = 5f;
-//         GetActionField<ActionFloatField>(ActionFieldName.ManaCost).value = 15f;
-//         successResult = new(
-//             true,
-//             ActionResultType.Cooldown,
-//             GetActionField<ActionFloatField>(ActionFieldName.Cooldown).value
-//         );
-//         /* Also use actionie , damage*/
-//     }
+    public override void Config()
+    {
+        GetActionField<ActionFloatField>(ActionFieldName.ManaCost).value = 100f;
+        GetActionField<ActionFloatField>(ActionFieldName.Range).value = 10f;
+        successResult = new(
+            true,
+            ActionResultType.Cooldown,
+            GetActionField<ActionFloatField>(ActionFieldName.Cooldown).value
+        );
+        /* Also use damage, actionie */
+    }
 
-//     public override void StatChangeRegister()
-//     {
-//         base.StatChangeRegister();
-//         customMono.stat.reflex.finalValueChangeEvent += RecalculateStat;
-//     }
+    public override void StatChangeRegister()
+    {
+        base.StatChangeRegister();
+        customMono.stat.wisdom.finalValueChangeEvent += RecalculateStat;
+    }
 
-//     public override void RecalculateStat()
-//     {
-//         base.RecalculateStat();
-//         GetActionField<ActionFloatField>(ActionFieldName.Damage).value =
-//             customMono.stat.reflex.FinalValue * 0.11f;
-//     }
+    public override void RecalculateStat()
+    {
+        base.RecalculateStat();
+        GetActionField<ActionFloatField>(ActionFieldName.Damage).value =
+            customMono.stat.wisdom.FinalValue * (7.75f / 8);
+    }
 
-//     public override ActionResult Trigger(Vector2 location = default, Vector2 direction = default)
-//     {
-//         if (
-//             customMono.stat.currentManaPoint.Value
-//             < GetActionField<ActionFloatField>(ActionFieldName.ManaCost).value
-//         )
-//             return failResult;
-//         else if (canUse && !customMono.actionBlocking)
-//         {
-//             canUse = false;
-//             customMono.actionBlocking = true;
-//             customMono.statusEffect.Slow(customMono.stat.actionSlowModifier);
-//             ToggleAnim(GameManager.Instance.mainSkill1BoolHash, true);
-//             StartCoroutine(
-//                 GetActionField<ActionIEnumeratorField>(ActionFieldName.ActionIE).value = TriggerIE(
-//                     location,
-//                     direction
-//                 )
-//             );
-//             StartCoroutine(CooldownCoroutine());
-//             customMono.currentAction = this;
-//             customMono.stat.currentManaPoint.Value -= GetActionField<ActionFloatField>(
-//                 ActionFieldName.ManaCost
-//             ).value;
-//             return successResult;
-//         }
+    public override ActionResult Trigger(
+        Vector2 location = default,
+        Vector2 direction = default,
+        CustomMono p_customMono = null
+    )
+    {
+        if (
+            customMono.stat.currentManaPoint.Value
+            < GetActionField<ActionFloatField>(ActionFieldName.ManaCost).value
+        )
+            return failResult;
+        if (!customMono.actionBlocking)
+        {
+            customMono.actionBlocking = true;
+            customMono.statusEffect.Slow(customMono.stat.actionSlowModifier);
+            ToggleAnim(GameManager.Instance.mainSkill1BoolHash, true);
+            StartCoroutine(
+                GetActionField<ActionIEnumeratorField>(ActionFieldName.ActionIE).value = TriggerIE(
+                    direction: direction
+                )
+            );
+            customMono.currentAction = this;
+            customMono.stat.currentManaPoint.Value -= GetActionField<ActionFloatField>(
+                ActionFieldName.ManaCost
+            ).value;
 
-//         return failResult;
-//     }
+            return successResult;
+        }
 
-//     IEnumerator TriggerIE(Vector2 p_location = default, Vector2 p_direction = default)
-//     {
-//         customMono.SetUpdateDirectionIndicator(p_direction, UpdateDirectionIndicatorPriority.Low);
+        return failResult;
+    }
 
-//         while (
-//             !customMono.animationEventFunctionCaller.GetSignalVals(
-//                 EAnimationSignal.MainSkill1Signal
-//             )
-//         )
-//             yield return new WaitForSeconds(Time.fixedDeltaTime);
+    public IEnumerator TriggerIE(
+        Vector2 location = default,
+        Vector2 direction = default,
+        CustomMono p_customMono = null
+    )
+    {
+        customMono.SetUpdateDirectionIndicator(direction, UpdateDirectionIndicatorPriority.Low);
 
-//         customMono.animationEventFunctionCaller.SetSignal(EAnimationSignal.MainSkill1Signal, false);
-//         SpawnEffectAsChild(
-//             p_direction,
-//             GameManager.Instance.rayOfJungleBeamPool.PickOneGameEffect()
-//         );
+        while (
+            !customMono.animationEventFunctionCaller.GetSignalVals(
+                EAnimationSignal.MainSkill1Signal
+            )
+        )
+            yield return null;
 
-//         while (
-//             !customMono.animationEventFunctionCaller.GetSignalVals(EAnimationSignal.EndMainSkill1)
-//         )
-//             yield return new WaitForSeconds(Time.fixedDeltaTime);
+        customMono.animationEventFunctionCaller.SetSignal(EAnimationSignal.MainSkill1Signal, false);
 
-//         customMono.animationEventFunctionCaller.SetSignal(EAnimationSignal.EndMainSkill1, false);
-//         customMono.actionBlocking = false;
-//         ToggleAnim(GameManager.Instance.mainSkill1BoolHash, false);
-//         customMono.statusEffect.RemoveSlow(customMono.stat.actionSlowModifier);
-//         customMono.currentAction = null;
-//     }
+        SpawnBasicCombatEffectAsChild(
+            direction,
+            GameManager.Instance.rayOfJungleBeamPool.PickOneGameEffect()
+        );
 
-//     void BotTrigger(Vector2 p_direction, float p_duration)
-//     {
-//         StartCoroutine(botIE = BotTriggerIE(p_direction, p_duration));
-//     }
+        while (
+            !customMono.animationEventFunctionCaller.GetSignalVals(EAnimationSignal.EndMainSkill1)
+        )
+            yield return null;
 
-//     IEnumerator BotTriggerIE(Vector2 p_direction, float p_duration)
-//     {
-//         customMono.actionInterval = true;
-//         Trigger(direction: p_direction);
-//         yield return new WaitForSeconds(p_duration);
-//         customMono.actionInterval = false;
-//     }
+        customMono.statusEffect.RemoveSlow(customMono.stat.actionSlowModifier);
+        customMono.animationEventFunctionCaller.SetSignal(EAnimationSignal.EndMainSkill1, false);
+        customMono.actionBlocking = false;
+        ToggleAnim(GameManager.Instance.mainSkill1BoolHash, false);
+        customMono.currentAction = null;
+    }
 
-//     public override void ActionInterrupt()
-//     {
-//         base.ActionInterrupt();
-//         customMono.actionBlocking = false;
-//         ToggleAnim(GameManager.Instance.mainSkill1BoolHash, false);
-//         StopCoroutine(GetActionField<ActionIEnumeratorField>(ActionFieldName.ActionIE).value);
-//         customMono.animationEventFunctionCaller.SetSignal(EAnimationSignal.MainSkill1Signal, false);
-//         customMono.animationEventFunctionCaller.SetSignal(EAnimationSignal.EndMainSkill1, false);
-//         customMono.statusEffect.RemoveSlow(customMono.stat.actionSlowModifier);
-//     }
-// }
+    public override void ActionInterrupt()
+    {
+        base.ActionInterrupt();
+        customMono.actionBlocking = false;
+        ToggleAnim(GameManager.Instance.mainSkill1BoolHash, false);
+        StopCoroutine(GetActionField<ActionIEnumeratorField>(ActionFieldName.ActionIE).value);
+        customMono.animationEventFunctionCaller.SetSignal(EAnimationSignal.MainSkill1Signal, false);
+        customMono.animationEventFunctionCaller.SetSignal(EAnimationSignal.EndMainSkill1, false);
+        customMono.statusEffect.RemoveSlow(customMono.stat.actionSlowModifier);
+    }
+
+    public override void BotDoAction(DoActionParamInfo p_doActionParamInfo)
+    {
+        Trigger(direction: p_doActionParamInfo.centerToTargetCenterDirection);
+    }
+}

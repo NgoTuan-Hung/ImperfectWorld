@@ -31,6 +31,7 @@ public class GuardedVengence : SkillBase
     public override void Config()
     {
         GetActionField<ActionFloatField>(ActionFieldName.ManaCost).value = 100f;
+        GetActionField<ActionFloatField>(ActionFieldName.Range).value = 1.25f;
         GetActionField<ActionIntField>(ActionFieldName.EffectCount).value = 11;
         GetActionField<ActionFloatField>(ActionFieldName.Duration).value = 2.75f;
         successResult = new(

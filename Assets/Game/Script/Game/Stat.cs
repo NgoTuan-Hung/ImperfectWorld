@@ -102,6 +102,7 @@ public partial class Stat : MonoEditor
         attackDamage.RecalculateFinalValue();
         critChance.RecalculateFinalValue();
         critDamageModifier.RecalculateFinalValue();
+        attackRange.RecalculateFinalValue();
     }
 
     void AddPropertyChangeEvent()

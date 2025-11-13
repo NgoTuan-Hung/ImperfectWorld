@@ -18,15 +18,7 @@ public enum ModificationPriority
 [DefaultExecutionOrder(-1)]
 public class BotSensor : CustomMonoPal
 {
-    CustomMono onTriggerCM;
-    float currentNearestEnemySqrDistance = Mathf.Infinity;
-    public CustomMono currentNearestEnemy = null,
-        /* detect enemy is the unknown
-        enemy we detected from the radar (GameManager) and not yet been seen. */
-        detectEnemy;
-    public Action<CustomMono> nearestEnemyChanged = (person) => { };
-    public Action<CustomMono> someOneExitView = (person) => { };
-    public List<CustomMono> enemiesWeSee = new();
+    public CustomMono currentNearestEnemy = null;
 
     /// <summary>
     /// Origin is the position of a CustomMono
@@ -78,33 +70,6 @@ public class BotSensor : CustomMonoPal
         );
     }
 
-    void SetTargetToDetectEnemy()
-    {
-        if (detectEnemy == null)
-        {
-            detectEnemy = GameManager.Instance.GetRandomEnemy(customMono.tag);
-            if (detectEnemy == default)
-            {
-                SetTargetToCenterMap();
-                return;
-            }
-        }
-
-        SetOriginToTargetOriginDirection(
-            detectEnemy.transform.position - transform.position,
-            ModificationPriority.VeryLow
-        );
-        SetCenterToTargetCenterDirection(
-            detectEnemy.rotationAndCenterObject.transform.position
-                - customMono.rotationAndCenterObject.transform.position,
-            ModificationPriority.VeryLow
-        );
-        targetPathFindingDirection = GameManager.Instance.GetPathFindingDirectionToTarget(
-            transform.position,
-            detectEnemy.transform.position
-        );
-    }
-
     private void OnEnable()
     {
         originToTargetOriginDirection = Vector2.one;
@@ -127,17 +92,17 @@ public class BotSensor : CustomMonoPal
     void EmptyFixedUpdate() { }
 
     /// <summary>
-    /// Update info about currentNearestEnemy, if there is none, apply default sense.
+    /// Update info about currentNearestEnemy, if there is none, target center map.
     /// </summary>
     void EnemySensing()
     {
+        currentNearestEnemy = GameManager.Instance.GetNearestEnemy(customMono);
         if (currentNearestEnemy == null)
         {
-            SetTargetToDetectEnemy();
+            SetTargetToCenterMap();
         }
         else
         {
-            /* IMPORTANT */
             SetOriginToTargetOriginDirection(
                 currentNearestEnemy.transform.position - transform.position,
                 ModificationPriority.VeryLow
@@ -161,66 +126,11 @@ public class BotSensor : CustomMonoPal
                 ModificationPriority.VeryLow
             );
 
-            /* IMPORTANT */
             distanceToNearestEnemy = originToTargetOriginDirection.magnitude;
             targetPathFindingDirection = GameManager.Instance.GetPathFindingDirectionToTarget(
                 transform.position,
                 currentNearestEnemy.transform.position
             );
-        }
-    }
-
-    private void OnTriggerEnter2D(Collider2D other)
-    {
-        if ((onTriggerCM = GameManager.Instance.GetCustomMono(other)) != null)
-        {
-            /* if we see a new enemy, remember him. */
-            if (!customMono.allyTags.Contains(onTriggerCM.tag))
-                enemiesWeSee.Add(onTriggerCM);
-        }
-    }
-
-    private void OnTriggerExit2D(Collider2D other)
-    {
-        if ((onTriggerCM = GameManager.Instance.GetCustomMono(other)) != null)
-        {
-            /* Erase enemy from see list.. */
-            enemiesWeSee.Remove(onTriggerCM);
-            someOneExitView(onTriggerCM);
-
-            /* If the current nearest enemy is this one, erase it as well. */
-            if (onTriggerCM.Equals(currentNearestEnemy))
-            {
-                currentNearestEnemy = null;
-                currentNearestEnemySqrDistance = float.MaxValue;
-                nearestEnemyChanged(null);
-            }
-        }
-    }
-
-    private void OnTriggerStay2D(Collider2D other)
-    {
-        if ((onTriggerCM = GameManager.Instance.GetCustomMono(other)) != null)
-        {
-            if (!customMono.allyTags.Contains(onTriggerCM.tag))
-            {
-                /* We can compare squared distance instead of distance because it's faster yet
-                still gives the same result. */
-                float t_enemySqrDistance = (
-                    transform.position - onTriggerCM.transform.position
-                ).sqrMagnitude;
-
-                /* if we see a closer enemy, put him as the nearest. Else, update the distance of
-                the nearest enemy instead. */
-                if (t_enemySqrDistance < currentNearestEnemySqrDistance)
-                {
-                    currentNearestEnemySqrDistance = t_enemySqrDistance;
-                    currentNearestEnemy = onTriggerCM;
-                    nearestEnemyChanged(currentNearestEnemy);
-                }
-                else if (onTriggerCM.Equals(currentNearestEnemy))
-                    currentNearestEnemySqrDistance = t_enemySqrDistance;
-            }
         }
     }
 

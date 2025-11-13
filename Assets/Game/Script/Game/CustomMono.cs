@@ -64,8 +64,7 @@ public partial class CustomMono : MonoSelfAware
     /// </summary>
     public bool actionBlocking;
     public bool movementActionBlocking;
-    public GameObject fieldOfView,
-        combatCollision,
+    public GameObject combatCollision,
         firePoint;
     public BoxCollider2D boxCollider2D,
         combatCollider2D;
@@ -123,7 +122,6 @@ public partial class CustomMono : MonoSelfAware
         mainComponent = directionModifier.transform.Find("MainComponent").gameObject;
         animationEventFunctionCaller = mainComponent.GetComponent<AnimationEventFunctionCaller>();
         directionIndicator = transform.Find("DirectionIndicator").gameObject;
-        fieldOfView = transform.Find("FieldOfView").gameObject;
         combatCollision = transform.Find("CombatCollision").gameObject;
         rotationAndCenterObject = transform.Find("RotationAndCenterObject").gameObject;
     }

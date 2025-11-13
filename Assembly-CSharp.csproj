@@ -119,6 +119,7 @@
     <Compile Include="Assets\Game\Script\Game\BotSensor.cs" />
     <Compile Include="Assets\Game\Script\Ability\Glacistream.cs" />
     <Compile Include="Assets\Game\Script\AIBehavior\BaseAIBehavior.cs" />
+    <Compile Include="Assets\Test\TestTime\TestTime.cs" />
     <Compile Include="Assets\Game\Script\Other\DeveloperConsole\DevConsole.cs" />
     <Compile Include="Assets\Game\Script\ActionField\ActionStopWatchField.cs" />
     <Compile Include="Assets\Game\Script\Ability\RimuruSummonLightingWolf.cs" />
@@ -206,6 +207,7 @@
     <Compile Include="Assets\CustomPackage\Dotween\Modules\DOTweenModuleEPOOutline.cs" />
     <Compile Include="Assets\Test\C#\Test.cs" />
     <Compile Include="Assets\Game\Script\Other\ItemBehaviour\KuraiKōraBehaviour.cs" />
+    <Compile Include="Assets\Game\Script\AIBehavior\AutoBattleAIBehavior.cs" />
     <Compile Include="Assets\Test\TimelineSerializeTest\BoxCollider1.cs" />
     <Compile Include="Assets\Game\Script\GameEventData\DealDamageGameEventData.cs" />
     <Compile Include="Assets\CustomPackage\STSMapGeneration\OneLine\OneLine\Example\Details\Scripts\Nested\NestedSimpleExample.cs" />
@@ -246,8 +248,8 @@
     <Compile Include="Assets\Game\Script\UI\PlayerPointerZone.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\ChatController.cs" />
     <Compile Include="Assets\Test\StopNullIE\StopNullIE.cs" />
-    <Compile Include="Assets\Game\Script\Ability\SilentDraw.cs" />
     <Compile Include="Assets\Game\Script\Other\ObjectPool.cs" />
+    <Compile Include="Assets\Game\Script\Ability\SilentDraw.cs" />
     <Compile Include="Assets\Game\Script\Other\CustomMonoPal.cs" />
     <Compile Include="Assets\Game\Script\Game\AnimatorWrapper.cs" />
     <Compile Include="Assets\Test\TestOnTriggerStay\TestOnTriggerStay.cs" />
@@ -362,7 +364,6 @@
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TextMeshProFloatingText.cs" />
     <Compile Include="Assets\Game\Script\Ability\RayOfJungle.cs" />
     <Compile Include="Assets\Game\Script\Game\GameManager.Debug.cs" />
-    <Compile Include="Assets\Game\Script\AIBehavior\NewAIBehavior.cs" />
     <Compile Include="Assets\Game\Script\MapGeneration\MapViewUI.cs" />
     <Compile Include="Assets\Game\Script\Other\MonoEditor.cs" />
     <Compile Include="Assets\CustomPackage\Dotween\Modules\DOTweenModuleAudio.cs" />
@@ -1508,6 +1509,10 @@
       <HintPath>Library\ScriptAssemblies\Unity.2D.IK.Runtime.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="Unity.MemoryProfiler">
+      <HintPath>Library\ScriptAssemblies\Unity.MemoryProfiler.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="Unity.VisualScripting.SettingsProvider.Editor">
       <HintPath>Library\ScriptAssemblies\Unity.VisualScripting.SettingsProvider.Editor.dll</HintPath>
       <Private>False</Private>
@@ -1536,8 +1541,16 @@
       <HintPath>Library\ScriptAssemblies\Unity.2D.Common.Editor.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="Unity.MemoryProfiler.Editor">
+      <HintPath>Library\ScriptAssemblies\Unity.MemoryProfiler.Editor.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="PPv2URPConverters">
       <HintPath>Library\ScriptAssemblies\PPv2URPConverters.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Unity.EditorCoroutines.Editor">
+      <HintPath>Library\ScriptAssemblies\Unity.EditorCoroutines.Editor.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Unity.2D.Animation.Runtime">
@@ -1672,6 +1685,10 @@
       <HintPath>Library\ScriptAssemblies\Unity.Collections.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="Unity.Profiling.Core">
+      <HintPath>Library\ScriptAssemblies\Unity.Profiling.Core.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="Unity.InputSystem.ForUI">
       <HintPath>Library\ScriptAssemblies\Unity.InputSystem.ForUI.dll</HintPath>
       <Private>False</Private>
@@ -1722,6 +1739,10 @@
     </Reference>
     <Reference Include="Unity.Rendering.LightTransport.Runtime">
       <HintPath>Library\ScriptAssemblies\Unity.Rendering.LightTransport.Runtime.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Unity.MemoryProfiler.Editor.MemoryProfilerModule">
+      <HintPath>Library\ScriptAssemblies\Unity.MemoryProfiler.Editor.MemoryProfilerModule.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Unity.VisualScripting.State">

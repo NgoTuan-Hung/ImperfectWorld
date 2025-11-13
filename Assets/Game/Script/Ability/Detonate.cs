@@ -28,6 +28,7 @@ public class Detonate : SkillBase
     public override void Config()
     {
         GetActionField<ActionFloatField>(ActionFieldName.ManaCost).value = 100f;
+        GetActionField<ActionFloatField>(ActionFieldName.Range).value = 10f;
         successResult = new(
             true,
             ActionResultType.Cooldown,

@@ -11,7 +11,7 @@ public partial class BotAIManager
     public BotAIBehavior useBotAIBehavior = BotAIBehavior.NewAIBehavior;
     static Dictionary<BotAIBehavior, Type> behaviorMap = new()
     {
-        { BotAIBehavior.NewAIBehavior, typeof(NewAIBehavior) },
+        { BotAIBehavior.NewAIBehavior, typeof(AutoBattleAIBehavior) },
     };
 
     public BaseAIBehavior aiBehavior;

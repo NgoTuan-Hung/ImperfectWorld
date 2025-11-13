@@ -21,6 +21,8 @@ public enum GameEventType
 [DefaultExecutionOrder(-1)]
 public partial class GameManager : MonoBehaviour
 {
+    float defaultFixedDeltaTime = 0.02f;
+    public float scaledFixedDeltaTime = 0.02f;
     public static GameManager Instance;
     Dictionary<int, CustomMono> customMonos = new();
     public new Camera camera;
@@ -402,6 +404,28 @@ public partial class GameManager : MonoBehaviour
     public CustomMono GetRandomEnemy(string p_yourTag) =>
         customMonos.FirstOrDefault(kV => !kV.Value.allyTags.Contains(p_yourTag)).Value;
 
+    public CustomMono GetNearestEnemy(CustomMono self)
+    {
+        float minDistance = float.MaxValue;
+        CustomMono t_target = null;
+        foreach (var kvp in customMonos)
+        {
+            if (self.allyTags.Contains(kvp.Value.tag) || !kvp.Value.stat.alive)
+                continue;
+
+            float t_distance = (
+                kvp.Value.transform.position - self.transform.position
+            ).sqrMagnitude;
+            if (t_distance < minDistance)
+            {
+                minDistance = t_distance;
+                t_target = kvp.Value;
+            }
+        }
+
+        return t_target;
+    }
+
     public Vector2 GetPathFindingDirectionToTarget(Vector2 p_currentPos, Vector2 p_targetPos)
     {
         /* Temporary removing self && target from grid because it will block the path */
@@ -452,4 +476,10 @@ public partial class GameManager : MonoBehaviour
     }
 
     public string GetDescription(string p_key) => descriptionDB.GetValueOrDefault(p_key);
+
+    public void ChangeTimeScale(float timeScale)
+    {
+        Time.timeScale = timeScale;
+        scaledFixedDeltaTime = defaultFixedDeltaTime / Time.timeScale;
+    }
 }

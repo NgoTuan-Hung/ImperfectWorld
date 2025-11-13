@@ -30,6 +30,7 @@ public class SilentDraw : SkillBase
     {
         GetActionField<ActionFloatField>(ActionFieldName.Cooldown).value = 0f;
         GetActionField<ActionFloatField>(ActionFieldName.ManaCost).value = 100f;
+        GetActionField<ActionFloatField>(ActionFieldName.Range).value = 100;
         GetActionField<ActionIntField>(ActionFieldName.EffectCount).value = 5;
         successResult = new(
             true,

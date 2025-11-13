@@ -3,13 +3,11 @@ using System.Collections;
 using System.Diagnostics;
 using UnityEngine;
 
-public class NewAIBehavior : BaseAIBehavior
+public class AutoBattleAIBehavior : BaseAIBehavior
 {
     Attack attack;
     SkillBase skill;
     Stopwatch stopwatch = new();
-    Action useSkill = () => { },
-        useSkillIfManaIsEnough = () => { };
 
     public override void Awake()
     {
@@ -31,28 +29,6 @@ public class NewAIBehavior : BaseAIBehavior
         {
             skill = customMono.skill.skillBases[1];
         }
-
-        if (skill != null)
-        {
-            if (skill.botActionManual.useSkillIfManaIsEnough)
-                useSkillIfManaIsEnough = () =>
-                {
-                    if (
-                        skill.GetActionField<ActionFloatField>(ActionFieldName.ManaCost).value
-                        <= customMono.stat.currentManaPoint.Value
-                    )
-                        UseSkill();
-                };
-            else
-                useSkill = () =>
-                {
-                    if (
-                        skill.GetActionField<ActionFloatField>(ActionFieldName.ManaCost).value
-                        <= customMono.stat.currentManaPoint.Value
-                    )
-                        UseSkill();
-                };
-        }
     }
 
     public override void FixedUpdate()
@@ -62,25 +38,24 @@ public class NewAIBehavior : BaseAIBehavior
 
     public override void DoFixedUpdate()
     {
-        // ThinkAndPrepare();
-        // base.DoAction();
-
-        useSkillIfManaIsEnough();
-
-        if (
-            customMono.botSensor.originToTargetOriginDirection.magnitude
-            > attack.GetActionField<ActionFloatField>(ActionFieldName.Range).value
-        )
+        if (customMono.botSensor.currentNearestEnemy == null)
         {
-            customMono.movable.Move(customMono.botSensor.targetPathFindingDirection);
+            //
         }
         else
         {
-            customMono.movable.StopMove();
+            UseSkill();
 
-            if (customMono.botSensor.currentNearestEnemy != null)
+            if (
+                customMono.botSensor.originToTargetOriginDirection.magnitude
+                > customMono.stat.attackRange.FinalValue
+            )
             {
-                useSkill();
+                customMono.movable.Move(customMono.botSensor.targetPathFindingDirection);
+            }
+            else
+            {
+                customMono.movable.StopMove();
 
                 if (!attack.onCooldown)
                     attack.Trigger(
@@ -93,9 +68,20 @@ public class NewAIBehavior : BaseAIBehavior
 
     void UseSkill()
     {
-        skill.botActionManual.botDoAction(GetDAPI());
-        if (skill.botActionManual.requireContinuous)
-            StartCoroutine(DoActionContinous(skill.botActionManual));
+        if (skill != null)
+        {
+            if (
+                skill.GetActionField<ActionFloatField>(ActionFieldName.ManaCost).value
+                    <= customMono.stat.currentManaPoint.Value
+                && customMono.botSensor.distanceToNearestEnemy
+                    < skill.GetActionField<ActionFloatField>(ActionFieldName.Range).value
+            )
+            {
+                skill.botActionManual.botDoAction(GetDAPI());
+                if (skill.botActionManual.requireContinuous)
+                    StartCoroutine(DoActionContinous(skill.botActionManual));
+            }
+        }
     }
 
     IEnumerator DoActionContinous(BotActionManual p_botActionManual)

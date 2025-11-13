@@ -34,7 +34,22 @@ public class BatchStatModifier : EditorWindow
         hpFloatField.label = "HP";
         hpFloatField.value = 0f;
 
-        // also mana regen
+        Toggle hpRegenToggle = new();
+        hpRegenToggle.label = "HP Regen";
+        hpRegenToggle.value = false;
+
+        FloatField hpRegenFloatField = new();
+        hpRegenFloatField.label = "HP Regen";
+        hpRegenFloatField.value = 0f;
+
+        Toggle mpToggle = new();
+        mpToggle.label = "MP";
+        mpToggle.value = false;
+
+        FloatField mpFloatField = new();
+        mpFloatField.label = "MP";
+        mpFloatField.value = 0f;
+
         Toggle mpRegenToggle = new();
         mpRegenToggle.label = "MP Regen";
         mpRegenToggle.value = false;
@@ -91,6 +106,14 @@ public class BatchStatModifier : EditorWindow
         moveSpeedFloatField.label = "Move Speed";
         moveSpeedFloatField.value = 0f;
 
+        Toggle damageModifierToggle = new();
+        damageModifierToggle.label = "Damage Modifier";
+        damageModifierToggle.value = false;
+
+        FloatField damageModifierFloatField = new();
+        damageModifierFloatField.label = "Damage Modifier";
+        damageModifierFloatField.value = 0f;
+
         Toggle omnivampToggle = new();
         omnivampToggle.label = "Omnivamp";
         omnivampToggle.value = false;
@@ -123,14 +146,34 @@ public class BatchStatModifier : EditorWindow
         critDamageModifierFloatField.label = "Critical Damage Modifier";
         critDamageModifierFloatField.value = 0f;
 
+        Toggle damageReductionToggle = new();
+        damageReductionToggle.label = "Damage Reduction";
+        damageReductionToggle.value = false;
+
+        FloatField damageReductionFloatField = new();
+        damageReductionFloatField.label = "Damage Reduction";
+        damageReductionFloatField.value = 0f;
+
+        Toggle attackRangeToggle = new();
+        attackRangeToggle.label = "Attack Range";
+        attackRangeToggle.value = false;
+
+        FloatField attackRangeFloatField = new();
+        attackRangeFloatField.label = "Attack Range";
+        attackRangeFloatField.value = 0f;
+
         Button button = new();
         button.text = "Modify";
         button.clicked += () =>
         {
             listStatSO.stats.ForEach(stat =>
             {
+                if (hpRegenToggle.value)
+                    stat.healthRegen.BaseValue = hpRegenFloatField.value;
                 if (hpToggle.value)
                     stat.healthPoint.BaseValue = hpFloatField.value;
+                if (mpToggle.value)
+                    stat.manaPoint.BaseValue = mpFloatField.value;
                 if (mpRegenToggle.value)
                     stat.manaRegen.BaseValue = mpRegenFloatField.value;
                 if (mightToggle.value)
@@ -145,6 +188,8 @@ public class BatchStatModifier : EditorWindow
                     stat.armor.BaseValue = armorFloatField.value;
                 if (moveSpeedToggle.value)
                     stat.moveSpeed.BaseValue = moveSpeedFloatField.value;
+                // if (damageModifierToggle.value)
+                //     stat.damageModifier.BaseValue = damageModifierFloatField.value;
                 if (omnivampToggle.value)
                     stat.omnivamp.BaseValue = omnivampFloatField.value;
                 if (attackDamageToggle.value)
@@ -153,14 +198,22 @@ public class BatchStatModifier : EditorWindow
                     stat.critChance.BaseValue = critChanceFloatField.value;
                 if (critDamageModifierToggle.value)
                     stat.critDamageModifier.BaseValue = critDamageModifierFloatField.value;
+                if (damageReductionToggle.value)
+                    stat.damageReduction.BaseValue = damageReductionFloatField.value;
+                if (attackRangeToggle.value)
+                    stat.attackRange.BaseValue = attackRangeFloatField.value;
                 EditorUtility.SetDirty(stat);
             });
             AssetDatabase.SaveAssets();
         };
 
         root.Add(inspectorListView);
+        root.Add(hpRegenToggle);
+        root.Add(hpRegenFloatField);
         root.Add(hpToggle);
         root.Add(hpFloatField);
+        root.Add(mpToggle);
+        root.Add(mpFloatField);
         root.Add(mpRegenToggle);
         root.Add(mpRegenFloatField);
         root.Add(mightToggle);
@@ -183,6 +236,10 @@ public class BatchStatModifier : EditorWindow
         root.Add(critChanceFloatField);
         root.Add(critDamageModifierToggle);
         root.Add(critDamageModifierFloatField);
+        root.Add(damageReductionToggle);
+        root.Add(damageReductionFloatField);
+        root.Add(attackRangeToggle);
+        root.Add(attackRangeFloatField);
         root.Add(button);
         rootVisualElement.Add(root);
     }
