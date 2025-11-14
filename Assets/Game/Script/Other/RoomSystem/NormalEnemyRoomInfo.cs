@@ -5,4 +5,9 @@ using System.Collections.Generic;
 public class NormalEnemyRoomInfo
 {
     public List<RoomEnemyInfo> roomEnemyInfos;
+
+    public NormalEnemyRoomInfo()
+    {
+        roomEnemyInfos = new();
+    }
 }

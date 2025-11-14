@@ -6,7 +6,6 @@ using Random = UnityEngine.Random;
 public class BoneFlurry : SkillBase
 {
     float chance = 0.35f;
-    DealDamageGameEventData dealDamageGED = new();
     float[] damageVariant = { 1.25f, 1.5f, 1.75f };
 
     public override void Awake()
@@ -130,14 +129,10 @@ public class BoneFlurry : SkillBase
                 false
             );
 
-            dealDamageGED.damage = p_customMono.statusEffect.GetHit(
+            p_customMono.statusEffect.GetHit(
+                customMono,
                 customMono.stat.attackDamage.FinalValue * damageVariant[i]
             );
-            dealDamageGED.dealer = customMono;
-            dealDamageGED.target = p_customMono;
-            GameManager
-                .Instance.GetSelfEvent(customMono, GameEventType.DealDamage)
-                .action(dealDamageGED);
 
             SpawnEffectAtLoc(
                 p_customMono.rotationAndCenterObject.transform.position,

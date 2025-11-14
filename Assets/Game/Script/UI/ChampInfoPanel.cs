@@ -24,6 +24,7 @@ public class ChampInfoPanel : MonoBehaviour, IPointerDownHandler
         aspdTMP,
         armorTMP,
         mspdTMP,
+        dmgmodTMP,
         omnivampTMP,
         aTKTMP,
         critTMP,
@@ -50,6 +51,7 @@ public class ChampInfoPanel : MonoBehaviour, IPointerDownHandler
         aspdTMP = statContent.transform.Find("ASPD").GetComponent<TextMeshProUGUI>();
         armorTMP = statContent.transform.Find("Armor").GetComponent<TextMeshProUGUI>();
         mspdTMP = statContent.transform.Find("MSPD").GetComponent<TextMeshProUGUI>();
+        dmgmodTMP = statContent.transform.Find("DMGMOD").GetComponent<TextMeshProUGUI>();
         omnivampTMP = statContent.transform.Find("Omnivamp").GetComponent<TextMeshProUGUI>();
         aTKTMP = statContent.transform.Find("ATK").GetComponent<TextMeshProUGUI>();
         critTMP = statContent.transform.Find("Crit").GetComponent<TextMeshProUGUI>();
@@ -176,6 +178,7 @@ public class ChampInfoPanel : MonoBehaviour, IPointerDownHandler
         p_owner.stat.attackSpeed.finalValueChangeEvent += ASPDChange;
         p_owner.stat.armor.finalValueChangeEvent += ArmorChange;
         p_owner.stat.moveSpeed.finalValueChangeEvent += MoveSpeedChange;
+        p_owner.stat.damageModifier.finalValueChangeEvent += DamageModifierChange;
         p_owner.stat.omnivamp.finalValueChangeEvent += OmnivampChange;
         p_owner.stat.attackDamage.finalValueChangeEvent += ATKChange;
         p_owner.stat.critChance.finalValueChangeEvent += CritChange;
@@ -231,6 +234,11 @@ public class ChampInfoPanel : MonoBehaviour, IPointerDownHandler
     void MoveSpeedChange()
     {
         mspdTMP.text = $"MSPD: {owner.stat.moveSpeed.FinalValue} 🏃";
+    }
+
+    void DamageModifierChange()
+    {
+        dmgmodTMP.text = $"DMGMOD: {owner.stat.damageModifier.FinalValue} 💥";
     }
 
     void OmnivampChange()

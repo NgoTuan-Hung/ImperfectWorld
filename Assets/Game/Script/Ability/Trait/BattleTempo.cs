@@ -1,7 +1,6 @@
 public class BattleTempo : SkillBase
 {
     AttackGameEventData attackGameEventData = new();
-    DealDamageGameEventData dealDamageGED = new();
 
     public override void Awake()
     {
@@ -44,14 +43,10 @@ public class BattleTempo : SkillBase
 
         if (attackGameEventData.count % 4 == 0)
         {
-            dealDamageGED.damage = attackGameEventData.target.statusEffect.GetHit(
+            attackGameEventData.target.statusEffect.GetHit(
+                customMono,
                 GetActionField<ActionFloatField>(ActionFieldName.Damage).value
             );
-            dealDamageGED.dealer = attackGameEventData.attacker;
-            dealDamageGED.target = attackGameEventData.target;
-            GameManager
-                .Instance.GetSelfEvent(dealDamageGED.dealer, GameEventType.DealDamage)
-                .action(dealDamageGED);
         }
     }
 }

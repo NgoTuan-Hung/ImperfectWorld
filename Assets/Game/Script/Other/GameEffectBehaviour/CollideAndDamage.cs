@@ -37,7 +37,6 @@ public class CollideAndDamage : MonoEditor, IGameEffectBehaviour
     public float healAmmount;
     public PoisonInfo poisonInfo;
     public SlowInfo slowInfo;
-    DealDamageGameEventData dealDamageGameEventData = new();
     Dictionary<GameEffectBehaviourField, object> gameEffectBehaviourFields = new();
 
     public void Awake() { }
@@ -224,12 +223,7 @@ public class CollideAndDamage : MonoEditor, IGameEffectBehaviour
 
     void DealDamageOnTriggerEnter(CustomMono p_customMono, Collider2D p_collider2D)
     {
-        dealDamageGameEventData.damage = p_customMono.statusEffect.GetHit(collideDamage);
-        dealDamageGameEventData.dealer = owner;
-        dealDamageGameEventData.target = p_customMono;
-        GameManager
-            .Instance.GetSelfEvent(dealDamageGameEventData.dealer, GameEventType.DealDamage)
-            .action(dealDamageGameEventData);
+        p_customMono.statusEffect.GetHit(owner, collideDamage);
         dealDamageEvent(collideDamage);
     }
 
@@ -245,24 +239,14 @@ public class CollideAndDamage : MonoEditor, IGameEffectBehaviour
             {
                 p_customMono.multipleCollideTimersDict[GetHashCode()].currentTime =
                     multipleCollideInterval;
-                dealDamageGameEventData.damage = p_customMono.statusEffect.GetHit(collideDamage);
-                dealDamageGameEventData.dealer = owner;
-                dealDamageGameEventData.target = p_customMono;
-                GameManager
-                    .Instance.GetSelfEvent(dealDamageGameEventData.dealer, GameEventType.DealDamage)
-                    .action(dealDamageGameEventData);
+                p_customMono.statusEffect.GetHit(owner, collideDamage);
                 dealDamageEvent(collideDamage);
             }
         }
         catch (KeyNotFoundException)
         {
             p_customMono.AddMultipleCollideTimer(GetHashCode(), multipleCollideInterval);
-            dealDamageGameEventData.damage = p_customMono.statusEffect.GetHit(collideDamage);
-            dealDamageGameEventData.dealer = owner;
-            dealDamageGameEventData.target = p_customMono;
-            GameManager
-                .Instance.GetSelfEvent(dealDamageGameEventData.dealer, GameEventType.DealDamage)
-                .action(dealDamageGameEventData);
+            p_customMono.statusEffect.GetHit(owner, collideDamage);
             dealDamageEvent(collideDamage);
         }
     }

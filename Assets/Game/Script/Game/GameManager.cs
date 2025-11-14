@@ -482,4 +482,7 @@ public partial class GameManager : MonoBehaviour
         Time.timeScale = timeScale;
         scaledFixedDeltaTime = defaultFixedDeltaTime / Time.timeScale;
     }
+
+    public void AddNormalEnemyRoom(NormalEnemyRoomInfo normalEnemyRoomInfo) =>
+        roomSystem.allNormalEnemyRooms.Add(normalEnemyRoomInfo);
 }

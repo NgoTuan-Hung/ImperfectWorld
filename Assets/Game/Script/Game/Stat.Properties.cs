@@ -51,7 +51,7 @@ public partial class Stat
     public FloatStatWithModifier moveSpeed = new();
 
     [Header("<color='#FFC107'>DAMAGE MODIFIER")]
-    public FloatModifier damageModifier = new();
+    public FloatStatWithModifier damageModifier = new();
 
     [Header("<color='#C62828'>OMNIVAMP")]
     public FloatStatWithModifier omnivamp = new();

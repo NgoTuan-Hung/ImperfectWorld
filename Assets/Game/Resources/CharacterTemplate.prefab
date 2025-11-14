@@ -321,6 +321,8 @@ MonoBehaviour:
     referenceModifiers: []
     modifiers: []
   damageModifier:
+    baseValue: 1
+    finalValue: 1
     referenceModifiers: []
     modifiers: []
   omnivamp:
@@ -346,6 +348,11 @@ MonoBehaviour:
   damageReduction:
     baseValue: 0
     finalValue: 0
+    referenceModifiers: []
+    modifiers: []
+  attackRange:
+    baseValue: 1.25
+    finalValue: 1.25
     referenceModifiers: []
     modifiers: []
   actionMoveSpeedReduceRate:
@@ -427,7 +434,6 @@ MonoBehaviour:
   movementActionInterval: 0
   actionBlocking: 0
   movementActionBlocking: 0
-  fieldOfView: {fileID: 0}
   combatCollision: {fileID: 0}
   firePoint: {fileID: 0}
   boxCollider2D: {fileID: 0}
@@ -472,8 +478,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   customMono: {fileID: 0}
   currentNearestEnemy: {fileID: 0}
-  detectEnemy: {fileID: 0}
-  enemiesWeSee: []
   originToTargetOriginDirection: {x: 0, y: 0}
   centerToTargetCenterDirection: {x: 0, y: 0}
   firePointToTargetCenterDirection: {x: 0, y: 0}

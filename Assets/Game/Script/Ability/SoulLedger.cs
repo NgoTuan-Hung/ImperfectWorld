@@ -6,7 +6,6 @@ public class SoulLedger : SkillBase
 {
     Dictionary<CustomMono, float> ledger = new();
     AttackGameEventData attackGameEventData;
-    DealDamageGameEventData dealDamageGED = new();
     Vector3 destination;
 
     public override void Awake()
@@ -151,12 +150,7 @@ public class SoulLedger : SkillBase
 
         customMono.animationEventFunctionCaller.SetSignal(EAnimationSignal.MainSkill1Signal, false);
 
-        dealDamageGED.damage = p_customMono.statusEffect.GetHit(ledger[p_customMono]);
-        dealDamageGED.dealer = customMono;
-        dealDamageGED.target = p_customMono;
-        GameManager
-            .Instance.GetSelfEvent(customMono, GameEventType.DealDamage)
-            .action(dealDamageGED);
+        p_customMono.statusEffect.GetHit(customMono, ledger[p_customMono]);
         ledger.Remove(p_customMono);
 
         while (

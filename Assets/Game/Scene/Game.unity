@@ -3620,7 +3620,7 @@ Transform:
   m_GameObject: {fileID: 107064636}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.97, y: -2.25, z: -9}
+  m_LocalPosition: {x: 9.68, y: -6.24, z: -9}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -3868,6 +3868,8 @@ MonoBehaviour:
     referenceModifiers: []
     modifiers: []
   damageModifier:
+    baseValue: 1
+    finalValue: 1
     referenceModifiers: []
     modifiers: []
   omnivamp:
@@ -4497,6 +4499,52 @@ MonoBehaviour:
     - roomEnemyInfos:
       - prefab: {fileID: 5800095605073204079, guid: 3e1cd869a74272147ab7435f18b23c4d, type: 3}
         position: {x: 0, y: 2.25}
+    - roomEnemyInfos:
+      - prefab: {fileID: 6724394765168942705, guid: bf51713cd4fcaec49a3b1d7d97dad157, type: 3}
+        position: {x: 5.46, y: -0.95}
+      - prefab: {fileID: 2033591479864052884, guid: 1b59401a50e34ce44bcb98f4abd0146e, type: 3}
+        position: {x: 4.472967, y: -0.7327795}
+      - prefab: {fileID: 2033591479864052884, guid: 1b59401a50e34ce44bcb98f4abd0146e, type: 3}
+        position: {x: 5.4184084, y: -1.8246981}
+      - prefab: {fileID: 2033591479864052884, guid: 1b59401a50e34ce44bcb98f4abd0146e, type: 3}
+        position: {x: 6.390481, y: -0.89257276}
+      - prefab: {fileID: 2033591479864052884, guid: 1b59401a50e34ce44bcb98f4abd0146e, type: 3}
+        position: {x: 5.3385115, y: 0.23929414}
+    - roomEnemyInfos:
+      - prefab: {fileID: 2033591479864052884, guid: 1b59401a50e34ce44bcb98f4abd0146e, type: 3}
+        position: {x: 4.529526, y: -0.6714304}
+      - prefab: {fileID: 2033591479864052884, guid: 1b59401a50e34ce44bcb98f4abd0146e, type: 3}
+        position: {x: 4.529526, y: -1.76}
+      - prefab: {fileID: 2033591479864052884, guid: 1b59401a50e34ce44bcb98f4abd0146e, type: 3}
+        position: {x: 4.529526, y: -2.79}
+      - prefab: {fileID: 2033591479864052884, guid: 1b59401a50e34ce44bcb98f4abd0146e, type: 3}
+        position: {x: 5.62, y: -2.79}
+      - prefab: {fileID: 2033591479864052884, guid: 1b59401a50e34ce44bcb98f4abd0146e, type: 3}
+        position: {x: 6.59, y: -2.79}
+      - prefab: {fileID: 2033591479864052884, guid: 1b59401a50e34ce44bcb98f4abd0146e, type: 3}
+        position: {x: 3.38, y: -2.73}
+      - prefab: {fileID: 2033591479864052884, guid: 1b59401a50e34ce44bcb98f4abd0146e, type: 3}
+        position: {x: 2.41, y: -2.73}
+      - prefab: {fileID: 2033591479864052884, guid: 1b59401a50e34ce44bcb98f4abd0146e, type: 3}
+        position: {x: 2.41, y: -3.98}
+      - prefab: {fileID: 2033591479864052884, guid: 1b59401a50e34ce44bcb98f4abd0146e, type: 3}
+        position: {x: 2.41, y: -4.89}
+      - prefab: {fileID: 2033591479864052884, guid: 1b59401a50e34ce44bcb98f4abd0146e, type: 3}
+        position: {x: 6.57, y: -1.72}
+      - prefab: {fileID: 2033591479864052884, guid: 1b59401a50e34ce44bcb98f4abd0146e, type: 3}
+        position: {x: 6.57, y: -0.71}
+      - prefab: {fileID: 2033591479864052884, guid: 1b59401a50e34ce44bcb98f4abd0146e, type: 3}
+        position: {x: 3.52, y: -0.71}
+      - prefab: {fileID: 2033591479864052884, guid: 1b59401a50e34ce44bcb98f4abd0146e, type: 3}
+        position: {x: 2.25, y: -0.71}
+      - prefab: {fileID: 4094656537320269057, guid: 1101f5e937155c74981daaa5e4cc1e67, type: 3}
+        position: {x: 4.544455, y: -3.8239536}
+      - prefab: {fileID: 4094656537320269057, guid: 1101f5e937155c74981daaa5e4cc1e67, type: 3}
+        position: {x: 4.544455, y: -4.6}
+      - prefab: {fileID: 5009230093061811819, guid: 7ef67b4b816df2942a1918c3e0e2d27e, type: 3}
+        position: {x: 5.5577154, y: -4.7165875}
+      - prefab: {fileID: 5800095605073204079, guid: c2bffccbb78434844bbf9a760cf92d67, type: 3}
+        position: {x: 6.691602, y: -4.7889633}
   enemyCount: 0
   positioningPhase: 1
   team1DirectionIndicatorMat: {fileID: 0}
@@ -4854,6 +4902,8 @@ MonoBehaviour:
     referenceModifiers: []
     modifiers: []
   damageModifier:
+    baseValue: 0
+    finalValue: 0
     referenceModifiers: []
     modifiers: []
   omnivamp:
@@ -7759,6 +7809,8 @@ MonoBehaviour:
     referenceModifiers: []
     modifiers: []
   damageModifier:
+    baseValue: 0
+    finalValue: 0
     referenceModifiers: []
     modifiers: []
   omnivamp:
@@ -8458,6 +8510,8 @@ MonoBehaviour:
     referenceModifiers: []
     modifiers: []
   damageModifier:
+    baseValue: 0
+    finalValue: 0
     referenceModifiers: []
     modifiers: []
   omnivamp:
@@ -9962,6 +10016,8 @@ MonoBehaviour:
     referenceModifiers: []
     modifiers: []
   damageModifier:
+    baseValue: 0
+    finalValue: 0
     referenceModifiers: []
     modifiers: []
   omnivamp:
@@ -10824,6 +10880,8 @@ MonoBehaviour:
     referenceModifiers: []
     modifiers: []
   damageModifier:
+    baseValue: 0
+    finalValue: 0
     referenceModifiers: []
     modifiers: []
   omnivamp:
@@ -13156,6 +13214,8 @@ MonoBehaviour:
     referenceModifiers: []
     modifiers: []
   damageModifier:
+    baseValue: 0
+    finalValue: 0
     referenceModifiers: []
     modifiers: []
   omnivamp:
@@ -16200,6 +16260,8 @@ MonoBehaviour:
     referenceModifiers: []
     modifiers: []
   damageModifier:
+    baseValue: 1
+    finalValue: 1
     referenceModifiers: []
     modifiers: []
   omnivamp:
@@ -16955,6 +17017,8 @@ MonoBehaviour:
     referenceModifiers: []
     modifiers: []
   damageModifier:
+    baseValue: 0
+    finalValue: 0
     referenceModifiers: []
     modifiers: []
   omnivamp:
@@ -23193,6 +23257,8 @@ MonoBehaviour:
     referenceModifiers: []
     modifiers: []
   damageModifier:
+    baseValue: 0
+    finalValue: 0
     referenceModifiers: []
     modifiers: []
   omnivamp:
@@ -26113,6 +26179,8 @@ MonoBehaviour:
     referenceModifiers: []
     modifiers: []
   damageModifier:
+    baseValue: 0
+    finalValue: 0
     referenceModifiers: []
     modifiers: []
   omnivamp:
@@ -29036,6 +29104,8 @@ MonoBehaviour:
     referenceModifiers: []
     modifiers: []
   damageModifier:
+    baseValue: 0
+    finalValue: 0
     referenceModifiers: []
     modifiers: []
   omnivamp:
@@ -29748,6 +29818,8 @@ MonoBehaviour:
     referenceModifiers: []
     modifiers: []
   damageModifier:
+    baseValue: 0
+    finalValue: 0
     referenceModifiers: []
     modifiers: []
   omnivamp:
@@ -30259,6 +30331,8 @@ MonoBehaviour:
     referenceModifiers: []
     modifiers: []
   damageModifier:
+    baseValue: 0
+    finalValue: 0
     referenceModifiers: []
     modifiers: []
   omnivamp:

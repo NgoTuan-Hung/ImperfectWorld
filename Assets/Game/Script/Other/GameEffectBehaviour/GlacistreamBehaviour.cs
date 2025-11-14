@@ -10,7 +10,6 @@ public class GlacistreamBehaviour : MonoEditor, IGameEffectBehaviour
     public float secondCollisionDamage = 1f;
     public float multipleCollideInterval = 0.05f;
     public Action<float> dealDamageEvent = (damageDealt) => { };
-    DealDamageGameEventData dealDamageGameEventData = new();
     List<Collider2D> collidersThisTrig = new();
 
     public void Awake() { }
@@ -49,17 +48,7 @@ public class GlacistreamBehaviour : MonoEditor, IGameEffectBehaviour
                     {
                         if (collider == GameEffect.boxCollider2Ds[0])
                         {
-                            dealDamageGameEventData.damage = t_customMono.statusEffect.GetHit(
-                                firstCollisionDamage
-                            );
-                            dealDamageGameEventData.dealer = owner;
-                            dealDamageGameEventData.target = t_customMono;
-                            GameManager
-                                .Instance.GetSelfEvent(
-                                    dealDamageGameEventData.dealer,
-                                    GameEventType.DealDamage
-                                )
-                                .action(dealDamageGameEventData);
+                            t_customMono.statusEffect.GetHit(owner, firstCollisionDamage);
                             dealDamageEvent(firstCollisionDamage);
                         }
                     });
@@ -94,16 +83,7 @@ public class GlacistreamBehaviour : MonoEditor, IGameEffectBehaviour
                                     t_customMono
                                         .multipleCollideTimersDict[GetHashCode()]
                                         .currentTime = multipleCollideInterval;
-                                    dealDamageGameEventData.damage =
-                                        t_customMono.statusEffect.GetHit(secondCollisionDamage);
-                                    dealDamageGameEventData.dealer = owner;
-                                    dealDamageGameEventData.target = t_customMono;
-                                    GameManager
-                                        .Instance.GetSelfEvent(
-                                            dealDamageGameEventData.dealer,
-                                            GameEventType.DealDamage
-                                        )
-                                        .action(dealDamageGameEventData);
+                                    t_customMono.statusEffect.GetHit(owner, secondCollisionDamage);
                                     dealDamageEvent(secondCollisionDamage);
                                 }
                             }
@@ -113,17 +93,7 @@ public class GlacistreamBehaviour : MonoEditor, IGameEffectBehaviour
                                     GetHashCode(),
                                     multipleCollideInterval
                                 );
-                                dealDamageGameEventData.damage = t_customMono.statusEffect.GetHit(
-                                    secondCollisionDamage
-                                );
-                                dealDamageGameEventData.dealer = owner;
-                                dealDamageGameEventData.target = t_customMono;
-                                GameManager
-                                    .Instance.GetSelfEvent(
-                                        dealDamageGameEventData.dealer,
-                                        GameEventType.DealDamage
-                                    )
-                                    .action(dealDamageGameEventData);
+                                t_customMono.statusEffect.GetHit(owner, secondCollisionDamage);
                                 dealDamageEvent(secondCollisionDamage);
                             }
                         }

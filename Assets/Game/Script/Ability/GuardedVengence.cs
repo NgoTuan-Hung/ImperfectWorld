@@ -107,6 +107,9 @@ public class GuardedVengence : SkillBase
         customMono.animationEventFunctionCaller.SetSignal(EAnimationSignal.MainSkill1Signal, false);
 
         var count = GetActionField<ActionIntField>(ActionFieldName.EffectCount).value;
+        var damage =
+            (customMono.statusEffect.GetTotalDamageTaken() - savedTotalDamageTaken)
+            * GetActionField<ActionFloatField>(ActionFieldName.Damage).value;
         for (int i = 0; i < count; i++)
         {
             GetActionField<ActionGameEffectField>(ActionFieldName.GameEffect).value =
@@ -117,11 +120,7 @@ public class GuardedVengence : SkillBase
             GetActionField<ActionGameEffectField>(ActionFieldName.GameEffect)
                 .value.transform.SetEulerZ(i * 30f);
             GetActionField<ActionGameEffectField>(ActionFieldName.GameEffect)
-                .value.SetUpCollideAndDamage(
-                    customMono,
-                    (customMono.statusEffect.GetTotalDamageTaken() - savedTotalDamageTaken)
-                        * GetActionField<ActionFloatField>(ActionFieldName.Damage).value
-                );
+                .value.SetUpCollideAndDamage(customMono, damage);
             GetActionField<ActionGameEffectField>(ActionFieldName.GameEffect)
                 .value.KeepFlyingForward();
         }

@@ -8,7 +8,6 @@ public class TwinsOfCataclysm : SkillBase
     float variant1Chance = 0.05f,
         variant2Chance = 0.05f,
         variant3Chance;
-    DealDamageGameEventData dealDamageGED = new();
 
     public override void Awake()
     {
@@ -120,14 +119,10 @@ public class TwinsOfCataclysm : SkillBase
                 false
             );
 
-            dealDamageGED.damage = p_customMono.statusEffect.GetHit(
+            p_customMono.statusEffect.GetHit(
+                customMono,
                 customMono.stat.attackDamage.FinalValue * i
             );
-            dealDamageGED.dealer = customMono;
-            dealDamageGED.target = p_customMono;
-            GameManager
-                .Instance.GetSelfEvent(customMono, GameEventType.DealDamage)
-                .action(dealDamageGED);
 
             SpawnEffectAtLoc(
                 p_customMono.rotationAndCenterObject.transform.position,
@@ -169,15 +164,10 @@ public class TwinsOfCataclysm : SkillBase
 
             if (i == 0)
             {
-                dealDamageGED.damage = p_customMono.statusEffect.GetHit(
+                p_customMono.statusEffect.GetHit(
+                    customMono,
                     customMono.stat.attackDamage.FinalValue
                 );
-
-                dealDamageGED.dealer = customMono;
-                dealDamageGED.target = p_customMono;
-                GameManager
-                    .Instance.GetSelfEvent(customMono, GameEventType.DealDamage)
-                    .action(dealDamageGED);
 
                 SpawnEffectAtLoc(
                     p_customMono.rotationAndCenterObject.transform.position,

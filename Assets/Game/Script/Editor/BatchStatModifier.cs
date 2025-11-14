@@ -188,8 +188,8 @@ public class BatchStatModifier : EditorWindow
                     stat.armor.BaseValue = armorFloatField.value;
                 if (moveSpeedToggle.value)
                     stat.moveSpeed.BaseValue = moveSpeedFloatField.value;
-                // if (damageModifierToggle.value)
-                //     stat.damageModifier.BaseValue = damageModifierFloatField.value;
+                if (damageModifierToggle.value)
+                    stat.damageModifier.BaseValue = damageModifierFloatField.value;
                 if (omnivampToggle.value)
                     stat.omnivamp.BaseValue = omnivampFloatField.value;
                 if (attackDamageToggle.value)
@@ -228,6 +228,8 @@ public class BatchStatModifier : EditorWindow
         root.Add(armorFloatField);
         root.Add(moveSpeedToggle);
         root.Add(moveSpeedFloatField);
+        root.Add(damageModifierToggle);
+        root.Add(damageModifierFloatField);
         root.Add(omnivampToggle);
         root.Add(omnivampFloatField);
         root.Add(attackDamageToggle);

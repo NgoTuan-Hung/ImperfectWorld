@@ -119,19 +119,6 @@ public class RimuruCombo1 : SkillBase
         customMono.currentAction = null;
     }
 
-    void BotTrigger(Vector2 p_direction, float p_duration)
-    {
-        StartCoroutine(botIE = BotTriggerIE(p_direction, p_duration));
-    }
-
-    IEnumerator BotTriggerIE(Vector2 p_direction, float p_duration)
-    {
-        customMono.actionInterval = true;
-        Trigger(direction: p_direction);
-        yield return new WaitForSeconds(p_duration);
-        customMono.actionInterval = false;
-    }
-
     public override void ActionInterrupt()
     {
         base.ActionInterrupt();

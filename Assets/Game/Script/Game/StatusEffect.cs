@@ -41,6 +41,7 @@ public class StatusEffect : CustomMonoPal
         movementBlockingFactors = 0;
     float finalTakenDamage,
         totalDamageTaken;
+    DealDamageGameEventData dealDamageGameEventData = new();
     TakeDamageGameEventData takeDamageGameEventData = new(0);
 
     public override void Awake()
@@ -84,24 +85,37 @@ public class StatusEffect : CustomMonoPal
             StopPoison();
     }
 
-    public float GetHit(float p_damage)
+    public float GetHit(CustomMono attacker, float p_damage)
     {
         finalTakenDamage =
-            Math.Clamp(p_damage - customMono.stat.armor.FinalValue, 0f, float.MaxValue)
-            * (1 - customMono.stat.damageReduction.FinalValue);
+            Math.Clamp(
+                attacker.stat.CalculateDamageDeal(p_damage) - customMono.stat.armor.FinalValue,
+                1f,
+                float.MaxValue
+            ) * (1 - customMono.stat.damageReduction.FinalValue);
         totalDamageTaken += finalTakenDamage;
         customMono.stat.currentHealthPoint.Value -= finalTakenDamage;
+
+        /* Damage Popup */
         GameUIManager
             .Instance.PickOneTextPopupUI()
             .TextPopupUI.StartDamagePopup(
                 customMono.rotationAndCenterObject.transform.position,
                 finalTakenDamage
             );
+
+        /* Fire events */
         takeDamageGameEventData.Setup(finalTakenDamage);
         GameManager
             .Instance.GetSelfEvent(customMono, GameEventType.TakeDamage)
             .action(takeDamageGameEventData);
 
+        dealDamageGameEventData.Setup(attacker, customMono, finalTakenDamage);
+        GameManager
+            .Instance.GetSelfEvent(attacker, GameEventType.DealDamage)
+            .action(dealDamageGameEventData);
+
+        /* Damage effect */
         if (CheckEffect(StatusEffectState.DamageEffect))
             currentDamageTime = 0;
         else
@@ -270,7 +284,7 @@ public class StatusEffect : CustomMonoPal
         while (totalPoison > 0)
         {
             totalPoison--;
-            GetHit(poisonDamage);
+            GetHit(p_poisonInfo.owner, poisonDamage);
             poisonIndicator.Play();
 
             yield return new WaitForSeconds(0.2f);

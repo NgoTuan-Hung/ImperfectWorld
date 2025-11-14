@@ -239,20 +239,20 @@ public class GameEffect : MonoSelfAware
     public void FireAsRangedAttackEffect(
         Vector3 p_origin,
         float p_damage,
+        CustomMono p_owner,
         CustomMono p_target,
         GameEffectSO p_impactEffect,
-        AttackGameEventData p_attackGED = null,
-        DealDamageGameEventData p_dealDamageGED = null
+        AttackGameEventData p_attackGED = null
     )
     {
         StartCoroutine(
             FireAsRangedAttackEffectIE(
                 p_origin,
                 p_damage,
+                p_owner,
                 p_target,
                 p_impactEffect,
-                p_attackGED,
-                p_dealDamageGED
+                p_attackGED
             )
         );
     }
@@ -260,10 +260,10 @@ public class GameEffect : MonoSelfAware
     IEnumerator FireAsRangedAttackEffectIE(
         Vector3 p_origin,
         float p_damage,
+        CustomMono p_owner,
         CustomMono p_target,
         GameEffectSO p_impactEffect,
-        AttackGameEventData p_attackGED = null,
-        DealDamageGameEventData p_dealDamageGED = null
+        AttackGameEventData p_attackGED = null
     )
     {
         transform.position = p_origin;
@@ -291,15 +291,11 @@ public class GameEffect : MonoSelfAware
             yield return new WaitForSeconds(Time.fixedDeltaTime);
         }
 
-        p_dealDamageGED.damage = p_target.statusEffect.GetHit(p_damage);
-        p_dealDamageGED.count = p_attackGED.count++;
-        p_dealDamageGED.target = p_attackGED.target = p_target;
+        p_target.statusEffect.GetHit(p_owner, p_damage);
+        p_attackGED.Setup(p_owner, p_target);
         GameManager
             .Instance.GetSelfEvent(p_attackGED.attacker, GameEventType.Attack)
             .action(p_attackGED);
-        GameManager
-            .Instance.GetSelfEvent(p_dealDamageGED.dealer, GameEventType.DealDamage)
-            .action(p_dealDamageGED);
 
         GameManager.Instance.poolLink[p_impactEffect].PickOneGameEffect().transform.position =
             p_target.rotationAndCenterObject.transform.position;

@@ -1,12 +1,11 @@
-using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 
 public class TheHollowShepherd : SkillBase
 {
     HashSet<CustomMono> handledAllies;
     List<FloatStatModifier> modifiers;
     ValueChangeGameEventData hpChangeGED;
+    float aspdBuff;
 
     public override void Awake()
     {
@@ -30,29 +29,21 @@ public class TheHollowShepherd : SkillBase
 
     public override void Config()
     {
-        /* Stun duration */
-        // successResult = new(
-        //     true,
-        //     ActionResultType.Cooldown,
-        //     GetActionField<ActionFloatField>(ActionFieldName.Cooldown).value
-        // );
-        /* Debuff duration */
-
-        GameManager
-            .Instance.GetTeamBasedEvent(customMono.tag, GameEventType.HPChange)
-            .action += Trigger;
+        GameManager.Instance.GetTeamBasedEvent(customMono.tag, GameEventType.HPChange).action +=
+            Trigger;
         /* Also use actionie */
     }
 
     public override void StatChangeRegister()
     {
         base.StatChangeRegister();
-        // customMono.stat.attackSpeed.finalValueChangeEvent += RecalculateStat;
+        customMono.stat.reflex.finalValueChangeEvent += RecalculateStat;
     }
 
     public override void RecalculateStat()
     {
         base.RecalculateStat();
+        aspdBuff = 0.5f + customMono.stat.reflex.FinalValue * 0.01f;
     }
 
     public void Trigger(IGameEventData p_gED)
@@ -66,10 +57,10 @@ public class TheHollowShepherd : SkillBase
             if (hpChangeGED.currentValue / hpChangeGED.maxValue < 0.2f)
             {
                 handledAllies.Add(hpChangeGED.owner);
-                var t_mod = new FloatStatModifier(3f, FloatStatModifierType.Multiplicative);
-                customMono.stat.attackSpeed.AddModifier(t_mod);
-                modifiers.Add(t_mod);
-                hpChangeGED.owner.statusEffect.GetHit(hpChangeGED.maxValue * 0.1f);
+                var aspdFSM = new FloatStatModifier(aspdBuff, FloatStatModifierType.Additive);
+                customMono.stat.attackSpeed.AddModifier(aspdFSM);
+                modifiers.Add(aspdFSM);
+                hpChangeGED.owner.statusEffect.GetHit(customMono, hpChangeGED.maxValue * 0.1f);
             }
         }
     }

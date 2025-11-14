@@ -24,18 +24,4 @@ public class FloatModifier
     {
         modifiers.Remove(modifier);
     }
-
-    public float CalculateValueWithAppliedModifiers(float p_originalValue)
-    {
-        return (
-                p_originalValue
-                + modifiers.Where(m => m.type == FloatStatModifierType.Additive).Sum(m => m.value)
-            )
-            * (
-                1
-                + modifiers
-                    .Where(m => m.type == FloatStatModifierType.Multiplicative)
-                    .Sum(m => m.value)
-            );
-    }
 }

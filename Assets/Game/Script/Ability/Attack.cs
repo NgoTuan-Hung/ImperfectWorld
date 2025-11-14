@@ -7,7 +7,6 @@ public class Attack : SkillBase
 {
     Func<Vector2, Vector2, CustomMono, IEnumerator> triggerIE;
     AttackGameEventData attackGED = new();
-    public DealDamageGameEventData dealDamageGED = new();
     public Action<Vector2, Vector2, CustomMono> endAttackAction = (_, _, _) => { };
     IEnumerator cooldownIE = GameManager.VoidIE();
 
@@ -149,15 +148,9 @@ public class Attack : SkillBase
                 )
             );
 
-        dealDamageGED.damage = p_customMono.statusEffect.GetHit(CalculateAttackDamage());
-
-        dealDamageGED.dealer = attackGED.attacker = customMono;
-        dealDamageGED.count = attackGED.count++;
-        dealDamageGED.target = attackGED.target = p_customMono;
+        p_customMono.statusEffect.GetHit(customMono, CalculateAttackDamage());
+        attackGED.Setup(customMono, p_customMono);
         GameManager.Instance.GetSelfEvent(customMono, GameEventType.Attack).action(attackGED);
-        GameManager
-            .Instance.GetSelfEvent(customMono, GameEventType.DealDamage)
-            .action(dealDamageGED);
 
         SpawnEffectAtLoc(
             p_customMono.rotationAndCenterObject.transform.position,
@@ -190,16 +183,15 @@ public class Attack : SkillBase
 
         customMono.animationEventFunctionCaller.SetSignal(EAnimationSignal.Attack, false);
 
-        dealDamageGED.dealer = attackGED.attacker = customMono;
         customMono
             .charAttackInfo.GetRangedProjectileEffect()
             .FireAsRangedAttackEffect(
                 customMono.rotationAndCenterObject.transform.position,
                 CalculateAttackDamage(),
+                customMono,
                 p_customMono,
                 customMono.charAttackInfo.rangedImpactEffectSO,
-                attackGED,
-                dealDamageGED
+                attackGED
             );
 
         while (!customMono.animationEventFunctionCaller.GetSignalVals(EAnimationSignal.EndAttack))
@@ -224,17 +216,19 @@ public class Attack : SkillBase
         customMono.statusEffect.RemoveSlow(customMono.stat.actionSlowModifier);
     }
 
+    /// <summary>
+    /// Calculate attack damage based on crit chance and crit damage modifier.
+    /// </summary>
+    /// <returns></returns>
     float CalculateAttackDamage() =>
-        CalculateFinalDamage(
-            customMono.stat.attackDamage.FinalValue
-                * (
-                    1
-                    + (
-                        Random.Range(0, 1f) < customMono.stat.critChance.FinalValue
-                            ? customMono.stat.critDamageModifier.FinalValue
-                            : 0
-                    )
-                )
+        customMono.stat.attackDamage.FinalValue
+        * (
+            1
+            + (
+                Random.Range(0, 1f) < customMono.stat.critChance.FinalValue
+                    ? customMono.stat.critDamageModifier.FinalValue
+                    : 0
+            )
         );
 
     public void StrikeLock(float duration)

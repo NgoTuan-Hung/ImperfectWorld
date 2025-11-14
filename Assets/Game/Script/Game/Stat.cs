@@ -97,6 +97,7 @@ public partial class Stat : MonoEditor
         wisdom.RecalculateFinalValue();
         actionMoveSpeedReduceRate.RecalculateFinalValue();
         moveSpeed.RecalculateFinalValue();
+        damageModifier.RecalculateFinalValue();
         armor.RecalculateFinalValue();
         omnivamp.RecalculateFinalValue();
         attackDamage.RecalculateFinalValue();
@@ -204,67 +205,67 @@ public partial class Stat : MonoEditor
 
     /// <summary>
     /// HealthPoint =
-    ///    (BaseHealthPoint + HealthPointAdditionModifier + 19 * Might)
+    ///    (BaseHealthPoint + HealthPointAdditionModifier + 22 * Might)
     ///     * HealthPointMultiplicationModifier;
     /// </summary>
     void MightChangeHealthPoint()
     {
-        might.referenceModifiers[1].value = 19 * might.FinalValue;
+        might.referenceModifiers[1].value = 22 * might.FinalValue;
         healthPoint.RecalculateFinalValue();
     }
 
     /// <summary>
     /// HealthRegen =
-    ///        (BaseHealthRegen + HealthRegenAdditionModifier + 0.03f * Might)
+    ///        (BaseHealthRegen + HealthRegenAdditionModifier + 0.1f * Might)
     ///        * HealthRegenMultiplicationModifier;
     /// </summary>
     void MightChangeHealthRegen()
     {
-        might.referenceModifiers[0].value = 0.03f * might.FinalValue;
+        might.referenceModifiers[0].value = 0.1f * might.FinalValue;
         healthRegen.RecalculateFinalValue();
     }
 
     /// <summary>
     /// AttackSpeed =
-    ///    (BaseAttackSpeed + AttackSpeedAdditionModifier + 0.1f * Reflex)
+    ///    (BaseAttackSpeed + AttackSpeedAdditionModifier + 0.01f * Reflex)
     ///     * AttackSpeedMultiplicationModifier;
     /// </summary>
     void ReflexChangeAttackSpeed()
     {
-        reflex.referenceModifiers[0].value = 0.1f * reflex.FinalValue;
+        reflex.referenceModifiers[0].value = 0.01f * reflex.FinalValue;
         attackSpeed.RecalculateFinalValue();
     }
 
     /// <summary>
     /// Armor =
-    ///    (BaseArmor + ArmorAdditionModifier + 0.1f * Reflex)
+    ///    (BaseArmor + ArmorAdditionModifier + 0.17f * Reflex)
     ///     * ArmorMultiplicationModifier;
     /// </summary>
     void ReflexChangeArmor()
     {
-        reflex.referenceModifiers[1].value = 0.1f * reflex.FinalValue;
+        reflex.referenceModifiers[1].value = 0.17f * reflex.FinalValue;
         armor.RecalculateFinalValue();
     }
 
     /// <summary>
     /// ManaPoint =
-    ///    (BaseManaPoint + ManaPointAdditionModifier + 13 * Wisdom)
+    ///    (BaseManaPoint + ManaPointAdditionModifier + 12 * Wisdom)
     ///    * ManaPointMultiplicationModifier;
     /// </summary>
     void WisdomChangeManaPoint()
     {
-        wisdom.referenceModifiers[1].value = 13 * wisdom.FinalValue;
+        wisdom.referenceModifiers[1].value = 12 * wisdom.FinalValue;
         manaPoint.RecalculateFinalValue();
     }
 
     /// <summary>
     /// ManaRegen =
-    ///        (BaseManaRegen + ManaRegenAdditionModifier + 0.04f * Wisdom)
+    ///        (BaseManaRegen + ManaRegenAdditionModifier + 0.05f * Wisdom)
     ///        * ManaRegenMultiplicationModifier;
     /// </summary>
     void WisdomChangeManaRegen()
     {
-        wisdom.referenceModifiers[0].value = 0.04f * wisdom.FinalValue;
+        wisdom.referenceModifiers[0].value = 0.05f * wisdom.FinalValue;
         manaRegen.RecalculateFinalValue();
     }
 
@@ -347,4 +348,11 @@ public partial class Stat : MonoEditor
         /* Omnivamp */
         currentHealthPoint.Value += dealDamageGameEventData.damage * omnivamp.FinalValue;
     }
+
+    /// <summary>
+    /// Return final damage value considering all damage modifiers (Buff, Debuff, etc.)
+    /// </summary>
+    /// <param name="p_damage"></param>
+    /// <returns></returns>
+    public float CalculateDamageDeal(float damage) => damage * damageModifier.FinalValue;
 }
