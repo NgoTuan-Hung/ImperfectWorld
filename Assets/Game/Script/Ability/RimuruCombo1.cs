@@ -36,7 +36,6 @@ public class RimuruCombo1 : SkillBase
             new(GameManager.Instance.rimuruCombo1DashPool, SpawnEffectRelative),
         };
         GetActionField<ActionFloatField>(ActionFieldName.Cooldown).value = 0f;
-        GetActionField<ActionFloatField>(ActionFieldName.ManaCost).value = 100f;
         GetActionField<ActionFloatField>(ActionFieldName.Range).value = 1.25f;
         GetActionField<ActionIntField>(ActionFieldName.Variants).value = 3;
         GetActionField<ActionFloatField>(ActionFieldName.Speed).value = 0.25f;
@@ -82,10 +81,7 @@ public class RimuruCombo1 : SkillBase
         CustomMono p_customMono = null
     )
     {
-        if (
-            customMono.stat.currentManaPoint.Value
-            < GetActionField<ActionFloatField>(ActionFieldName.ManaCost).value
-        )
+        if (customMono.stat.currentManaPoint.Value < customMono.stat.manaPoint.FinalValue)
             return failResult;
         if (!customMono.actionBlocking && !customMono.movementActionBlocking)
         {
@@ -99,9 +95,7 @@ public class RimuruCombo1 : SkillBase
                 )
             );
             customMono.currentAction = this;
-            customMono.stat.currentManaPoint.Value -= GetActionField<ActionFloatField>(
-                ActionFieldName.ManaCost
-            ).value;
+            customMono.stat.currentManaPoint.Value -= customMono.stat.manaPoint.FinalValue;
 
             return successResult;
         }

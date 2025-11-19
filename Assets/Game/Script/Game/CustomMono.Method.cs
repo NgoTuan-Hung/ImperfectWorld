@@ -8,22 +8,22 @@ public partial class CustomMono
         {
             switch (sB.statBuffType)
             {
-                case StatBuffType.Health:
+                case StatBuffType.HP:
                     stat.healthPoint.AddModifier(sB.modifier);
                     break;
-                case StatBuffType.Mana:
+                case StatBuffType.MP:
                     stat.manaPoint.AddModifier(sB.modifier);
                     break;
-                case StatBuffType.Might:
+                case StatBuffType.MIGHT:
                     stat.might.AddModifier(sB.modifier);
                     break;
-                case StatBuffType.Reflex:
+                case StatBuffType.REFLEX:
                     stat.reflex.AddModifier(sB.modifier);
                     break;
-                case StatBuffType.Wisdom:
+                case StatBuffType.WISDOM:
                     stat.wisdom.AddModifier(sB.modifier);
                     break;
-                case StatBuffType.Damage:
+                case StatBuffType.ATK:
                     stat.attackDamage.AddModifier(sB.modifier);
                     break;
                 default:
@@ -46,22 +46,22 @@ public partial class CustomMono
         {
             switch (sB.statBuffType)
             {
-                case StatBuffType.Health:
+                case StatBuffType.HP:
                     stat.healthPoint.RemoveModifier(sB.modifier);
                     break;
-                case StatBuffType.Mana:
+                case StatBuffType.MP:
                     stat.manaPoint.RemoveModifier(sB.modifier);
                     break;
-                case StatBuffType.Might:
+                case StatBuffType.MIGHT:
                     stat.might.RemoveModifier(sB.modifier);
                     break;
-                case StatBuffType.Reflex:
+                case StatBuffType.REFLEX:
                     stat.reflex.RemoveModifier(sB.modifier);
                     break;
-                case StatBuffType.Wisdom:
+                case StatBuffType.WISDOM:
                     stat.wisdom.RemoveModifier(sB.modifier);
                     break;
-                case StatBuffType.Damage:
+                case StatBuffType.ATK:
                     stat.attackDamage.RemoveModifier(sB.modifier);
                     break;
                 default:

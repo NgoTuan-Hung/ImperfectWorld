@@ -4,7 +4,7 @@ using UnityEngine.EventSystems;
 
 public class ChampInfoPanel : MonoBehaviour, IPointerDownHandler
 {
-    CustomMono owner;
+    public CustomMono owner;
     GameObject container,
         statSV,
         statContent,

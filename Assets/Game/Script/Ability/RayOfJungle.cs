@@ -27,7 +27,6 @@ public class RayOfJungle : SkillBase
 
     public override void Config()
     {
-        GetActionField<ActionFloatField>(ActionFieldName.ManaCost).value = 100f;
         GetActionField<ActionFloatField>(ActionFieldName.Range).value = 10f;
         successResult = new(
             true,
@@ -56,10 +55,7 @@ public class RayOfJungle : SkillBase
         CustomMono p_customMono = null
     )
     {
-        if (
-            customMono.stat.currentManaPoint.Value
-            < GetActionField<ActionFloatField>(ActionFieldName.ManaCost).value
-        )
+        if (customMono.stat.currentManaPoint.Value < customMono.stat.manaPoint.FinalValue)
             return failResult;
         if (!customMono.actionBlocking)
         {
@@ -72,9 +68,7 @@ public class RayOfJungle : SkillBase
                 )
             );
             customMono.currentAction = this;
-            customMono.stat.currentManaPoint.Value -= GetActionField<ActionFloatField>(
-                ActionFieldName.ManaCost
-            ).value;
+            customMono.stat.currentManaPoint.Value -= customMono.stat.manaPoint.FinalValue;
 
             return successResult;
         }

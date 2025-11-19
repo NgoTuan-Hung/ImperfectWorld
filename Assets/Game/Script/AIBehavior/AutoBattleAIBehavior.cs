@@ -71,8 +71,7 @@ public class AutoBattleAIBehavior : BaseAIBehavior
         if (skill != null)
         {
             if (
-                skill.GetActionField<ActionFloatField>(ActionFieldName.ManaCost).value
-                    <= customMono.stat.currentManaPoint.Value
+                customMono.stat.currentManaPoint.Value >= customMono.stat.manaPoint.FinalValue
                 && customMono.botSensor.distanceToNearestEnemy
                     < skill.GetActionField<ActionFloatField>(ActionFieldName.Range).value
             )

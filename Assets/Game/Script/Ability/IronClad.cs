@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class IronClad : SkillBase
 {
-    public float armorBuff;
+    FloatStatModifier armorBuff;
 
     public override void Awake()
     {
@@ -25,14 +25,7 @@ public class IronClad : SkillBase
 
     public override void Config()
     {
-        /* Stun duration */
-        // successResult = new(
-        //     true,
-        //     ActionResultType.Cooldown,
-        //     GetActionField<ActionFloatField>(ActionFieldName.Cooldown).value
-        // );
-        /* Debuff duration */
-        GetActionField<ActionFloatField>(ActionFieldName.ManaCost).value = 100f;
+        armorBuff = new(10, FloatStatModifierType.Additive);
         GetActionField<ActionFloatField>(ActionFieldName.Range).value = 1.25f;
         GetActionField<ActionFloatField>(ActionFieldName.Duration).value = 5f;
 
@@ -50,7 +43,7 @@ public class IronClad : SkillBase
     public override void RecalculateStat()
     {
         base.RecalculateStat();
-        armorBuff = 10 + customMono.stat.might.FinalValue;
+        armorBuff.value = 10 + 2.5f * customMono.stat.might.FinalValue;
     }
 
     public override ActionResult Trigger(
@@ -59,10 +52,7 @@ public class IronClad : SkillBase
         CustomMono p_customMono = null
     )
     {
-        if (
-            customMono.stat.currentManaPoint.Value
-            < GetActionField<ActionFloatField>(ActionFieldName.ManaCost).value
-        )
+        if (customMono.stat.currentManaPoint.Value < customMono.stat.manaPoint.FinalValue)
             return failResult;
         else if (!customMono.actionBlocking)
         {
@@ -77,9 +67,7 @@ public class IronClad : SkillBase
                 )
             );
             customMono.currentAction = this;
-            customMono.stat.currentManaPoint.Value -= GetActionField<ActionFloatField>(
-                ActionFieldName.ManaCost
-            ).value;
+            customMono.stat.currentManaPoint.Value -= customMono.stat.manaPoint.FinalValue;
             return successResult;
         }
 

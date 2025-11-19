@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class CelestialAtonement : SkillBase
 {
-    public FloatStatModifier aspdBuff;
+    public float aspdBuff;
     float manaSteal;
 
     public override void Awake()
@@ -25,17 +25,8 @@ public class CelestialAtonement : SkillBase
 
     public override void Config()
     {
-        /* Stun duration */
-        // successResult = new(
-        //     true,
-        //     ActionResultType.Cooldown,
-        //     GetActionField<ActionFloatField>(ActionFieldName.Cooldown).value
-        // );
-        /* Debuff duration */
-        GetActionField<ActionFloatField>(ActionFieldName.ManaCost).value = 100f;
         GetActionField<ActionFloatField>(ActionFieldName.Range).value = float.PositiveInfinity;
         GetActionField<ActionFloatField>(ActionFieldName.Duration).value = 5f;
-        aspdBuff = new(0.01f, FloatStatModifierType.Additive);
 
         /* Also use actionie, target */
     }
@@ -49,7 +40,7 @@ public class CelestialAtonement : SkillBase
     public override void RecalculateStat()
     {
         base.RecalculateStat();
-        aspdBuff.value = 0.01f + customMono.stat.wisdom.FinalValue * 0.001f;
+        aspdBuff = 0.01f + customMono.stat.wisdom.FinalValue * 0.001f;
         manaSteal = 50f + customMono.stat.wisdom.FinalValue * 0.5f;
     }
 
@@ -59,10 +50,7 @@ public class CelestialAtonement : SkillBase
         CustomMono p_customMono = null
     )
     {
-        if (
-            customMono.stat.currentManaPoint.Value
-            < GetActionField<ActionFloatField>(ActionFieldName.ManaCost).value
-        )
+        if (customMono.stat.currentManaPoint.Value < customMono.stat.manaPoint.FinalValue)
             return failResult;
         else if (!customMono.actionBlocking)
         {
@@ -73,9 +61,7 @@ public class CelestialAtonement : SkillBase
                 GetActionField<ActionIEnumeratorField>(ActionFieldName.ActionIE).value = TriggerIE()
             );
             customMono.currentAction = this;
-            customMono.stat.currentManaPoint.Value -= GetActionField<ActionFloatField>(
-                ActionFieldName.ManaCost
-            ).value;
+            customMono.stat.currentManaPoint.Value -= customMono.stat.manaPoint.FinalValue;
             return successResult;
         }
 
@@ -108,8 +94,13 @@ public class CelestialAtonement : SkillBase
                 ).value.stat.currentManaPoint.Value;
             GetActionField<ActionCustomMonoField>(ActionFieldName.Target)
                 .value.statusEffect.ChangeMana(-manaSteal);
+
+            var buff = new FloatStatModifier(
+                aspdBuff * (diff > 0 ? diff : 0),
+                FloatStatModifierType.Additive
+            );
             customMono.statusEffect.BuffAttackSpeed(
-                aspdBuff.value * (diff > 0 ? diff : 0),
+                buff,
                 GetActionField<ActionFloatField>(ActionFieldName.Duration).value
             );
         }

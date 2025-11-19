@@ -11,6 +11,10 @@ public partial class GameManager
         armorBuffPopupMat;
     Dictionary<string, string> descriptionDB = new()
     {
+        {
+            "current hp",
+            "<link=current hp><color=#D72638>current hp</color></link>: current health point."
+        },
         { "hp", "<link=hp><color=#C71F37>hp</color></link>: health point." },
         {
             "hp regen",
@@ -20,10 +24,13 @@ public partial class GameManager
             "current mp",
             "<link=current mp><color=#3E8EDE>current mp</color></link>: current mana point."
         },
-        { "mp", "<link=mp><color=#2F75C0>mp</color></link>: mana point." },
+        {
+            "mp",
+            "<link=mp><color=#2F75C0>mp</color></link>: mana point, champion use active skill when <link=current mp><color=#3E8EDE>current mp</color></link> reach <link=mp><color=#2F75C0>mp</color></link>."
+        },
         {
             "mp regen",
-            "<link=mp regen><color=#7FDBFF>mp regen</color></link>: how many <link=hp><color=#C71F37>hp</color></link> is regenerated per second."
+            "<link=mp regen><color=#7FDBFF>mp regen</color></link>: how many <link=mp><color=#2F75C0>mp</color></link> is regenerated per second."
         },
         {
             "might",
@@ -39,15 +46,23 @@ public partial class GameManager
         },
         { "aspd", "<link=aspd><color=#E67E22>aspd</color></link>: attack speed." },
         { "armor", "<link=armor><color=#95A5A6>armor</color></link>: 1 armor mitigates 1 damage." },
+        { "mspd", "<link=mspd><color=#1ABC9C>mspd</color></link>: move speed." },
+        { "dmgmod", "<link=dmgmod><color=#FFC107>dmgmod</color></link>: damage multiplier." },
         {
             "omnivamp",
             "<link=omnivamp><color=#C62828>omnivamp</color></link>: heals from damage dealt."
         },
         { "atk", "<link=atk><color=#E53935>atk</color></link>: attack damage." },
+        { "crit", "<link=crit><color=#FFD54F>crit</color></link>: crit chance." },
+        {
+            "critmod",
+            "<link=critmod><color=#AB47BC>critmod</color></link>: crit damage modifier, how much damage is multiplied on crit."
+        },
         {
             "damage reduction",
             "<link=damage reduction><color=#4A90E2>damage reduction</color></link>: reduces total damage taken, applied after armor."
         },
+        { "atkrange", "<link=atkrange><color=#FFD447>atkrange</color></link>: attack range." },
         {
             "strike lock",
             "<link=strike lock><color=#fc03d7>strike lock</color></link>: one affected by strike lock cannot attack."
@@ -61,4 +76,6 @@ public partial class GameManager
     };
 
     public Type MapItemBehaviour(ItemBehaviourType type) => itemBehaviourMapper[type];
+
+    public List<StatUpgrade> statUpgrades = new();
 }

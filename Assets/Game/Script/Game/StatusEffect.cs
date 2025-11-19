@@ -379,19 +379,19 @@ public class StatusEffect : CustomMonoPal
         customMono.stat.damageModifier.RemoveModifier(p_damageModifier);
     }
 
-    public void BuffArmor(float p_value, float p_duration)
+    public void BuffArmor(FloatStatModifier modifier, float p_duration)
     {
-        StartCoroutine(BuffArmorIE(p_value, p_duration));
+        StartCoroutine(BuffArmorIE(modifier, p_duration));
     }
 
-    IEnumerator BuffArmorIE(float p_value, float p_duration)
+    IEnumerator BuffArmorIE(FloatStatModifier modifier, float p_duration)
     {
         GameUIManager
             .Instance.PickOneTextPopupUI()
             .TextPopupUI.StartArmorBuffPopup(customMono.rotationAndCenterObject.transform.position);
-        customMono.stat.armor.BaseValue += p_value;
+        customMono.stat.armor.AddModifier(modifier);
         yield return new WaitForSeconds(p_duration);
-        customMono.stat.armor.BaseValue -= p_value;
+        customMono.stat.armor.RemoveModifier(modifier);
     }
 
     public void BuffAttackSpeed(FloatStatModifier p_fSM, float p_duration)
@@ -406,18 +406,6 @@ public class StatusEffect : CustomMonoPal
         customMono.stat.attackSpeed.RemoveModifier(p_fSM);
     }
 
-    public void BuffAttackSpeed(float value, float p_duration)
-    {
-        StartCoroutine(BuffAttackSpeedIE(value, p_duration));
-    }
-
-    private IEnumerator BuffAttackSpeedIE(float value, float p_duration)
-    {
-        customMono.stat.attackSpeed.BaseValue += value;
-        yield return new WaitForSeconds(p_duration);
-        customMono.stat.attackSpeed.BaseValue -= value;
-    }
-
     public void BuffOmnivamp(FloatStatModifier p_fSM, float p_duration)
     {
         StartCoroutine(BuffOmnivampIE(p_fSM, p_duration));
@@ -430,19 +418,19 @@ public class StatusEffect : CustomMonoPal
         customMono.stat.omnivamp.RemoveModifier(p_fSM);
     }
 
-    public void BuffDR(float p_value, float p_duration)
+    public void BuffDR(FloatStatModifier fSM, float p_duration)
     {
-        StartCoroutine(BuffDRIE(p_value, p_duration));
+        StartCoroutine(BuffDRIE(fSM, p_duration));
     }
 
-    IEnumerator BuffDRIE(float p_value, float p_duration)
+    IEnumerator BuffDRIE(FloatStatModifier fSM, float p_duration)
     {
         GameUIManager
             .Instance.PickOneTextPopupUI()
             .TextPopupUI.StartDRBuffPopup(customMono.rotationAndCenterObject.transform.position);
-        customMono.stat.damageReduction.BaseValue += p_value;
+        customMono.stat.damageReduction.AddModifier(fSM);
         yield return new WaitForSeconds(p_duration);
-        customMono.stat.damageReduction.BaseValue -= p_value;
+        customMono.stat.damageReduction.RemoveModifier(fSM);
     }
 
     public float GetTotalDamageTaken() => totalDamageTaken;

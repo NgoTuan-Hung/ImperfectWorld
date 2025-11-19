@@ -32,7 +32,7 @@ public partial class CustomMono : MonoSelfAware
     public BotAIManager botAIManager;
     public Stat stat;
     GameObject directionIndicator;
-    SpriteRenderer arrowIndicator;
+    public SpriteRenderer arrowIndicator;
     float directionIndicatorAngle;
     Vector2[] updateDirectionIndicatorQueue = new Vector2[5];
 
@@ -202,25 +202,4 @@ public partial class CustomMono : MonoSelfAware
     /// </summary>
     /// <returns></returns>
     public Vector2 GetDirection() => directionIndicator.transform.right;
-
-    public void SwitchTeam(string teamTag)
-    {
-        switch (teamTag)
-        {
-            case "Team1":
-            {
-                tag = "Team1";
-                arrowIndicator.material = GameManager.Instance.team1DirectionIndicatorMat;
-                break;
-            }
-            case "Team2":
-            {
-                tag = "Team2";
-                arrowIndicator.material = GameManager.Instance.team2DirectionIndicatorMat;
-                break;
-            }
-            default:
-                break;
-        }
-    }
 }

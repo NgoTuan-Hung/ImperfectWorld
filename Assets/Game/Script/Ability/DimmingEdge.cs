@@ -34,7 +34,6 @@ public class DimmingEdge : SkillBase
         damageDebuff = new(-0.25f, FloatStatModifierType.Multiplicative);
         /* Debuff duration */
         GetActionField<ActionFloatField>(ActionFieldName.Duration).value = 5f;
-        GetActionField<ActionFloatField>(ActionFieldName.ManaCost).value = 100f;
 
         /* Also use actionie */
     }
@@ -59,10 +58,7 @@ public class DimmingEdge : SkillBase
         if (
             Vector2.Distance(customMono.transform.position, p_customMono.transform.position)
                 > GetActionField<ActionFloatField>(ActionFieldName.Range).value
-            || (
-                customMono.stat.currentManaPoint.Value
-                < GetActionField<ActionFloatField>(ActionFieldName.ManaCost).value
-            )
+            || (customMono.stat.currentManaPoint.Value < customMono.stat.manaPoint.FinalValue)
         )
             return failResult;
         else if (!customMono.actionBlocking)
@@ -78,9 +74,7 @@ public class DimmingEdge : SkillBase
                 )
             );
             customMono.currentAction = this;
-            customMono.stat.currentManaPoint.Value -= GetActionField<ActionFloatField>(
-                ActionFieldName.ManaCost
-            ).value;
+            customMono.stat.currentManaPoint.Value -= customMono.stat.manaPoint.FinalValue;
             return successResult;
         }
 

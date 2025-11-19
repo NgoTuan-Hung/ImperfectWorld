@@ -68,7 +68,7 @@ public partial class GameManager
 
         var t_customMono = Instantiate(champPrefab).GetComponent<CustomMono>();
         t_customMono.transform.position = new Vector3(0, 0, 0);
-        t_customMono.SwitchTeam("Team1");
+        SwithTeam(t_customMono, "Team1");
         return true;
     }
 
@@ -79,7 +79,7 @@ public partial class GameManager
 
         var t_customMono = Instantiate(champPrefab).GetComponent<CustomMono>();
         t_customMono.transform.position = new Vector3(0, 0, 0);
-        t_customMono.SwitchTeam("Team1");
+        SwithTeam(t_customMono, "Team1");
         StartCoroutine(EnableBattleModeIE(t_customMono));
         return true;
     }

@@ -2,14 +2,23 @@ using System;
 
 public enum StatBuffType
 {
-    Health,
-    Mana,
-    Might,
-    Reflex,
-    Wisdom,
-    Damage,
-    AttackSpeed,
-    Armor,
+    HP,
+    MP,
+    MIGHT,
+    REFLEX,
+    WISDOM,
+    ATK,
+    ASPD,
+    ARMOR,
+    HPREGEN,
+    MPREGEN,
+    MSPD,
+    DMGMOD,
+    OMNIVAMP,
+    CRIT,
+    CRITMOD,
+    DMGREDUC,
+    ATKRANGE,
 }
 
 [Serializable]

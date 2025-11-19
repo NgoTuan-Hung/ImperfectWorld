@@ -53,7 +53,8 @@ public class PlayerPointerZone
                 currentRaycastCM = GameManager.Instance.GetCustomMono(raycastHit2D.collider);
 
                 GameManager.Instance.gridManager.ShowVisual();
-                GameUIManager.Instance.ShowChampUI(currentRaycastCM);
+                if (currentRaycastCM != null)
+                    GameUIManager.Instance.ShowChampUI(currentRaycastCM);
             }
         }
     }

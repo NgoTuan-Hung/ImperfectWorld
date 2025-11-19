@@ -33,7 +33,6 @@ public class EyeOfTheReaper : SkillBase
 
     public override void Config()
     {
-        GetActionField<ActionFloatField>(ActionFieldName.ManaCost).value = 100f;
         GetActionField<ActionFloatField>(ActionFieldName.Range).value = float.PositiveInfinity;
         successResult = new(
             true,
@@ -57,7 +56,7 @@ public class EyeOfTheReaper : SkillBase
         base.RecalculateStat();
         GetActionField<ActionFloatField>(ActionFieldName.Damage).value =
             customMono.stat.wisdom.FinalValue * 8f;
-        chance = Math.Clamp(0.25f + customMono.stat.wisdom.FinalValue * 0.005f, 0, 1);
+        chance = Math.Clamp(0.1f + customMono.stat.wisdom.FinalValue * 0.005f, 0, 1);
     }
 
     public override ActionResult Trigger(
@@ -66,10 +65,7 @@ public class EyeOfTheReaper : SkillBase
         CustomMono p_customMono = null
     )
     {
-        if (
-            customMono.stat.currentManaPoint.Value
-            < GetActionField<ActionFloatField>(ActionFieldName.ManaCost).value
-        )
+        if (customMono.stat.currentManaPoint.Value < customMono.stat.manaPoint.FinalValue)
             return failResult;
         if (!customMono.actionBlocking)
         {
@@ -82,9 +78,7 @@ public class EyeOfTheReaper : SkillBase
                 )
             );
             customMono.currentAction = this;
-            customMono.stat.currentManaPoint.Value -= GetActionField<ActionFloatField>(
-                ActionFieldName.ManaCost
-            ).value;
+            customMono.stat.currentManaPoint.Value -= customMono.stat.manaPoint.FinalValue;
 
             return successResult;
         }

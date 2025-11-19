@@ -308,10 +308,11 @@ public partial class GameManager : MonoBehaviour
         if (enemyCount <= 0)
         {
             GetPlayerTeamChampions().ForEach(pC => DisableBattleMode(pC));
-            GameUIManager.Instance.TurnOnMap();
+            // GameUIManager.Instance.TurnOnMap();
             positioningPhase = true;
             ClearEnemyNodes();
             battleEndCallback();
+            ShowStatUpgradeForPlayer();
         }
     }
 
@@ -328,6 +329,30 @@ public partial class GameManager : MonoBehaviour
             }
         );
         teamChampions[customMono.tag].Add(customMono);
+    }
+
+    public void SwithTeam(CustomMono customMono, string newTeam)
+    {
+        teamChampions[customMono.tag].Remove(customMono);
+        switch (newTeam)
+        {
+            case "Team1":
+            {
+                customMono.tag = "Team1";
+                customMono.arrowIndicator.material = team1DirectionIndicatorMat;
+                break;
+            }
+            case "Team2":
+            {
+                customMono.tag = "Team2";
+                customMono.arrowIndicator.material = team2DirectionIndicatorMat;
+                break;
+            }
+            default:
+                break;
+        }
+
+        teamChampions[newTeam].Add(customMono);
     }
 
     public CustomMono GetCustomMono(Collider2D p_cld)
@@ -485,4 +510,93 @@ public partial class GameManager : MonoBehaviour
 
     public void AddNormalEnemyRoom(NormalEnemyRoomInfo normalEnemyRoomInfo) =>
         roomSystem.allNormalEnemyRooms.Add(normalEnemyRoomInfo);
+
+    /// <summary>
+    /// Reservoir Sampling for selecting 3 random upgrade for player
+    /// </summary>
+    void ShowStatUpgradeForPlayer()
+    {
+        List<StatUpgrade> sUs = new();
+
+        int selection = 3;
+        for (int i = 0; i < selection; i++)
+            sUs.Add(statUpgrades[i]);
+        for (int i = selection; i < statUpgrades.Count; i++)
+        {
+            int r = Random.Range(0, i + 1);
+            if (r < selection)
+                sUs[r] = statUpgrades[i];
+        }
+
+        GameUIManager.Instance.SpawnStatUpgrade(sUs);
+    }
+
+    public void UpgradeStat(CustomMono customMono, StatUpgrade statUpgrade)
+    {
+        UpgradeStat(customMono, statUpgrade.statBuff);
+    }
+
+    public void UpgradeStat(CustomMono customMono, StatBuff statBuff)
+    {
+        switch (statBuff.statBuffType)
+        {
+            case StatBuffType.HP:
+                customMono.stat.healthPoint.AddModifier(statBuff.modifier);
+                customMono.stat.currentHealthPoint.Value += statBuff.modifier.value;
+                break;
+            case StatBuffType.MP:
+                customMono.stat.manaPoint.AddModifier(statBuff.modifier);
+                customMono.stat.currentManaPoint.Value += statBuff.modifier.value;
+                break;
+            case StatBuffType.MIGHT:
+                customMono.stat.might.AddModifier(statBuff.modifier);
+                customMono.stat.currentHealthPoint.Value += statBuff.modifier.value;
+                break;
+            case StatBuffType.REFLEX:
+                customMono.stat.reflex.AddModifier(statBuff.modifier);
+                break;
+            case StatBuffType.WISDOM:
+                customMono.stat.wisdom.AddModifier(statBuff.modifier);
+                customMono.stat.currentManaPoint.Value += statBuff.modifier.value;
+                break;
+            case StatBuffType.ATK:
+                customMono.stat.attackDamage.AddModifier(statBuff.modifier);
+                break;
+            case StatBuffType.ASPD:
+                customMono.stat.attackSpeed.AddModifier(statBuff.modifier);
+                break;
+            case StatBuffType.ARMOR:
+                customMono.stat.armor.AddModifier(statBuff.modifier);
+                break;
+            case StatBuffType.HPREGEN:
+                customMono.stat.healthRegen.AddModifier(statBuff.modifier);
+                break;
+            case StatBuffType.MPREGEN:
+                customMono.stat.manaRegen.AddModifier(statBuff.modifier);
+                break;
+            case StatBuffType.MSPD:
+                customMono.stat.moveSpeed.AddModifier(statBuff.modifier);
+                break;
+            case StatBuffType.DMGMOD:
+                customMono.stat.damageModifier.AddModifier(statBuff.modifier);
+                break;
+            case StatBuffType.OMNIVAMP:
+                customMono.stat.omnivamp.AddModifier(statBuff.modifier);
+                break;
+            case StatBuffType.CRIT:
+                customMono.stat.critChance.AddModifier(statBuff.modifier);
+                break;
+            case StatBuffType.CRITMOD:
+                customMono.stat.critDamageModifier.AddModifier(statBuff.modifier);
+                break;
+            case StatBuffType.DMGREDUC:
+                customMono.stat.damageReduction.AddModifier(statBuff.modifier);
+                break;
+            case StatBuffType.ATKRANGE:
+                customMono.stat.attackRange.AddModifier(statBuff.modifier);
+                break;
+            default:
+                break;
+        }
+    }
 }

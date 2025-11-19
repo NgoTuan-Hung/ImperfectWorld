@@ -33,7 +33,6 @@ public class TwinsOfCataclysm : SkillBase
 
     public override void Config()
     {
-        GetActionField<ActionFloatField>(ActionFieldName.ManaCost).value = 0f;
         successResult = new(
             true,
             ActionResultType.Cooldown,

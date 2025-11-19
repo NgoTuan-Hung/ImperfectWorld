@@ -1,14 +1,20 @@
-using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Map;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class GameUIManager : MonoEditorSingleton<GameUIManager>
 {
+    private static WaitForSeconds _waitForSeconds1 = new(1f);
     Canvas canvas;
-    public Button menuCharButton;
+    public Button menuCharButton,
+        menuMapButton,
+        menuInventoryButton,
+        menuSettingButton;
+    TextMeshProUGUI helperTextTMP;
     public GameObject joystickZone,
         joystickPrefab,
         healthAndManaIndicatorPrefab,
@@ -17,7 +23,9 @@ public class GameUIManager : MonoEditorSingleton<GameUIManager>
         champUIZone,
         inventory,
         inventoryContent,
-        freeZone;
+        freeZone,
+        menuContent,
+        upgradeZone;
     ObjectPool healthAndManaIndicator,
         textPopupUIPool;
     public MapViewUI mapViewUI;
@@ -31,24 +39,58 @@ public class GameUIManager : MonoEditorSingleton<GameUIManager>
     public List<GameObject> inventorySlots = new();
     public List<Item> playerItemUIs = new();
     public Vector2 ItemInventoryAnchorPos = new(0.5f, 0.5f);
+    bool mapState = true;
+    public List<StatUpgradeUI> statUpgrades;
 
     private void Awake()
     {
         canvas = GetComponent<Canvas>();
+
+        InitPrefabAndPool();
+        FindChilds();
+        Init();
+        RegisterEvents();
+    }
+
+    private void RegisterEvents()
+    {
         menuCharButton.onClick.AddListener(() =>
         {
             print("Menu Char Button Clicked");
         });
 
-        InitPrefabAndPool();
-        Init();
-        FindChilds();
+        menuMapButton.onClick.AddListener(() =>
+        {
+            if (mapState)
+                TurnOnMap();
+            else
+                TurnOffMap();
+            mapState = !mapState;
+        });
+
+        menuInventoryButton.onClick.AddListener(() =>
+        {
+            if (inventory.activeSelf)
+                inventory.SetActive(false);
+            else
+                inventory.SetActive(true);
+        });
     }
 
     private void FindChilds()
     {
         mapBackground = transform.Find("MapBackground").gameObject;
         inventoryContent = inventory.transform.Find("Viewport/Content").gameObject;
+        menuContent = transform.Find("MainScreen/Menu/Viewport/Content").gameObject;
+        menuCharButton = menuContent.transform.Find("MenuCharButton").GetComponent<Button>();
+        menuMapButton = menuContent.transform.Find("MenuMapButton").GetComponent<Button>();
+        menuInventoryButton = menuContent
+            .transform.Find("MenuInventoryButton")
+            .GetComponent<Button>();
+        menuSettingButton = menuContent.transform.Find("MenuSettingButton").GetComponent<Button>();
+        upgradeZone = transform.Find("MainScreen/UpgradeZone").gameObject;
+        statUpgrades = upgradeZone.transform.GetComponentsInChildren<StatUpgradeUI>(true).ToList();
+        helperTextTMP = transform.Find("MainScreen/HelperText").GetComponent<TextMeshProUGUI>();
 
         /* Temp */
         playerItemUIs = inventoryContent.transform.GetComponentsInChildren<Item>().ToList();
@@ -115,6 +157,7 @@ public class GameUIManager : MonoEditorSingleton<GameUIManager>
         };
 
         canvas.planeDistance = planeDistance;
+        mapBackground.SetActive(true);
     }
 
     public PoolObject CreateAndHandleHPAndMPUIWithFollowing(Transform transform)
@@ -173,5 +216,38 @@ public class GameUIManager : MonoEditorSingleton<GameUIManager>
         itemUI.rectTransform.anchorMax = ItemInventoryAnchorPos;
         itemUI.rectTransform.anchoredPosition = Vector2.zero;
         playerItemUIs.Add(itemUI);
+    }
+
+    public void SpawnStatUpgrade(List<StatUpgrade> sUs)
+    {
+        StartCoroutine(SpawnStatUpgradeIE(sUs));
+    }
+
+    IEnumerator SpawnStatUpgradeIE(List<StatUpgrade> sUs)
+    {
+        helperTextTMP.gameObject.SetActive(true);
+        helperTextTMP.text = "<+pivot duration=1><wave><palette>select your  reward !</+>";
+        yield return _waitForSeconds1;
+        for (int i = 0; i < statUpgrades.Count; i++)
+        {
+            statUpgrades[i].SetUpgrade(sUs[i]);
+        }
+    }
+
+    public void ShowOnlyStatUpgradeUI(StatUpgradeUI statUpgradeUI)
+    {
+        for (int i = 0; i < statUpgrades.Count; i++)
+        {
+            if (statUpgrades[i] != statUpgradeUI)
+                statUpgrades[i].gameObject.SetActive(false);
+        }
+    }
+
+    public void ShowStatUpgradeUIs()
+    {
+        for (int i = 0; i < statUpgrades.Count; i++)
+        {
+            statUpgrades[i].gameObject.SetActive(true);
+        }
     }
 }

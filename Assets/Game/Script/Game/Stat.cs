@@ -249,23 +249,23 @@ public partial class Stat : MonoEditor
 
     /// <summary>
     /// ManaPoint =
-    ///    (BaseManaPoint + ManaPointAdditionModifier + 12 * Wisdom)
+    ///    (BaseManaPoint + ManaPointAdditionModifier + 5 * Wisdom)
     ///    * ManaPointMultiplicationModifier;
     /// </summary>
     void WisdomChangeManaPoint()
     {
-        wisdom.referenceModifiers[1].value = 12 * wisdom.FinalValue;
+        wisdom.referenceModifiers[1].value = 5 * wisdom.FinalValue;
         manaPoint.RecalculateFinalValue();
     }
 
     /// <summary>
     /// ManaRegen =
-    ///        (BaseManaRegen + ManaRegenAdditionModifier + 0.05f * Wisdom)
+    ///        (BaseManaRegen + ManaRegenAdditionModifier + 1.5 * Wisdom)
     ///        * ManaRegenMultiplicationModifier;
     /// </summary>
     void WisdomChangeManaRegen()
     {
-        wisdom.referenceModifiers[0].value = 0.05f * wisdom.FinalValue;
+        wisdom.referenceModifiers[0].value = 1.5f * wisdom.FinalValue;
         manaRegen.RecalculateFinalValue();
     }
 

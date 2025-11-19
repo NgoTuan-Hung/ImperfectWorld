@@ -30,7 +30,6 @@ public class GuardedVengence : SkillBase
 
     public override void Config()
     {
-        GetActionField<ActionFloatField>(ActionFieldName.ManaCost).value = 100f;
         GetActionField<ActionFloatField>(ActionFieldName.Range).value = 1.25f;
         GetActionField<ActionIntField>(ActionFieldName.EffectCount).value = 11;
         GetActionField<ActionFloatField>(ActionFieldName.Duration).value = 2.75f;
@@ -61,10 +60,7 @@ public class GuardedVengence : SkillBase
         CustomMono p_customMono = null
     )
     {
-        if (
-            customMono.stat.currentManaPoint.Value
-            < GetActionField<ActionFloatField>(ActionFieldName.ManaCost).value
-        )
+        if (customMono.stat.currentManaPoint.Value < customMono.stat.manaPoint.FinalValue)
             return failResult;
         if (!customMono.actionBlocking)
         {
@@ -75,9 +71,7 @@ public class GuardedVengence : SkillBase
                 GetActionField<ActionIEnumeratorField>(ActionFieldName.ActionIE).value = TriggerIE()
             );
             customMono.currentAction = this;
-            customMono.stat.currentManaPoint.Value -= GetActionField<ActionFloatField>(
-                ActionFieldName.ManaCost
-            ).value;
+            customMono.stat.currentManaPoint.Value -= customMono.stat.manaPoint.FinalValue;
 
             return successResult;
         }
@@ -91,8 +85,9 @@ public class GuardedVengence : SkillBase
         CustomMono p_customMono = null
     )
     {
+        FloatStatModifier fSM = new(damgeReductionBuff, FloatStatModifierType.Additive);
         customMono.statusEffect.BuffDR(
-            damgeReductionBuff,
+            fSM,
             GetActionField<ActionFloatField>(ActionFieldName.Duration).value
         );
         savedTotalDamageTaken = customMono.statusEffect.GetTotalDamageTaken();

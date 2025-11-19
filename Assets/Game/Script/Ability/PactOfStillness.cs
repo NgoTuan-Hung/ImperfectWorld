@@ -24,7 +24,6 @@ public class PactOfStillness : SkillBase
 
     public override void Config()
     {
-        GetActionField<ActionFloatField>(ActionFieldName.ManaCost).value = 100f;
         GetActionField<ActionFloatField>(ActionFieldName.Range).value = 1.25f;
         GetActionField<ActionFloatField>(ActionFieldName.Duration).value = 4f;
 
@@ -47,10 +46,7 @@ public class PactOfStillness : SkillBase
         CustomMono p_customMono = null
     )
     {
-        if (
-            customMono.stat.currentManaPoint.Value
-            < GetActionField<ActionFloatField>(ActionFieldName.ManaCost).value
-        )
+        if (customMono.stat.currentManaPoint.Value < customMono.stat.manaPoint.FinalValue)
             return failResult;
         else if (!customMono.actionBlocking)
         {
@@ -65,9 +61,7 @@ public class PactOfStillness : SkillBase
                 )
             );
             customMono.currentAction = this;
-            customMono.stat.currentManaPoint.Value -= GetActionField<ActionFloatField>(
-                ActionFieldName.ManaCost
-            ).value;
+            customMono.stat.currentManaPoint.Value -= customMono.stat.manaPoint.FinalValue;
             return successResult;
         }
 
@@ -80,8 +74,9 @@ public class PactOfStillness : SkillBase
         CustomMono p_customMono = null
     )
     {
+        FloatStatModifier fSM = new(damageReductionBuff, FloatStatModifierType.Additive);
         customMono.statusEffect.BuffDR(
-            damageReductionBuff,
+            fSM,
             GetActionField<ActionFloatField>(ActionFieldName.Duration).value
         );
 

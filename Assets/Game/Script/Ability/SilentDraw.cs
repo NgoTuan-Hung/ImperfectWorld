@@ -29,7 +29,6 @@ public class SilentDraw : SkillBase
     public override void Config()
     {
         GetActionField<ActionFloatField>(ActionFieldName.Cooldown).value = 0f;
-        GetActionField<ActionFloatField>(ActionFieldName.ManaCost).value = 100f;
         GetActionField<ActionFloatField>(ActionFieldName.Range).value = 100;
         GetActionField<ActionIntField>(ActionFieldName.EffectCount).value = 5;
         successResult = new(
@@ -67,10 +66,7 @@ public class SilentDraw : SkillBase
         CustomMono p_customMono = null
     )
     {
-        if (
-            customMono.stat.currentManaPoint.Value
-            < GetActionField<ActionFloatField>(ActionFieldName.ManaCost).value
-        )
+        if (customMono.stat.currentManaPoint.Value < customMono.stat.manaPoint.FinalValue)
             return failResult;
         if (!customMono.actionBlocking)
         {
@@ -83,9 +79,7 @@ public class SilentDraw : SkillBase
                 )
             );
             customMono.currentAction = this;
-            customMono.stat.currentManaPoint.Value -= GetActionField<ActionFloatField>(
-                ActionFieldName.ManaCost
-            ).value;
+            customMono.stat.currentManaPoint.Value -= customMono.stat.manaPoint.FinalValue;
 
             return successResult;
         }

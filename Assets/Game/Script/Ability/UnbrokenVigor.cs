@@ -27,8 +27,6 @@ public class UnbrokenVigor : SkillBase
     {
         attackSpeedBuff = new(0.25f, FloatStatModifierType.Additive);
         omnivampBuff = new(0.2f, FloatStatModifierType.Additive);
-        /* Debuff duration */
-        GetActionField<ActionFloatField>(ActionFieldName.ManaCost).value = 100f;
         GetActionField<ActionFloatField>(ActionFieldName.Range).value = 1.25f;
         GetActionField<ActionFloatField>(ActionFieldName.Duration).value = 5f;
 
@@ -54,10 +52,7 @@ public class UnbrokenVigor : SkillBase
         CustomMono p_customMono = null
     )
     {
-        if (
-            customMono.stat.currentManaPoint.Value
-            < GetActionField<ActionFloatField>(ActionFieldName.ManaCost).value
-        )
+        if (customMono.stat.currentManaPoint.Value < customMono.stat.manaPoint.FinalValue)
             return failResult;
         else if (!customMono.actionBlocking)
         {
@@ -72,9 +67,7 @@ public class UnbrokenVigor : SkillBase
                 )
             );
             customMono.currentAction = this;
-            customMono.stat.currentManaPoint.Value -= GetActionField<ActionFloatField>(
-                ActionFieldName.ManaCost
-            ).value;
+            customMono.stat.currentManaPoint.Value -= customMono.stat.manaPoint.FinalValue;
             return successResult;
         }
 

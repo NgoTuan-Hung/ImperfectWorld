@@ -11,6 +11,7 @@ public class DescriptionEditor : EditorWindow
     {
         Skill,
         Item,
+        StatUpgrade,
     }
 
     public CurrentSOType currentSOType = CurrentSOType.Skill;
@@ -22,23 +23,32 @@ public class DescriptionEditor : EditorWindow
     Button saveButton;
     Dictionary<string, string> stylizedTextMapper = new()
     {
-        { "Passive", "<color=#3498DB>p</color>" },
-        { "Active", "<color=#E67E22>a</color>" },
+        { "PASSIVE", "<color=#3498DB>p</color>" },
+        { "ACTIVE", "<color=#E67E22>a</color>" },
+        { "CURRENT HP", "<link=current hp><color=#D72638>current hp</color></link>" },
         { "HP", "<link=hp><color=#C71F37>hp</color></link>" },
-        { "Current MP", "<link=current mp><color=#3E8EDE>current mp</color></link>" },
-        { "Might", "<link=might><color=#F39C12>might</color></link>" },
-        { "Reflex", "<link=reflex><color=#27AE60>reflex</color></link>" },
-        { "Wisdom", "<link=wisdom><color=#9B59B6>wisdom</color></link>" },
+        { "HPREGEN", "<link=hp regen><color=#FF6B6B>hp regen</color></link>" },
+        { "CURRENT MP", "<link=current mp><color=#3E8EDE>current mp</color></link>" },
+        { "MP", "<link=mp><color=#2F75C0>mp</color></link>" },
+        { "MPREGEN", "<link=mp regen><color=#7FDBFF>mp regen</color></link>" },
+        { "MIGHT", "<link=might><color=#F39C12>might</color></link>" },
+        { "REFLEX", "<link=reflex><color=#27AE60>reflex</color></link>" },
+        { "WISDOM", "<link=wisdom><color=#9B59B6>wisdom</color></link>" },
         { "ASPD", "<link=aspd><color=#E67E22>aspd</color></link>" },
-        { "Omnivamp", "<link=omnivamp><color=#C62828>omnivamp</color></link>" },
+        { "ARMOR", "<link=armor><color=#95A5A6>armor</color></link>" },
+        { "MSPD", "<link=mspd><color=#1ABC9C>mspd</color></link>" },
+        { "DMGMOD", "<link=dmgmod><color=#FFC107>dmgmod</color></link>: damage multiplier." },
+        { "OMNIVAMP", "<link=omnivamp><color=#C62828>omnivamp</color></link>" },
         { "ATK", "<link=atk><color=#E53935>atk</color></link>" },
-        { "Armor", "<link=armor><color=#95A5A6>armor</color></link>" },
+        { "CRIT", "<link=crit><color=#FFD54F>crit</color></link>: crit chance." },
         {
-            "Damage Reduction",
-            "<link=damage reduction><color=#4A90E2>damage reduction</color></link>"
+            "CRITMOD",
+            "<link=critmod><color=#AB47BC>critmod</color></link>: crit damage modifier, how much damage is multiplied on crit."
         },
-        { "Positive Number", "<color=green>c</color>" },
-        { "Strike Lock", "<link=strike lock><color=#fc03d7>strike lock</color></link>" },
+        { "DMGREDUC", "<link=damage reduction><color=#4A90E2>damage reduction</color></link>" },
+        { "ATKRANGE", "<link=atkrange><color=#FFD447>atkrange</color></link>: attack range." },
+        { "POSITIVE NUMBER", "<color=green>c</color>" },
+        { "STRIKE LOCK", "<link=strike lock><color=#fc03d7>strike lock</color></link>" },
     };
     int lastCaretIndex = 0;
 
@@ -62,20 +72,29 @@ public class DescriptionEditor : EditorWindow
     {
         addStylizedTextDropdownField.choices = new()
         {
-            "Passive",
-            "Active",
+            "PASSIVE",
+            "ACTIVE",
+            "CURRENT HP",
             "HP",
-            "Current MP",
-            "Might",
-            "Reflex",
-            "Wisdom",
+            "HPREGEN",
+            "CURRENT MP",
+            "MP",
+            "MPREGEN",
+            "MIGHT",
+            "REFLEX",
+            "WISDOM",
             "ASPD",
-            "Omnivamp",
+            "ARMOR",
+            "MSPD",
+            "DMGMOD",
+            "OMNIVAMP",
             "ATK",
-            "Armor",
-            "Damage Reduction",
-            "Positive Number",
-            "Strike Lock",
+            "CRIT",
+            "CRITMOD",
+            "DMGREDUC",
+            "ATKRANGE",
+            "POSITIVE NUMBER",
+            "STRIKE LOCK",
         };
     }
 
@@ -83,15 +102,25 @@ public class DescriptionEditor : EditorWindow
     {
         scriptableObjectObjectField.RegisterValueChangedCallback(evt =>
         {
-            if (evt.newValue is SkillDataSO)
+            switch (evt.newValue)
             {
-                descTextField.value = (evt.newValue as SkillDataSO).skillDescription;
-                currentSOType = CurrentSOType.Skill;
-            }
-            else if (evt.newValue is ItemDataSO)
-            {
-                descTextField.value = (evt.newValue as ItemDataSO).itemDescription;
-                currentSOType = CurrentSOType.Item;
+                case SkillDataSO skillData:
+                    descTextField.value = skillData.skillDescription;
+                    currentSOType = CurrentSOType.Skill;
+                    break;
+
+                case ItemDataSO itemData:
+                    descTextField.value = itemData.itemDescription;
+                    currentSOType = CurrentSOType.Item;
+                    break;
+
+                case StatUpgrade statUpgradeData:
+                    descTextField.value = statUpgradeData.description;
+                    currentSOType = CurrentSOType.StatUpgrade;
+                    break;
+
+                default:
+                    break;
             }
         });
 
@@ -121,18 +150,31 @@ public class DescriptionEditor : EditorWindow
 
         saveButton.clicked += () =>
         {
-            if (currentSOType == CurrentSOType.Skill)
+            switch (currentSOType)
             {
-                (scriptableObjectObjectField.value as SkillDataSO).skillDescription =
-                    descTextField.value;
-                EditorUtility.SetDirty(scriptableObjectObjectField.value);
+                case CurrentSOType.Skill:
+                {
+                    (scriptableObjectObjectField.value as SkillDataSO).skillDescription =
+                        descTextField.value;
+                    break;
+                }
+                case CurrentSOType.Item:
+                {
+                    (scriptableObjectObjectField.value as ItemDataSO).itemDescription =
+                        descTextField.value;
+                    break;
+                }
+                case CurrentSOType.StatUpgrade:
+                {
+                    (scriptableObjectObjectField.value as StatUpgrade).description =
+                        descTextField.value;
+                    break;
+                }
+                default:
+                    break;
             }
-            else if (currentSOType == CurrentSOType.Item)
-            {
-                (scriptableObjectObjectField.value as ItemDataSO).itemDescription =
-                    descTextField.value;
-                EditorUtility.SetDirty(scriptableObjectObjectField.value);
-            }
+
+            EditorUtility.SetDirty(scriptableObjectObjectField.value);
 
             AssetDatabase.SaveAssets();
         };
