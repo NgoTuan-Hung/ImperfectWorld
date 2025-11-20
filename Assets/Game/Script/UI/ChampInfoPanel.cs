@@ -33,7 +33,11 @@ public class ChampInfoPanel : MonoBehaviour, IPointerDownHandler
         abilityTMP,
         tooltipTMP;
     public static Vector3 offset = new(1.33942f, 2.614366f);
-    ChampInfoPanelTabButton selectedCIPTB;
+    public ChampInfoPanelTabButton selectedCIPTB,
+        xCIPTB,
+        statCIPTB,
+        abilityCIPTB,
+        itemCIPTB;
 
     private void Awake()
     {
@@ -100,13 +104,38 @@ public class ChampInfoPanel : MonoBehaviour, IPointerDownHandler
         var tabButtons = GetComponentsInChildren<ChampInfoPanelTabButton>();
         foreach (ChampInfoPanelTabButton ciptb in tabButtons)
         {
-            if (ciptb.name.Equals("Stat"))
-                selectedCIPTB = ciptb;
+            switch (ciptb.name)
+            {
+                case "X":
+                {
+                    xCIPTB = ciptb;
+                    break;
+                }
+                case "Stat":
+                {
+                    statCIPTB = ciptb;
+                    selectedCIPTB = ciptb;
+                    break;
+                }
+                case "Ability":
+                {
+                    abilityCIPTB = ciptb;
+                    break;
+                }
+                case "Item":
+                {
+                    itemCIPTB = ciptb;
+                    break;
+                }
+                default:
+                    break;
+            }
+
             ciptb.click += () => OnTabClick(ciptb);
         }
     }
 
-    void OnTabClick(ChampInfoPanelTabButton p_ciptb)
+    public void OnTabClick(ChampInfoPanelTabButton p_ciptb)
     {
         switch (p_ciptb.name)
         {

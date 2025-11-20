@@ -205,12 +205,12 @@ public partial class Stat : MonoEditor
 
     /// <summary>
     /// HealthPoint =
-    ///    (BaseHealthPoint + HealthPointAdditionModifier + 22 * Might)
+    ///    (BaseHealthPoint + HealthPointAdditionModifier + 15 * Might)
     ///     * HealthPointMultiplicationModifier;
     /// </summary>
     void MightChangeHealthPoint()
     {
-        might.referenceModifiers[1].value = 22 * might.FinalValue;
+        might.referenceModifiers[1].value = 15 * might.FinalValue;
         healthPoint.RecalculateFinalValue();
     }
 
@@ -249,12 +249,12 @@ public partial class Stat : MonoEditor
 
     /// <summary>
     /// ManaPoint =
-    ///    (BaseManaPoint + ManaPointAdditionModifier + 5 * Wisdom)
+    ///    (BaseManaPoint + ManaPointAdditionModifier - 0.25 * Wisdom)
     ///    * ManaPointMultiplicationModifier;
     /// </summary>
     void WisdomChangeManaPoint()
     {
-        wisdom.referenceModifiers[1].value = 5 * wisdom.FinalValue;
+        wisdom.referenceModifiers[1].value = -0.25f * wisdom.FinalValue;
         manaPoint.RecalculateFinalValue();
     }
 

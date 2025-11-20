@@ -61,7 +61,7 @@ public class PlayerPointerZone
 
     public void OnDrag(PointerEventData eventData)
     {
-        if (!GameManager.Instance.positioningPhase)
+        if (GameManager.Instance.gameState != GameState.PositioningPhase)
             return;
 
         if (currentRaycastCM != null)

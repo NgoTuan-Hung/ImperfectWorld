@@ -1,6 +1,16 @@
 using System;
 using System.Collections.Generic;
+using Coffee.UIEffects;
 using UnityEngine;
+
+public enum GameState
+{
+    MainMenu,
+    MapTravelingPhase,
+    PositioningPhase,
+    BattlePhase,
+    RewardPhase,
+}
 
 public partial class GameManager
 {
@@ -78,4 +88,6 @@ public partial class GameManager
     public Type MapItemBehaviour(ItemBehaviourType type) => itemBehaviourMapper[type];
 
     public List<StatUpgrade> statUpgrades = new();
+    public List<ChampionReward> championRewards = new();
+    public UIEffectPreset championRewardSelectedEffectPreset;
 }

@@ -41,6 +41,10 @@ public class GameUIManager : MonoEditorSingleton<GameUIManager>
     public Vector2 ItemInventoryAnchorPos = new(0.5f, 0.5f);
     bool mapState = true;
     public List<StatUpgradeUI> statUpgrades;
+    public List<ChampionRewardUI> championRewards;
+    bool finishedReward = false;
+    bool menuCharStateOn = false;
+    bool menuItemStateOn = false;
 
     private void Awake()
     {
@@ -54,34 +58,76 @@ public class GameUIManager : MonoEditorSingleton<GameUIManager>
 
     private void RegisterEvents()
     {
-        menuCharButton.onClick.AddListener(() =>
-        {
-            print("Menu Char Button Clicked");
-        });
+        menuCharButton.onClick.AddListener(ClickMenuCharButton);
+        menuMapButton.onClick.AddListener(ClickMenuMapButton);
+        menuInventoryButton.onClick.AddListener(ClickMenuItemButton);
+    }
 
-        menuMapButton.onClick.AddListener(() =>
+    void ClickMenuCharButton()
+    {
+        if (menuCharStateOn)
         {
-            if (mapState)
-                TurnOnMap();
-            else
-                TurnOffMap();
-            mapState = !mapState;
-        });
+            foreach (var item in champInfoPanelDict)
+            {
+                item.Value.OnTabClick(item.Value.xCIPTB);
+            }
+            menuCharStateOn = false;
+        }
+        else
+        {
+            foreach (var item in champInfoPanelDict)
+            {
+                ShowChampUI(item.Value);
+                item.Value.OnTabClick(item.Value.statCIPTB);
+            }
+            menuCharStateOn = true;
+        }
+    }
 
-        menuInventoryButton.onClick.AddListener(() =>
+    void ClickMenuMapButton()
+    {
+        if (mapState)
         {
-            if (inventory.activeSelf)
-                inventory.SetActive(false);
-            else
-                inventory.SetActive(true);
-        });
+            TurnOnMap();
+        }
+        else
+        {
+            if (GameManager.Instance.gameState == GameState.MapTravelingPhase)
+                return;
+            TurnOffMap();
+        }
+
+        mapState = !mapState;
+    }
+
+    void ClickMenuItemButton()
+    {
+        if (menuItemStateOn)
+        {
+            inventory.SetActive(false);
+            foreach (var item in champInfoPanelDict)
+            {
+                item.Value.OnTabClick(item.Value.xCIPTB);
+            }
+            menuItemStateOn = false;
+        }
+        else
+        {
+            inventory.SetActive(true);
+            foreach (var item in champInfoPanelDict)
+            {
+                ShowChampUI(item.Value);
+                item.Value.OnTabClick(item.Value.itemCIPTB);
+            }
+            menuItemStateOn = true;
+        }
     }
 
     private void FindChilds()
     {
         mapBackground = transform.Find("MapBackground").gameObject;
         inventoryContent = inventory.transform.Find("Viewport/Content").gameObject;
-        menuContent = transform.Find("MainScreen/Menu/Viewport/Content").gameObject;
+        menuContent = transform.Find("Menu/Viewport/Content").gameObject;
         menuCharButton = menuContent.transform.Find("MenuCharButton").GetComponent<Button>();
         menuMapButton = menuContent.transform.Find("MenuMapButton").GetComponent<Button>();
         menuInventoryButton = menuContent
@@ -90,6 +136,9 @@ public class GameUIManager : MonoEditorSingleton<GameUIManager>
         menuSettingButton = menuContent.transform.Find("MenuSettingButton").GetComponent<Button>();
         upgradeZone = transform.Find("MainScreen/UpgradeZone").gameObject;
         statUpgrades = upgradeZone.transform.GetComponentsInChildren<StatUpgradeUI>(true).ToList();
+        championRewards = upgradeZone
+            .transform.GetComponentsInChildren<ChampionRewardUI>(true)
+            .ToList();
         helperTextTMP = transform.Find("MainScreen/HelperText").GetComponent<TextMeshProUGUI>();
 
         /* Temp */
@@ -175,6 +224,8 @@ public class GameUIManager : MonoEditorSingleton<GameUIManager>
         mapViewUI.GetScrollRectForMap().gameObject.SetActive(true);
     }
 
+    public void UnlockMap() => MapPlayerTracker.Instance.Unlock();
+
     public void TurnOffMap()
     {
         mapBackground.SetActive(false);
@@ -200,6 +251,9 @@ public class GameUIManager : MonoEditorSingleton<GameUIManager>
     public void ShowChampUI(CustomMono p_customMono) =>
         champInfoPanelDict[p_customMono].gameObject.SetActive(true);
 
+    public void ShowChampUI(ChampInfoPanel p_champInfoPanel) =>
+        p_champInfoPanel.gameObject.SetActive(true);
+
     public void RemoveFromInventory(Item itemUI)
     {
         itemUI.transform.parent.SetAsLastSibling();
@@ -218,21 +272,51 @@ public class GameUIManager : MonoEditorSingleton<GameUIManager>
         playerItemUIs.Add(itemUI);
     }
 
-    public void SpawnStatUpgrade(List<StatUpgrade> sUs)
+    public void SpawnReward()
     {
-        StartCoroutine(SpawnStatUpgradeIE(sUs));
+        StartCoroutine(SpawnRewardIE());
     }
 
-    IEnumerator SpawnStatUpgradeIE(List<StatUpgrade> sUs)
+    IEnumerator SpawnRewardIE()
     {
         helperTextTMP.gameObject.SetActive(true);
         helperTextTMP.text = "<+pivot duration=1><wave><palette>select your  reward !</+>";
-        yield return _waitForSeconds1;
-        for (int i = 0; i < statUpgrades.Count; i++)
+
+        yield return SpawnChampionRewardIE();
+
+        for (int i = 0; i < 2; i++)
         {
-            statUpgrades[i].SetUpgrade(sUs[i]);
+            List<StatUpgrade> sUs = GameManager.Instance.GetRandomStatUpgrades(3);
+
+            finishedReward = false;
+            yield return _waitForSeconds1;
+            for (int j = 0; j < statUpgrades.Count; j++)
+            {
+                statUpgrades[j].SetUpgrade(sUs[j]);
+            }
+
+            while (!finishedReward)
+                yield return null;
         }
+
+        helperTextTMP.gameObject.SetActive(false);
+        GameManager.Instance.FinishReward();
     }
+
+    IEnumerator SpawnChampionRewardIE()
+    {
+        List<ChampionReward> cRs = GameManager.Instance.GetRandomChampionRewards(3);
+
+        finishedReward = false;
+        yield return _waitForSeconds1;
+        for (int i = 0; i < championRewards.Count; i++)
+            championRewards[i].SetReward(cRs[i]);
+
+        while (!finishedReward)
+            yield return null;
+    }
+
+    public void FinishReward() => finishedReward = true;
 
     public void ShowOnlyStatUpgradeUI(StatUpgradeUI statUpgradeUI)
     {
@@ -243,11 +327,28 @@ public class GameUIManager : MonoEditorSingleton<GameUIManager>
         }
     }
 
+    public void ShowOnlyChampionRewardUI(ChampionRewardUI championRewardUI)
+    {
+        for (int i = 0; i < championRewards.Count; i++)
+        {
+            if (championRewards[i] != championRewardUI)
+                championRewards[i].gameObject.SetActive(false);
+        }
+    }
+
     public void ShowStatUpgradeUIs()
     {
         for (int i = 0; i < statUpgrades.Count; i++)
         {
             statUpgrades[i].gameObject.SetActive(true);
+        }
+    }
+
+    public void ShowChampionRewardUIs()
+    {
+        for (int i = 0; i < championRewards.Count; i++)
+        {
+            championRewards[i].gameObject.SetActive(true);
         }
     }
 }

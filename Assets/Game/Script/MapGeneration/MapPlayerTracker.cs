@@ -73,5 +73,7 @@ namespace Map
         {
             Debug.Log("Selected node cannot be accessed");
         }
+
+        public void Unlock() => Locked = false;
     }
 }

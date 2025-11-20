@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Coffee.UIEffects;
 using Map;
 using Unity.Cinemachine;
 using UnityEngine;
@@ -65,15 +66,10 @@ public partial class GameManager : MonoBehaviour
     /// Hex grid nodes where enemy stand
     /// </summary>
     public List<HexGridNode> enemyNodes = new();
-
-    /// <summary>
-    /// When clicking start battle button, this will be set to false, meaning we can't position
-    /// characters around anymore. When battle finish, this will be set to true.
-    /// </summary>
-    public bool positioningPhase = true;
     Dictionary<CustomMono, Dictionary<GameEventType, GameEvent>> selfEvents = new();
     Dictionary<string, Dictionary<GameEventType, GameEvent>> teamBasedEvents = new();
     public Action battleEndCallback = () => { };
+    public GameState gameState = GameState.MapTravelingPhase;
 
     public static IEnumerator VoidIE()
     {
@@ -119,6 +115,9 @@ public partial class GameManager : MonoBehaviour
         weakenPopupMat = Resources.Load<Material>("Material/LiberationSans SDF - Weaken");
         armorBuffPopupMat = Resources.Load<Material>("Material/LiberationSans SDF - Armor Buff");
         itemTooltipPrefab = Resources.Load<GameObject>("ItemTooltip");
+        championRewardSelectedEffectPreset = Resources.Load<UIEffectPreset>(
+            "UIEffectPreset/ChampionRewardSelected"
+        );
     }
 
     void ConstructActionFieldInfoDict()
@@ -206,6 +205,7 @@ public partial class GameManager : MonoBehaviour
         MapPlayerTracker.Instance.onNodeEnter += (p_mapNode) =>
         {
             GameUIManager.Instance.startBattleButton.Show();
+            gameState = GameState.PositioningPhase;
             switch (p_mapNode.Node.nodeType)
             {
                 case NodeType.MinorEnemy:
@@ -295,7 +295,7 @@ public partial class GameManager : MonoBehaviour
 
     void BattleRoomStart(PointerEventData p_pED)
     {
-        positioningPhase = false;
+        gameState = GameState.BattlePhase;
         GameUIManager.Instance.startBattleButton.Hide();
         GetEnemyTeamChampions().ForEach(cRE => EnableBattleMode(cRE));
 
@@ -308,12 +308,18 @@ public partial class GameManager : MonoBehaviour
         if (enemyCount <= 0)
         {
             GetPlayerTeamChampions().ForEach(pC => DisableBattleMode(pC));
-            // GameUIManager.Instance.TurnOnMap();
-            positioningPhase = true;
+            gameState = GameState.RewardPhase;
             ClearEnemyNodes();
             battleEndCallback();
-            ShowStatUpgradeForPlayer();
+            ShowRewardForPlayer();
         }
+    }
+
+    public void FinishReward()
+    {
+        GameUIManager.Instance.TurnOnMap();
+        GameUIManager.Instance.UnlockMap();
+        gameState = GameState.MapTravelingPhase;
     }
 
     public void AddCustomMono(CustomMono customMono)
@@ -511,24 +517,50 @@ public partial class GameManager : MonoBehaviour
     public void AddNormalEnemyRoom(NormalEnemyRoomInfo normalEnemyRoomInfo) =>
         roomSystem.allNormalEnemyRooms.Add(normalEnemyRoomInfo);
 
-    /// <summary>
-    /// Reservoir Sampling for selecting 3 random upgrade for player
-    /// </summary>
-    void ShowStatUpgradeForPlayer()
+    void ShowRewardForPlayer()
     {
+        GameUIManager.Instance.SpawnReward();
+    }
+
+    /// <summary>
+    /// Reservoir Sampling for selecting count stat upgrades
+    /// </summary>
+    public List<StatUpgrade> GetRandomStatUpgrades(int count)
+    {
+        if (statUpgrades.Count < count)
+            return null;
+
         List<StatUpgrade> sUs = new();
 
-        int selection = 3;
-        for (int i = 0; i < selection; i++)
+        for (int i = 0; i < count; i++)
             sUs.Add(statUpgrades[i]);
-        for (int i = selection; i < statUpgrades.Count; i++)
+        for (int i = count; i < statUpgrades.Count; i++)
         {
             int r = Random.Range(0, i + 1);
-            if (r < selection)
+            if (r < count)
                 sUs[r] = statUpgrades[i];
         }
 
-        GameUIManager.Instance.SpawnStatUpgrade(sUs);
+        return sUs;
+    }
+
+    public List<ChampionReward> GetRandomChampionRewards(int count)
+    {
+        if (championRewards.Count < count)
+            return null;
+
+        List<ChampionReward> cRs = new();
+
+        for (int i = 0; i < count; i++)
+            cRs.Add(championRewards[i]);
+        for (int i = count; i < championRewards.Count; i++)
+        {
+            int r = Random.Range(0, i + 1);
+            if (r < count)
+                cRs[r] = championRewards[i];
+        }
+
+        return cRs;
     }
 
     public void UpgradeStat(CustomMono customMono, StatUpgrade statUpgrade)
@@ -549,16 +581,24 @@ public partial class GameManager : MonoBehaviour
                 customMono.stat.currentManaPoint.Value += statBuff.modifier.value;
                 break;
             case StatBuffType.MIGHT:
+            {
+                var oldHP = customMono.stat.healthPoint.FinalValue;
                 customMono.stat.might.AddModifier(statBuff.modifier);
-                customMono.stat.currentHealthPoint.Value += statBuff.modifier.value;
+                customMono.stat.currentHealthPoint.Value +=
+                    customMono.stat.healthPoint.FinalValue - oldHP;
                 break;
+            }
             case StatBuffType.REFLEX:
                 customMono.stat.reflex.AddModifier(statBuff.modifier);
                 break;
             case StatBuffType.WISDOM:
+            {
+                var oldMP = customMono.stat.manaPoint.FinalValue;
                 customMono.stat.wisdom.AddModifier(statBuff.modifier);
-                customMono.stat.currentManaPoint.Value += statBuff.modifier.value;
+                customMono.stat.currentManaPoint.Value +=
+                    customMono.stat.manaPoint.FinalValue - oldMP;
                 break;
+            }
             case StatBuffType.ATK:
                 customMono.stat.attackDamage.AddModifier(statBuff.modifier);
                 break;
