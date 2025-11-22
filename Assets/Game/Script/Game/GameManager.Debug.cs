@@ -21,9 +21,9 @@ public partial class GameManager
             for (int i = 0; i < nERI.roomEnemyInfos.Count; i++)
             {
                 ObjectPool t_pool;
-                if (!enemyPools.TryGetValue(nERI.roomEnemyInfos[i].prefab, out t_pool))
+                if (!championPools.TryGetValue(nERI.roomEnemyInfos[i].prefab, out t_pool))
                 {
-                    enemyPools.Add(
+                    championPools.Add(
                         nERI.roomEnemyInfos[i].prefab,
                         new ObjectPool(
                             nERI.roomEnemyInfos[i].prefab,
@@ -34,7 +34,7 @@ public partial class GameManager
                         )
                     );
 
-                    enemyPools[nERI.roomEnemyInfos[i].prefab].handleCachedComponentRefs += (
+                    championPools[nERI.roomEnemyInfos[i].prefab].handleCachedComponentRefs += (
                         p_poolObject
                     ) =>
                     {
@@ -43,7 +43,9 @@ public partial class GameManager
                     };
                 }
 
-                var t_customMono = enemyPools[nERI.roomEnemyInfos[i].prefab].PickOne().CustomMono;
+                var t_customMono = championPools[nERI.roomEnemyInfos[i].prefab]
+                    .PickOne()
+                    .CustomMono;
                 t_customMono.transform.position = nERI.roomEnemyInfos[i].position;
                 MarkGridNodeAsEnemyNode(t_customMono.transform.position);
                 GetEnemyTeamChampions().Add(t_customMono);
@@ -66,7 +68,20 @@ public partial class GameManager
         if (champPrefab == null)
             return false;
 
-        var t_customMono = Instantiate(champPrefab).GetComponent<CustomMono>();
+        if (!championPools.TryGetValue(champPrefab, out ObjectPool t_pool))
+        {
+            championPools.Add(
+                champPrefab,
+                new ObjectPool(
+                    champPrefab,
+                    new PoolArgument(ComponentType.CustomMono, PoolArgument.WhereComponent.Self)
+                )
+            );
+
+            t_pool = championPools[champPrefab];
+        }
+
+        var t_customMono = t_pool.PickOne().CustomMono;
         t_customMono.transform.position = new Vector3(0, 0, 0);
         SwithTeam(t_customMono, "Team1");
         return true;
@@ -77,7 +92,20 @@ public partial class GameManager
         if (champPrefab == null)
             return false;
 
-        var t_customMono = Instantiate(champPrefab).GetComponent<CustomMono>();
+        if (!championPools.TryGetValue(champPrefab, out ObjectPool t_pool))
+        {
+            championPools.Add(
+                champPrefab,
+                new ObjectPool(
+                    champPrefab,
+                    new PoolArgument(ComponentType.CustomMono, PoolArgument.WhereComponent.Self)
+                )
+            );
+
+            t_pool = championPools[champPrefab];
+        }
+
+        var t_customMono = t_pool.PickOne().CustomMono;
         t_customMono.transform.position = new Vector3(0, 0, 0);
         SwithTeam(t_customMono, "Team1");
         StartCoroutine(EnableBattleModeIE(t_customMono));

@@ -10,11 +10,27 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1cb3ed3e615e53240964c7767178a777, type: 3}
-  m_Name: WanderMagician
+  m_Name: WanderMagicianCD
   m_EditorClassIdentifier: Assembly-CSharp::CharAttackInfo
   attackType: 1
   meleeAttackInfos: []
   variant: 1
   rangedProjectileEffectSO: {fileID: 11400000, guid: 0152fa7a68a379f4dabe1a7053af1754, type: 2}
   rangedImpactEffectSO: {fileID: 11400000, guid: d28c11b9ade101044ad7831ae26b286a, type: 2}
+  healthPoint: 20
+  healthRegen: 0
+  manaPoint: 100
+  manaRegen: 0
+  might: 1
+  reflex: 1
+  wisdom: 1
+  attackSpeed: 1
+  armor: 0
+  moveSpeed: 2
+  damageModifier: 1
+  omnivamp: 0
+  attackDamage: 3.8
+  critChance: 0.25
+  critDamageModifier: 1
+  damageReduction: 0
   attackRange: 5

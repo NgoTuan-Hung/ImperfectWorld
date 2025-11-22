@@ -4,11 +4,9 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class ChampInfoPanelTabButton : MonoBehaviour, IPointerDownHandler
+public class InfoPanelTabButton : MonoBehaviour, IPointerDownHandler
 {
-    public static Color highLightColor = ColorUtility.TryParseHtmlString("#FE91FE", out Color color)
-        ? color
-        : Color.white;
+    public Color highLightColor;
     public static Color transparent = new(0, 0, 0, 0);
     TextMeshProUGUI tMP;
     Image underline;

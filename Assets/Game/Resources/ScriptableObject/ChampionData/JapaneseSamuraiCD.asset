@@ -10,9 +10,29 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1cb3ed3e615e53240964c7767178a777, type: 3}
-  m_Name: JapaneseSamurai
+  m_Name: JapaneseSamuraiCD
   m_EditorClassIdentifier: Assembly-CSharp::CharAttackInfo
+  attackType: 0
   meleeAttackInfos:
   - meleeAttackEffectSO: {fileID: 0}
     meleeImpactEffectSO: {fileID: 11400000, guid: 57f5a5216cc7363438a755be830c78a9, type: 2}
   variant: 1
+  rangedProjectileEffectSO: {fileID: 0}
+  rangedImpactEffectSO: {fileID: 0}
+  healthPoint: 55
+  healthRegen: 0
+  manaPoint: 75
+  manaRegen: 10
+  might: 1
+  reflex: 1
+  wisdom: 1
+  attackSpeed: 0.8
+  armor: 1
+  moveSpeed: 2
+  damageModifier: 1
+  omnivamp: 0
+  attackDamage: 3.8
+  critChance: 0.25
+  critDamageModifier: 1
+  damageReduction: 0
+  attackRange: 1.25

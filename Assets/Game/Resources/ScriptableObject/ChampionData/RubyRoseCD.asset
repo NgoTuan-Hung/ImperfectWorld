@@ -10,11 +10,27 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1cb3ed3e615e53240964c7767178a777, type: 3}
-  m_Name: RubyRoseCAI
+  m_Name: RubyRoseCD
   m_EditorClassIdentifier: Assembly-CSharp::CharAttackInfo
   attackType: 1
   meleeAttackInfos: []
   variant: 0
   rangedProjectileEffectSO: {fileID: 11400000, guid: 6f43de1c23dd3a042852c368e85563ff, type: 2}
   rangedImpactEffectSO: {fileID: 11400000, guid: 2eae3984e6940f445ad36ac278adc723, type: 2}
+  healthPoint: 38
+  healthRegen: 0
+  manaPoint: 100
+  manaRegen: 10
+  might: 1
+  reflex: 1
+  wisdom: 1
+  attackSpeed: 0.75
+  armor: 0.75
+  moveSpeed: 2
+  damageModifier: 1
+  omnivamp: 0
+  attackDamage: 3.8
+  critChance: 0.25
+  critDamageModifier: 1
+  damageReduction: 0
   attackRange: 10

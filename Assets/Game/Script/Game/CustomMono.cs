@@ -21,7 +21,6 @@ public enum AttackType
 [DefaultExecutionOrder(0)]
 public partial class CustomMono : MonoSelfAware
 {
-    public CharUIData charUIData;
     public HashSet<string> allyTags = new();
     private GameObject mainComponent;
     public SpriteRenderer spriteRenderer;
@@ -70,7 +69,7 @@ public partial class CustomMono : MonoSelfAware
         combatCollider2D;
     public AudioSource audioSource;
     public new Rigidbody2D rigidbody2D;
-    public CharAttackInfo charAttackInfo;
+    public ChampionData championData;
     public StatusEffect statusEffect;
     public GameObject rotationAndCenterObject,
         directionModifier;

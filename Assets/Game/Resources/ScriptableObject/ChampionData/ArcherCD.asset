@@ -10,9 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1cb3ed3e615e53240964c7767178a777, type: 3}
-  m_Name: VirgilCAI
+  m_Name: ArcherCD
   m_EditorClassIdentifier: Assembly-CSharp::CharAttackInfo
-  meleeAttackInfos:
-  - meleeAttackEffectSO: {fileID: 11400000, guid: e08f758de75232c4cb9d61e33c886973, type: 2}
-    meleeImpactEffectSO: {fileID: 11400000, guid: fc67747c09c22dd4b91cbdd40f21f82d, type: 2}
+  attackType: 1
+  meleeAttackInfos: []
   variant: 1
+  rangedProjectileEffectSO: {fileID: 11400000, guid: beb7626fb219e1d48b9bb34853235630, type: 2}
+  rangedImpactEffectSO: {fileID: 11400000, guid: d28c11b9ade101044ad7831ae26b286a, type: 2}
+  attackRange: 10

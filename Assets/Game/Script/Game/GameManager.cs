@@ -53,7 +53,7 @@ public partial class GameManager : MonoBehaviour
     public HexGridManager gridManager;
     List<HexGridNode> returnPath;
     public RoomSystem roomSystem;
-    Dictionary<GameObject, ObjectPool> enemyPools = new();
+    Dictionary<GameObject, ObjectPool> championPools = new();
     public int enemyCount = 0;
 
     /// <summary>
@@ -243,10 +243,9 @@ public partial class GameManager : MonoBehaviour
 
         for (int i = 0; i < nERI.roomEnemyInfos.Count; i++)
         {
-            ObjectPool t_pool;
-            if (!enemyPools.TryGetValue(nERI.roomEnemyInfos[i].prefab, out t_pool))
+            if (!championPools.TryGetValue(nERI.roomEnemyInfos[i].prefab, out ObjectPool t_pool))
             {
-                enemyPools.Add(
+                championPools.Add(
                     nERI.roomEnemyInfos[i].prefab,
                     new ObjectPool(
                         nERI.roomEnemyInfos[i].prefab,
@@ -254,7 +253,7 @@ public partial class GameManager : MonoBehaviour
                     )
                 );
 
-                enemyPools[nERI.roomEnemyInfos[i].prefab].handleCachedComponentRefs += (
+                championPools[nERI.roomEnemyInfos[i].prefab].handleCachedComponentRefs += (
                     p_poolObject
                 ) =>
                 {
@@ -263,7 +262,7 @@ public partial class GameManager : MonoBehaviour
                 };
             }
 
-            var t_customMono = enemyPools[nERI.roomEnemyInfos[i].prefab].PickOne().CustomMono;
+            var t_customMono = championPools[nERI.roomEnemyInfos[i].prefab].PickOne().CustomMono;
             t_customMono.transform.position = nERI.roomEnemyInfos[i].position;
             MarkGridNodeAsEnemyNode(t_customMono.transform.position);
             GetEnemyTeamChampions().Add(t_customMono);
@@ -638,5 +637,34 @@ public partial class GameManager : MonoBehaviour
             default:
                 break;
         }
+    }
+
+    public void SacrificeChampionRewardAsStat(ChampionData offering, CustomMono recipient)
+    {
+        var hp = recipient.stat.healthPoint.FinalValue;
+
+        recipient.stat.healthPoint.BaseValue += offering.healthPoint * 0.25f;
+        recipient.stat.healthRegen.BaseValue += offering.healthRegen * 0.25f;
+        recipient.stat.manaPoint.BaseValue -= offering.manaPoint * 0.05f;
+        recipient.stat.manaRegen.BaseValue += offering.manaRegen * 0.25f;
+        recipient.stat.might.BaseValue += offering.might * 0.25f;
+        recipient.stat.reflex.BaseValue += offering.reflex * 0.25f;
+        recipient.stat.wisdom.BaseValue += offering.wisdom * 0.25f;
+        recipient.stat.attackSpeed.BaseValue += offering.attackSpeed * 0.25f;
+        recipient.stat.armor.BaseValue += offering.armor * 0.25f;
+        recipient.stat.moveSpeed.BaseValue += offering.moveSpeed * 0.25f;
+        recipient.stat.damageModifier.BaseValue += offering.damageModifier * 0.25f;
+        recipient.stat.omnivamp.BaseValue += offering.omnivamp * 0.25f;
+        recipient.stat.attackDamage.BaseValue += offering.attackDamage * 0.25f;
+        recipient.stat.critChance.BaseValue += offering.critChance * 0.25f;
+        recipient.stat.critDamageModifier.BaseValue += offering.critDamageModifier * 0.25f;
+        recipient.stat.damageReduction.BaseValue += offering.damageReduction * 0.25f;
+        recipient.stat.attackRange.BaseValue += offering.attackRange * 0.05f;
+
+        recipient.stat.currentHealthPoint.Value += recipient.stat.healthPoint.FinalValue - hp;
+        recipient
+            .skill.skillBases[1]
+            .GetActionField<ActionFloatField>(ActionFieldName.Range)
+            .value += offering.attackRange * 0.05f;
     }
 }

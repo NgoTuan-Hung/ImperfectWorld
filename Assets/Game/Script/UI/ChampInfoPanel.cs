@@ -33,11 +33,11 @@ public class ChampInfoPanel : MonoBehaviour, IPointerDownHandler
         abilityTMP,
         tooltipTMP;
     public static Vector3 offset = new(1.33942f, 2.614366f);
-    public ChampInfoPanelTabButton selectedCIPTB,
-        xCIPTB,
-        statCIPTB,
-        abilityCIPTB,
-        itemCIPTB;
+    public InfoPanelTabButton selectedIPTB,
+        xIPTB,
+        statIPTB,
+        abilityIPTB,
+        itemIPTB;
 
     private void Awake()
     {
@@ -101,43 +101,43 @@ public class ChampInfoPanel : MonoBehaviour, IPointerDownHandler
 
     private void InitTabButtons()
     {
-        var tabButtons = GetComponentsInChildren<ChampInfoPanelTabButton>();
-        foreach (ChampInfoPanelTabButton ciptb in tabButtons)
+        var tabButtons = GetComponentsInChildren<InfoPanelTabButton>();
+        foreach (InfoPanelTabButton iptb in tabButtons)
         {
-            switch (ciptb.name)
+            switch (iptb.name)
             {
                 case "X":
                 {
-                    xCIPTB = ciptb;
+                    xIPTB = iptb;
                     break;
                 }
                 case "Stat":
                 {
-                    statCIPTB = ciptb;
-                    selectedCIPTB = ciptb;
+                    statIPTB = iptb;
+                    selectedIPTB = iptb;
                     break;
                 }
                 case "Ability":
                 {
-                    abilityCIPTB = ciptb;
+                    abilityIPTB = iptb;
                     break;
                 }
                 case "Item":
                 {
-                    itemCIPTB = ciptb;
+                    itemIPTB = iptb;
                     break;
                 }
                 default:
                     break;
             }
 
-            ciptb.click += () => OnTabClick(ciptb);
+            iptb.click += () => OnTabClick(iptb);
         }
     }
 
-    public void OnTabClick(ChampInfoPanelTabButton p_ciptb)
+    public void OnTabClick(InfoPanelTabButton iptb)
     {
-        switch (p_ciptb.name)
+        switch (iptb.name)
         {
             case "X":
             {
@@ -146,19 +146,19 @@ public class ChampInfoPanel : MonoBehaviour, IPointerDownHandler
             }
             case "Stat":
             {
-                SwitchTab(p_ciptb);
+                SwitchTab(iptb);
                 SwitchActiveContent(statSV);
                 break;
             }
             case "Ability":
             {
-                SwitchTab(p_ciptb);
+                SwitchTab(iptb);
                 SwitchActiveContent(abilitySV);
                 break;
             }
             case "Item":
             {
-                SwitchTab(p_ciptb);
+                SwitchTab(iptb);
                 SwitchActiveContent(itemSV);
                 break;
             }
@@ -167,14 +167,14 @@ public class ChampInfoPanel : MonoBehaviour, IPointerDownHandler
         }
     }
 
-    void SwitchTab(ChampInfoPanelTabButton p_ciptb)
+    void SwitchTab(InfoPanelTabButton iptb)
     {
-        if (selectedCIPTB != null)
+        if (selectedIPTB != null)
         {
-            selectedCIPTB.ChangeToNormal();
+            selectedIPTB.ChangeToNormal();
         }
-        selectedCIPTB = p_ciptb;
-        selectedCIPTB.ChangeToHighLight();
+        selectedIPTB = iptb;
+        selectedIPTB.ChangeToHighLight();
     }
 
     void SwitchActiveContent(GameObject newActiveContent)

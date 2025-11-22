@@ -25,7 +25,8 @@ public class GameUIManager : MonoEditorSingleton<GameUIManager>
         inventoryContent,
         freeZone,
         menuContent,
-        upgradeZone;
+        upgradeZone,
+        championRewardSelectZone;
     ObjectPool healthAndManaIndicator,
         textPopupUIPool;
     public MapViewUI mapViewUI;
@@ -69,7 +70,7 @@ public class GameUIManager : MonoEditorSingleton<GameUIManager>
         {
             foreach (var item in champInfoPanelDict)
             {
-                item.Value.OnTabClick(item.Value.xCIPTB);
+                item.Value.OnTabClick(item.Value.xIPTB);
             }
             menuCharStateOn = false;
         }
@@ -78,7 +79,7 @@ public class GameUIManager : MonoEditorSingleton<GameUIManager>
             foreach (var item in champInfoPanelDict)
             {
                 ShowChampUI(item.Value);
-                item.Value.OnTabClick(item.Value.statCIPTB);
+                item.Value.OnTabClick(item.Value.statIPTB);
             }
             menuCharStateOn = true;
         }
@@ -107,7 +108,7 @@ public class GameUIManager : MonoEditorSingleton<GameUIManager>
             inventory.SetActive(false);
             foreach (var item in champInfoPanelDict)
             {
-                item.Value.OnTabClick(item.Value.xCIPTB);
+                item.Value.OnTabClick(item.Value.xIPTB);
             }
             menuItemStateOn = false;
         }
@@ -117,7 +118,7 @@ public class GameUIManager : MonoEditorSingleton<GameUIManager>
             foreach (var item in champInfoPanelDict)
             {
                 ShowChampUI(item.Value);
-                item.Value.OnTabClick(item.Value.itemCIPTB);
+                item.Value.OnTabClick(item.Value.itemIPTB);
             }
             menuItemStateOn = true;
         }
@@ -140,6 +141,7 @@ public class GameUIManager : MonoEditorSingleton<GameUIManager>
             .transform.GetComponentsInChildren<ChampionRewardUI>(true)
             .ToList();
         helperTextTMP = transform.Find("MainScreen/HelperText").GetComponent<TextMeshProUGUI>();
+        championRewardSelectZone = transform.Find("MainScreen/ChampionRewardSelectZone").gameObject;
 
         /* Temp */
         playerItemUIs = inventoryContent.transform.GetComponentsInChildren<Item>().ToList();
@@ -351,4 +353,8 @@ public class GameUIManager : MonoEditorSingleton<GameUIManager>
             championRewards[i].gameObject.SetActive(true);
         }
     }
+
+    public void TurnOnChampionRewardSelectZone() => championRewardSelectZone.SetActive(true);
+
+    public void TurnOffChampionRewardSelectZone() => championRewardSelectZone.SetActive(false);
 }

@@ -33,7 +33,7 @@ public class BatchGameObjectModifier : EditorWindow
         {
             listGameObjectSO.gameObjects.ForEach(gO =>
             {
-                ChangeArrowLayer(gO);
+                BatchRename(gO);
             });
             AssetDatabase.SaveAssets();
         };
@@ -59,6 +59,41 @@ public class BatchGameObjectModifier : EditorWindow
         sprite.sortingLayerName = "Base";
         sprite.sortingOrder = 0;
         EditorUtility.SetDirty(gO);
+    }
+
+    void StoreStatToDisk(GameObject gO)
+    {
+        Stat stat = gO.GetComponent<Stat>();
+        ChampionData championData = gO.GetComponent<CustomMono>().championData;
+        championData.healthPoint = stat.healthPoint.BaseValue;
+        championData.healthRegen = stat.healthRegen.BaseValue;
+        championData.manaPoint = stat.manaPoint.BaseValue;
+        championData.manaRegen = stat.manaRegen.BaseValue;
+        championData.might = stat.might.BaseValue;
+        championData.reflex = stat.reflex.BaseValue;
+        championData.wisdom = stat.wisdom.BaseValue;
+        championData.attackSpeed = stat.attackSpeed.BaseValue;
+        championData.armor = stat.armor.BaseValue;
+        championData.moveSpeed = stat.moveSpeed.BaseValue;
+        championData.damageModifier = stat.damageModifier.BaseValue;
+        championData.omnivamp = stat.omnivamp.BaseValue;
+        championData.attackDamage = stat.attackDamage.BaseValue;
+        championData.critChance = stat.critChance.BaseValue;
+        championData.critDamageModifier = stat.critDamageModifier.BaseValue;
+        championData.damageReduction = stat.damageReduction.BaseValue;
+        championData.attackRange = stat.attackRange.BaseValue;
+        EditorUtility.SetDirty(championData);
+    }
+
+    void BatchRename(GameObject gO)
+    {
+        ChampionData championData = gO.GetComponent<CustomMono>().championData;
+        string assetPath = AssetDatabase.GetAssetPath(championData.GetInstanceID());
+        string result = AssetDatabase.RenameAsset(
+            assetPath,
+            championData.name.Replace("CAI", "CD") + ".asset"
+        );
+        Debug.Log(result);
     }
 }
 #endif

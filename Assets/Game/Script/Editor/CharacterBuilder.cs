@@ -55,9 +55,9 @@ public class CharacterBuilder : EditorWindow
         mainComp = build.transform.Find("DirectionModifier/MainComponent").gameObject;
         customMono = build.GetComponent<CustomMono>();
 
-        CharAttackInfo charAttackInfo = CreateInstance<CharAttackInfo>();
-        charAttackInfo.name = nameTextField.text + "CAI";
-        customMono.charAttackInfo = charAttackInfo;
+        ChampionData championData = CreateInstance<ChampionData>();
+        championData.name = nameTextField.text + "CD";
+        customMono.championData = championData;
 
         animator = mainComp.GetComponent<Animator>();
         var templateAC = animator.runtimeAnimatorController;
@@ -86,8 +86,8 @@ public class CharacterBuilder : EditorWindow
         spriteRenderer.sprite = spriteObjectField.value as Sprite;
 
         AssetDatabase.CreateAsset(
-            charAttackInfo,
-            "Assets/Game/Resources/AttackInfo/" + charAttackInfo.name + ".asset"
+            championData,
+            "Assets/Game/Resources/AttackInfo/" + championData.name + ".asset"
         );
         PrefabUtility.SaveAsPrefabAssetAndConnect(
             build,

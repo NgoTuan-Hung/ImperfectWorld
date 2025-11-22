@@ -12,6 +12,29 @@ public enum GameState
     RewardPhase,
 }
 
+public enum ComplexTextID
+{
+    CURHP,
+    HP,
+    HPREGEN,
+    CURMP,
+    MP,
+    MPREGEN,
+    MIGHT,
+    REFLEX,
+    WISDOM,
+    ASPD,
+    ARMOR,
+    MSPD,
+    DMGMOD,
+    OMNIVAMP,
+    ATK,
+    CRIT,
+    CRITMOD,
+    DMGREDUC,
+    ATKRANGE,
+}
+
 public partial class GameManager
 {
     public Material team1DirectionIndicatorMat;
@@ -90,4 +113,72 @@ public partial class GameManager
     public List<StatUpgrade> statUpgrades = new();
     public List<ChampionReward> championRewards = new();
     public UIEffectPreset championRewardSelectedEffectPreset;
+    public float largePositiveNumber = 999999f;
+
+    /* Stat Colors */
+    public const string currentHealthPointColor = "#D72638";
+    public const string healthPointColor = "#C71F37";
+    public const string healthRegenColor = "#FF6B6B";
+    public const string currentManaPointColor = "#3E8EDE";
+    public const string manaPointColor = "#2F75C0";
+    public const string manaRegenColor = "#7FDBFF";
+    public const string mightColor = "#F39C12";
+    public const string reflexColor = "#27AE60";
+    public const string wisdomColor = "#9B59B6";
+    public const string attackSpeedColor = "#E67E22";
+    public const string armorColor = "#95A5A6";
+    public const string moveSpeedColor = "#1ABC9C";
+    public const string damageModifierColor = "#FFC107";
+    public const string omnivampColor = "#C62828";
+    public const string attackDamageColor = "#E53935";
+    public const string critChanceColor = "#FFD54F";
+    public const string critDamageModifierColor = "#AB47BC";
+    public const string damageReductionColor = "#4A90E2";
+    public const string attackRangeColor = "#FFD447";
+    Dictionary<ComplexTextID, string> linkDict = new()
+    {
+        { ComplexTextID.CURHP, "CURHP" },
+        { ComplexTextID.HP, "HP" },
+        { ComplexTextID.HPREGEN, "HPREGEN" },
+        { ComplexTextID.CURMP, "CURMP" },
+        { ComplexTextID.MP, "MP" },
+        { ComplexTextID.MPREGEN, "MPREGEN" },
+        { ComplexTextID.MIGHT, "MIGHT" },
+        { ComplexTextID.REFLEX, "REFLEX" },
+        { ComplexTextID.WISDOM, "WISDOM" },
+        { ComplexTextID.ASPD, "ASPD" },
+        { ComplexTextID.ARMOR, "ARMOR" },
+        { ComplexTextID.MSPD, "MSPD" },
+        { ComplexTextID.DMGMOD, "DMGMOD" },
+        { ComplexTextID.OMNIVAMP, "OMNIVAMP" },
+        { ComplexTextID.ATK, "ATK" },
+        { ComplexTextID.CRIT, "CRIT" },
+        { ComplexTextID.CRITMOD, "CRITMOD" },
+        { ComplexTextID.DMGREDUC, "DMGREDUC" },
+        { ComplexTextID.ATKRANGE, "ATKRANGE" },
+    };
+
+    Dictionary<ComplexTextID, string> colorDict = new()
+    {
+        { ComplexTextID.HP, healthPointColor },
+        { ComplexTextID.HPREGEN, healthRegenColor },
+        { ComplexTextID.MP, manaPointColor },
+        { ComplexTextID.MPREGEN, manaRegenColor },
+        { ComplexTextID.MIGHT, mightColor },
+        { ComplexTextID.REFLEX, reflexColor },
+        { ComplexTextID.WISDOM, wisdomColor },
+        { ComplexTextID.ASPD, attackSpeedColor },
+        { ComplexTextID.ARMOR, armorColor },
+        { ComplexTextID.MSPD, moveSpeedColor },
+        { ComplexTextID.DMGMOD, damageModifierColor },
+        { ComplexTextID.OMNIVAMP, omnivampColor },
+        { ComplexTextID.ATK, attackDamageColor },
+        { ComplexTextID.CRIT, critChanceColor },
+        { ComplexTextID.CRITMOD, critDamageModifierColor },
+        { ComplexTextID.DMGREDUC, damageReductionColor },
+        { ComplexTextID.ATKRANGE, attackRangeColor },
+    };
+
+    public string ConstructComplexText(ComplexTextID id, string innerText) =>
+        $"<link={linkDict[id]}><color={colorDict[id]}>{linkDict[id]}{innerText}</color></link>";
 }

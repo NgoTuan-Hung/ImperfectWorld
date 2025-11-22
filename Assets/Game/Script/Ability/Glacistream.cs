@@ -29,7 +29,9 @@ public class Glacistream : SkillBase
 
     public override void Config()
     {
-        GetActionField<ActionFloatField>(ActionFieldName.Range).value = float.PositiveInfinity;
+        GetActionField<ActionFloatField>(ActionFieldName.Range).value = GameManager
+            .Instance
+            .largePositiveNumber;
         successResult = new(
             true,
             ActionResultType.Cooldown,

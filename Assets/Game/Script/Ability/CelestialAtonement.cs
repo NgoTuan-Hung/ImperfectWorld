@@ -25,7 +25,9 @@ public class CelestialAtonement : SkillBase
 
     public override void Config()
     {
-        GetActionField<ActionFloatField>(ActionFieldName.Range).value = float.PositiveInfinity;
+        GetActionField<ActionFloatField>(ActionFieldName.Range).value = GameManager
+            .Instance
+            .largePositiveNumber;
         GetActionField<ActionFloatField>(ActionFieldName.Duration).value = 5f;
 
         /* Also use actionie, target */

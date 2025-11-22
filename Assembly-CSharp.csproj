@@ -42,7 +42,7 @@
     <UnityVersion>6000.2.0f1</UnityVersion>
   </PropertyGroup>
   <ItemGroup>
-    <Analyzer Include="C:\Users\ADMIN88\.vscode\extensions\visualstudiotoolsforunity.vstuc-1.1.3\Analyzers\Microsoft.Unity.Analyzers.dll" />
+    <Analyzer Include="C:\Users\ADMIN88\.vscode\extensions\visualstudiotoolsforunity.vstuc-1.2.0\Analyzers\Microsoft.Unity.Analyzers.dll" />
     <Analyzer Include="D:\Program\unity\Project\LastDevotion\Library\PackageCache\com.luca3317.tmpeffects@9c8994dfe168\TMPEffects.ParameterUtilityGenerator.dll" />
     <Analyzer Include="D:\Program\unity\Project\LastDevotion\Library\PackageCache\com.luca3317.tmpeffects@9c8994dfe168\TMPEffects.AutoParameters.dll" />
     <Analyzer Include="D:\Program\unity\Project\LastDevotion\Library\PackageCache\com.luca3317.tmpeffects@9c8994dfe168\TMPEffects.StringLibrary.dll" />
@@ -110,7 +110,6 @@
     <Compile Include="Assets\Game\Script\Ability\GetOverThere.cs" />
     <Compile Include="Assets\Test\Spiral\Spiral.cs" />
     <Compile Include="Assets\Test\UIRevamp\RectTransformTest.cs" />
-    <Compile Include="Assets\Game\Script\UI\ChampInfoPanelTabButton.cs" />
     <Compile Include="Assets\Game\Script\Ability\ForceBreaker.cs" />
     <Compile Include="Assets\Game\Script\MapGeneration\ScrollNonUI.cs" />
     <Compile Include="Assets\CustomPackage\STSMapGeneration\OneLine\RectEx\MiscellaniousExtensions.cs" />
@@ -169,6 +168,7 @@
     <Compile Include="Assets\Game\Script\Game\GameManager.Misc.cs" />
     <Compile Include="Assets\CustomPackage\STSMapGeneration\OneLine\OneLine\Example\Details\Scripts\SeparatorExample.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\VertexJitter.cs" />
+    <Compile Include="Assets\Game\Script\ScriptableObject\ChampionData.cs" />
     <Compile Include="Assets\Test\TimelineSerializeTest\TimelineSerializeSignal.cs" />
     <Compile Include="Assets\Game\Script\UI\ChampInfoPanel.cs" />
     <Compile Include="Assets\Game\Script\Ability\InfernalTide.cs" />
@@ -176,7 +176,6 @@
     <Compile Include="Assets\Game\Script\Ability\BladeOfVu.cs" />
     <Compile Include="Assets\Test\ActionTester1\ActionTester.cs" />
     <Compile Include="Assets\CustomPackage\STSMapGeneration\OneLine\OneLine\Example\Details\Scripts\ArrayOfArraysExample.cs" />
-    <Compile Include="Assets\Game\Script\ScriptableObject\CharUIData.cs" />
     <Compile Include="Assets\Test\NoObjectPoolPerformance\NoObjectPoolPerformance.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\VertexZoom.cs" />
     <Compile Include="Assets\Game\Script\PathFinding\GridNodeObstacle.cs" />
@@ -292,7 +291,6 @@
     <Compile Include="Assets\CustomPackage\STSMapGeneration\OneLine\OneLine\Example\Details\Scripts\FixedLengthExample.cs" />
     <Compile Include="Assets\Game\Script\Other\GameEffectBehaviour\GlacistreamBehaviour.cs" />
     <Compile Include="Assets\Game\Script\Ability\BloodOfTheFallen.cs" />
-    <Compile Include="Assets\Game\Script\ScriptableObject\CharAttackInfo.cs" />
     <Compile Include="Assets\Game\Script\GameEventData\TakeDamageGameEventData.cs" />
     <Compile Include="Assets\CustomPackage\STSMapGeneration\OneLine\OneLine\Attributes\HideButtonsAttribute.cs" />
     <Compile Include="Assets\CustomPackage\Dotween\Modules\DOTweenModuleUnityVersion.cs" />
@@ -388,6 +386,7 @@
     <Compile Include="Assets\CustomPackage\STSMapGeneration\OneLine\OneLine\Attributes\OneLineAttribute.cs" />
     <Compile Include="Assets\CustomPackage\Dotween\Modules\DOTweenModuleUI.cs" />
     <Compile Include="Assets\Test\TestObjectPoolRevamp\TestObjectPoolRevamp.cs" />
+    <Compile Include="Assets\Game\Script\UI\InfoPanelTabButton.cs" />
     <Compile Include="Assets\Game\Script\ActionField\ActionSlowInfoField.cs" />
     <Compile Include="Assets\Game\Script\Other\Extension\ColorExtension.cs" />
     <Compile Include="Assets\Game\Script\Other\ComboAction.cs" />

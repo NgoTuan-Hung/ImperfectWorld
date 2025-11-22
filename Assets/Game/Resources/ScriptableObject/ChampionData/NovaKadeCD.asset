@@ -10,11 +10,27 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1cb3ed3e615e53240964c7767178a777, type: 3}
-  m_Name: NovaKade
+  m_Name: NovaKadeCD
   m_EditorClassIdentifier: Assembly-CSharp::CharAttackInfo
   attackType: 1
   meleeAttackInfos: []
   variant: 1
   rangedProjectileEffectSO: {fileID: 11400000, guid: d69b1c53be59f644dbf51ec236d2910e, type: 2}
   rangedImpactEffectSO: {fileID: 11400000, guid: 47f04d4e3dd81604eb63511a8821ebe3, type: 2}
+  healthPoint: 38
+  healthRegen: 0
+  manaPoint: 65
+  manaRegen: 10
+  might: 1
+  reflex: 1
+  wisdom: 1
+  attackSpeed: 0.8
+  armor: 0.75
+  moveSpeed: 2
+  damageModifier: 1
+  omnivamp: 0
+  attackDamage: 4
+  critChance: 0.25
+  critDamageModifier: 1
+  damageReduction: 0
   attackRange: 10

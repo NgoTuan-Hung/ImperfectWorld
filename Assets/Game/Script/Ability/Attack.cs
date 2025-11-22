@@ -39,19 +39,17 @@ public class Attack : SkillBase
         GetActionField<ActionFloatField>(ActionFieldName.Blend).value =
             1f
             / (
-                (customMono.charAttackInfo.variant - 1) == 0
-                    ? 1
-                    : customMono.charAttackInfo.variant - 1
+                (customMono.championData.variant - 1) == 0 ? 1 : customMono.championData.variant - 1
             );
 
-        switch (customMono.charAttackInfo.attackType)
+        switch (customMono.championData.attackType)
         {
-            case CharAttackInfo.AttackType.Melee:
+            case ChampionData.AttackType.Melee:
             {
                 triggerIE = MeleeTriggerIE;
                 break;
             }
-            case CharAttackInfo.AttackType.Ranged:
+            case ChampionData.AttackType.Ranged:
             {
                 triggerIE = RangedTriggerIE;
                 break;
@@ -121,7 +119,7 @@ public class Attack : SkillBase
     {
         GetActionField<ActionIntField>(ActionFieldName.SelectedVariant).value = Random.Range(
             0,
-            customMono.charAttackInfo.variant
+            customMono.championData.variant
         );
         SetBlend(
             GameManager.Instance.attackBlendHash,
@@ -137,13 +135,13 @@ public class Attack : SkillBase
         customMono.animationEventFunctionCaller.SetSignal(EAnimationSignal.Attack, false);
 
         if (
-            customMono.charAttackInfo.CheckMeleeAttackEffect(
+            customMono.championData.CheckMeleeAttackEffect(
                 GetActionField<ActionIntField>(ActionFieldName.SelectedVariant).value
             )
         )
             SpawnEffectAsChild(
                 p_direction,
-                customMono.charAttackInfo.GetMeleeAttackEffect(
+                customMono.championData.GetMeleeAttackEffect(
                     GetActionField<ActionIntField>(ActionFieldName.SelectedVariant).value
                 )
             );
@@ -154,7 +152,7 @@ public class Attack : SkillBase
 
         SpawnEffectAtLoc(
             p_customMono.rotationAndCenterObject.transform.position,
-            customMono.charAttackInfo.GetMeleeImpactEffect(
+            customMono.championData.GetMeleeImpactEffect(
                 GetActionField<ActionIntField>(ActionFieldName.SelectedVariant).value
             )
         );
@@ -184,13 +182,13 @@ public class Attack : SkillBase
         customMono.animationEventFunctionCaller.SetSignal(EAnimationSignal.Attack, false);
 
         customMono
-            .charAttackInfo.GetRangedProjectileEffect()
+            .championData.GetRangedProjectileEffect()
             .FireAsRangedAttackEffect(
                 customMono.rotationAndCenterObject.transform.position,
                 CalculateAttackDamage(),
                 customMono,
                 p_customMono,
-                customMono.charAttackInfo.rangedImpactEffectSO,
+                customMono.championData.rangedImpactEffectSO,
                 attackGED
             );
 

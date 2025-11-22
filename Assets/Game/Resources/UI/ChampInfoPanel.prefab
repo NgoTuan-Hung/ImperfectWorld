@@ -921,6 +921,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9f5773bda01f4bf469570fdd53de84a3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ChampInfoPanelTabButton
+  highLightColor: {r: 0, g: 0, b: 0, a: 0}
 --- !u!1 &1217045073785583982
 GameObject:
   m_ObjectHideFlags: 0
@@ -1071,6 +1072,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9f5773bda01f4bf469570fdd53de84a3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ChampInfoPanelTabButton
+  highLightColor: {r: 0.99607843, g: 0.5686275, b: 0.99607843, a: 1}
 --- !u!1 &1246147900332363166
 GameObject:
   m_ObjectHideFlags: 0
@@ -2356,6 +2358,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9f5773bda01f4bf469570fdd53de84a3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ChampInfoPanelTabButton
+  highLightColor: {r: 0.99607843, g: 0.5686275, b: 0.99607843, a: 1}
 --- !u!1 &3287958677335276481
 GameObject:
   m_ObjectHideFlags: 0
@@ -2829,6 +2832,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a367e1b1e88be8479e447cc1705f679, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ChampInfoPanel
+  owner: {fileID: 0}
+  selectedIPTB: {fileID: 0}
+  xIPTB: {fileID: 0}
+  statIPTB: {fileID: 0}
+  abilityIPTB: {fileID: 0}
+  itemIPTB: {fileID: 0}
 --- !u!1 &3813933903934587315
 GameObject:
   m_ObjectHideFlags: 0
@@ -6095,6 +6104,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9f5773bda01f4bf469570fdd53de84a3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ChampInfoPanelTabButton
+  highLightColor: {r: 0.99607843, g: 0.5686275, b: 0.99607843, a: 1}
 --- !u!1 &8911369608469956695
 GameObject:
   m_ObjectHideFlags: 0
