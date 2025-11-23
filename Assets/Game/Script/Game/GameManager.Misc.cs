@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Coffee.UIEffects;
 using UnityEngine;
 
@@ -14,6 +15,9 @@ public enum GameState
 
 public enum ComplexTextID
 {
+    PASSIVE,
+    ACTIVE,
+    POSITIVENUMBER,
     CURHP,
     HP,
     HPREGEN,
@@ -33,6 +37,7 @@ public enum ComplexTextID
     CRITMOD,
     DMGREDUC,
     ATKRANGE,
+    STRIKELOCK,
 }
 
 public partial class GameManager
@@ -45,60 +50,96 @@ public partial class GameManager
     Dictionary<string, string> descriptionDB = new()
     {
         {
-            "current hp",
-            "<link=current hp><color=#D72638>current hp</color></link>: current health point."
-        },
-        { "hp", "<link=hp><color=#C71F37>hp</color></link>: health point." },
-        {
-            "hp regen",
-            "<link=hp regen><color=#FF6B6B>hp regen</color></link>: how many <link=hp><color=#C71F37>hp</color></link> is regenerated per second."
+            GetComplexTextIDAsText(ComplexTextID.CURHP),
+            ConstructComplexText(ComplexTextID.CURHP) + ": current health point."
         },
         {
-            "current mp",
-            "<link=current mp><color=#3E8EDE>current mp</color></link>: current mana point."
+            GetComplexTextIDAsText(ComplexTextID.HP),
+            ConstructComplexText(ComplexTextID.HP) + ": health point."
         },
         {
-            "mp",
-            "<link=mp><color=#2F75C0>mp</color></link>: mana point, champion use active skill when <link=current mp><color=#3E8EDE>current mp</color></link> reach <link=mp><color=#2F75C0>mp</color></link>."
+            GetComplexTextIDAsText(ComplexTextID.HPREGEN),
+            ConstructComplexText(ComplexTextID.HPREGEN)
+                + ": how many health point is regenerated per second."
         },
         {
-            "mp regen",
-            "<link=mp regen><color=#7FDBFF>mp regen</color></link>: how many <link=mp><color=#2F75C0>mp</color></link> is regenerated per second."
+            GetComplexTextIDAsText(ComplexTextID.CURMP),
+            ConstructComplexText(ComplexTextID.CURMP) + ": current mana point."
         },
         {
-            "might",
-            "<link=might><color=#F39C12>might</color></link>: increases <link=hp><color=#C71F37>hp</color></link> and <link=hp regen><color=#FF6B6B>hp regen</color></link>."
+            GetComplexTextIDAsText(ComplexTextID.MP),
+            ConstructComplexText(ComplexTextID.MP)
+                + ": mana point, champion use active skill when current mana point reach mana point."
         },
         {
-            "reflex",
-            "<link=reflex><color=#27AE60>reflex</color></link>: increases <link=armor><color=#95A5A6>armor</color></link> and <link=aspd><color=#E67E22>aspd</color></link>."
+            GetComplexTextIDAsText(ComplexTextID.MPREGEN),
+            ConstructComplexText(ComplexTextID.MPREGEN)
+                + ": how many mana point is regenerated per second."
         },
         {
-            "wisdom",
-            "<link=wisdom><color=#9B59B6>wisdom</color></link>: increases <link=mp><color=#2F75C0>mp</color></link> and <link=mp regen><color=#7FDBFF>mp regen</color></link>."
-        },
-        { "aspd", "<link=aspd><color=#E67E22>aspd</color></link>: attack speed." },
-        { "armor", "<link=armor><color=#95A5A6>armor</color></link>: 1 armor mitigates 1 damage." },
-        { "mspd", "<link=mspd><color=#1ABC9C>mspd</color></link>: move speed." },
-        { "dmgmod", "<link=dmgmod><color=#FFC107>dmgmod</color></link>: damage multiplier." },
-        {
-            "omnivamp",
-            "<link=omnivamp><color=#C62828>omnivamp</color></link>: heals from damage dealt."
-        },
-        { "atk", "<link=atk><color=#E53935>atk</color></link>: attack damage." },
-        { "crit", "<link=crit><color=#FFD54F>crit</color></link>: crit chance." },
-        {
-            "critmod",
-            "<link=critmod><color=#AB47BC>critmod</color></link>: crit damage modifier, how much damage is multiplied on crit."
+            GetComplexTextIDAsText(ComplexTextID.MIGHT),
+            ConstructComplexText(ComplexTextID.MIGHT)
+                + ": increases health point by 15 and health point regeneration by 0.1."
         },
         {
-            "damage reduction",
-            "<link=damage reduction><color=#4A90E2>damage reduction</color></link>: reduces total damage taken, applied after armor."
+            GetComplexTextIDAsText(ComplexTextID.REFLEX),
+            ConstructComplexText(ComplexTextID.REFLEX)
+                + ": increases armor by 0.17 and attack speed by 0.01."
         },
-        { "atkrange", "<link=atkrange><color=#FFD447>atkrange</color></link>: attack range." },
         {
-            "strike lock",
-            "<link=strike lock><color=#fc03d7>strike lock</color></link>: one affected by strike lock cannot attack."
+            GetComplexTextIDAsText(ComplexTextID.WISDOM),
+            ConstructComplexText(ComplexTextID.WISDOM)
+                + ": Decreases mana point by 0.25 and Increases mana point regeneration by 1.5."
+        },
+        {
+            GetComplexTextIDAsText(ComplexTextID.ASPD),
+            ConstructComplexText(ComplexTextID.ASPD)
+                + ": attack speed, 1 aspd mean 1 attack per second."
+        },
+        {
+            GetComplexTextIDAsText(ComplexTextID.ARMOR),
+            ConstructComplexText(ComplexTextID.ARMOR) + ": 1 armor mitigates 1 damage."
+        },
+        {
+            GetComplexTextIDAsText(ComplexTextID.MSPD),
+            ConstructComplexText(ComplexTextID.MSPD) + ": move speed."
+        },
+        {
+            GetComplexTextIDAsText(ComplexTextID.DMGMOD),
+            ConstructComplexText(ComplexTextID.DMGMOD)
+                + ": damage multiplier, apply to all damage dealt."
+        },
+        {
+            GetComplexTextIDAsText(ComplexTextID.OMNIVAMP),
+            ConstructComplexText(ComplexTextID.OMNIVAMP)
+                + ": how much damage dealt is converted to healing self, 1 omnivamp heal for 100% of damage dealt."
+        },
+        {
+            GetComplexTextIDAsText(ComplexTextID.ATK),
+            ConstructComplexText(ComplexTextID.ATK) + ": attack damage."
+        },
+        {
+            GetComplexTextIDAsText(ComplexTextID.CRIT),
+            ConstructComplexText(ComplexTextID.CRIT) + ": crit chance."
+        },
+        {
+            GetComplexTextIDAsText(ComplexTextID.CRITMOD),
+            ConstructComplexText(ComplexTextID.CRITMOD)
+                + ": crit damage modifier, how much damage is multiplied on crit."
+        },
+        {
+            GetComplexTextIDAsText(ComplexTextID.DMGREDUC),
+            ConstructComplexText(ComplexTextID.DMGREDUC)
+                + ": reduces total damage taken, applied after armor."
+        },
+        {
+            GetComplexTextIDAsText(ComplexTextID.ATKRANGE),
+            ConstructComplexText(ComplexTextID.ATKRANGE) + ": attack range."
+        },
+        {
+            GetComplexTextIDAsText(ComplexTextID.STRIKELOCK),
+            ConstructComplexText(ComplexTextID.STRIKELOCK)
+                + ": one affected by strike lock cannot attack."
         },
     };
     public GameObject itemTooltipPrefab;
@@ -115,7 +156,10 @@ public partial class GameManager
     public UIEffectPreset championRewardSelectedEffectPreset;
     public float largePositiveNumber = 999999f;
 
-    /* Stat Colors */
+    /* Complex Text Colors */
+    public const string passiveColor = "#3498DB";
+    public const string activeColor = "#E67E22";
+    public const string positiveNumber = "#00FF00";
     public const string currentHealthPointColor = "#D72638";
     public const string healthPointColor = "#C71F37";
     public const string healthRegenColor = "#FF6B6B";
@@ -135,8 +179,12 @@ public partial class GameManager
     public const string critDamageModifierColor = "#AB47BC";
     public const string damageReductionColor = "#4A90E2";
     public const string attackRangeColor = "#FFD447";
-    Dictionary<ComplexTextID, string> linkDict = new()
+    public const string strikeLockColor = "#fc03d7";
+    static Dictionary<ComplexTextID, string> linkDict = new()
     {
+        { ComplexTextID.PASSIVE, "PASSIVE" },
+        { ComplexTextID.ACTIVE, "ACTIVE" },
+        { ComplexTextID.POSITIVENUMBER, "POSITIVENUMBER" },
         { ComplexTextID.CURHP, "CURHP" },
         { ComplexTextID.HP, "HP" },
         { ComplexTextID.HPREGEN, "HPREGEN" },
@@ -156,12 +204,18 @@ public partial class GameManager
         { ComplexTextID.CRITMOD, "CRITMOD" },
         { ComplexTextID.DMGREDUC, "DMGREDUC" },
         { ComplexTextID.ATKRANGE, "ATKRANGE" },
+        { ComplexTextID.STRIKELOCK, "STRIKELOCK" },
     };
 
-    Dictionary<ComplexTextID, string> colorDict = new()
+    static Dictionary<ComplexTextID, string> colorDict = new()
     {
+        { ComplexTextID.PASSIVE, passiveColor },
+        { ComplexTextID.ACTIVE, activeColor },
+        { ComplexTextID.POSITIVENUMBER, positiveNumber },
+        { ComplexTextID.CURHP, currentHealthPointColor },
         { ComplexTextID.HP, healthPointColor },
         { ComplexTextID.HPREGEN, healthRegenColor },
+        { ComplexTextID.CURMP, currentManaPointColor },
         { ComplexTextID.MP, manaPointColor },
         { ComplexTextID.MPREGEN, manaRegenColor },
         { ComplexTextID.MIGHT, mightColor },
@@ -177,8 +231,19 @@ public partial class GameManager
         { ComplexTextID.CRITMOD, critDamageModifierColor },
         { ComplexTextID.DMGREDUC, damageReductionColor },
         { ComplexTextID.ATKRANGE, attackRangeColor },
+        { ComplexTextID.STRIKELOCK, strikeLockColor },
     };
 
-    public string ConstructComplexText(ComplexTextID id, string innerText) =>
+    public static string ConstructComplexText(ComplexTextID id, string innerText) =>
         $"<link={linkDict[id]}><color={colorDict[id]}>{linkDict[id]}{innerText}</color></link>";
+
+    public static string ConstructComplexText(ComplexTextID id) =>
+        $"<link={linkDict[id]}><color={colorDict[id]}>{linkDict[id]}</color></link>";
+
+    public static string ConstructColoredText(ComplexTextID id, string innerText) =>
+        $"<color={colorDict[id]}>{innerText}</color>";
+
+    public static string GetComplexTextIDAsText(ComplexTextID id) => linkDict[id];
+
+    public static List<string> GetAllIDsAsText() => linkDict.Values.ToList();
 }

@@ -23,13 +23,15 @@ public class ChampionRewardUI : DoubleTapUI, IDragHandler, IBeginDragHandler, IE
     TextMeshProUGUI nameTMP,
         statTMP,
         abilityTMP,
-        offerTMP;
+        offerTMP,
+        tooltipTMP;
     GameObject infoPanel,
         container,
         statSV,
         abilitySV,
         offerSV,
-        activeContent;
+        activeContent,
+        tooltip;
     PointerDownUI tooltipCloseButton;
     ChampionReward championReward;
     Skill rewardSkill;
@@ -44,6 +46,9 @@ public class ChampionRewardUI : DoubleTapUI, IDragHandler, IBeginDragHandler, IE
         statIPTB,
         abilityIPTB,
         offerIPTB;
+    DoubleTapUI statDTU,
+        abilityDTU,
+        offerDTU;
 
     public void SetReward(ChampionReward cR)
     {
@@ -75,85 +80,57 @@ public class ChampionRewardUI : DoubleTapUI, IDragHandler, IBeginDragHandler, IE
         StringBuilder sb = new();
 
         sb.AppendLine(
-            GameManager.Instance.ConstructComplexText(ComplexTextID.HP, $": {rewardCD.healthPoint}")
+            GameManager.ConstructComplexText(ComplexTextID.HP, $": {rewardCD.healthPoint}")
         );
         sb.AppendLine(
-            GameManager.Instance.ConstructComplexText(
-                ComplexTextID.HPREGEN,
-                $": {rewardCD.healthRegen}"
-            )
+            GameManager.ConstructComplexText(ComplexTextID.HPREGEN, $": {rewardCD.healthRegen}")
         );
         sb.AppendLine(
-            GameManager.Instance.ConstructComplexText(ComplexTextID.MP, $": {rewardCD.manaPoint}")
+            GameManager.ConstructComplexText(ComplexTextID.MP, $": {rewardCD.manaPoint}")
         );
         sb.AppendLine(
-            GameManager.Instance.ConstructComplexText(
-                ComplexTextID.MPREGEN,
-                $": {rewardCD.manaRegen}"
-            )
+            GameManager.ConstructComplexText(ComplexTextID.MPREGEN, $": {rewardCD.manaRegen}")
+        );
+        sb.AppendLine(GameManager.ConstructComplexText(ComplexTextID.MIGHT, $": {rewardCD.might}"));
+        sb.AppendLine(
+            GameManager.ConstructComplexText(ComplexTextID.REFLEX, $": {rewardCD.reflex}")
         );
         sb.AppendLine(
-            GameManager.Instance.ConstructComplexText(ComplexTextID.MIGHT, $": {rewardCD.might}")
+            GameManager.ConstructComplexText(ComplexTextID.WISDOM, $": {rewardCD.wisdom}")
         );
         sb.AppendLine(
-            GameManager.Instance.ConstructComplexText(ComplexTextID.REFLEX, $": {rewardCD.reflex}")
+            GameManager.ConstructComplexText(ComplexTextID.ASPD, $": {rewardCD.attackSpeed}")
+        );
+        sb.AppendLine(GameManager.ConstructComplexText(ComplexTextID.ARMOR, $": {rewardCD.armor}"));
+        sb.AppendLine(
+            GameManager.ConstructComplexText(ComplexTextID.MSPD, $": {rewardCD.moveSpeed}")
         );
         sb.AppendLine(
-            GameManager.Instance.ConstructComplexText(ComplexTextID.WISDOM, $": {rewardCD.wisdom}")
+            GameManager.ConstructComplexText(ComplexTextID.DMGMOD, $": {rewardCD.damageModifier}")
         );
         sb.AppendLine(
-            GameManager.Instance.ConstructComplexText(
-                ComplexTextID.ASPD,
-                $": {rewardCD.attackSpeed}"
-            )
+            GameManager.ConstructComplexText(ComplexTextID.OMNIVAMP, $": {rewardCD.omnivamp}")
         );
         sb.AppendLine(
-            GameManager.Instance.ConstructComplexText(ComplexTextID.ARMOR, $": {rewardCD.armor}")
+            GameManager.ConstructComplexText(ComplexTextID.ATK, $": {rewardCD.attackDamage}")
         );
         sb.AppendLine(
-            GameManager.Instance.ConstructComplexText(ComplexTextID.MSPD, $": {rewardCD.moveSpeed}")
+            GameManager.ConstructComplexText(ComplexTextID.CRIT, $": {rewardCD.critChance}")
         );
         sb.AppendLine(
-            GameManager.Instance.ConstructComplexText(
-                ComplexTextID.DMGMOD,
-                $": {rewardCD.damageModifier}"
-            )
-        );
-        sb.AppendLine(
-            GameManager.Instance.ConstructComplexText(
-                ComplexTextID.OMNIVAMP,
-                $": {rewardCD.omnivamp}"
-            )
-        );
-        sb.AppendLine(
-            GameManager.Instance.ConstructComplexText(
-                ComplexTextID.ATK,
-                $": {rewardCD.attackDamage}"
-            )
-        );
-        sb.AppendLine(
-            GameManager.Instance.ConstructComplexText(
-                ComplexTextID.CRIT,
-                $": {rewardCD.critChance}"
-            )
-        );
-        sb.AppendLine(
-            GameManager.Instance.ConstructComplexText(
+            GameManager.ConstructComplexText(
                 ComplexTextID.CRITMOD,
                 $": {rewardCD.critDamageModifier}"
             )
         );
         sb.AppendLine(
-            GameManager.Instance.ConstructComplexText(
+            GameManager.ConstructComplexText(
                 ComplexTextID.DMGREDUC,
                 $": {rewardCD.damageReduction}"
             )
         );
         sb.AppendLine(
-            GameManager.Instance.ConstructComplexText(
-                ComplexTextID.ATKRANGE,
-                $": {rewardCD.attackRange}"
-            )
+            GameManager.ConstructComplexText(ComplexTextID.ATKRANGE, $": {rewardCD.attackRange}")
         );
 
         statTMP.text = sb.ToString();
@@ -269,6 +246,11 @@ public class ChampionRewardUI : DoubleTapUI, IDragHandler, IBeginDragHandler, IE
         image = GetComponent<Image>();
         infoPanel = transform.Find("InfoPanel").gameObject;
         container = infoPanel.transform.Find("Container").gameObject;
+        tooltip = infoPanel.transform.Find("Tooltip").gameObject;
+        tooltipTMP = tooltip
+            .transform.Find("Background/TooltipSV/Viewport/Content")
+            .GetComponent<TextMeshProUGUI>();
+        tooltipCloseButton = tooltip.transform.Find("Background/X").GetComponent<PointerDownUI>();
         nameTMP = container.transform.Find("Name").GetComponent<TextMeshProUGUI>();
         statSV = container.transform.Find("StatSV").gameObject;
         abilitySV = container.transform.Find("AbilitySV").gameObject;
@@ -276,18 +258,38 @@ public class ChampionRewardUI : DoubleTapUI, IDragHandler, IBeginDragHandler, IE
         statTMP = statSV.transform.Find("Viewport/Content").GetComponent<TextMeshProUGUI>();
         abilityTMP = abilitySV.transform.Find("Viewport/Content").GetComponent<TextMeshProUGUI>();
         offerTMP = offerSV.transform.Find("Viewport/Content").GetComponent<TextMeshProUGUI>();
+        statDTU = statTMP.GetComponent<DoubleTapUI>();
+        abilityDTU = abilityTMP.GetComponent<DoubleTapUI>();
+        offerDTU = offerTMP.GetComponent<DoubleTapUI>();
     }
 
     private void RegisterEvents()
     {
-        doubleTapEvent += DoubletapShowInfoPanel;
+        statDTU.doubleTapEvent += ShowTooltipForStat;
+        abilityDTU.doubleTapEvent += ShowTooltipForAbility;
+        offerDTU.doubleTapEvent += ShowTooltipForOffer;
+        tooltipCloseButton.pointerDownEvent += CloseTooltip;
     }
 
-    void DoubletapShowInfoPanel(PointerEventData eventData)
+    void ShowTooltipForStat(PointerEventData eventData)
     {
-        infoPanel.SetActive(true);
-        // tooltipTMP.text = TooltipHelper.GenerateTooltip(statUpgrade.description);
+        tooltip.SetActive(true);
+        tooltipTMP.text = TooltipHelper.GenerateTooltip(statTMP.text);
     }
+
+    void ShowTooltipForAbility(PointerEventData eventData)
+    {
+        tooltip.SetActive(true);
+        tooltipTMP.text = TooltipHelper.GenerateTooltip(abilityTMP.text);
+    }
+
+    void ShowTooltipForOffer(PointerEventData eventData)
+    {
+        tooltip.SetActive(true);
+        tooltipTMP.text = TooltipHelper.GenerateTooltip(offerTMP.text);
+    }
+
+    void CloseTooltip(PointerEventData eventData) => tooltip.SetActive(false);
 
     public void OnBeginDrag(PointerEventData eventData)
     {

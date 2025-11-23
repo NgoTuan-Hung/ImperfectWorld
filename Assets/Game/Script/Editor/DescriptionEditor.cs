@@ -23,34 +23,41 @@ public class DescriptionEditor : EditorWindow
     Button saveButton;
     Dictionary<string, string> stylizedTextMapper = new()
     {
-        { "PASSIVE", "<color=#3498DB>p</color>" },
-        { "ACTIVE", "<color=#E67E22>a</color>" },
-        { "CURRENT HP", "<link=current hp><color=#D72638>current hp</color></link>" },
-        { "HP", "<link=hp><color=#C71F37>hp</color></link>" },
-        { "HPREGEN", "<link=hp regen><color=#FF6B6B>hp regen</color></link>" },
-        { "CURRENT MP", "<link=current mp><color=#3E8EDE>current mp</color></link>" },
-        { "MP", "<link=mp><color=#2F75C0>mp</color></link>" },
-        { "MPREGEN", "<link=mp regen><color=#7FDBFF>mp regen</color></link>" },
-        { "MIGHT", "<link=might><color=#F39C12>might</color></link>" },
-        { "REFLEX", "<link=reflex><color=#27AE60>reflex</color></link>" },
-        { "WISDOM", "<link=wisdom><color=#9B59B6>wisdom</color></link>" },
-        { "ASPD", "<link=aspd><color=#E67E22>aspd</color></link>" },
-        { "ARMOR", "<link=armor><color=#95A5A6>armor</color></link>" },
-        { "MSPD", "<link=mspd><color=#1ABC9C>mspd</color></link>" },
-        { "DMGMOD", "<link=dmgmod><color=#FFC107>dmgmod</color></link>: damage multiplier." },
-        { "OMNIVAMP", "<link=omnivamp><color=#C62828>omnivamp</color></link>" },
-        { "ATK", "<link=atk><color=#E53935>atk</color></link>" },
-        { "CRIT", "<link=crit><color=#FFD54F>crit</color></link>: crit chance." },
+        { GetIDAsText(ComplexTextID.PASSIVE), GetColoredText(ComplexTextID.PASSIVE, "p") },
+        { GetIDAsText(ComplexTextID.ACTIVE), GetColoredText(ComplexTextID.ACTIVE, "a") },
+        { GetIDAsText(ComplexTextID.CURHP), GetMapper(ComplexTextID.CURHP) },
+        { GetIDAsText(ComplexTextID.HP), GetMapper(ComplexTextID.HP) },
+        { GetIDAsText(ComplexTextID.HPREGEN), GetMapper(ComplexTextID.HPREGEN) },
+        { GetIDAsText(ComplexTextID.CURMP), GetMapper(ComplexTextID.CURMP) },
+        { GetIDAsText(ComplexTextID.MP), GetMapper(ComplexTextID.MP) },
+        { GetIDAsText(ComplexTextID.MPREGEN), GetMapper(ComplexTextID.MPREGEN) },
+        { GetIDAsText(ComplexTextID.MIGHT), GetMapper(ComplexTextID.MIGHT) },
+        { GetIDAsText(ComplexTextID.REFLEX), GetMapper(ComplexTextID.REFLEX) },
+        { GetIDAsText(ComplexTextID.WISDOM), GetMapper(ComplexTextID.WISDOM) },
+        { GetIDAsText(ComplexTextID.ASPD), GetMapper(ComplexTextID.ASPD) },
+        { GetIDAsText(ComplexTextID.ARMOR), GetMapper(ComplexTextID.ARMOR) },
+        { GetIDAsText(ComplexTextID.MSPD), GetMapper(ComplexTextID.MSPD) },
+        { GetIDAsText(ComplexTextID.DMGMOD), GetMapper(ComplexTextID.DMGMOD) },
+        { GetIDAsText(ComplexTextID.OMNIVAMP), GetMapper(ComplexTextID.OMNIVAMP) },
+        { GetIDAsText(ComplexTextID.ATK), GetMapper(ComplexTextID.ATK) },
+        { GetIDAsText(ComplexTextID.CRIT), GetMapper(ComplexTextID.CRIT) },
+        { GetIDAsText(ComplexTextID.CRITMOD), GetMapper(ComplexTextID.CRITMOD) },
+        { GetIDAsText(ComplexTextID.DMGREDUC), GetMapper(ComplexTextID.DMGREDUC) },
+        { GetIDAsText(ComplexTextID.ATKRANGE), GetMapper(ComplexTextID.ATKRANGE) },
         {
-            "CRITMOD",
-            "<link=critmod><color=#AB47BC>critmod</color></link>: crit damage modifier, how much damage is multiplied on crit."
+            GetIDAsText(ComplexTextID.POSITIVENUMBER),
+            GetColoredText(ComplexTextID.POSITIVENUMBER, "0")
         },
-        { "DMGREDUC", "<link=damage reduction><color=#4A90E2>damage reduction</color></link>" },
-        { "ATKRANGE", "<link=atkrange><color=#FFD447>atkrange</color></link>: attack range." },
-        { "POSITIVE NUMBER", "<color=green>c</color>" },
-        { "STRIKE LOCK", "<link=strike lock><color=#fc03d7>strike lock</color></link>" },
+        { GetIDAsText(ComplexTextID.STRIKELOCK), GetMapper(ComplexTextID.STRIKELOCK) },
     };
     int lastCaretIndex = 0;
+
+    static string GetIDAsText(ComplexTextID id) => GameManager.GetComplexTextIDAsText(id);
+
+    static string GetMapper(ComplexTextID id) => GameManager.ConstructComplexText(id);
+
+    static string GetColoredText(ComplexTextID id, string innerText) =>
+        GameManager.ConstructColoredText(id, innerText);
 
     [MenuItem("Tools/DescriptionEditor")]
     private static void ShowWindow()
@@ -70,32 +77,7 @@ public class DescriptionEditor : EditorWindow
 
     private void PopulateDropdown()
     {
-        addStylizedTextDropdownField.choices = new()
-        {
-            "PASSIVE",
-            "ACTIVE",
-            "CURRENT HP",
-            "HP",
-            "HPREGEN",
-            "CURRENT MP",
-            "MP",
-            "MPREGEN",
-            "MIGHT",
-            "REFLEX",
-            "WISDOM",
-            "ASPD",
-            "ARMOR",
-            "MSPD",
-            "DMGMOD",
-            "OMNIVAMP",
-            "ATK",
-            "CRIT",
-            "CRITMOD",
-            "DMGREDUC",
-            "ATKRANGE",
-            "POSITIVE NUMBER",
-            "STRIKE LOCK",
-        };
+        addStylizedTextDropdownField.choices = GameManager.GetAllIDsAsText();
     }
 
     private void AddEvents()
