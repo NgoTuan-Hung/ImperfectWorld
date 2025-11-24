@@ -331,8 +331,11 @@ public partial class Stat : MonoEditor
     {
         while (true)
         {
-            currentManaPoint.Value += manaRegen.FinalValue * Time.deltaTime;
-            currentHealthPoint.Value += healthRegen.FinalValue * Time.deltaTime;
+            if (canRegen)
+            {
+                currentManaPoint.Value += manaRegen.FinalValue * Time.deltaTime;
+                currentHealthPoint.Value += healthRegen.FinalValue * Time.deltaTime;
+            }
             yield return null;
         }
     }
@@ -355,4 +358,8 @@ public partial class Stat : MonoEditor
     /// <param name="p_damage"></param>
     /// <returns></returns>
     public float CalculateDamageDeal(float damage) => damage * damageModifier.FinalValue;
+
+    public void EnableRegen() => canRegen = true;
+
+    public void DisableRegen() => canRegen = false;
 }

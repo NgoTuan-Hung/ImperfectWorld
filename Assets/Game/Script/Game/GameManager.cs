@@ -205,7 +205,6 @@ public partial class GameManager : MonoBehaviour
         MapPlayerTracker.Instance.onNodeEnter += (p_mapNode) =>
         {
             GameUIManager.Instance.startBattleButton.Show();
-            gameState = GameState.PositioningPhase;
             switch (p_mapNode.Node.nodeType)
             {
                 case NodeType.MinorEnemy:
@@ -234,6 +233,7 @@ public partial class GameManager : MonoBehaviour
 
     void LoadNormalEnemyRoom()
     {
+        ChangeGameState(GameState.PositioningPhase);
         GameUIManager.Instance.TurnOffMap();
         enemyCount = 0;
         var nERI = roomSystem.allNormalEnemyRooms[
@@ -294,7 +294,7 @@ public partial class GameManager : MonoBehaviour
 
     void BattleRoomStart(PointerEventData p_pED)
     {
-        gameState = GameState.BattlePhase;
+        ChangeGameState(GameState.BattlePhase);
         GameUIManager.Instance.startBattleButton.Hide();
         GetEnemyTeamChampions().ForEach(cRE => EnableBattleMode(cRE));
 
@@ -307,7 +307,7 @@ public partial class GameManager : MonoBehaviour
         if (enemyCount <= 0)
         {
             GetPlayerTeamChampions().ForEach(pC => DisableBattleMode(pC));
-            gameState = GameState.RewardPhase;
+            ChangeGameState(GameState.RewardPhase);
             ClearEnemyNodes();
             battleEndCallback();
             ShowRewardForPlayer();
@@ -318,7 +318,7 @@ public partial class GameManager : MonoBehaviour
     {
         GameUIManager.Instance.TurnOnMap();
         GameUIManager.Instance.UnlockMap();
-        gameState = GameState.MapTravelingPhase;
+        ChangeGameState(GameState.MapTravelingPhase);
     }
 
     public void AddCustomMono(CustomMono customMono)
@@ -642,29 +642,36 @@ public partial class GameManager : MonoBehaviour
     public void SacrificeChampionRewardAsStat(ChampionData offering, CustomMono recipient)
     {
         var hp = recipient.stat.healthPoint.FinalValue;
+        var offer = offering.GetPrecomputeData();
 
-        recipient.stat.healthPoint.BaseValue += offering.healthPoint * 0.25f;
-        recipient.stat.healthRegen.BaseValue += offering.healthRegen * 0.25f;
-        recipient.stat.manaPoint.BaseValue -= offering.manaPoint * 0.05f;
-        recipient.stat.manaRegen.BaseValue += offering.manaRegen * 0.25f;
-        recipient.stat.might.BaseValue += offering.might * 0.25f;
-        recipient.stat.reflex.BaseValue += offering.reflex * 0.25f;
-        recipient.stat.wisdom.BaseValue += offering.wisdom * 0.25f;
-        recipient.stat.attackSpeed.BaseValue += offering.attackSpeed * 0.25f;
-        recipient.stat.armor.BaseValue += offering.armor * 0.25f;
-        recipient.stat.moveSpeed.BaseValue += offering.moveSpeed * 0.25f;
-        recipient.stat.damageModifier.BaseValue += offering.damageModifier * 0.25f;
-        recipient.stat.omnivamp.BaseValue += offering.omnivamp * 0.25f;
-        recipient.stat.attackDamage.BaseValue += offering.attackDamage * 0.25f;
-        recipient.stat.critChance.BaseValue += offering.critChance * 0.25f;
-        recipient.stat.critDamageModifier.BaseValue += offering.critDamageModifier * 0.25f;
-        recipient.stat.damageReduction.BaseValue += offering.damageReduction * 0.25f;
-        recipient.stat.attackRange.BaseValue += offering.attackRange * 0.05f;
+        recipient.stat.healthPoint.BaseValue += offer.offerHealthPoint;
+        recipient.stat.healthRegen.BaseValue += offer.offerHealthRegen;
+        recipient.stat.manaPoint.BaseValue += offer.offerManaPoint;
+        recipient.stat.manaRegen.BaseValue += offer.offerManaRegen;
+        recipient.stat.might.BaseValue += offer.offerMight;
+        recipient.stat.reflex.BaseValue += offer.offerReflex;
+        recipient.stat.wisdom.BaseValue += offer.offerWisdom;
+        recipient.stat.attackSpeed.BaseValue += offer.offerAttackSpeed;
+        recipient.stat.armor.BaseValue += offer.offerArmor;
+        recipient.stat.moveSpeed.BaseValue += offer.offerMoveSpeed;
+        recipient.stat.damageModifier.BaseValue += offer.offerDamageModifier;
+        recipient.stat.omnivamp.BaseValue += offer.offerOmnivamp;
+        recipient.stat.attackDamage.BaseValue += offer.offerAttackDamage;
+        recipient.stat.critChance.BaseValue += offer.offerCritChance;
+        recipient.stat.critDamageModifier.BaseValue += offer.offerCritDamageModifier;
+        recipient.stat.damageReduction.BaseValue += offer.offerDamageReduction;
+        recipient.stat.attackRange.BaseValue += offer.offerAttackRange;
 
         recipient.stat.currentHealthPoint.Value += recipient.stat.healthPoint.FinalValue - hp;
         recipient
             .skill.skillBases[1]
             .GetActionField<ActionFloatField>(ActionFieldName.Range)
             .value += offering.attackRange * 0.05f;
+    }
+
+    void ChangeGameState(GameState newState)
+    {
+        gameState = newState;
+        onGameStateChange(newState);
     }
 }

@@ -93,6 +93,7 @@ public partial class CustomMono : MonoSelfAware
     private void OnEnable()
     {
         combatCollision.SetActive(true);
+        ConfigChampionForPhase(GameManager.Instance.gameState);
     }
 
     void GetAllComponents()
@@ -128,6 +129,7 @@ public partial class CustomMono : MonoSelfAware
     public override void Start()
     {
         GameUIManager.Instance.GenerateAndBindChampUI(this);
+        GameManager.Instance.onGameStateChange += ConfigChampionForPhase;
         allyTags.Add(gameObject.tag);
     }
 
@@ -194,6 +196,7 @@ public partial class CustomMono : MonoSelfAware
     {
         GameManager.Instance.RemoveCustomMono(this);
         GameUIManager.Instance.DestroyChampUI(this);
+        GameManager.Instance.onGameStateChange -= ConfigChampionForPhase;
     }
 
     /// <summary>
@@ -201,4 +204,25 @@ public partial class CustomMono : MonoSelfAware
     /// </summary>
     /// <returns></returns>
     public Vector2 GetDirection() => directionIndicator.transform.right;
+
+    public void ConfigChampionForPhase(GameState gameState)
+    {
+        switch (gameState)
+        {
+            case GameState.MapTravelingPhase:
+                stat.DisableRegen();
+                break;
+            case GameState.PositioningPhase:
+                stat.DisableRegen();
+                break;
+            case GameState.BattlePhase:
+                stat.EnableRegen();
+                break;
+            case GameState.RewardPhase:
+                stat.DisableRegen();
+                break;
+            default:
+                break;
+        }
+    }
 }

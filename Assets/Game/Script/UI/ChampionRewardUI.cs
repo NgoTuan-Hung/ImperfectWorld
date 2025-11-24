@@ -62,6 +62,7 @@ public class ChampionRewardUI : DoubleTapUI, IDragHandler, IBeginDragHandler, IE
             .sprite;
         SetStatText();
         SetAbilityText();
+        SetOfferText();
         StartCoroutine(EntranceIE());
     }
 
@@ -77,63 +78,12 @@ public class ChampionRewardUI : DoubleTapUI, IDragHandler, IBeginDragHandler, IE
     private void SetStatText()
     {
         nameTMP.text = "Bruh";
-        StringBuilder sb = new();
+        statTMP.text = rewardCD.GetPrecomputeData().statDescription;
+    }
 
-        sb.AppendLine(
-            GameManager.ConstructComplexText(ComplexTextID.HP, $": {rewardCD.healthPoint}")
-        );
-        sb.AppendLine(
-            GameManager.ConstructComplexText(ComplexTextID.HPREGEN, $": {rewardCD.healthRegen}")
-        );
-        sb.AppendLine(
-            GameManager.ConstructComplexText(ComplexTextID.MP, $": {rewardCD.manaPoint}")
-        );
-        sb.AppendLine(
-            GameManager.ConstructComplexText(ComplexTextID.MPREGEN, $": {rewardCD.manaRegen}")
-        );
-        sb.AppendLine(GameManager.ConstructComplexText(ComplexTextID.MIGHT, $": {rewardCD.might}"));
-        sb.AppendLine(
-            GameManager.ConstructComplexText(ComplexTextID.REFLEX, $": {rewardCD.reflex}")
-        );
-        sb.AppendLine(
-            GameManager.ConstructComplexText(ComplexTextID.WISDOM, $": {rewardCD.wisdom}")
-        );
-        sb.AppendLine(
-            GameManager.ConstructComplexText(ComplexTextID.ASPD, $": {rewardCD.attackSpeed}")
-        );
-        sb.AppendLine(GameManager.ConstructComplexText(ComplexTextID.ARMOR, $": {rewardCD.armor}"));
-        sb.AppendLine(
-            GameManager.ConstructComplexText(ComplexTextID.MSPD, $": {rewardCD.moveSpeed}")
-        );
-        sb.AppendLine(
-            GameManager.ConstructComplexText(ComplexTextID.DMGMOD, $": {rewardCD.damageModifier}")
-        );
-        sb.AppendLine(
-            GameManager.ConstructComplexText(ComplexTextID.OMNIVAMP, $": {rewardCD.omnivamp}")
-        );
-        sb.AppendLine(
-            GameManager.ConstructComplexText(ComplexTextID.ATK, $": {rewardCD.attackDamage}")
-        );
-        sb.AppendLine(
-            GameManager.ConstructComplexText(ComplexTextID.CRIT, $": {rewardCD.critChance}")
-        );
-        sb.AppendLine(
-            GameManager.ConstructComplexText(
-                ComplexTextID.CRITMOD,
-                $": {rewardCD.critDamageModifier}"
-            )
-        );
-        sb.AppendLine(
-            GameManager.ConstructComplexText(
-                ComplexTextID.DMGREDUC,
-                $": {rewardCD.damageReduction}"
-            )
-        );
-        sb.AppendLine(
-            GameManager.ConstructComplexText(ComplexTextID.ATKRANGE, $": {rewardCD.attackRange}")
-        );
-
-        statTMP.text = sb.ToString();
+    private void SetOfferText()
+    {
+        offerTMP.text = rewardCD.GetPrecomputeData().offerDescription;
     }
 
     IEnumerator EntranceIE()
@@ -265,11 +215,14 @@ public class ChampionRewardUI : DoubleTapUI, IDragHandler, IBeginDragHandler, IE
 
     private void RegisterEvents()
     {
+        doubleTapEvent += DoubleTapShowInfoPanel;
         statDTU.doubleTapEvent += ShowTooltipForStat;
         abilityDTU.doubleTapEvent += ShowTooltipForAbility;
         offerDTU.doubleTapEvent += ShowTooltipForOffer;
         tooltipCloseButton.pointerDownEvent += CloseTooltip;
     }
+
+    void DoubleTapShowInfoPanel(PointerEventData eventData) => infoPanel.SetActive(true);
 
     void ShowTooltipForStat(PointerEventData eventData)
     {

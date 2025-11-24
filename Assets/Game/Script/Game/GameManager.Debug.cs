@@ -13,6 +13,7 @@ public partial class GameManager
             if (p_index < 0 || p_index >= roomSystem.allNormalEnemyRooms.Count)
                 return false;
 
+            ChangeGameState(GameState.PositioningPhase);
             GameUIManager.Instance.TurnOffMap();
             enemyCount = 0;
             var nERI = roomSystem.allNormalEnemyRooms[p_index];

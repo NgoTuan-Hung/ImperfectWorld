@@ -32,7 +32,7 @@ public class BatchObjectModifier : EditorWindow
         button.text = "Modify";
         button.clicked += () =>
         {
-            listObjectSO.objects.ForEach(o => ReplaceItemSOString(o));
+            listObjectSO.objects.ForEach(o => ReplaceString(o));
             AssetDatabase.SaveAssets();
         };
 
@@ -87,12 +87,14 @@ public class BatchObjectModifier : EditorWindow
     {
         var skillSO = o as SkillDataSO;
         skillSO.skillDescription = ReplaceKeywords(skillSO.skillDescription);
+        EditorUtility.SetDirty(skillSO);
     }
 
     void ReplaceItemSOString(Object o)
     {
         var itemSO = o as ItemDataSO;
         itemSO.itemDescription = ReplaceKeywords(itemSO.itemDescription);
+        EditorUtility.SetDirty(itemSO);
     }
 }
 #endif

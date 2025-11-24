@@ -82,4 +82,5 @@ public partial class Stat
     /// </summary>
     public ValueChangeGameEventData hpChangeED;
     DealDamageGameEventData dealDamageGameEventData;
+    bool canRegen = true;
 }

@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using IngameDebugConsole;
 using UnityEngine;
 
@@ -15,10 +16,10 @@ public class DevConsole : MonoBehaviour
 
     private void Start()
     {
-        DebugLogConsole.AddCommand<bool>(
-            "get-all-people",
+        DebugLogConsole.AddCommand(
+            "get-all-battlers",
             "Find all game objects with CustomMono component",
-            GetAllPeople
+            GetAllBattlers
         );
 
         DebugLogConsole.AddCommand<int>(
@@ -44,22 +45,32 @@ public class DevConsole : MonoBehaviour
             "Spawn a champion for player for battle",
             SpawnChampionForPlayerForBattle
         );
+
+        DebugLogConsole.AddCommand(
+            "get-all-stat-upgrades",
+            "Get all stat upgrades",
+            GetAllStatUpgrades
+        );
+
+        DebugLogConsole.AddCommand<int, int>(
+            "upgrade-stat-for",
+            "Upgrade stat for battler",
+            UpgradeStatFor
+        );
     }
 
-    void GetAllPeople(bool p_includeInactive)
+    void GetAllBattlers()
     {
-        List<GameObject> t_people = FindObjectsByType<CustomMono>(
-                p_includeInactive ? FindObjectsInactive.Include : FindObjectsInactive.Exclude,
-                FindObjectsSortMode.None
-            )
-            .Select(cM => cM.gameObject)
-            .ToList();
+        StringBuilder sb = new();
+        var battlers = FindObjectsByType<CustomMono>(
+            FindObjectsInactive.Include,
+            FindObjectsSortMode.None
+        );
 
-        output = "";
-        foreach (GameObject t in t_people)
-            output += t.name + "-" + $"<color=#00FF00>{t.GetHashCode()}</color>" + "\n";
+        for (int i = 0; i < battlers.Length; i++)
+            sb.AppendLine(battlers[i].name + ": " + $"<color=#00FF00>{i}</color>");
 
-        Debug.Log(output);
+        Debug.Log(sb.ToString());
     }
 
     void LoadNormalEnemyRoomVariant(int p_index)
@@ -98,5 +109,45 @@ public class DevConsole : MonoBehaviour
                     availableChampions[p_champIndex]
                 )
         );
+    }
+
+    void GetAllStatUpgrades()
+    {
+        StringBuilder sb = new();
+        List<StatUpgrade> statBuffs = Resources
+            .LoadAll<StatUpgrade>("ScriptableObject/StatUpgrade/")
+            .ToList();
+        for (int i = 0; i < statBuffs.Count; i++)
+        {
+            sb.AppendLine($"{i}: {statBuffs[i].description}");
+        }
+
+        Debug.Log(sb.ToString());
+    }
+
+    void UpgradeStatFor(int battlerID, int statUpgradeID)
+    {
+        var statUpgrades = Resources.LoadAll<StatUpgrade>($"ScriptableObject/StatUpgrade");
+        if (statUpgradeID >= statUpgrades.Length)
+        {
+            Debug.LogError("Invalid stat upgrade ID: " + statUpgradeID);
+            return;
+        }
+
+        var battlers = FindObjectsByType<CustomMono>(
+            FindObjectsInactive.Include,
+            FindObjectsSortMode.None
+        );
+
+        if (battlerID < battlers.Length)
+        {
+            GameManager.Instance.UpgradeStat(battlers[battlerID], statUpgrades[statUpgradeID]);
+
+            Debug.Log(
+                $"Upgraded stat for {battlers[battlerID].name} with {statUpgrades[statUpgradeID].description}"
+            );
+        }
+        else
+            Debug.LogError("Invalid battler ID: " + battlerID);
     }
 }

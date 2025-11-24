@@ -12,18 +12,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5cf37983e5332b44f968e0b0b6ee07ec, type: 3}
   m_Name: BoneFlurry
   m_EditorClassIdentifier: 
-  skillIndicatorType: 0
-  inputType: 0
   skillName: BoneFlurry
   skillImage: {fileID: 21300000, guid: dc49a4618c7839a4bab0f240a8d3cb8a, type: 3}
   skillDescription: '<color=#E67E22>BoneFlurry (Active + Passive)</color>
 
     -
-    Passive: After each attack, there is a <color=green>(35 + <link=might><color=#F39C12>might</color></link>)%</color>
+    Passive: After each attack, there is a <color=green>(35 + <link=MIGHT><color=#F39C12>MIGHT</color></link>)%</color>
     chance to unleash <color=green>3</color> bonus strikes.
 
     Each bonus strike
-    deals <color=green>[125% / 150% / 175% <link=atk><color=#E53935>atk</color></link>]</color>
+    deals <color=green>[125% / 150% / 175% <link=ATK><color=#E53935>ATK</color></link>]</color>
     respectively.
 
 
@@ -31,6 +29,6 @@ MonoBehaviour:
     the 3 bonus strikes are empowered,
 
     each dealing <color=green>(Base Percentage
-    + 100 + <link=might><color=#F39C12>might</color></link>)%</color> <link=atk><color=#E53935>atk</color></link>
+    + 100 + <link=MIGHT><color=#F39C12>MIGHT</color></link>)%</color> <link=ATK><color=#E53935>ATK</color></link>
     instead.'
   skillType: 0

@@ -1,6 +1,7 @@
 public enum GameEffectBehaviourField
 {
     StrikeLock,
+    SlowInfo,
 }
 
 public interface IGameEffectBehaviour

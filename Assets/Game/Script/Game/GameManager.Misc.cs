@@ -246,4 +246,6 @@ public partial class GameManager
     public static string GetComplexTextIDAsText(ComplexTextID id) => linkDict[id];
 
     public static List<string> GetAllIDsAsText() => linkDict.Values.ToList();
+
+    public Action<GameState> onGameStateChange = (newState) => { };
 }

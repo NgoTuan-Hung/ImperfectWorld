@@ -36,7 +36,6 @@ public class CollideAndDamage : MonoEditor, IGameEffectBehaviour
     public float stunDuration;
     public float healAmmount;
     public PoisonInfo poisonInfo;
-    public SlowInfo slowInfo;
     Dictionary<GameEffectBehaviourField, object> gameEffectBehaviourFields = new();
 
     public void Awake() { }
@@ -309,7 +308,7 @@ public class CollideAndDamage : MonoEditor, IGameEffectBehaviour
 
     void SlowEnemy(CustomMono p_customMono, Collider2D p_collider2D)
     {
-        p_customMono.statusEffect.Slow(slowInfo);
+        p_customMono.statusEffect.Slow(GetSlowInfo());
     }
 
     void StrikeLockEnemy(CustomMono mono, Collider2D d)
@@ -334,6 +333,11 @@ public class CollideAndDamage : MonoEditor, IGameEffectBehaviour
                     );
                     break;
                 }
+                case GameEffectBehaviourField.SlowInfo:
+                {
+                    gameEffectBehaviourFields.Add(GameEffectBehaviourField.SlowInfo, null);
+                    break;
+                }
                 default:
                     break;
             }
@@ -342,4 +346,7 @@ public class CollideAndDamage : MonoEditor, IGameEffectBehaviour
 
     float GetStrikeLockDuration() =>
         (float)gameEffectBehaviourFields[GameEffectBehaviourField.StrikeLock];
+
+    SlowInfo GetSlowInfo() =>
+        (SlowInfo)gameEffectBehaviourFields[GameEffectBehaviourField.SlowInfo];
 }

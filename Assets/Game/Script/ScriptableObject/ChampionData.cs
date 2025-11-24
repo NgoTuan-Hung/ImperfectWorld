@@ -76,6 +76,8 @@ public class ChampionData : ScriptableObject
     [Header("<color='#FFD447'>ATTACK RANGE")]
     public float attackRange = new();
 
+    ChampionDataPrecompute championDataPrecompute;
+
     public GameEffect GetMeleeAttackEffect(int p_variant) =>
         GameManager
             .Instance.poolLink[meleeAttackInfos[p_variant].meleeAttackEffectSO]
@@ -94,4 +96,10 @@ public class ChampionData : ScriptableObject
 
     public GameEffect GetRangedProjectileEffect() =>
         GameManager.Instance.poolLink[rangedProjectileEffectSO].PickOneGameEffect();
+
+    public ChampionDataPrecompute GetPrecomputeData()
+    {
+        championDataPrecompute ??= new ChampionDataPrecompute(this);
+        return championDataPrecompute;
+    }
 }
