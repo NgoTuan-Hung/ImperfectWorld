@@ -75,7 +75,7 @@ public partial class Stat
     public FloatStatWithModifier actionMoveSpeedReduceRate = new();
 
     [HideInInspector]
-    public FloatStatModifier actionSlowModifier = new(0, FloatStatModifierType.Multiplicative);
+    public FloatStatModifier actionSlowModifier = new(-0.9f, FloatStatModifierType.Multiplicative);
 
     /// <summary>
     /// Used to broadcast hp change event when health point change.

@@ -349,4 +349,10 @@ public class CollideAndDamage : MonoEditor, IGameEffectBehaviour
 
     SlowInfo GetSlowInfo() =>
         (SlowInfo)gameEffectBehaviourFields[GameEffectBehaviourField.SlowInfo];
+
+    public void SetupSlow(CustomMono owner, SlowInfo slowInfo)
+    {
+        this.owner = owner;
+        gameEffectBehaviourFields[GameEffectBehaviourField.SlowInfo] = slowInfo;
+    }
 }

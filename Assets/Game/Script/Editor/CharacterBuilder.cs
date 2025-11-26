@@ -87,7 +87,7 @@ public class CharacterBuilder : EditorWindow
 
         AssetDatabase.CreateAsset(
             championData,
-            "Assets/Game/Resources/AttackInfo/" + championData.name + ".asset"
+            "Assets/Game/Resources/ScriptableObject/ChampionData/" + championData.name + ".asset"
         );
         PrefabUtility.SaveAsPrefabAssetAndConnect(
             build,

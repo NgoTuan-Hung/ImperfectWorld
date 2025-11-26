@@ -249,8 +249,8 @@ MonoBehaviour:
     value: 0
     cap: 0
   manaPoint:
-    baseValue: 100
-    finalValue: 100
+    baseValue: 55
+    finalValue: 55
     referenceModifiers: []
     modifiers: []
   manaRegen:
@@ -299,8 +299,8 @@ MonoBehaviour:
     referenceModifiers: []
     modifiers: []
   attackDamage:
-    baseValue: 3.8
-    finalValue: 3.8
+    baseValue: 3.5
+    finalValue: 3.5
     referenceModifiers: []
     modifiers: []
   critChance:
@@ -378,6 +378,7 @@ MonoBehaviour:
   customMono: {fileID: 0}
   skillDataSOs:
   - {fileID: 11400000, guid: d956062efdfc6274d972e2ef0fc25827, type: 2}
+  - {fileID: 11400000, guid: 9e49728078d09b743a8f7491542566c6, type: 2}
   skillBases: []
 --- !u!114 &2861787080049367430
 MonoBehaviour:

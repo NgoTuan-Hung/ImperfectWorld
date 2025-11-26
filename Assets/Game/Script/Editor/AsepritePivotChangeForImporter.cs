@@ -54,7 +54,7 @@ public class GameObjectInjector : AssetPostprocessor
             return;
         }
 
-        int heightChange = 59;
+        int heightChange = 35;
         for (int i = 0; i < arrayProp.arraySize; i++)
         {
             var elem = arrayProp.GetArrayElementAtIndex(i);
@@ -74,10 +74,12 @@ public class GameObjectInjector : AssetPostprocessor
         // Save modified serialized props back to importer
         so.ApplyModifiedProperties();
         EditorUtility.SetDirty(importer);
+        EditorUtility.SetDirty(boolSO);
 
         // Persist settings and trigger one reimport so Unity recreates sprite sub-assets with new names/pivots.
         AssetDatabase.WriteImportSettingsIfDirty(assetPath);
         AssetDatabase.ImportAsset(assetPath, ImportAssetOptions.ForceUpdate);
+        AssetDatabase.SaveAssets();
 
         Debug.Log($"[AsepritePatcher] patched and reimported {assetPath}");
     }

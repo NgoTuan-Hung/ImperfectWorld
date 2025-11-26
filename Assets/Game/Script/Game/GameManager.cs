@@ -45,7 +45,8 @@ public partial class GameManager : MonoBehaviour
         summonBoolHash = Animator.StringToHash("Summon"),
         walkBoolHash = Animator.StringToHash("Walk"),
         dieBoolHash = Animator.StringToHash("Die"),
-        dashBoolHash = Animator.StringToHash("Dash");
+        dashBoolHash = Animator.StringToHash("Dash"),
+        jumpBoolHash = Animator.StringToHash("Jump");
     public Dictionary<int, GameObject> colliderOwner = new();
     public List<ActionFieldInfo> actionFieldInfos = new();
     Dictionary<string, ActionFieldInfo> actionFieldInfoDict = new();
@@ -419,6 +420,32 @@ public partial class GameManager : MonoBehaviour
 
             if (!list.Contains(kvp.Value))
                 t_target = kvp.Value;
+        }
+
+        return t_target;
+    }
+
+    public CustomMono GetNearestAlly(CustomMono self)
+    {
+        float minDistance = float.MaxValue;
+        CustomMono t_target = null;
+        foreach (var kvp in customMonos)
+        {
+            if (
+                !self.allyTags.Contains(kvp.Value.tag)
+                || !kvp.Value.stat.alive
+                || kvp.Value == self
+            )
+                continue;
+
+            float t_distance = (
+                kvp.Value.transform.position - self.transform.position
+            ).sqrMagnitude;
+            if (t_distance < minDistance)
+            {
+                minDistance = t_distance;
+                t_target = kvp.Value;
+            }
         }
 
         return t_target;
