@@ -3,8 +3,7 @@
         <engine:FloatField label="&lt;b&gt;BASE VALUE" value="42.2" name="inspector__base-value-float-field" style="width: 50%;" />
         <engine:FloatField label="&lt;b&gt;FINAL VALUE" value="42.2" readonly="true" focusable="false" binding-path="finalValue" style="width: 50%;" />
     </engine:VisualElement>
-    <engine:VisualElement style="flex-grow: 0; flex-direction: row;">
-        <editor:PropertyField label="REFERENCE MODIFIERS" binding-path="referenceModifiers" style="width: 50%;" />
-        <editor:PropertyField label="MODIFIERS" binding-path="modifiers" style="width: 50%;" />
+    <engine:VisualElement style="flex-grow: 0; flex-direction: row; width: 100%;">
+        <editor:PropertyField label="MODIFIERS" binding-path="modifiers" style="width: 100%;" />
     </engine:VisualElement>
 </engine:UXML>

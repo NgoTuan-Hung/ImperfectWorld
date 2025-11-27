@@ -83,4 +83,46 @@ public partial class Stat
     public ValueChangeGameEventData hpChangeED;
     DealDamageGameEventData dealDamageGameEventData;
     bool canRegen = true;
+
+    [HideInInspector]
+    FloatStatModifier mightChangeHealthPointFSM = new(
+        0,
+        FloatStatModifierType.Additive,
+        FloatStatModifierLiveTime.Permanent
+    );
+
+    [HideInInspector]
+    FloatStatModifier mightChangeHealthRegenFSM = new(
+        0,
+        FloatStatModifierType.Additive,
+        FloatStatModifierLiveTime.Permanent
+    );
+
+    [HideInInspector]
+    FloatStatModifier reflexChangeArmorFSM = new(
+        0,
+        FloatStatModifierType.Additive,
+        FloatStatModifierLiveTime.Permanent
+    );
+
+    [HideInInspector]
+    FloatStatModifier reflexChangeAttackSpeedFSM = new(
+        0,
+        FloatStatModifierType.Additive,
+        FloatStatModifierLiveTime.Permanent
+    );
+
+    [HideInInspector]
+    FloatStatModifier wisdomChangeManaPointFSM = new(
+        0,
+        FloatStatModifierType.Additive,
+        FloatStatModifierLiveTime.Permanent
+    );
+
+    [HideInInspector]
+    FloatStatModifier wisdomChangeManaRegenFSM = new(
+        0,
+        FloatStatModifierType.Additive,
+        FloatStatModifierLiveTime.Permanent
+    );
 }

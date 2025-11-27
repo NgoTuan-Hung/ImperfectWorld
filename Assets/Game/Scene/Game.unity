@@ -3829,18 +3829,18 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 78841561}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1980147654290147240}
   - {fileID: 2139630013}
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 807881488}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0.01}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 2960, y: 1440}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &88606293
@@ -4455,12 +4455,10 @@ MonoBehaviour:
   healthPoint:
     baseValue: 50
     finalValue: 50
-    referenceModifiers: []
     modifiers: []
   healthRegen:
     baseValue: 0
     finalValue: 0
-    referenceModifiers: []
     modifiers: []
   currentManaPoint:
     value: 0
@@ -4468,86 +4466,71 @@ MonoBehaviour:
   manaPoint:
     baseValue: 80
     finalValue: 80
-    referenceModifiers: []
     modifiers: []
   manaRegen:
     baseValue: 10
     finalValue: 10
-    referenceModifiers: []
     modifiers: []
   might:
     baseValue: 1
     finalValue: 1
-    referenceModifiers: []
     modifiers: []
   reflex:
     baseValue: 1
     finalValue: 1
-    referenceModifiers: []
     modifiers: []
   wisdom:
     baseValue: 1
     finalValue: 1
-    referenceModifiers: []
     modifiers: []
   attackSpeed:
     baseValue: 0.8
     finalValue: 0.8
-    referenceModifiers: []
     modifiers: []
   armor:
     baseValue: 1
     finalValue: 1
-    referenceModifiers: []
     modifiers: []
   moveSpeed:
     baseValue: 2
     finalValue: 2
-    referenceModifiers: []
     modifiers: []
   damageModifier:
     baseValue: 1
     finalValue: 1
-    referenceModifiers: []
     modifiers: []
   omnivamp:
     baseValue: 0
     finalValue: 0
-    referenceModifiers: []
     modifiers: []
   attackDamage:
     baseValue: 3.8
     finalValue: 3.8
-    referenceModifiers: []
     modifiers: []
   critChance:
     baseValue: 0.25
     finalValue: 0.25
-    referenceModifiers: []
     modifiers: []
   critDamageModifier:
     baseValue: 1
     finalValue: 1
-    referenceModifiers: []
     modifiers: []
   damageReduction:
     baseValue: 0
     finalValue: 0
-    referenceModifiers: []
     modifiers: []
   attackRange:
     baseValue: 1.25
     finalValue: 1.25
-    referenceModifiers: []
     modifiers: []
   actionMoveSpeedReduceRate:
     baseValue: -0.9
     finalValue: -0.9
-    referenceModifiers: []
     modifiers: []
   actionSlowModifier:
     value: 0
     type: 1
+    liveTime: 0
 --- !u!82 &108618819
 AudioSource:
   m_ObjectHideFlags: 0
@@ -5428,6 +5411,8 @@ MonoBehaviour:
   ItemInventoryAnchorPos: {x: 0.5, y: 0.5}
   statUpgrades: []
   championRewards: []
+  screenEffectImg: {fileID: 0}
+  screenEffectAnimator: {fileID: 1938828980}
 --- !u!114 &141167862
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5461,6 +5446,7 @@ MonoBehaviour:
   dieBoolHash: 20298039
   dashBoolHash: 995914302
   jumpBoolHash: 125937960
+  meleeStanceBoolHash: -1898679628
   actionFieldInfos:
   - {fileID: 11400000, guid: ecb5b0a571b97da4caf35fb40f147eaf, type: 2}
   - {fileID: 11400000, guid: aeca683e92b3e9245a55dec402dbec6b, type: 2}
@@ -5516,6 +5502,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 2c0116c480ac77f4b9a429c2e1a6f4be, type: 2}
   - {fileID: 11400000, guid: 6fca6d30a1315184a9ce96da4bd35f76, type: 2}
   - {fileID: 11400000, guid: 1c14d5abac6d2e34b96d0b498a86e63b, type: 2}
+  - {fileID: 11400000, guid: 7e91163f39342e549a614e0d030b2aed, type: 2}
   gridManager: {fileID: 0}
   roomSystem:
     allNormalEnemyRooms:
@@ -6046,12 +6033,10 @@ MonoBehaviour:
   healthPoint:
     baseValue: 1000
     finalValue: 1000
-    referenceModifiers: []
     modifiers: []
   healthRegen:
     baseValue: 0
     finalValue: 0
-    referenceModifiers: []
     modifiers: []
   currentManaPoint:
     value: 0
@@ -6059,86 +6044,71 @@ MonoBehaviour:
   manaPoint:
     baseValue: 100
     finalValue: 100
-    referenceModifiers: []
     modifiers: []
   manaRegen:
     baseValue: 5
     finalValue: 5
-    referenceModifiers: []
     modifiers: []
   might:
     baseValue: 5
     finalValue: 5
-    referenceModifiers: []
     modifiers: []
   reflex:
     baseValue: 1
     finalValue: 1
-    referenceModifiers: []
     modifiers: []
   wisdom:
     baseValue: 5
     finalValue: 5
-    referenceModifiers: []
     modifiers: []
   attackSpeed:
     baseValue: 1
     finalValue: 1
-    referenceModifiers: []
     modifiers: []
   armor:
     baseValue: 0
     finalValue: 0
-    referenceModifiers: []
     modifiers: []
   moveSpeed:
     baseValue: 2
     finalValue: 2
-    referenceModifiers: []
     modifiers: []
   damageModifier:
     baseValue: 0
     finalValue: 0
-    referenceModifiers: []
     modifiers: []
   omnivamp:
     baseValue: 0
     finalValue: 0
-    referenceModifiers: []
     modifiers: []
   attackDamage:
     baseValue: 0
     finalValue: 0
-    referenceModifiers: []
     modifiers: []
   critChance:
     baseValue: 0
     finalValue: 0
-    referenceModifiers: []
     modifiers: []
   critDamageModifier:
     baseValue: 0
     finalValue: 0
-    referenceModifiers: []
     modifiers: []
   damageReduction:
     baseValue: 0
     finalValue: 0
-    referenceModifiers: []
     modifiers: []
   attackRange:
     baseValue: 0
     finalValue: 0
-    referenceModifiers: []
     modifiers: []
   actionMoveSpeedReduceRate:
     baseValue: -0.9
     finalValue: -0.9
-    referenceModifiers: []
     modifiers: []
   actionSlowModifier:
     value: 0
     type: 1
+    liveTime: 0
 --- !u!82 &153210381
 AudioSource:
   m_ObjectHideFlags: 0
@@ -10751,10 +10721,10 @@ RectTransform:
   - {fileID: 38622209}
   m_Father: {fileID: 1874200017}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 380, y: -50}
+  m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &546532736
 MonoBehaviour:
@@ -11497,12 +11467,10 @@ MonoBehaviour:
   healthPoint:
     baseValue: 20
     finalValue: 20
-    referenceModifiers: []
     modifiers: []
   healthRegen:
     baseValue: 0
     finalValue: 0
-    referenceModifiers: []
     modifiers: []
   currentManaPoint:
     value: 0
@@ -11510,86 +11478,71 @@ MonoBehaviour:
   manaPoint:
     baseValue: 100
     finalValue: 0
-    referenceModifiers: []
     modifiers: []
   manaRegen:
     baseValue: 0
     finalValue: 0
-    referenceModifiers: []
     modifiers: []
   might:
     baseValue: 1
     finalValue: 0
-    referenceModifiers: []
     modifiers: []
   reflex:
     baseValue: 1
     finalValue: 0
-    referenceModifiers: []
     modifiers: []
   wisdom:
     baseValue: 1
     finalValue: 0
-    referenceModifiers: []
     modifiers: []
   attackSpeed:
     baseValue: 1
     finalValue: 0
-    referenceModifiers: []
     modifiers: []
   armor:
     baseValue: 0
     finalValue: 0
-    referenceModifiers: []
     modifiers: []
   moveSpeed:
     baseValue: 2
     finalValue: 2
-    referenceModifiers: []
     modifiers: []
   damageModifier:
     baseValue: 0
     finalValue: 0
-    referenceModifiers: []
     modifiers: []
   omnivamp:
     baseValue: 0
     finalValue: 0
-    referenceModifiers: []
     modifiers: []
   attackDamage:
     baseValue: 0
     finalValue: 0
-    referenceModifiers: []
     modifiers: []
   critChance:
     baseValue: 0
     finalValue: 0
-    referenceModifiers: []
     modifiers: []
   critDamageModifier:
     baseValue: 0
     finalValue: 0
-    referenceModifiers: []
     modifiers: []
   damageReduction:
     baseValue: 0
     finalValue: 0
-    referenceModifiers: []
     modifiers: []
   attackRange:
     baseValue: 0
     finalValue: 0
-    referenceModifiers: []
     modifiers: []
   actionMoveSpeedReduceRate:
     baseValue: -0.9
     finalValue: -0.9
-    referenceModifiers: []
     modifiers: []
   actionSlowModifier:
     value: 0
     type: 1
+    liveTime: 0
 --- !u!50 &581064779
 Rigidbody2D:
   serializedVersion: 5
@@ -12470,12 +12423,10 @@ MonoBehaviour:
   healthPoint:
     baseValue: 50
     finalValue: 50
-    referenceModifiers: []
     modifiers: []
   healthRegen:
     baseValue: 0
     finalValue: 0
-    referenceModifiers: []
     modifiers: []
   currentManaPoint:
     value: 0
@@ -12483,86 +12434,71 @@ MonoBehaviour:
   manaPoint:
     baseValue: 100
     finalValue: 100
-    referenceModifiers: []
     modifiers: []
   manaRegen:
     baseValue: 10
     finalValue: 10
-    referenceModifiers: []
     modifiers: []
   might:
     baseValue: 1
     finalValue: 1
-    referenceModifiers: []
     modifiers: []
   reflex:
     baseValue: 1
     finalValue: 1
-    referenceModifiers: []
     modifiers: []
   wisdom:
     baseValue: 1
     finalValue: 1
-    referenceModifiers: []
     modifiers: []
   attackSpeed:
     baseValue: 1
     finalValue: 1
-    referenceModifiers: []
     modifiers: []
   armor:
     baseValue: 0
     finalValue: 0
-    referenceModifiers: []
     modifiers: []
   moveSpeed:
     baseValue: 2
     finalValue: 2
-    referenceModifiers: []
     modifiers: []
   damageModifier:
     baseValue: 0
     finalValue: 0
-    referenceModifiers: []
     modifiers: []
   omnivamp:
     baseValue: 0
     finalValue: 0
-    referenceModifiers: []
     modifiers: []
   attackDamage:
     baseValue: 0
     finalValue: 0
-    referenceModifiers: []
     modifiers: []
   critChance:
     baseValue: 0
     finalValue: 0
-    referenceModifiers: []
     modifiers: []
   critDamageModifier:
     baseValue: 0
     finalValue: 0
-    referenceModifiers: []
     modifiers: []
   damageReduction:
     baseValue: 0
     finalValue: 0
-    referenceModifiers: []
     modifiers: []
   attackRange:
     baseValue: 0
     finalValue: 0
-    referenceModifiers: []
     modifiers: []
   actionMoveSpeedReduceRate:
     baseValue: -0.9
     finalValue: -0.9
-    referenceModifiers: []
     modifiers: []
   actionSlowModifier:
     value: 0
     type: 1
+    liveTime: 0
 --- !u!82 &624270111
 AudioSource:
   m_ObjectHideFlags: 0
@@ -14561,6 +14497,39 @@ Transform:
   - {fileID: 1112512733}
   m_Father: {fileID: 949659780}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &807881487
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 807881488}
+  m_Layer: 0
+  m_Name: Canvas
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &807881488
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 807881487}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 78841565}
+  - {fileID: 883458357}
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &817831940
 GameObject:
   m_ObjectHideFlags: 0
@@ -15030,7 +14999,7 @@ GameObject:
   - component: {fileID: 883458355}
   - component: {fileID: 883458354}
   m_Layer: 5
-  m_Name: Canvas
+  m_Name: ScreenEffectCanvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -15043,7 +15012,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 883458353}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: dc42784cf147c0c48a680349fa168899, type: 3}
   m_Name: 
@@ -15112,7 +15081,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1938828977}
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 807881488}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -15263,12 +15232,10 @@ MonoBehaviour:
   healthPoint:
     baseValue: 50
     finalValue: 50
-    referenceModifiers: []
     modifiers: []
   healthRegen:
     baseValue: 0
     finalValue: 0
-    referenceModifiers: []
     modifiers: []
   currentManaPoint:
     value: 0
@@ -15276,86 +15243,71 @@ MonoBehaviour:
   manaPoint:
     baseValue: 100
     finalValue: 100
-    referenceModifiers: []
     modifiers: []
   manaRegen:
     baseValue: 5
     finalValue: 5
-    referenceModifiers: []
     modifiers: []
   might:
     baseValue: 1
     finalValue: 1
-    referenceModifiers: []
     modifiers: []
   reflex:
     baseValue: 1
     finalValue: 1
-    referenceModifiers: []
     modifiers: []
   wisdom:
     baseValue: 1
     finalValue: 1
-    referenceModifiers: []
     modifiers: []
   attackSpeed:
     baseValue: 1
     finalValue: 1
-    referenceModifiers: []
     modifiers: []
   armor:
     baseValue: 0
     finalValue: 0
-    referenceModifiers: []
     modifiers: []
   moveSpeed:
     baseValue: 2
     finalValue: 2
-    referenceModifiers: []
     modifiers: []
   damageModifier:
     baseValue: 0
     finalValue: 0
-    referenceModifiers: []
     modifiers: []
   omnivamp:
     baseValue: 0
     finalValue: 0
-    referenceModifiers: []
     modifiers: []
   attackDamage:
     baseValue: 0
     finalValue: 0
-    referenceModifiers: []
     modifiers: []
   critChance:
     baseValue: 0
     finalValue: 0
-    referenceModifiers: []
     modifiers: []
   critDamageModifier:
     baseValue: 0
     finalValue: 0
-    referenceModifiers: []
     modifiers: []
   damageReduction:
     baseValue: 0
     finalValue: 0
-    referenceModifiers: []
     modifiers: []
   attackRange:
     baseValue: 0
     finalValue: 0
-    referenceModifiers: []
     modifiers: []
   actionMoveSpeedReduceRate:
     baseValue: -0.9
     finalValue: -0.9
-    referenceModifiers: []
     modifiers: []
   actionSlowModifier:
     value: 0
     type: 1
+    liveTime: 0
 --- !u!114 &889364766
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -16765,12 +16717,10 @@ MonoBehaviour:
   healthPoint:
     baseValue: 50
     finalValue: 50
-    referenceModifiers: []
     modifiers: []
   healthRegen:
     baseValue: 0
     finalValue: 0
-    referenceModifiers: []
     modifiers: []
   currentManaPoint:
     value: 0
@@ -16778,86 +16728,71 @@ MonoBehaviour:
   manaPoint:
     baseValue: 100
     finalValue: 100
-    referenceModifiers: []
     modifiers: []
   manaRegen:
     baseValue: 5
     finalValue: 5
-    referenceModifiers: []
     modifiers: []
   might:
     baseValue: 1
     finalValue: 1
-    referenceModifiers: []
     modifiers: []
   reflex:
     baseValue: 1
     finalValue: 1
-    referenceModifiers: []
     modifiers: []
   wisdom:
     baseValue: 1
     finalValue: 1
-    referenceModifiers: []
     modifiers: []
   attackSpeed:
     baseValue: 1
     finalValue: 1
-    referenceModifiers: []
     modifiers: []
   armor:
     baseValue: 0
     finalValue: 0
-    referenceModifiers: []
     modifiers: []
   moveSpeed:
     baseValue: 2
     finalValue: 2
-    referenceModifiers: []
     modifiers: []
   damageModifier:
     baseValue: 0
     finalValue: 0
-    referenceModifiers: []
     modifiers: []
   omnivamp:
     baseValue: 0
     finalValue: 0
-    referenceModifiers: []
     modifiers: []
   attackDamage:
     baseValue: 0
     finalValue: 0
-    referenceModifiers: []
     modifiers: []
   critChance:
     baseValue: 0
     finalValue: 0
-    referenceModifiers: []
     modifiers: []
   critDamageModifier:
     baseValue: 0
     finalValue: 0
-    referenceModifiers: []
     modifiers: []
   damageReduction:
     baseValue: 0
     finalValue: 0
-    referenceModifiers: []
     modifiers: []
   attackRange:
     baseValue: 0
     finalValue: 0
-    referenceModifiers: []
     modifiers: []
   actionMoveSpeedReduceRate:
     baseValue: -0.9
     finalValue: -0.9
-    referenceModifiers: []
     modifiers: []
   actionSlowModifier:
     value: 0
     type: 1
+    liveTime: 0
 --- !u!82 &949659777
 AudioSource:
   m_ObjectHideFlags: 0
@@ -17514,10 +17449,10 @@ RectTransform:
   - {fileID: 1032758556}
   m_Father: {fileID: 1874200017}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 270, y: -50}
+  m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1012798519
 MonoBehaviour:
@@ -18952,10 +18887,10 @@ RectTransform:
   - {fileID: 1638319142}
   m_Father: {fileID: 1874200017}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 50, y: -50}
+  m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1122076159
 MonoBehaviour:
@@ -21066,12 +21001,10 @@ MonoBehaviour:
   healthPoint:
     baseValue: 400
     finalValue: 400
-    referenceModifiers: []
     modifiers: []
   healthRegen:
     baseValue: 0
     finalValue: 0
-    referenceModifiers: []
     modifiers: []
   currentManaPoint:
     value: 0
@@ -21079,86 +21012,71 @@ MonoBehaviour:
   manaPoint:
     baseValue: 100
     finalValue: 0
-    referenceModifiers: []
     modifiers: []
   manaRegen:
     baseValue: 100
     finalValue: 100
-    referenceModifiers: []
     modifiers: []
   might:
     baseValue: 6000
     finalValue: 6000
-    referenceModifiers: []
     modifiers: []
   reflex:
     baseValue: 99
     finalValue: 99
-    referenceModifiers: []
     modifiers: []
   wisdom:
     baseValue: 1
     finalValue: 0
-    referenceModifiers: []
     modifiers: []
   attackSpeed:
     baseValue: 1
     finalValue: 0
-    referenceModifiers: []
     modifiers: []
   armor:
     baseValue: 0
     finalValue: 0
-    referenceModifiers: []
     modifiers: []
   moveSpeed:
     baseValue: 2
     finalValue: 2
-    referenceModifiers: []
     modifiers: []
   damageModifier:
     baseValue: 0
     finalValue: 0
-    referenceModifiers: []
     modifiers: []
   omnivamp:
     baseValue: 0
     finalValue: 0
-    referenceModifiers: []
     modifiers: []
   attackDamage:
     baseValue: 0
     finalValue: 0
-    referenceModifiers: []
     modifiers: []
   critChance:
     baseValue: 0
     finalValue: 0
-    referenceModifiers: []
     modifiers: []
   critDamageModifier:
     baseValue: 0
     finalValue: 0
-    referenceModifiers: []
     modifiers: []
   damageReduction:
     baseValue: 0
     finalValue: 0
-    referenceModifiers: []
     modifiers: []
   attackRange:
     baseValue: 0
     finalValue: 0
-    referenceModifiers: []
     modifiers: []
   actionMoveSpeedReduceRate:
     baseValue: -0.9
     finalValue: -0.9
-    referenceModifiers: []
     modifiers: []
   actionSlowModifier:
     value: 0
     type: 1
+    liveTime: 0
 --- !u!82 &1254232936
 AudioSource:
   m_ObjectHideFlags: 0
@@ -25778,12 +25696,10 @@ MonoBehaviour:
   healthPoint:
     baseValue: 38
     finalValue: 38
-    referenceModifiers: []
     modifiers: []
   healthRegen:
     baseValue: 0
     finalValue: 0
-    referenceModifiers: []
     modifiers: []
   currentManaPoint:
     value: 0
@@ -25791,86 +25707,71 @@ MonoBehaviour:
   manaPoint:
     baseValue: 60
     finalValue: 60
-    referenceModifiers: []
     modifiers: []
   manaRegen:
     baseValue: 10
     finalValue: 10
-    referenceModifiers: []
     modifiers: []
   might:
     baseValue: 1
     finalValue: 1
-    referenceModifiers: []
     modifiers: []
   reflex:
     baseValue: 1
     finalValue: 1
-    referenceModifiers: []
     modifiers: []
   wisdom:
     baseValue: 1
     finalValue: 1
-    referenceModifiers: []
     modifiers: []
   attackSpeed:
     baseValue: 1
     finalValue: 1
-    referenceModifiers: []
     modifiers: []
   armor:
     baseValue: 0.75
     finalValue: 0.75
-    referenceModifiers: []
     modifiers: []
   moveSpeed:
     baseValue: 2
     finalValue: 2
-    referenceModifiers: []
     modifiers: []
   damageModifier:
     baseValue: 1
     finalValue: 1
-    referenceModifiers: []
     modifiers: []
   omnivamp:
     baseValue: 0
     finalValue: 0
-    referenceModifiers: []
     modifiers: []
   attackDamage:
     baseValue: 5.3
     finalValue: 5.3
-    referenceModifiers: []
     modifiers: []
   critChance:
     baseValue: 0.25
     finalValue: 0.25
-    referenceModifiers: []
     modifiers: []
   critDamageModifier:
     baseValue: 1
     finalValue: 1
-    referenceModifiers: []
     modifiers: []
   damageReduction:
     baseValue: 0
     finalValue: 0
-    referenceModifiers: []
     modifiers: []
   attackRange:
     baseValue: 1.25
     finalValue: 1.25
-    referenceModifiers: []
     modifiers: []
   actionMoveSpeedReduceRate:
     baseValue: -0.9
     finalValue: -0.9
-    referenceModifiers: []
     modifiers: []
   actionSlowModifier:
     value: 0
     type: 1
+    liveTime: 0
 --- !u!82 &1537681005
 AudioSource:
   m_ObjectHideFlags: 0
@@ -26684,12 +26585,10 @@ MonoBehaviour:
   healthPoint:
     baseValue: 50
     finalValue: 50
-    referenceModifiers: []
     modifiers: []
   healthRegen:
     baseValue: 0
     finalValue: 0
-    referenceModifiers: []
     modifiers: []
   currentManaPoint:
     value: 0
@@ -26697,86 +26596,71 @@ MonoBehaviour:
   manaPoint:
     baseValue: 100
     finalValue: 100
-    referenceModifiers: []
     modifiers: []
   manaRegen:
     baseValue: 0
     finalValue: 0
-    referenceModifiers: []
     modifiers: []
   might:
     baseValue: 1
     finalValue: 1
-    referenceModifiers: []
     modifiers: []
   reflex:
     baseValue: 1
     finalValue: 1
-    referenceModifiers: []
     modifiers: []
   wisdom:
     baseValue: 1
     finalValue: 1
-    referenceModifiers: []
     modifiers: []
   attackSpeed:
     baseValue: 1
     finalValue: 1
-    referenceModifiers: []
     modifiers: []
   armor:
     baseValue: 0
     finalValue: 0
-    referenceModifiers: []
     modifiers: []
   moveSpeed:
     baseValue: 2
     finalValue: 2
-    referenceModifiers: []
     modifiers: []
   damageModifier:
     baseValue: 0
     finalValue: 0
-    referenceModifiers: []
     modifiers: []
   omnivamp:
     baseValue: 0
     finalValue: 0
-    referenceModifiers: []
     modifiers: []
   attackDamage:
     baseValue: 0
     finalValue: 0
-    referenceModifiers: []
     modifiers: []
   critChance:
     baseValue: 0
     finalValue: 0
-    referenceModifiers: []
     modifiers: []
   critDamageModifier:
     baseValue: 0
     finalValue: 0
-    referenceModifiers: []
     modifiers: []
   damageReduction:
     baseValue: 0
     finalValue: 0
-    referenceModifiers: []
     modifiers: []
   attackRange:
     baseValue: 0
     finalValue: 0
-    referenceModifiers: []
     modifiers: []
   actionMoveSpeedReduceRate:
     baseValue: -0.9
     finalValue: -0.9
-    referenceModifiers: []
     modifiers: []
   actionSlowModifier:
     value: 0
     type: 1
+    liveTime: 0
 --- !u!114 &1582844852
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -30383,10 +30267,10 @@ RectTransform:
   - {fileID: 1415293675}
   m_Father: {fileID: 1874200017}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 160, y: -50}
+  m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1872287108
 MonoBehaviour:
@@ -31208,14 +31092,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 0}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 8427963943157935604, guid: d5bcfe26914f0e34b8d3d3f500fd69bd, type: 3}
+  m_Sprite: {fileID: 0}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -31243,7 +31127,7 @@ Animator:
   m_GameObject: {fileID: 1938828976}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 187eb095781ca19428e14267395ec009, type: 2}
+  m_Controller: {fileID: 0}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -35404,12 +35288,10 @@ MonoBehaviour:
   healthPoint:
     baseValue: 500
     finalValue: 500
-    referenceModifiers: []
     modifiers: []
   healthRegen:
     baseValue: 0
     finalValue: 0
-    referenceModifiers: []
     modifiers: []
   currentManaPoint:
     value: 0
@@ -35417,86 +35299,71 @@ MonoBehaviour:
   manaPoint:
     baseValue: 100
     finalValue: 0
-    referenceModifiers: []
     modifiers: []
   manaRegen:
     baseValue: 100
     finalValue: 100
-    referenceModifiers: []
     modifiers: []
   might:
     baseValue: 1
     finalValue: 0
-    referenceModifiers: []
     modifiers: []
   reflex:
     baseValue: 1
     finalValue: 0
-    referenceModifiers: []
     modifiers: []
   wisdom:
     baseValue: 1
     finalValue: 0
-    referenceModifiers: []
     modifiers: []
   attackSpeed:
     baseValue: 1
     finalValue: 0
-    referenceModifiers: []
     modifiers: []
   armor:
     baseValue: 0
     finalValue: 0
-    referenceModifiers: []
     modifiers: []
   moveSpeed:
     baseValue: 2
     finalValue: 2
-    referenceModifiers: []
     modifiers: []
   damageModifier:
     baseValue: 0
     finalValue: 0
-    referenceModifiers: []
     modifiers: []
   omnivamp:
     baseValue: 0
     finalValue: 0
-    referenceModifiers: []
     modifiers: []
   attackDamage:
     baseValue: 0
     finalValue: 0
-    referenceModifiers: []
     modifiers: []
   critChance:
     baseValue: 0
     finalValue: 0
-    referenceModifiers: []
     modifiers: []
   critDamageModifier:
     baseValue: 0
     finalValue: 0
-    referenceModifiers: []
     modifiers: []
   damageReduction:
     baseValue: 0
     finalValue: 0
-    referenceModifiers: []
     modifiers: []
   attackRange:
     baseValue: 0
     finalValue: 0
-    referenceModifiers: []
     modifiers: []
   actionMoveSpeedReduceRate:
     baseValue: -0.9
     finalValue: -0.9
-    referenceModifiers: []
     modifiers: []
   actionSlowModifier:
     value: 0
     type: 1
+    liveTime: 0
 --- !u!114 &2059840848
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -39662,12 +39529,10 @@ MonoBehaviour:
   healthPoint:
     baseValue: 5000
     finalValue: 5000
-    referenceModifiers: []
     modifiers: []
   healthRegen:
     baseValue: 0
     finalValue: 0
-    referenceModifiers: []
     modifiers: []
   currentManaPoint:
     value: 0
@@ -39675,86 +39540,71 @@ MonoBehaviour:
   manaPoint:
     baseValue: 100
     finalValue: 100
-    referenceModifiers: []
     modifiers: []
   manaRegen:
     baseValue: 100
     finalValue: 100
-    referenceModifiers: []
     modifiers: []
   might:
     baseValue: 1
     finalValue: 1
-    referenceModifiers: []
     modifiers: []
   reflex:
     baseValue: 1
     finalValue: 1
-    referenceModifiers: []
     modifiers: []
   wisdom:
     baseValue: 50
     finalValue: 50
-    referenceModifiers: []
     modifiers: []
   attackSpeed:
     baseValue: 1
     finalValue: 1
-    referenceModifiers: []
     modifiers: []
   armor:
     baseValue: 0
     finalValue: 0
-    referenceModifiers: []
     modifiers: []
   moveSpeed:
     baseValue: 2
     finalValue: 2
-    referenceModifiers: []
     modifiers: []
   damageModifier:
     baseValue: 0
     finalValue: 0
-    referenceModifiers: []
     modifiers: []
   omnivamp:
     baseValue: 0
     finalValue: 0
-    referenceModifiers: []
     modifiers: []
   attackDamage:
     baseValue: 0
     finalValue: 0
-    referenceModifiers: []
     modifiers: []
   critChance:
     baseValue: 0
     finalValue: 0
-    referenceModifiers: []
     modifiers: []
   critDamageModifier:
     baseValue: 0
     finalValue: 0
-    referenceModifiers: []
     modifiers: []
   damageReduction:
     baseValue: 0
     finalValue: 0
-    referenceModifiers: []
     modifiers: []
   attackRange:
     baseValue: 0
     finalValue: 0
-    referenceModifiers: []
     modifiers: []
   actionMoveSpeedReduceRate:
     baseValue: -0.9
     finalValue: -0.9
-    referenceModifiers: []
     modifiers: []
   actionSlowModifier:
     value: 0
     type: 1
+    liveTime: 0
 --- !u!114 &1376985925249362417
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -44027,12 +43877,10 @@ MonoBehaviour:
   healthPoint:
     baseValue: 50000
     finalValue: 50000
-    referenceModifiers: []
     modifiers: []
   healthRegen:
     baseValue: 0
     finalValue: 0
-    referenceModifiers: []
     modifiers: []
   currentManaPoint:
     value: 0
@@ -44040,86 +43888,71 @@ MonoBehaviour:
   manaPoint:
     baseValue: 100
     finalValue: 100
-    referenceModifiers: []
     modifiers: []
   manaRegen:
     baseValue: 100
     finalValue: 100
-    referenceModifiers: []
     modifiers: []
   might:
     baseValue: 1
     finalValue: 1
-    referenceModifiers: []
     modifiers: []
   reflex:
     baseValue: 1
     finalValue: 1
-    referenceModifiers: []
     modifiers: []
   wisdom:
     baseValue: 1
     finalValue: 1
-    referenceModifiers: []
     modifiers: []
   attackSpeed:
     baseValue: 1
     finalValue: 1
-    referenceModifiers: []
     modifiers: []
   armor:
     baseValue: 0
     finalValue: 0
-    referenceModifiers: []
     modifiers: []
   moveSpeed:
     baseValue: 2
     finalValue: 2
-    referenceModifiers: []
     modifiers: []
   damageModifier:
     baseValue: 0
     finalValue: 0
-    referenceModifiers: []
     modifiers: []
   omnivamp:
     baseValue: 0
     finalValue: 0
-    referenceModifiers: []
     modifiers: []
   attackDamage:
     baseValue: 0
     finalValue: 0
-    referenceModifiers: []
     modifiers: []
   critChance:
     baseValue: 0
     finalValue: 0
-    referenceModifiers: []
     modifiers: []
   critDamageModifier:
     baseValue: 0
     finalValue: 0
-    referenceModifiers: []
     modifiers: []
   damageReduction:
     baseValue: 0
     finalValue: 0
-    referenceModifiers: []
     modifiers: []
   attackRange:
     baseValue: 0
     finalValue: 0
-    referenceModifiers: []
     modifiers: []
   actionMoveSpeedReduceRate:
     baseValue: -0.9
     finalValue: -0.9
-    referenceModifiers: []
     modifiers: []
   actionSlowModifier:
     value: 0
     type: 1
+    liveTime: 0
 --- !u!1 &6122386133999971895
 GameObject:
   m_ObjectHideFlags: 0
@@ -45390,12 +45223,10 @@ MonoBehaviour:
   healthPoint:
     baseValue: 50
     finalValue: 0
-    referenceModifiers: []
     modifiers: []
   healthRegen:
     baseValue: 0
     finalValue: 0
-    referenceModifiers: []
     modifiers: []
   currentManaPoint:
     value: 0
@@ -45403,86 +45234,71 @@ MonoBehaviour:
   manaPoint:
     baseValue: 100
     finalValue: 0
-    referenceModifiers: []
     modifiers: []
   manaRegen:
     baseValue: 0
     finalValue: 0
-    referenceModifiers: []
     modifiers: []
   might:
     baseValue: 1
     finalValue: 0
-    referenceModifiers: []
     modifiers: []
   reflex:
     baseValue: 1
     finalValue: 0
-    referenceModifiers: []
     modifiers: []
   wisdom:
     baseValue: 1
     finalValue: 0
-    referenceModifiers: []
     modifiers: []
   attackSpeed:
     baseValue: 1
     finalValue: 0
-    referenceModifiers: []
     modifiers: []
   armor:
     baseValue: 0
     finalValue: 0
-    referenceModifiers: []
     modifiers: []
   moveSpeed:
     baseValue: 2
     finalValue: 2
-    referenceModifiers: []
     modifiers: []
   damageModifier:
     baseValue: 0
     finalValue: 0
-    referenceModifiers: []
     modifiers: []
   omnivamp:
     baseValue: 0
     finalValue: 0
-    referenceModifiers: []
     modifiers: []
   attackDamage:
     baseValue: 0
     finalValue: 0
-    referenceModifiers: []
     modifiers: []
   critChance:
     baseValue: 0
     finalValue: 0
-    referenceModifiers: []
     modifiers: []
   critDamageModifier:
     baseValue: 0
     finalValue: 0
-    referenceModifiers: []
     modifiers: []
   damageReduction:
     baseValue: 0
     finalValue: 0
-    referenceModifiers: []
     modifiers: []
   attackRange:
     baseValue: 0
     finalValue: 0
-    referenceModifiers: []
     modifiers: []
   actionMoveSpeedReduceRate:
     baseValue: -0.9
     finalValue: -0.9
-    referenceModifiers: []
     modifiers: []
   actionSlowModifier:
     value: 0
     type: 1
+    liveTime: 0
 --- !u!114 &7285419098741409359
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -45903,12 +45719,10 @@ MonoBehaviour:
   healthPoint:
     baseValue: 5000
     finalValue: 5000
-    referenceModifiers: []
     modifiers: []
   healthRegen:
     baseValue: 0
     finalValue: 0
-    referenceModifiers: []
     modifiers: []
   currentManaPoint:
     value: 0
@@ -45916,86 +45730,71 @@ MonoBehaviour:
   manaPoint:
     baseValue: 100
     finalValue: 100
-    referenceModifiers: []
     modifiers: []
   manaRegen:
     baseValue: 0
     finalValue: 0
-    referenceModifiers: []
     modifiers: []
   might:
     baseValue: 1
     finalValue: 1
-    referenceModifiers: []
     modifiers: []
   reflex:
     baseValue: 1
     finalValue: 1
-    referenceModifiers: []
     modifiers: []
   wisdom:
     baseValue: 1
     finalValue: 1
-    referenceModifiers: []
     modifiers: []
   attackSpeed:
     baseValue: 1
     finalValue: 1
-    referenceModifiers: []
     modifiers: []
   armor:
     baseValue: 0
     finalValue: 0
-    referenceModifiers: []
     modifiers: []
   moveSpeed:
     baseValue: 2
     finalValue: 2
-    referenceModifiers: []
     modifiers: []
   damageModifier:
     baseValue: 0
     finalValue: 0
-    referenceModifiers: []
     modifiers: []
   omnivamp:
     baseValue: 0
     finalValue: 0
-    referenceModifiers: []
     modifiers: []
   attackDamage:
     baseValue: 0
     finalValue: 0
-    referenceModifiers: []
     modifiers: []
   critChance:
     baseValue: 0
     finalValue: 0
-    referenceModifiers: []
     modifiers: []
   critDamageModifier:
     baseValue: 0
     finalValue: 0
-    referenceModifiers: []
     modifiers: []
   damageReduction:
     baseValue: 0
     finalValue: 0
-    referenceModifiers: []
     modifiers: []
   attackRange:
     baseValue: 0
     finalValue: 0
-    referenceModifiers: []
     modifiers: []
   actionMoveSpeedReduceRate:
     baseValue: -0.9
     finalValue: -0.9
-    referenceModifiers: []
     modifiers: []
   actionSlowModifier:
     value: 0
     type: 1
+    liveTime: 0
 --- !u!224 &7407590166170304459
 RectTransform:
   m_ObjectHideFlags: 0
@@ -47849,8 +47648,7 @@ SceneRoots:
   - {fileID: 416590460}
   - {fileID: 893338233}
   - {fileID: 1088719182}
-  - {fileID: 78841565}
-  - {fileID: 883458357}
+  - {fileID: 807881488}
   - {fileID: 141167860}
   - {fileID: 12386592}
   - {fileID: 110363462}

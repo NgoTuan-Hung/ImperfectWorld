@@ -11,12 +11,6 @@ public enum UpdateDirectionIndicatorPriority
     VeryHigh = 0,
 }
 
-public enum AttackType
-{
-    Melee,
-    Ranged,
-}
-
 [RequireComponent(typeof(BotSensor), typeof(BotAIManager))]
 [DefaultExecutionOrder(0)]
 public partial class CustomMono : MonoSelfAware

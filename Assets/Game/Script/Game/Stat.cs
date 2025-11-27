@@ -1,6 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
-using UnityEditor;
 using UnityEngine;
 
 /// <summary>
@@ -48,7 +46,6 @@ public partial class Stat : MonoEditor
     IEnumerator LateStart()
     {
         yield return null;
-        InitProperty();
         ResetStat();
         StartRegen();
     }
@@ -78,6 +75,25 @@ public partial class Stat : MonoEditor
 
     void ResetStat()
     {
+        alive = true;
+        healthPoint.ClearModifiers(customMono.championData.healthPoint);
+        healthRegen.ClearModifiers(customMono.championData.healthRegen);
+        manaPoint.ClearModifiers(customMono.championData.manaPoint);
+        manaRegen.ClearModifiers(customMono.championData.manaRegen);
+        might.ClearModifiers(customMono.championData.might);
+        reflex.ClearModifiers(customMono.championData.reflex);
+        wisdom.ClearModifiers(customMono.championData.wisdom);
+        attackSpeed.ClearModifiers(customMono.championData.attackSpeed);
+        armor.ClearModifiers(customMono.championData.armor);
+        moveSpeed.ClearModifiers(customMono.championData.moveSpeed);
+        damageModifier.ClearModifiers(customMono.championData.damageModifier);
+        omnivamp.ClearModifiers(customMono.championData.omnivamp);
+        attackDamage.ClearModifiers(customMono.championData.attackDamage);
+        critChance.ClearModifiers(customMono.championData.critChance);
+        critDamageModifier.ClearModifiers(customMono.championData.critDamageModifier);
+        damageReduction.ClearModifiers(customMono.championData.damageReduction);
+        attackRange.ClearModifiers(customMono.championData.attackRange);
+        actionMoveSpeedReduceRate.ClearModifiers();
         currentHealthPoint.Value = healthPoint.FinalValue;
         currentManaPoint.Value = 0;
     }
@@ -89,23 +105,6 @@ public partial class Stat : MonoEditor
         );
     }
 
-    public void InitProperty()
-    {
-        alive = true;
-        might.RecalculateFinalValue();
-        reflex.RecalculateFinalValue();
-        wisdom.RecalculateFinalValue();
-        actionMoveSpeedReduceRate.RecalculateFinalValue();
-        moveSpeed.RecalculateFinalValue();
-        damageModifier.RecalculateFinalValue();
-        armor.RecalculateFinalValue();
-        omnivamp.RecalculateFinalValue();
-        attackDamage.RecalculateFinalValue();
-        critChance.RecalculateFinalValue();
-        critDamageModifier.RecalculateFinalValue();
-        attackRange.RecalculateFinalValue();
-    }
-
     void AddPropertyChangeEvent()
     {
         currentHealthPoint.valueChangeEvent += HPChangeCallback;
@@ -113,33 +112,18 @@ public partial class Stat : MonoEditor
         healthPoint.finalValueChangeEvent += ChangeCurrentHPCap;
         manaPoint.finalValueChangeEvent += ChangeCurrentMPCap;
 
-        might.referenceModifiers = new List<FloatStatModifier>()
-        {
-            new(0, FloatStatModifierType.Additive),
-            new(0, FloatStatModifierType.Additive),
-        };
-        healthRegen.modifiers.Add(might.referenceModifiers[0]);
-        healthPoint.modifiers.Add(might.referenceModifiers[1]);
+        healthRegen.modifiers.Add(mightChangeHealthRegenFSM);
+        healthPoint.modifiers.Add(mightChangeHealthPointFSM);
         might.finalValueChangeEvent += MightChangeHealthPoint;
         might.finalValueChangeEvent += MightChangeHealthRegen;
 
-        reflex.referenceModifiers = new List<FloatStatModifier>()
-        {
-            new(0, FloatStatModifierType.Additive),
-            new(0, FloatStatModifierType.Additive),
-        };
-        attackSpeed.modifiers.Add(reflex.referenceModifiers[0]);
-        armor.modifiers.Add(reflex.referenceModifiers[1]);
+        attackSpeed.modifiers.Add(reflexChangeAttackSpeedFSM);
+        armor.modifiers.Add(reflexChangeArmorFSM);
         reflex.finalValueChangeEvent += ReflexChangeAttackSpeed;
         reflex.finalValueChangeEvent += ReflexChangeArmor;
 
-        wisdom.referenceModifiers = new List<FloatStatModifier>()
-        {
-            new(0, FloatStatModifierType.Additive),
-            new(0, FloatStatModifierType.Additive),
-        };
-        manaRegen.modifiers.Add(wisdom.referenceModifiers[0]);
-        manaPoint.modifiers.Add(wisdom.referenceModifiers[1]);
+        manaRegen.modifiers.Add(wisdomChangeManaRegenFSM);
+        manaPoint.modifiers.Add(wisdomChangeManaPointFSM);
         wisdom.finalValueChangeEvent += WisdomChangeManaPoint;
         wisdom.finalValueChangeEvent += WisdomChangeManaRegen;
 
@@ -210,7 +194,7 @@ public partial class Stat : MonoEditor
     /// </summary>
     void MightChangeHealthPoint()
     {
-        might.referenceModifiers[1].value = 15 * might.FinalValue;
+        mightChangeHealthPointFSM.value = 15 * might.FinalValue;
         healthPoint.RecalculateFinalValue();
     }
 
@@ -221,7 +205,7 @@ public partial class Stat : MonoEditor
     /// </summary>
     void MightChangeHealthRegen()
     {
-        might.referenceModifiers[0].value = 0.1f * might.FinalValue;
+        mightChangeHealthRegenFSM.value = 0.1f * might.FinalValue;
         healthRegen.RecalculateFinalValue();
     }
 
@@ -232,7 +216,7 @@ public partial class Stat : MonoEditor
     /// </summary>
     void ReflexChangeAttackSpeed()
     {
-        reflex.referenceModifiers[0].value = 0.01f * reflex.FinalValue;
+        reflexChangeAttackSpeedFSM.value = 0.01f * reflex.FinalValue;
         attackSpeed.RecalculateFinalValue();
     }
 
@@ -243,7 +227,7 @@ public partial class Stat : MonoEditor
     /// </summary>
     void ReflexChangeArmor()
     {
-        reflex.referenceModifiers[1].value = 0.17f * reflex.FinalValue;
+        reflexChangeArmorFSM.value = 0.17f * reflex.FinalValue;
         armor.RecalculateFinalValue();
     }
 
@@ -254,7 +238,7 @@ public partial class Stat : MonoEditor
     /// </summary>
     void WisdomChangeManaPoint()
     {
-        wisdom.referenceModifiers[1].value = -0.25f * wisdom.FinalValue;
+        wisdomChangeManaPointFSM.value = -0.25f * wisdom.FinalValue;
         manaPoint.RecalculateFinalValue();
     }
 
@@ -265,7 +249,7 @@ public partial class Stat : MonoEditor
     /// </summary>
     void WisdomChangeManaRegen()
     {
-        wisdom.referenceModifiers[0].value = 1.5f * wisdom.FinalValue;
+        wisdomChangeManaRegenFSM.value = 1.5f * wisdom.FinalValue;
         manaRegen.RecalculateFinalValue();
     }
 

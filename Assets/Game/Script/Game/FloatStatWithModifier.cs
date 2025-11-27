@@ -30,11 +30,6 @@ public class FloatStatWithModifier
     }
 
     /// <summary>
-    /// Modifiers which are meant to be changed
-    /// </summary>
-    public List<FloatStatModifier> referenceModifiers = new();
-
-    /// <summary>
     /// Modifiers which should be static/unchanged
     /// </summary>
     public List<FloatStatModifier> modifiers = new();
@@ -66,5 +61,29 @@ public class FloatStatWithModifier
                     .Sum(m => m.value)
             );
         finalValueChangeEvent();
+    }
+
+    /// <summary>
+    /// Remove all modifiers which are not permanent
+    /// </summary>
+    public void ClearModifiers()
+    {
+        for (int i = 0; i < modifiers.Count; i++)
+            if (modifiers[i].liveTime != FloatStatModifierLiveTime.Permanent)
+                modifiers.RemoveAt(i);
+        RecalculateFinalValue();
+    }
+
+    /// <summary>
+    /// Remove all modifiers which are not permanent and reset the base value
+    /// </summary>
+    /// <param name="resetBaseValue"></param>
+    public void ClearModifiers(float resetBaseValue)
+    {
+        for (int i = 0; i < modifiers.Count; i++)
+            if (modifiers[i].liveTime != FloatStatModifierLiveTime.Permanent)
+                modifiers.RemoveAt(i);
+        baseValue = resetBaseValue;
+        RecalculateFinalValue();
     }
 }

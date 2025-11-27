@@ -2,15 +2,15 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum AttackType
+{
+    Melee,
+    Ranged,
+}
+
 [CreateAssetMenu(fileName = "ChampionData", menuName = "ScriptableObjects/ChampionData")]
 public class ChampionData : ScriptableObject
 {
-    public enum AttackType
-    {
-        Melee,
-        Ranged,
-    }
-
     public AttackType attackType = AttackType.Melee;
 
     [Serializable]

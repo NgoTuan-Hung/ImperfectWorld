@@ -46,7 +46,8 @@ public partial class GameManager : MonoBehaviour
         walkBoolHash = Animator.StringToHash("Walk"),
         dieBoolHash = Animator.StringToHash("Die"),
         dashBoolHash = Animator.StringToHash("Dash"),
-        jumpBoolHash = Animator.StringToHash("Jump");
+        jumpBoolHash = Animator.StringToHash("Jump"),
+        meleeStanceBoolHash = Animator.StringToHash("MeleeStance");
     public Dictionary<int, GameObject> colliderOwner = new();
     public List<ActionFieldInfo> actionFieldInfos = new();
     Dictionary<string, ActionFieldInfo> actionFieldInfoDict = new();

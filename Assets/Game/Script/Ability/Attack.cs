@@ -36,27 +36,7 @@ public class Attack : SkillBase
             GetActionField<ActionFloatField>(ActionFieldName.Cooldown).value
         );
 
-        GetActionField<ActionFloatField>(ActionFieldName.Blend).value =
-            1f
-            / (
-                (customMono.championData.variant - 1) == 0 ? 1 : customMono.championData.variant - 1
-            );
-
-        switch (customMono.championData.attackType)
-        {
-            case ChampionData.AttackType.Melee:
-            {
-                triggerIE = MeleeTriggerIE;
-                break;
-            }
-            case ChampionData.AttackType.Ranged:
-            {
-                triggerIE = RangedTriggerIE;
-                break;
-            }
-            default:
-                break;
-        }
+        SwitchAttackType(customMono.championData.attackType);
 
         /* Also use damage, actionie, selectedVariant */
     }
@@ -233,5 +213,30 @@ public class Attack : SkillBase
     {
         StopCoroutine(cooldownIE);
         StartCoroutine(cooldownIE = CooldownCoroutine(duration));
+    }
+
+    public void SwitchAttackType(AttackType attackType)
+    {
+        switch (attackType)
+        {
+            case AttackType.Melee:
+            {
+                triggerIE = MeleeTriggerIE;
+                break;
+            }
+            case AttackType.Ranged:
+            {
+                triggerIE = RangedTriggerIE;
+                break;
+            }
+            default:
+                break;
+        }
+
+        GetActionField<ActionFloatField>(ActionFieldName.Blend).value =
+            1f
+            / (
+                (customMono.championData.variant - 1) == 0 ? 1 : customMono.championData.variant - 1
+            );
     }
 }

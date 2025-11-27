@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Map;
 using TMPro;
+using UnityEditor.Animations;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -46,6 +47,8 @@ public class GameUIManager : MonoEditorSingleton<GameUIManager>
     bool finishedReward = false;
     bool menuCharStateOn = false;
     bool menuItemStateOn = false;
+    public Image screenEffectImg;
+    public Animator screenEffectAnimator;
 
     private void Awake()
     {
@@ -357,4 +360,9 @@ public class GameUIManager : MonoEditorSingleton<GameUIManager>
     public void TurnOnChampionRewardSelectZone() => championRewardSelectZone.SetActive(true);
 
     public void TurnOffChampionRewardSelectZone() => championRewardSelectZone.SetActive(false);
+
+    public void ApplyScreenEffect(AnimatorController animatorController) =>
+        screenEffectAnimator.runtimeAnimatorController = animatorController;
+
+    public void DisableScreenEffect() => screenEffectAnimator.runtimeAnimatorController = null;
 }
