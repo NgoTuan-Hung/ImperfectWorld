@@ -48,7 +48,7 @@ public class TremorBreak : SkillBase
     {
         base.RecalculateStat();
         GetActionField<ActionFloatField>(ActionFieldName.Damage).value =
-            customMono.stat.wisdom.FinalValue * 8f;
+            customMono.stat.wisdom.FinalValue * 8.5f;
     }
 
     public override ActionResult Trigger(

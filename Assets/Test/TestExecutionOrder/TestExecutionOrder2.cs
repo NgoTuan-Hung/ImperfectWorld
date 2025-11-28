@@ -1,6 +1,6 @@
+using System.Collections;
 using UnityEngine;
 
-[DefaultExecutionOrder(1)]
 public class TestExecutionOrder2 : MonoBehaviour
 {
     private void Awake()
@@ -8,17 +8,21 @@ public class TestExecutionOrder2 : MonoBehaviour
         print("2 AWAKE");
     }
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start() { }
-
-    private void FixedUpdate()
+    private void OnEnable()
     {
-        print("2 FIXED UPDATE");
+        print("2 ONENABLE");
+        StartCoroutine(LateEnable());
     }
 
-    // Update is called once per frame
-    void Update()
+    IEnumerator LateEnable()
     {
-        print("2 UPDATE");
+        yield return null;
+        print("2 LATEENABLE");
+    }
+
+    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    void Start()
+    {
+        print("2 START");
     }
 }

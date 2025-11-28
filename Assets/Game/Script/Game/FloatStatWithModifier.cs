@@ -75,6 +75,18 @@ public class FloatStatWithModifier
     }
 
     /// <summary>
+    /// Call this if you want to do something after clearing modifiers
+    /// and then recalculate yourself.
+    /// </summary>
+    /// <param name="resetBaseValue"></param>
+    public void ClearModifiersWithoutRecalculate()
+    {
+        for (int i = 0; i < modifiers.Count; i++)
+            if (modifiers[i].liveTime != FloatStatModifierLiveTime.Permanent)
+                modifiers.RemoveAt(i);
+    }
+
+    /// <summary>
     /// Remove all modifiers which are not permanent and reset the base value
     /// </summary>
     /// <param name="resetBaseValue"></param>
@@ -85,5 +97,13 @@ public class FloatStatWithModifier
                 modifiers.RemoveAt(i);
         baseValue = resetBaseValue;
         RecalculateFinalValue();
+    }
+
+    public void ClearModifiersWithoutRecalculate(float resetBaseValue)
+    {
+        for (int i = 0; i < modifiers.Count; i++)
+            if (modifiers[i].liveTime != FloatStatModifierLiveTime.Permanent)
+                modifiers.RemoveAt(i);
+        baseValue = resetBaseValue;
     }
 }

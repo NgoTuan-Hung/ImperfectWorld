@@ -1,12 +1,11 @@
+using System;
 using System.Collections;
 using UnityEngine;
 
 /// <summary>
-/// Anything you want to change in the inspector, or to be
-/// affected by other fields, should be placed here. for
-/// convinience sake.
-/// DON'T REMOVE SERIALIZEFIELD, THEY ARE MEAN TO BE PERSISTED.
+/// Contains all the stats of the champion like HP, MP, ...
 /// </summary>
+[DefaultExecutionOrder(0)]
 public partial class Stat : MonoEditor
 {
     private void Awake()
@@ -17,8 +16,8 @@ public partial class Stat : MonoEditor
 
     private void OnEnable()
     {
+        Reborn();
         onEnable();
-        ReviveHandler();
     }
 
     private void OnDisable()
@@ -33,33 +32,42 @@ public partial class Stat : MonoEditor
     public override void Start()
     {
         InitUI();
-        StartCoroutine(LateStart());
+        StartCoroutine(LateEnable());
         StartCoroutine(AddLatePropertyChangeEvent());
         onEnable += () =>
         {
             InitUI();
-            StartCoroutine(LateStart());
+            StartCoroutine(LateEnable());
         };
         SetupGameEvent();
     }
 
-    IEnumerator LateStart()
+    IEnumerator LateEnable()
     {
         yield return null;
-        ResetStat();
+        CalculateFinalStats();
         StartRegen();
     }
 
-    /// <summary>
-    /// Since we cripple the character on death, we need to
-    /// reset it state when it's re initialized.
-    /// </summary>
-    public void ReviveHandler()
+    private void CalculateFinalStats()
     {
-        customMono.actionBlocking = false;
-        customMono.actionInterval = false;
-        customMono.movementActionInterval = false;
-        customMono.movementActionBlocking = false;
+        /* Don't need to recalculate hp, hpregen, mp, mpregen, aspd, armor since
+        other stats will recalculate them (for example see this method
+        MightChangeHealthPoint) */
+        might.RecalculateFinalValue();
+        reflex.RecalculateFinalValue();
+        wisdom.RecalculateFinalValue();
+        moveSpeed.RecalculateFinalValue();
+        damageModifier.RecalculateFinalValue();
+        omnivamp.RecalculateFinalValue();
+        attackDamage.RecalculateFinalValue();
+        critChance.RecalculateFinalValue();
+        critDamageModifier.RecalculateFinalValue();
+        damageReduction.RecalculateFinalValue();
+        attackRange.RecalculateFinalValue();
+
+        currentHealthPoint.Value = healthPoint.FinalValue;
+        currentManaPoint.Value = 0;
     }
 
     /// <summary>
@@ -73,29 +81,32 @@ public partial class Stat : MonoEditor
         currentHealthPointReachZeroEvent += HealthReachZeroHandler;
     }
 
-    void ResetStat()
+    void Reborn()
     {
         alive = true;
-        healthPoint.ClearModifiers(customMono.championData.healthPoint);
-        healthRegen.ClearModifiers(customMono.championData.healthRegen);
-        manaPoint.ClearModifiers(customMono.championData.manaPoint);
-        manaRegen.ClearModifiers(customMono.championData.manaRegen);
-        might.ClearModifiers(customMono.championData.might);
-        reflex.ClearModifiers(customMono.championData.reflex);
-        wisdom.ClearModifiers(customMono.championData.wisdom);
-        attackSpeed.ClearModifiers(customMono.championData.attackSpeed);
-        armor.ClearModifiers(customMono.championData.armor);
-        moveSpeed.ClearModifiers(customMono.championData.moveSpeed);
-        damageModifier.ClearModifiers(customMono.championData.damageModifier);
-        omnivamp.ClearModifiers(customMono.championData.omnivamp);
-        attackDamage.ClearModifiers(customMono.championData.attackDamage);
-        critChance.ClearModifiers(customMono.championData.critChance);
-        critDamageModifier.ClearModifiers(customMono.championData.critDamageModifier);
-        damageReduction.ClearModifiers(customMono.championData.damageReduction);
-        attackRange.ClearModifiers(customMono.championData.attackRange);
-        actionMoveSpeedReduceRate.ClearModifiers();
-        currentHealthPoint.Value = healthPoint.FinalValue;
-        currentManaPoint.Value = 0;
+        healthPoint.ClearModifiersWithoutRecalculate(customMono.championData.healthPoint);
+        healthRegen.ClearModifiersWithoutRecalculate(customMono.championData.healthRegen);
+        manaPoint.ClearModifiersWithoutRecalculate(customMono.championData.manaPoint);
+        manaRegen.ClearModifiersWithoutRecalculate(customMono.championData.manaRegen);
+        might.ClearModifiersWithoutRecalculate(customMono.championData.might);
+        reflex.ClearModifiersWithoutRecalculate(customMono.championData.reflex);
+        wisdom.ClearModifiersWithoutRecalculate(customMono.championData.wisdom);
+        attackSpeed.ClearModifiersWithoutRecalculate(customMono.championData.attackSpeed);
+        armor.ClearModifiersWithoutRecalculate(customMono.championData.armor);
+        moveSpeed.ClearModifiersWithoutRecalculate(customMono.championData.moveSpeed);
+        damageModifier.ClearModifiersWithoutRecalculate(customMono.championData.damageModifier);
+        omnivamp.ClearModifiersWithoutRecalculate(customMono.championData.omnivamp);
+        attackDamage.ClearModifiersWithoutRecalculate(customMono.championData.attackDamage);
+        critChance.ClearModifiersWithoutRecalculate(customMono.championData.critChance);
+        critDamageModifier.ClearModifiersWithoutRecalculate(
+            customMono.championData.critDamageModifier
+        );
+        damageReduction.ClearModifiersWithoutRecalculate(customMono.championData.damageReduction);
+        attackRange.ClearModifiersWithoutRecalculate(customMono.championData.attackRange);
+        actionMoveSpeedReduceRate.ClearModifiersWithoutRecalculate();
+
+        customMono.actionBlocking = false;
+        customMono.movementActionBlocking = false;
     }
 
     void InitUI()

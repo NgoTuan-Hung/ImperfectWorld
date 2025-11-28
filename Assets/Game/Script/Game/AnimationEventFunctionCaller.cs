@@ -2,6 +2,10 @@ using System;
 using System.Collections;
 using UnityEngine;
 
+/// <summary>
+/// Remove one of these might cause problem some animation will use
+/// enum but you change the order of the enum.
+/// </summary>
 public enum EAnimationSignal
 {
     Attack,
@@ -10,6 +14,9 @@ public enum EAnimationSignal
     EndCombo1,
     Combo2Signal,
     EndCombo2,
+    Reserve0,
+    Reserve1,
+    Reserve2,
     MainSkill1Signal,
     EndMainSkill1,
     MainSkill2Signal,

@@ -38,17 +38,6 @@ public partial class CustomMono : MonoSelfAware
     List<MultipleCollideTimer> multipleCollideTimersList = new();
 
     /// <summary>
-    /// This is the interval between bot next action choosing (we only
-    /// have this because of performance reason, we don't want the bot
-    /// to choose action too fast right ? Well i think we might remove
-    /// this in the future, let's see). Also we will need to let bot
-    /// choose action faster if it is allowed to choose faster like
-    /// attacking faster.
-    /// </summary>
-    public bool actionInterval;
-    public bool movementActionInterval;
-
-    /// <summary>
     /// You don't want other action to be executed while an animation of
     /// an action is playing, like you can't cast spell while your
     /// attack animation is playing. Well, you can still move while attacking

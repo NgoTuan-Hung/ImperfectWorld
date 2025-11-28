@@ -2,6 +2,11 @@ using System.Collections;
 using UnityEditor.Animations;
 using UnityEngine;
 
+/// <summary>
+/// OnEnable should run after Stat.OnEnable
+/// since it will clear all modifiers
+/// </summary>
+[DefaultExecutionOrder(1)]
 public class FeralAwakening : SkillBase
 {
     bool used = false;
@@ -38,10 +43,6 @@ public class FeralAwakening : SkillBase
         StartCoroutine(LateOnEnable());
     }
 
-    /// <summary>
-    /// Must run after Stat.OnEnable since it will clear all modifiers
-    /// </summary>
-    /// <returns></returns>
     IEnumerator LateOnEnable()
     {
         yield return null;
@@ -78,14 +79,14 @@ public class FeralAwakening : SkillBase
     public override void StatChangeRegister()
     {
         base.StatChangeRegister();
-        customMono.stat.wisdom.finalValueChangeEvent += RecalculateStat;
+        customMono.stat.might.finalValueChangeEvent += RecalculateStat;
     }
 
     public override void RecalculateStat()
     {
         base.RecalculateStat();
-        // GetActionField<ActionFloatField>(ActionFieldName.Damage).value =
-        //     customMono.stat.wisdom.FinalValue * 8f;
+        aspdBuff.value = 2f + customMono.stat.might.FinalValue * 0.01f;
+        hpBuff.value = 1000f + customMono.stat.might.FinalValue * 10f;
     }
 
     void Proc()

@@ -1,6 +1,4 @@
 using System;
-using System.Collections.Generic;
-using Unity.Properties;
 using UnityEngine;
 
 public partial class Stat
