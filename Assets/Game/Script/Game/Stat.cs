@@ -287,34 +287,12 @@ public partial class Stat : MonoEditor
 
     private void OnValidate()
     {
-        // attackSpeed.baseValue = 1;
-        // healthPoint.BaseValue = 20;
-        // might.baseValue = 1;
-        // reflex.baseValue = 1;
-        // wisdom.baseValue = 1;
-        // manaPoint.baseValue = 100;
-        // manaRegen.baseValue = 0;
-        // healthRegen.baseValue = 0;
-        // armor.baseValue = 0;
-
-        // moveSpeed.BaseValue = 2f;
-        // actionMoveSpeedReduceRate.BaseValue = -0.9f;
+        //
     }
 
     private void Reset()
     {
-        // attackSpeed.BaseValue = 1;
-        // healthPoint.BaseValue = 20;
-        // might.BaseValue = 1;
-        // reflex.BaseValue = 1;
-        // wisdom.BaseValue = 1;
-        // manaPoint.BaseValue = 100;
-        // manaRegen.BaseValue = 0;
-        // healthRegen.BaseValue = 0;
-        // armor.BaseValue = 0;
-
-        // moveSpeed.BaseValue = 2f;
-        // actionMoveSpeedReduceRate.BaseValue = -0.9f; //
+        //
     }
 
     void StartRegen()
