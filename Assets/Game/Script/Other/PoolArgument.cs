@@ -7,6 +7,7 @@ public enum ComponentType
     WorldSpaceUI,
     CustomMono,
     TextPopupUI,
+    Item,
 };
 
 public class PoolArgument

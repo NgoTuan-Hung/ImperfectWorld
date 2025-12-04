@@ -10,25 +10,21 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c8394565e471a9e429770ab579f0bbd9, type: 3}
-  m_Name: Chronoseal
+  m_Name: Nightbrew Vessel
   m_EditorClassIdentifier: Assembly-CSharp::ItemDataSO
-  itemName: Chronoseal
+  itemName: Nightbrew Vessel
+  icon: {fileID: -107931967402165528, guid: 9f94c86584685224f9615f120db10d80, type: 3}
   statBuffs:
-  - statBuffType: 0
+  - statBuffType: 5
     modifier:
-      value: 450
+      value: 4.25
       type: 0
-  - statBuffType: 7
+      liveTime: 1
+  - statBuffType: 12
     modifier:
-      value: 10
+      value: 0.2
       type: 0
-  itemBehaviours: 01000000
-  itemDescription: '<color=green>+450 <link=HP><color=#C71F37>HP</color></link></color>
-
-    <color=green>+10
-    <link=ARMOR><color=#95A5A6>ARMOR</color></link></color>
-
-    <color=#3498DB>passive:</color>
-
-    Upon
-    death, the wearer is revived with full health and mana. Activates once per battle.'
+      liveTime: 1
+  itemBehaviours: 
+  itemDescription: 
+  itemTier: 1

@@ -19,6 +19,13 @@ public class FloatStatModifier
     public FloatStatModifierType type;
     public FloatStatModifierLiveTime liveTime = FloatStatModifierLiveTime.Temporary;
 
+    public FloatStatModifier()
+    {
+        value = 0;
+        type = FloatStatModifierType.Additive;
+        liveTime = FloatStatModifierLiveTime.Temporary;
+    }
+
     public FloatStatModifier(float value, FloatStatModifierType type)
     {
         this.value = value;

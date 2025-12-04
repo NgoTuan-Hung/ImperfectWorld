@@ -10,16 +10,16 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c8394565e471a9e429770ab579f0bbd9, type: 3}
-  m_Name: Lunaris
+  m_Name: Rusted Chainmail
   m_EditorClassIdentifier: Assembly-CSharp::ItemDataSO
-  itemName: Lunaris
-  icon: {fileID: -8667143747582675698, guid: 9f94c86584685224f9615f120db10d80, type: 3}
+  itemName: Rusted Chainmail
+  icon: {fileID: -4837038918638003080, guid: 9f94c86584685224f9615f120db10d80, type: 3}
   statBuffs:
-  - statBuffType: 5
+  - statBuffType: 7
     modifier:
-      value: 50
+      value: 0.8
       type: 0
-      liveTime: 0
+      liveTime: 1
   itemBehaviours: 
-  itemDescription: <color=green>+ 50 <link=ATK><color=#E53935>ATK</color></link></color>
-  itemTier: 3
+  itemDescription: 
+  itemTier: 0

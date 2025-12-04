@@ -44,6 +44,8 @@ ShaderVariantCollection:
         passType: 0
       - keywords: COLOR_FILTER SAMPLING_BLUR_FAST
         passType: 0
+      - keywords: COLOR_FILTER SAMPLING_BLUR_FAST TRANSITION_FADE
+        passType: 0
       - keywords: DETAIL_MULTIPLY_ADDITIVE
         passType: 0
       - keywords: EDGE_PLAIN
@@ -103,6 +105,12 @@ ShaderVariantCollection:
       - keywords: TONE_NEGATIVE TRANSITION_CUTOFF
         passType: 0
       - keywords: TONE_NEGATIVE TRANSITION_FADE
+        passType: 0
+      - keywords: TONE_POSTERIZE
+        passType: 0
+      - keywords: TONE_RETRO
+        passType: 0
+      - keywords: TONE_SEPIA
         passType: 0
       - keywords: TRANSITION_BLAZE
         passType: 0

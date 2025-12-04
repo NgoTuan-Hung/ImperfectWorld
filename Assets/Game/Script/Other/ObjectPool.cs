@@ -105,6 +105,17 @@ public class ObjectPool
                         poolObject.TextPopupUI.deactivate += () => IdleScheme(poolObject);
                     };
                     break;
+                case ComponentType.Item:
+                    handleCachedComponentRefs += (poolObject) =>
+                    {
+                        poolObject.AddComponent(
+                            PoolObjectComponent.Item,
+                            getComponentInLocation(typeof(Item), poolObject)
+                        );
+
+                        poolObject.Item.deactivate += () => IdleScheme(poolObject);
+                    };
+                    break;
                 default:
                     break;
             }

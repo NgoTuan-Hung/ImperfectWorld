@@ -153,7 +153,9 @@ public partial class GameManager
 
     public List<StatUpgrade> statUpgrades = new();
     public List<ChampionReward> championRewards = new();
-    public UIEffectPreset championRewardSelectedEffectPreset;
+    public UIEffectPreset championRewardSelectedEffectPreset,
+        rareItemEffectPreset,
+        epicItemEffectPreset;
     public float largePositiveNumber = 999999f;
 
     /* Complex Text Colors */
@@ -248,4 +250,6 @@ public partial class GameManager
     public static List<string> GetAllIDsAsText() => linkDict.Values.ToList();
 
     public Action<GameState> onGameStateChange = (newState) => { };
+    public List<ItemDataSO> itemDataSOs;
+    public float[] itemDataSOWeights;
 }

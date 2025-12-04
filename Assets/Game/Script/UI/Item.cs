@@ -1,16 +1,20 @@
-using System;
+using System.Collections;
 using System.Collections.Generic;
+using Coffee.UIEffects;
+using DG.Tweening;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 public enum ItemState
 {
     Inventory,
     Equipped,
+    Reward,
     None,
 }
 
-public class Item : MonoBehaviour, IDragHandler, IEndDragHandler, IBeginDragHandler
+public class Item : MonoSelfAware, IDragHandler, IEndDragHandler, IBeginDragHandler
 {
     public ItemDataSO itemDataSO;
     public RectTransform rectTransform;
@@ -20,20 +24,73 @@ public class Item : MonoBehaviour, IDragHandler, IEndDragHandler, IBeginDragHand
     DoubleTapUI doubleTapUI;
     ItemTooltip itemTooltip;
     public Dictionary<string, object> fields = new();
+    UIEffect uIEffect;
+    Animator animator;
+    Image image;
 
-    private void Awake()
+    public override void Awake()
     {
+        base.Awake();
         rectTransform = GetComponent<RectTransform>();
         doubleTapUI = GetComponent<DoubleTapUI>();
+        uIEffect = GetComponent<UIEffect>();
+        animator = GetComponent<Animator>();
+        image = GetComponent<Image>();
         RegisterCallback();
+        InitTooltip();
     }
 
-    private void Start()
+    void InitTooltip()
     {
         itemTooltip = Instantiate(GameManager.Instance.itemTooltipPrefab)
             .GetComponent<ItemTooltip>();
         itemTooltip.Init(this);
         itemTooltip.gameObject.SetActive(false);
+    }
+
+    public override void Start()
+    {
+        base.Start();
+    }
+
+    public void Init(ItemDataSO itemDataSO)
+    {
+        this.itemDataSO = itemDataSO;
+        image.sprite = itemDataSO.icon;
+        itemTooltip.Setup();
+        animator.SetFloat(GameManager.Instance.itemCycleOffsetFloatHash, Random.Range(0, 1f));
+        switch (itemDataSO.itemTier)
+        {
+            case ItemTier.Normal:
+                uIEffect.Clear();
+                animator.SetFloat(GameManager.Instance.itemTierBlendHash, 0);
+                break;
+            case ItemTier.Rare:
+                uIEffect.LoadPreset(GameManager.Instance.rareItemEffectPreset);
+                animator.SetFloat(GameManager.Instance.itemTierBlendHash, 1);
+                break;
+            case ItemTier.Epic:
+                uIEffect.LoadPreset(GameManager.Instance.epicItemEffectPreset);
+                animator.SetFloat(GameManager.Instance.itemTierBlendHash, 1);
+                break;
+            case ItemTier.Legendary:
+            default:
+                break;
+        }
+    }
+
+    public void SetAsReward(Transform parent, Vector2 localPos)
+    {
+        transform.SetParent(parent, false);
+        StartCoroutine(EntranceIE(localPos));
+        SwitchState(ItemState.Reward);
+    }
+
+    IEnumerator EntranceIE(Vector2 localPos)
+    {
+        yield return Random.Range(0, 0.25f);
+        rectTransform.anchoredPosition = localPos + new Vector2(0, 150f);
+        rectTransform.DOAnchorPos(localPos, 0.5f).SetEase(Ease.OutBack);
     }
 
     private void RegisterCallback()
@@ -100,5 +157,10 @@ public class Item : MonoBehaviour, IDragHandler, IEndDragHandler, IBeginDragHand
             default:
                 break;
         }
+    }
+
+    public void SwitchState(ItemState state)
+    {
+        this.state = state;
     }
 }

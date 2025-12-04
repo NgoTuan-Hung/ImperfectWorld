@@ -13,15 +13,18 @@ MonoBehaviour:
   m_Name: "KuraiK\u014Dra"
   m_EditorClassIdentifier: Assembly-CSharp::ItemDataSO
   itemName: "Kurai K\u014Dra"
+  icon: {fileID: -4253206970694051259, guid: 9f94c86584685224f9615f120db10d80, type: 3}
   statBuffs:
   - statBuffType: 5
     modifier:
       value: 35
       type: 0
+      liveTime: 0
   - statBuffType: 2
     modifier:
       value: 25
       type: 0
+      liveTime: 0
   itemBehaviours: 00000000
   itemDescription: '<color=green>+ 35 <link=ATK><color=#E53935>ATK</color></link></color>
 
@@ -33,3 +36,4 @@ MonoBehaviour:
 
     Each attack has a <color=green>25%</color> chance (<color=green>15%</color>
     for ranged attacks) to stun the target for <color=green>1.2</color> seconds.'
+  itemTier: 2

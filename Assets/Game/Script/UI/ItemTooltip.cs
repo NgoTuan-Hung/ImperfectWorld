@@ -35,6 +35,10 @@ public class ItemTooltip : MonoBehaviour, IPointerDownHandler
     public void Init(Item owner)
     {
         this.owner = owner;
+    }
+
+    public void Setup()
+    {
         nameTMP.text = owner.itemDataSO.itemName;
     }
 

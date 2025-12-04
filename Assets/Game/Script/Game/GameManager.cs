@@ -47,7 +47,9 @@ public partial class GameManager : MonoBehaviour
         dieBoolHash = Animator.StringToHash("Die"),
         dashBoolHash = Animator.StringToHash("Dash"),
         jumpBoolHash = Animator.StringToHash("Jump"),
-        meleeStanceBoolHash = Animator.StringToHash("MeleeStance");
+        meleeStanceBoolHash = Animator.StringToHash("MeleeStance"),
+        itemTierBlendHash = Animator.StringToHash("ItemTierBlend"),
+        itemCycleOffsetFloatHash = Animator.StringToHash("ItemCycleOffset");
     public Dictionary<int, GameObject> colliderOwner = new();
     public List<ActionFieldInfo> actionFieldInfos = new();
     Dictionary<string, ActionFieldInfo> actionFieldInfoDict = new();
@@ -86,10 +88,26 @@ public partial class GameManager : MonoBehaviour
 
         InitAllEffectPools();
         LoadOtherResources();
+        InitOtherPools();
         ConstructActionFieldInfoDict();
         MapActionFieldName();
         InitGameEvents();
+        InitOtherFields();
         AddTeam();
+    }
+
+    private void InitOtherPools()
+    {
+        itemPool = new(
+            item,
+            new PoolArgument(ComponentType.Item, PoolArgument.WhereComponent.Self)
+        );
+    }
+
+    private void InitOtherFields()
+    {
+        itemDataSOWeights = new float[itemDataSOs.Count];
+        BuildItemDataSOWeights();
     }
 
     private void AddTeam()
@@ -120,6 +138,10 @@ public partial class GameManager : MonoBehaviour
         championRewardSelectedEffectPreset = Resources.Load<UIEffectPreset>(
             "UIEffectPreset/ChampionRewardSelected"
         );
+        rareItemEffectPreset = Resources.Load<UIEffectPreset>("UIEffectPreset/RareItem");
+        epicItemEffectPreset = Resources.Load<UIEffectPreset>("UIEffectPreset/EpicItem");
+        item = Resources.Load<GameObject>("Item");
+        itemDataSOs = Resources.LoadAll<ItemDataSO>("ScriptableObject/ItemDataSO").ToList();
     }
 
     void ConstructActionFieldInfoDict()
@@ -590,6 +612,20 @@ public partial class GameManager : MonoBehaviour
         return cRs;
     }
 
+    public List<Item> GetRandomItemRewards(int count)
+    {
+        List<int> pickedItemIndexes = WeightedSampler.SampleUnique(count, itemDataSOWeights);
+
+        List<Item> items = new();
+        for (int i = 0; i < count; i++)
+        {
+            items.Add(itemPool.PickOne().Item);
+            items[i].Init(itemDataSOs[pickedItemIndexes[i]]);
+        }
+
+        return items;
+    }
+
     public void UpgradeStat(CustomMono customMono, StatUpgrade statUpgrade)
     {
         UpgradeStat(customMono, statUpgrade.statBuff);
@@ -701,5 +737,29 @@ public partial class GameManager : MonoBehaviour
     {
         gameState = newState;
         onGameStateChange(newState);
+    }
+
+    void BuildItemDataSOWeights()
+    {
+        for (int i = 0; i < itemDataSOs.Count; i++)
+        {
+            switch (itemDataSOs[i].itemTier)
+            {
+                case ItemTier.Normal:
+                    itemDataSOWeights[i] = 1;
+                    break;
+                case ItemTier.Rare:
+                    itemDataSOWeights[i] = 0.3f;
+                    break;
+                case ItemTier.Epic:
+                    itemDataSOWeights[i] = 0.1f;
+                    break;
+                case ItemTier.Legendary:
+                    itemDataSOWeights[i] = 0.03f;
+                    break;
+                default:
+                    break;
+            }
+        }
     }
 }

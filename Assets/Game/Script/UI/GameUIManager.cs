@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Map;
+using TMPEffects.Components;
 using TMPro;
 using UnityEditor.Animations;
 using UnityEngine;
@@ -49,6 +50,8 @@ public class GameUIManager : MonoEditorSingleton<GameUIManager>
     bool menuItemStateOn = false;
     public Image screenEffectImg;
     public Animator screenEffectAnimator;
+    TMPAnimator helperTextTMPA;
+    public Vector2[] itemRewardPos = new Vector2[3];
 
     private void Awake()
     {
@@ -144,6 +147,7 @@ public class GameUIManager : MonoEditorSingleton<GameUIManager>
             .transform.GetComponentsInChildren<ChampionRewardUI>(true)
             .ToList();
         helperTextTMP = transform.Find("MainScreen/HelperText").GetComponent<TextMeshProUGUI>();
+        helperTextTMPA = helperTextTMP.GetComponent<TMPAnimator>();
         championRewardSelectZone = transform.Find("MainScreen/ChampionRewardSelectZone").gameObject;
 
         /* Temp */
@@ -285,9 +289,11 @@ public class GameUIManager : MonoEditorSingleton<GameUIManager>
     IEnumerator SpawnRewardIE()
     {
         helperTextTMP.gameObject.SetActive(true);
-        helperTextTMP.text = "<+pivot duration=1><wave><palette>select your  reward !</+>";
+        helperTextTMP.text = "<+pivot duration=1><wave><palette>select one champion !</+>";
 
         yield return SpawnChampionRewardIE();
+
+        helperTextTMP.text = "<+pivot duration=1><wave><palette>select one stat upgrade !</+>";
 
         for (int i = 0; i < 2; i++)
         {
@@ -295,6 +301,7 @@ public class GameUIManager : MonoEditorSingleton<GameUIManager>
 
             finishedReward = false;
             yield return _waitForSeconds1;
+            helperTextTMPA.ResetTime();
             for (int j = 0; j < statUpgrades.Count; j++)
             {
                 statUpgrades[j].SetUpgrade(sUs[j]);
@@ -303,6 +310,9 @@ public class GameUIManager : MonoEditorSingleton<GameUIManager>
             while (!finishedReward)
                 yield return null;
         }
+
+        helperTextTMP.text = "<+pivot duration=1><wave><palette>select one item !</+>";
+        yield return SpawnItemRewardIE();
 
         helperTextTMP.gameObject.SetActive(false);
         GameManager.Instance.FinishReward();
@@ -316,6 +326,21 @@ public class GameUIManager : MonoEditorSingleton<GameUIManager>
         yield return _waitForSeconds1;
         for (int i = 0; i < championRewards.Count; i++)
             championRewards[i].SetReward(cRs[i]);
+
+        while (!finishedReward)
+            yield return null;
+    }
+
+    IEnumerator SpawnItemRewardIE()
+    {
+        List<Item> items = GameManager.Instance.GetRandomItemRewards(3);
+
+        finishedReward = false;
+        yield return _waitForSeconds1;
+        for (int i = 0; i < items.Count; i++)
+        {
+            items[i].SetAsReward(upgradeZone.transform, itemRewardPos[i]);
+        }
 
         while (!finishedReward)
             yield return null;

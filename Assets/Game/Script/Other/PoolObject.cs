@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -10,6 +9,7 @@ public enum PoolObjectComponent
     WorldSpaceUI,
     CustomMono,
     TextPopupUI,
+    Item,
 }
 
 public class PoolObject
@@ -35,4 +35,5 @@ public class PoolObject
         GetComponent<WorldSpaceUI>(PoolObjectComponent.WorldSpaceUI);
     public CustomMono CustomMono => GetComponent<CustomMono>(PoolObjectComponent.CustomMono);
     public TextPopupUI TextPopupUI => GetComponent<TextPopupUI>(PoolObjectComponent.TextPopupUI);
+    public Item Item => GetComponent<Item>(PoolObjectComponent.Item);
 }
