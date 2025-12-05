@@ -99,7 +99,7 @@ public class CelestialAtonement : SkillBase
 
             var buff = new FloatStatModifier(
                 aspdBuff * (diff > 0 ? diff : 0),
-                FloatStatModifierType.Additive
+                ModifierType.Additive
             );
             customMono.statusEffect.BuffAttackSpeed(
                 buff,

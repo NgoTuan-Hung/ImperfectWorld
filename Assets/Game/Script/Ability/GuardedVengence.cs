@@ -85,7 +85,7 @@ public class GuardedVengence : SkillBase
         CustomMono p_customMono = null
     )
     {
-        FloatStatModifier fSM = new(damgeReductionBuff, FloatStatModifierType.Additive);
+        FloatStatModifier fSM = new(damgeReductionBuff, ModifierType.Additive);
         customMono.statusEffect.BuffDR(
             fSM,
             GetActionField<ActionFloatField>(ActionFieldName.Duration).value

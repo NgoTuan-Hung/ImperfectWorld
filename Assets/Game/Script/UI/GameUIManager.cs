@@ -52,6 +52,7 @@ public class GameUIManager : MonoEditorSingleton<GameUIManager>
     public Animator screenEffectAnimator;
     TMPAnimator helperTextTMPA;
     public Vector2[] itemRewardPos = new Vector2[3];
+    List<Item> itemRewards;
 
     private void Awake()
     {
@@ -333,13 +334,13 @@ public class GameUIManager : MonoEditorSingleton<GameUIManager>
 
     IEnumerator SpawnItemRewardIE()
     {
-        List<Item> items = GameManager.Instance.GetRandomItemRewards(3);
+        itemRewards = GameManager.Instance.GetRandomItemRewards(3);
 
         finishedReward = false;
         yield return _waitForSeconds1;
-        for (int i = 0; i < items.Count; i++)
+        for (int i = 0; i < itemRewards.Count; i++)
         {
-            items[i].SetAsReward(upgradeZone.transform, itemRewardPos[i]);
+            itemRewards[i].SetAsReward(upgradeZone.transform, itemRewardPos[i]);
         }
 
         while (!finishedReward)
@@ -347,6 +348,20 @@ public class GameUIManager : MonoEditorSingleton<GameUIManager>
     }
 
     public void FinishReward() => finishedReward = true;
+
+    /// <summary>
+    /// Finish item reward and schedule destroy rewards that are not selected.
+    /// </summary>
+    /// <param name="item"></param>
+    public void FinishItemReward(Item item)
+    {
+        finishedReward = true;
+        itemRewards.ForEach(iR =>
+        {
+            if (iR != item)
+                iR.deactivate();
+        });
+    }
 
     public void ShowOnlyStatUpgradeUI(StatUpgradeUI statUpgradeUI)
     {
@@ -366,6 +381,15 @@ public class GameUIManager : MonoEditorSingleton<GameUIManager>
         }
     }
 
+    public void ShowOnlyItemReward(Item item)
+    {
+        for (int i = 0; i < itemRewards.Count; i++)
+        {
+            if (itemRewards[i] != item)
+                itemRewards[i].HideReward();
+        }
+    }
+
     public void ShowStatUpgradeUIs()
     {
         for (int i = 0; i < statUpgrades.Count; i++)
@@ -379,6 +403,14 @@ public class GameUIManager : MonoEditorSingleton<GameUIManager>
         for (int i = 0; i < championRewards.Count; i++)
         {
             championRewards[i].gameObject.SetActive(true);
+        }
+    }
+
+    public void ShowItemRewardUIs()
+    {
+        for (int i = 0; i < itemRewards.Count; i++)
+        {
+            itemRewards[i].ShowReward();
         }
     }
 

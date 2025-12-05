@@ -57,7 +57,6 @@
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_TextEventHandler.cs" />
     <Compile Include="Assets\Game\Script\Game\CustomMono.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\EnvMapAnimator.cs" />
-    <Compile Include="Assets\Game\Script\Game\FloatStatWithCap.cs" />
     <Compile Include="Assets\Game\Script\ScriptableObject\ActionFieldInfo.cs" />
     <Compile Include="Assets\Game\Script\Ability\PierceStrike.cs" />
     <Compile Include="Assets\Game\Script\Game\StatBuff.cs" />
@@ -68,6 +67,7 @@
     <Compile Include="Assets\Game\Script\UI\PointerDownUI.cs" />
     <Compile Include="Assets\Game\Script\Other\ComboEffect.cs" />
     <Compile Include="Assets\Test\TestExecutionOrder\TestExecutionOrder2.cs" />
+    <Compile Include="Assets\Game\Script\Other\Stat\FloatStatWithModifier.cs" />
     <Compile Include="Assets\Test\UIRevamp\UIRManager.cs" />
     <Compile Include="Assets\Game\Script\Ability\BladeOfPhong.cs" />
     <Compile Include="Assets\Game\Script\Other\Extension\SerializedPropertyExtensions.cs" />
@@ -115,7 +115,6 @@
     <Compile Include="Assets\Game\Script\Ability\ForceBreaker.cs" />
     <Compile Include="Assets\Game\Script\MapGeneration\ScrollNonUI.cs" />
     <Compile Include="Assets\CustomPackage\STSMapGeneration\OneLine\RectEx\MiscellaniousExtensions.cs" />
-    <Compile Include="Assets\Game\Script\Game\FloatStatModifier.cs" />
     <Compile Include="Assets\CustomPackage\Dotween\Modules\DOTweenModulePhysics2D.cs" />
     <Compile Include="Assets\Game\Script\Game\BotSensor.cs" />
     <Compile Include="Assets\Game\Script\Ability\Glacistream.cs" />
@@ -129,7 +128,6 @@
     <Compile Include="Assets\Game\Script\Interface\IItemBehaviour.cs" />
     <Compile Include="Assets\CustomPackage\Dotween\Modules\DOTweenModuleSprite.cs" />
     <Compile Include="Assets\Game\Script\Ability\Attack.cs" />
-    <Compile Include="Assets\Game\Script\Game\FloatModifier.cs" />
     <Compile Include="Assets\Game\Script\Other\Extension\ListExtension.cs" />
     <Compile Include="Assets\CustomPackage\STSMapGeneration\OneLine\OneLine\Attributes\SeparatorAttribute.cs" />
     <Compile Include="Assets\Test\ActionTester1\ClassTest1.cs" />
@@ -142,6 +140,7 @@
     <Compile Include="Assets\CustomPackage\STSMapGeneration\OneLine\OneLine\Attributes\ExpandableAttribute.cs" />
     <Compile Include="Assets\Game\Script\Ability\BladeOfMinhKhai.cs" />
     <Compile Include="Assets\CustomPackage\STSMapGeneration\OneLine\OneLine\Example\Tests\Scripts\SlicesTest.cs" />
+    <Compile Include="Assets\Game\Script\Other\Stat\FloatStatModifier.cs" />
     <Compile Include="Assets\Game\Script\Ability\Slaughter.cs" />
     <Compile Include="Assets\CustomPackage\STSMapGeneration\OneLine\OneLine\Attributes\ArrayLengthAttribute.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_ExampleScript_01.cs" />
@@ -150,6 +149,7 @@
     <Compile Include="Assets\Game\Script\Game\GameEffect.cs" />
     <Compile Include="Assets\Game\Script\Game\GameManager.ObjectPools.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\VertexShakeB.cs" />
+    <Compile Include="Assets\Game\Script\Other\Stat\Modifier.cs" />
     <Compile Include="Assets\Game\Script\Other\Extension\VectorExtension.cs" />
     <Compile Include="Assets\Game\Script\ScriptableObject\SkillDataSO.cs" />
     <Compile Include="Assets\Game\Script\UI\InteractiveButtonUI.cs" />
@@ -163,8 +163,6 @@
     <Compile Include="Assets\Game\Script\ActionField\ActionFloatField.cs" />
     <Compile Include="Assets\Game\Script\Ability\TremorBreak.cs" />
     <Compile Include="Assets\CustomPackage\STSMapGeneration\OneLine\OneLine\Example\Details\Scripts\HideButtonsExample.cs" />
-    <Compile Include="Assets\Game\Script\Game\CustomMono.Method.cs" />
-    <Compile Include="Assets\Game\Script\Game\FloatStatWithModifier.cs" />
     <Compile Include="Assets\Game\Script\ScriptableObject\ListSpriteSO.cs" />
     <Compile Include="Assets\Game\Script\ActionField\ActionIEnumeratorField.cs" />
     <Compile Include="Assets\Game\Script\ScriptableObject\GameEffectSO.cs" />
@@ -189,6 +187,7 @@
     <Compile Include="Assets\Game\Script\Other\GameEffectBehaviour\PullingMissile.cs" />
     <Compile Include="Assets\Game\Script\UI\StatUpgradeUI.cs" />
     <Compile Include="Assets\Game\Script\Ability\BoneFlurry.cs" />
+    <Compile Include="Assets\Game\Script\Other\Stat\FloatStat.cs" />
     <Compile Include="Assets\Game\Script\Other\RoomSystem\RoomEnemyInfo.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_TextSelector_B.cs" />
     <Compile Include="Assets\Game\Script\Ability\IronClad.cs" />
@@ -306,6 +305,7 @@
     <Compile Include="Assets\Game\Script\Other\Misc\BasicSpawnSchemeEnemyStat.cs" />
     <Compile Include="Assets\Test\RefTest\RefTest.cs" />
     <Compile Include="Assets\CustomPackage\STSMapGeneration\OneLine\RectEx\ColumnExtensions.cs" />
+    <Compile Include="Assets\Game\Script\Other\Stat\FloatStatWithCap.cs" />
     <Compile Include="Assets\Game\Script\Other\SlowInfo.cs" />
     <Compile Include="Assets\Test\JapaneseSamuraiDash\JSD.cs" />
     <Compile Include="Assets\Test\TimelineSerializeTest\ReferencePrefabTest.cs" />
@@ -325,10 +325,10 @@
     <Compile Include="Assets\Test\TimelineSerializeTest\BoxCollider2.cs" />
     <Compile Include="Assets\Game\Script\Ability\LightingForward.cs" />
     <Compile Include="Assets\Game\Script\ActionField\ActionVector3Field.cs" />
+    <Compile Include="Assets\Game\Script\Other\Stat\IntStatWithModifier.cs" />
     <Compile Include="Assets\Game\Script\ScriptableObject\ItemDataSO.cs" />
     <Compile Include="Assets\CustomPackage\STSMapGeneration\OneLine\RectEx\GridExtensions.cs" />
     <Compile Include="Assets\Game\Script\Ability\SovereignFlow.cs" />
-    <Compile Include="Assets\Game\Script\Game\FloatStat.cs" />
     <Compile Include="Assets\Test\PathFinding\VisualizeAlgorithm.cs" />
     <Compile Include="Assets\CustomPackage\Cainos\Pixel Art Top Down - Basic\Script\SpriteColorAnimation.cs" />
     <Compile Include="Assets\Game\Script\Game\GameManager.Prefabs.cs" />
@@ -355,6 +355,7 @@
     <Compile Include="Assets\Game\Script\Ability\PhantomPulse.cs" />
     <Compile Include="Assets\Game\Script\MapGeneration\UI Lines\UILineRenderer.cs" />
     <Compile Include="Assets\Game\Script\ScriptableObject\ListGameObject.cs" />
+    <Compile Include="Assets\Game\Script\Other\Stat\IntStatModifier.cs" />
     <Compile Include="Assets\Game\Script\Game\BaseAction.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TextConsoleSimulator.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TeleType.cs" />

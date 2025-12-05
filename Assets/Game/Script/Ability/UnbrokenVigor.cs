@@ -25,8 +25,8 @@ public class UnbrokenVigor : SkillBase
 
     public override void Config()
     {
-        attackSpeedBuff = new(0.25f, FloatStatModifierType.Additive);
-        omnivampBuff = new(0.2f, FloatStatModifierType.Additive);
+        attackSpeedBuff = new(0.25f, ModifierType.Additive);
+        omnivampBuff = new(0.2f, ModifierType.Additive);
         GetActionField<ActionFloatField>(ActionFieldName.Range).value = 1.25f;
         GetActionField<ActionFloatField>(ActionFieldName.Duration).value = 5f;
 

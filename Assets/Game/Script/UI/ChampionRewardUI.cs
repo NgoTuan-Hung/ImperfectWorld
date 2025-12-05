@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.Text;
 using Coffee.UIEffects;
 using DG.Tweening;
 using TMPro;
@@ -92,7 +91,16 @@ public class ChampionRewardUI : DoubleTapUI, IDragHandler, IBeginDragHandler, IE
         rectTransform.anchoredPosition = rectTransform.anchoredPosition.WithY(
             rectTransform.anchoredPosition.y + 150f
         );
-        rectTransform.DOAnchorPos(originalAnchorLoc, 0.5f).SetEase(Ease.OutBack);
+        yield return rectTransform
+            .DOAnchorPos(originalAnchorLoc, 0.5f)
+            .SetEase(Ease.OutBack)
+            .OnComplete(ShowInfoPanelAfterEntrance);
+    }
+
+    void ShowInfoPanelAfterEntrance()
+    {
+        infoPanel.SetActive(true);
+        OnTabClick(statIPTB);
     }
 
     private void Awake()

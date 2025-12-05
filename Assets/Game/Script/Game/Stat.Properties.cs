@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 public partial class Stat
@@ -69,11 +70,15 @@ public partial class Stat
     [Header("<color='#FFD447'>ATTACK RANGE")]
     public FloatStatWithModifier attackRange = new();
 
+    [Header("<color='#6C757D'>ITEM SLOT")]
+    public IntStatWithModifier itemSlot = new() { BaseValue = 3 };
+    public List<Item> equippedItems = new();
+
     [HideInInspector]
     public FloatStatWithModifier actionMoveSpeedReduceRate = new();
 
     [HideInInspector]
-    public FloatStatModifier actionSlowModifier = new(-0.9f, FloatStatModifierType.Multiplicative);
+    public FloatStatModifier actionSlowModifier = new(-0.9f, ModifierType.Multiplicative);
 
     /// <summary>
     /// Used to broadcast hp change event when health point change.
@@ -85,42 +90,42 @@ public partial class Stat
     [HideInInspector]
     FloatStatModifier mightChangeHealthPointFSM = new(
         0,
-        FloatStatModifierType.Additive,
-        FloatStatModifierLiveTime.Permanent
+        ModifierType.Additive,
+        ModifierLiveTime.Permanent
     );
 
     [HideInInspector]
     FloatStatModifier mightChangeHealthRegenFSM = new(
         0,
-        FloatStatModifierType.Additive,
-        FloatStatModifierLiveTime.Permanent
+        ModifierType.Additive,
+        ModifierLiveTime.Permanent
     );
 
     [HideInInspector]
     FloatStatModifier reflexChangeArmorFSM = new(
         0,
-        FloatStatModifierType.Additive,
-        FloatStatModifierLiveTime.Permanent
+        ModifierType.Additive,
+        ModifierLiveTime.Permanent
     );
 
     [HideInInspector]
     FloatStatModifier reflexChangeAttackSpeedFSM = new(
         0,
-        FloatStatModifierType.Additive,
-        FloatStatModifierLiveTime.Permanent
+        ModifierType.Additive,
+        ModifierLiveTime.Permanent
     );
 
     [HideInInspector]
     FloatStatModifier wisdomChangeManaPointFSM = new(
         0,
-        FloatStatModifierType.Additive,
-        FloatStatModifierLiveTime.Permanent
+        ModifierType.Additive,
+        ModifierLiveTime.Permanent
     );
 
     [HideInInspector]
     FloatStatModifier wisdomChangeManaRegenFSM = new(
         0,
-        FloatStatModifierType.Additive,
-        FloatStatModifierLiveTime.Permanent
+        ModifierType.Additive,
+        ModifierLiveTime.Permanent
     );
 }

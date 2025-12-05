@@ -25,7 +25,7 @@ public class IronClad : SkillBase
 
     public override void Config()
     {
-        armorBuff = new(10, FloatStatModifierType.Additive);
+        armorBuff = new(10, ModifierType.Additive);
         GetActionField<ActionFloatField>(ActionFieldName.Range).value = 1.25f;
         GetActionField<ActionFloatField>(ActionFieldName.Duration).value = 5f;
 

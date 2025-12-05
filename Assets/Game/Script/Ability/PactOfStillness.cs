@@ -74,7 +74,7 @@ public class PactOfStillness : SkillBase
         CustomMono p_customMono = null
     )
     {
-        FloatStatModifier fSM = new(damageReductionBuff, FloatStatModifierType.Additive);
+        FloatStatModifier fSM = new(damageReductionBuff, ModifierType.Additive);
         customMono.statusEffect.BuffDR(
             fSM,
             GetActionField<ActionFloatField>(ActionFieldName.Duration).value

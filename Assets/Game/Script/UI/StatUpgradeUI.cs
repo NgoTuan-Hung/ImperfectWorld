@@ -33,6 +33,7 @@ public class StatUpgradeUI : DoubleTapUI, IDragHandler, IBeginDragHandler, IEndD
         rectTransform.anchoredPosition = rectTransform.anchoredPosition.WithY(
             rectTransform.anchoredPosition.y + 150f
         );
+
         rectTransform.DOAnchorPos(originalAnchorLoc, 0.5f).SetEase(Ease.OutBack);
     }
 
@@ -58,6 +59,11 @@ public class StatUpgradeUI : DoubleTapUI, IDragHandler, IBeginDragHandler, IEndD
     }
 
     void DoubletapShowTooltip(PointerEventData eventData)
+    {
+        ShowTooltip();
+    }
+
+    void ShowTooltip()
     {
         tooltip.SetActive(true);
         tooltipTMP.text = TooltipHelper.GenerateTooltip(statUpgrade.description);

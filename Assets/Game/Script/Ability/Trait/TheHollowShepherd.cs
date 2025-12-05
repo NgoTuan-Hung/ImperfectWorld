@@ -57,7 +57,7 @@ public class TheHollowShepherd : SkillBase
             if (hpChangeGED.currentValue / hpChangeGED.maxValue < 0.2f)
             {
                 handledAllies.Add(hpChangeGED.owner);
-                var aspdFSM = new FloatStatModifier(aspdBuff, FloatStatModifierType.Additive);
+                var aspdFSM = new FloatStatModifier(aspdBuff, ModifierType.Additive);
                 customMono.stat.attackSpeed.AddModifier(aspdFSM);
                 modifiers.Add(aspdFSM);
                 hpChangeGED.owner.statusEffect.GetHit(customMono, hpChangeGED.maxValue * 0.1f);

@@ -27,6 +27,7 @@ public class Item : MonoSelfAware, IDragHandler, IEndDragHandler, IBeginDragHand
     UIEffect uIEffect;
     Animator animator;
     Image image;
+    Vector2 rewardPos;
 
     public override void Awake()
     {
@@ -81,6 +82,7 @@ public class Item : MonoSelfAware, IDragHandler, IEndDragHandler, IBeginDragHand
 
     public void SetAsReward(Transform parent, Vector2 localPos)
     {
+        rewardPos = localPos;
         transform.SetParent(parent, false);
         StartCoroutine(EntranceIE(localPos));
         SwitchState(ItemState.Reward);
@@ -90,16 +92,23 @@ public class Item : MonoSelfAware, IDragHandler, IEndDragHandler, IBeginDragHand
     {
         yield return Random.Range(0, 0.25f);
         rectTransform.anchoredPosition = localPos + new Vector2(0, 150f);
-        rectTransform.DOAnchorPos(localPos, 0.5f).SetEase(Ease.OutBack);
+        rectTransform.DOAnchorPos(localPos, 0.5f).SetEase(Ease.OutBack).OnComplete(ShowTooltip);
     }
 
     private void RegisterCallback()
     {
-        doubleTapUI.doubleTapEvent = (evt) =>
-        {
-            itemTooltip.gameObject.SetActive(true);
-            itemTooltip.ResetText(itemDataSO.itemDescription);
-        };
+        doubleTapUI.doubleTapEvent = ShowTooltip;
+    }
+
+    void ShowTooltip(PointerEventData pointerEventData)
+    {
+        ShowTooltip();
+    }
+
+    void ShowTooltip()
+    {
+        itemTooltip.gameObject.SetActive(true);
+        itemTooltip.ResetText(itemDataSO.itemDescription);
     }
 
     public void OnDrag(PointerEventData eventData)
@@ -125,16 +134,57 @@ public class Item : MonoSelfAware, IDragHandler, IEndDragHandler, IBeginDragHand
 
     public void OnEndDrag(PointerEventData eventData)
     {
+        switch (state)
+        {
+            case ItemState.Inventory:
+            {
+                EquipOrToInventory();
+                break;
+            }
+            case ItemState.Equipped:
+            {
+                EquipOrToInventory();
+                break;
+            }
+            case ItemState.Reward:
+            {
+                EquipOrToReward();
+                break;
+            }
+            default:
+                break;
+        }
+    }
+
+    void EquipOrToInventory()
+    {
         if (attachedTo != null)
         {
-            attachedTo.AttachItem(this);
-            state = ItemState.Equipped;
+            if (attachedTo.AttachItem(this))
+            {
+                SwitchState(ItemState.Equipped);
+                return;
+            }
         }
-        else
+
+        GameUIManager.Instance.AddToInventory(this);
+        SwitchState(ItemState.Inventory);
+    }
+
+    void EquipOrToReward()
+    {
+        if (attachedTo != null)
         {
-            GameUIManager.Instance.AddToInventory(this);
-            state = ItemState.Inventory;
+            if (attachedTo.AttachItem(this))
+            {
+                GameUIManager.Instance.FinishItemReward(this);
+                SwitchState(ItemState.Equipped);
+                return;
+            }
         }
+
+        rectTransform.DOAnchorPos(rewardPos, 0.5f).SetEase(Ease.OutQuint);
+        GameUIManager.Instance.ShowItemRewardUIs();
     }
 
     public void OnBeginDrag(PointerEventData eventData)
@@ -144,14 +194,17 @@ public class Item : MonoSelfAware, IDragHandler, IEndDragHandler, IBeginDragHand
             case ItemState.Inventory:
             {
                 GameUIManager.Instance.RemoveFromInventory(this);
-                state = ItemState.None;
                 break;
             }
             case ItemState.Equipped:
             {
                 attachedTo.DetachItem(this);
                 attachedTo = null;
-                state = ItemState.None;
+                break;
+            }
+            case ItemState.Reward:
+            {
+                GameUIManager.Instance.ShowOnlyItemReward(this);
                 break;
             }
             default:
@@ -162,5 +215,22 @@ public class Item : MonoSelfAware, IDragHandler, IEndDragHandler, IBeginDragHand
     public void SwitchState(ItemState state)
     {
         this.state = state;
+    }
+
+    public void HideReward()
+    {
+        gameObject.SetActive(false);
+        itemTooltip.gameObject.SetActive(false);
+    }
+
+    public void ShowReward()
+    {
+        gameObject.SetActive(true);
+        itemTooltip.gameObject.SetActive(true);
+    }
+
+    void OnDestroy()
+    {
+        Destroy(itemTooltip);
     }
 }

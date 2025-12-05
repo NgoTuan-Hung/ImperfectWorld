@@ -335,4 +335,89 @@ public partial class Stat : MonoEditor
     public void EnableRegen() => canRegen = true;
 
     public void DisableRegen() => canRegen = false;
+
+    public bool EquipItem(Item item)
+    {
+        if (equippedItems.Count >= itemSlot.FinalValue)
+            return false;
+
+        item.itemDataSO.statBuffs.ForEach(sB =>
+        {
+            switch (sB.statBuffType)
+            {
+                case StatBuffType.HP:
+                    healthPoint.AddModifier(sB.modifier);
+                    break;
+                case StatBuffType.MP:
+                    manaPoint.AddModifier(sB.modifier);
+                    break;
+                case StatBuffType.MIGHT:
+                    might.AddModifier(sB.modifier);
+                    break;
+                case StatBuffType.REFLEX:
+                    reflex.AddModifier(sB.modifier);
+                    break;
+                case StatBuffType.WISDOM:
+                    wisdom.AddModifier(sB.modifier);
+                    break;
+                case StatBuffType.ATK:
+                    attackDamage.AddModifier(sB.modifier);
+                    break;
+                default:
+                    break;
+            }
+        });
+
+        item.itemDataSO.itemBehaviours.ForEach(iB =>
+        {
+            var behaviorComp =
+                gameObject.AddComponent(GameManager.Instance.MapItemBehaviour(iB))
+                as IItemBehaviour;
+            behaviorComp.OnAttach(customMono, item);
+        });
+
+        equippedItems.Add(item);
+        return true;
+    }
+
+    public void UnEquipItem(Item item)
+    {
+        item.itemDataSO.statBuffs.ForEach(sB =>
+        {
+            switch (sB.statBuffType)
+            {
+                case StatBuffType.HP:
+                    healthPoint.RemoveModifier(sB.modifier);
+                    break;
+                case StatBuffType.MP:
+                    manaPoint.RemoveModifier(sB.modifier);
+                    break;
+                case StatBuffType.MIGHT:
+                    might.RemoveModifier(sB.modifier);
+                    break;
+                case StatBuffType.REFLEX:
+                    reflex.RemoveModifier(sB.modifier);
+                    break;
+                case StatBuffType.WISDOM:
+                    wisdom.RemoveModifier(sB.modifier);
+                    break;
+                case StatBuffType.ATK:
+                    attackDamage.RemoveModifier(sB.modifier);
+                    break;
+                default:
+                    break;
+            }
+        });
+
+        item.itemDataSO.itemBehaviours.ForEach(iB =>
+        {
+            var behaviorComp =
+                gameObject.GetComponent(GameManager.Instance.MapItemBehaviour(iB))
+                as IItemBehaviour;
+            behaviorComp.OnDetach();
+            Destroy((MonoBehaviour)behaviorComp);
+        });
+
+        equippedItems.Remove(item);
+    }
 }

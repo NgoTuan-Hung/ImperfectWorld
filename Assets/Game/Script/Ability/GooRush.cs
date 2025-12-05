@@ -35,8 +35,8 @@ public class GooRush : SkillBase
             .Instance
             .largePositiveNumber;
         GetActionField<ActionFloatField>(ActionFieldName.Duration).value = 0.5f;
-        slowInfo = new(new(-0.5f, FloatStatModifierType.Multiplicative), 5.5f);
-        aspdBuff = new(0.3f, FloatStatModifierType.Additive);
+        slowInfo = new(new(-0.5f, ModifierType.Multiplicative), 5.5f);
+        aspdBuff = new(0.3f, ModifierType.Additive);
         successResult = new(
             true,
             ActionResultType.Cooldown,

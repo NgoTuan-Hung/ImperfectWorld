@@ -70,9 +70,9 @@ public class FeralAwakening : SkillBase
 
         GameManager.Instance.battleEndCallback += ResetUse;
         customMono.stat.beforeDeathCallback += Proc;
-        aspdBuff = new(2f, FloatStatModifierType.Additive);
-        atkRangeBuff = new(8.75f, FloatStatModifierType.Additive);
-        hpBuff = new(1000f, FloatStatModifierType.Additive);
+        aspdBuff = new(2f, ModifierType.Additive);
+        atkRangeBuff = new(8.75f, ModifierType.Additive);
+        hpBuff = new(1000f, ModifierType.Additive);
         /* Also use actionie */
     }
 

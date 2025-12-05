@@ -50,16 +50,8 @@ public class FloatStatWithModifier
     public void RecalculateFinalValue()
     {
         finalValue =
-            (
-                BaseValue
-                + modifiers.Where(m => m.type == FloatStatModifierType.Additive).Sum(m => m.value)
-            )
-            * (
-                1
-                + modifiers
-                    .Where(m => m.type == FloatStatModifierType.Multiplicative)
-                    .Sum(m => m.value)
-            );
+            (BaseValue + modifiers.Where(m => m.type == ModifierType.Additive).Sum(m => m.value))
+            * (1 + modifiers.Where(m => m.type == ModifierType.Multiplicative).Sum(m => m.value));
         finalValueChangeEvent();
     }
 
@@ -69,7 +61,7 @@ public class FloatStatWithModifier
     public void ClearModifiers()
     {
         for (int i = 0; i < modifiers.Count; i++)
-            if (modifiers[i].liveTime != FloatStatModifierLiveTime.Permanent)
+            if (modifiers[i].liveTime != ModifierLiveTime.Permanent)
                 modifiers.RemoveAt(i);
         RecalculateFinalValue();
     }
@@ -82,7 +74,7 @@ public class FloatStatWithModifier
     public void ClearModifiersWithoutRecalculate()
     {
         for (int i = 0; i < modifiers.Count; i++)
-            if (modifiers[i].liveTime != FloatStatModifierLiveTime.Permanent)
+            if (modifiers[i].liveTime != ModifierLiveTime.Permanent)
                 modifiers.RemoveAt(i);
     }
 
@@ -93,7 +85,7 @@ public class FloatStatWithModifier
     public void ClearModifiers(float resetBaseValue)
     {
         for (int i = 0; i < modifiers.Count; i++)
-            if (modifiers[i].liveTime != FloatStatModifierLiveTime.Permanent)
+            if (modifiers[i].liveTime != ModifierLiveTime.Permanent)
                 modifiers.RemoveAt(i);
         baseValue = resetBaseValue;
         RecalculateFinalValue();
@@ -102,7 +94,7 @@ public class FloatStatWithModifier
     public void ClearModifiersWithoutRecalculate(float resetBaseValue)
     {
         for (int i = 0; i < modifiers.Count; i++)
-            if (modifiers[i].liveTime != FloatStatModifierLiveTime.Permanent)
+            if (modifiers[i].liveTime != ModifierLiveTime.Permanent)
                 modifiers.RemoveAt(i);
         baseValue = resetBaseValue;
     }
