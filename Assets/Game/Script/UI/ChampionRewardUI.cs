@@ -76,7 +76,7 @@ public class ChampionRewardUI : DoubleTapUI, IDragHandler, IBeginDragHandler, IE
 
     private void SetStatText()
     {
-        nameTMP.text = "Bruh";
+        nameTMP.text = championReward.prefab.name;
         statTMP.text = rewardCD.GetPrecomputeData().statDescription;
     }
 

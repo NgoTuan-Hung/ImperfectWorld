@@ -18,6 +18,7 @@ public class StatUpgradeUI : DoubleTapUI, IDragHandler, IBeginDragHandler, IEndD
     StatUpgrade statUpgrade;
     List<RaycastResult> rcResults = new();
     ChampInfoPanel attachedTo = null;
+    Tween scaleTween;
 
     public void SetUpgrade(StatUpgrade statUpgrade)
     {
@@ -73,7 +74,7 @@ public class StatUpgradeUI : DoubleTapUI, IDragHandler, IBeginDragHandler, IEndD
 
     public void OnBeginDrag(PointerEventData eventData)
     {
-        rectTransform.DOScale(dragScale, 0.5f).SetEase(Ease.OutQuint);
+        scaleTween = rectTransform.DOScale(dragScale, 0.5f).SetEase(Ease.OutQuint);
         GameUIManager.Instance.ShowOnlyStatUpgradeUI(this);
     }
 
@@ -104,6 +105,7 @@ public class StatUpgradeUI : DoubleTapUI, IDragHandler, IBeginDragHandler, IEndD
         {
             GameManager.Instance.UpgradeStat(attachedTo.owner, statUpgrade);
             GameUIManager.Instance.FinishReward();
+            scaleTween.Kill();
             rectTransform.localScale = originalScale;
             gameObject.SetActive(false);
         }

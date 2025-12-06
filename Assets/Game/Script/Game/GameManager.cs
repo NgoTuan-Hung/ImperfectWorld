@@ -276,18 +276,11 @@ public partial class GameManager : MonoBehaviour
                         new PoolArgument(ComponentType.CustomMono, PoolArgument.WhereComponent.Self)
                     )
                 );
-
-                championPools[nERI.roomEnemyInfos[i].prefab].handleCachedComponentRefs += (
-                    p_poolObject
-                ) =>
-                {
-                    p_poolObject.CustomMono.stat.currentHealthPointReachZeroEvent += () =>
-                        PawnDeathHandler(p_poolObject.CustomMono);
-                };
             }
 
             var t_customMono = championPools[nERI.roomEnemyInfos[i].prefab].PickOne().CustomMono;
             t_customMono.transform.position = nERI.roomEnemyInfos[i].position;
+            t_customMono.stat.currentHealthPointReachZeroEvent += PawnDeathHandler;
             MarkGridNodeAsEnemyNode(t_customMono.transform.position);
             GetEnemyTeamChampions().Add(t_customMono);
             enemyCount++;
@@ -328,6 +321,8 @@ public partial class GameManager : MonoBehaviour
     void PawnDeathHandler(CustomMono p_customMono)
     {
         enemyCount--;
+        p_customMono.stat.currentHealthPointReachZeroEvent -= PawnDeathHandler;
+        GetEnemyTeamChampions().Remove(p_customMono);
         if (enemyCount <= 0)
         {
             GetPlayerTeamChampions().ForEach(pC => DisableBattleMode(pC));
@@ -363,17 +358,20 @@ public partial class GameManager : MonoBehaviour
     public void SwithTeam(CustomMono customMono, string newTeam)
     {
         teamChampions[customMono.tag].Remove(customMono);
+        customMono.allyTags.Clear();
         switch (newTeam)
         {
             case "Team1":
             {
                 customMono.tag = "Team1";
+                customMono.allyTags.Add("Team1");
                 customMono.arrowIndicator.material = team1DirectionIndicatorMat;
                 break;
             }
             case "Team2":
             {
                 customMono.tag = "Team2";
+                customMono.allyTags.Add("Team2");
                 customMono.arrowIndicator.material = team2DirectionIndicatorMat;
                 break;
             }

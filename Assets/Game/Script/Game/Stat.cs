@@ -33,7 +33,6 @@ public partial class Stat : MonoEditor
     {
         InitUI();
         StartCoroutine(LateEnable());
-        StartCoroutine(AddLatePropertyChangeEvent());
         onEnable += () =>
         {
             InitUI();
@@ -68,17 +67,6 @@ public partial class Stat : MonoEditor
 
         currentHealthPoint.Value = healthPoint.FinalValue;
         currentManaPoint.Value = 0;
-    }
-
-    /// <summary>
-    /// HealthReachZeroHandler should run after other registered events
-    /// in BaseAction.
-    /// </summary>
-    /// <returns></returns>
-    IEnumerator AddLatePropertyChangeEvent()
-    {
-        yield return null;
-        currentHealthPointReachZeroEvent += HealthReachZeroHandler;
     }
 
     void Reborn()
@@ -165,7 +153,8 @@ public partial class Stat : MonoEditor
         if (currentHealthPoint.Value <= 0 && alive)
         {
             alive = false;
-            currentHealthPointReachZeroEvent();
+            currentHealthPointReachZeroEvent(customMono);
+            HealthReachZeroHandler();
         }
     }
 
@@ -181,17 +170,14 @@ public partial class Stat : MonoEditor
 
     void HealthReachZeroHandler()
     {
-        if (currentHealthPoint.Value <= 0)
-        {
-            customMono.actionBlocking = true;
-            customMono.movementActionBlocking = true;
-            customMono.AnimatorWrapper.SetBool(GameManager.Instance.dieBoolHash, true);
-            customMono.combatCollision.SetActive(false);
-            healthAndManaIndicatorPO?.WorldSpaceUI.deactivate();
-            healthAndManaIndicatorPO = null;
-            StopAllCoroutines();
-            StartCoroutine(DissolveCoroutine());
-        }
+        customMono.actionBlocking = true;
+        customMono.movementActionBlocking = true;
+        customMono.AnimatorWrapper.SetBool(GameManager.Instance.dieBoolHash, true);
+        customMono.combatCollision.SetActive(false);
+        healthAndManaIndicatorPO?.WorldSpaceUI.deactivate();
+        healthAndManaIndicatorPO = null;
+        StopAllCoroutines();
+        StartCoroutine(DissolveCoroutine());
     }
 
     void ChangeCurrentHPCap() => currentHealthPoint.cap = healthPoint.FinalValue;

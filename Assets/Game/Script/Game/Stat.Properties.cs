@@ -14,7 +14,7 @@ public partial class Stat
     [Header("<color='#D72638'>CURRENT HP")]
     public FloatStatWithCap currentHealthPoint = new();
     public Action beforeDeathCallback = () => { };
-    public Action currentHealthPointReachZeroEvent = () => { };
+    public Action<CustomMono> currentHealthPointReachZeroEvent = (customMono) => { };
 
     [Header("<color='#C71F37'>HP")]
     public FloatStatWithModifier healthPoint = new();

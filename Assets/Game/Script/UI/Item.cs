@@ -28,6 +28,8 @@ public class Item : MonoSelfAware, IDragHandler, IEndDragHandler, IBeginDragHand
     Animator animator;
     Image image;
     Vector2 rewardPos;
+    float itemCycleOffset = 0,
+        itemTierBlend = 0;
 
     public override void Awake()
     {
@@ -39,6 +41,12 @@ public class Item : MonoSelfAware, IDragHandler, IEndDragHandler, IBeginDragHand
         image = GetComponent<Image>();
         RegisterCallback();
         InitTooltip();
+    }
+
+    private void OnEnable()
+    {
+        animator.SetFloat(GameManager.Instance.itemCycleOffsetFloatHash, itemCycleOffset);
+        animator.SetFloat(GameManager.Instance.itemTierBlendHash, itemTierBlend);
     }
 
     void InitTooltip()
@@ -59,20 +67,24 @@ public class Item : MonoSelfAware, IDragHandler, IEndDragHandler, IBeginDragHand
         this.itemDataSO = itemDataSO;
         image.sprite = itemDataSO.icon;
         itemTooltip.Setup();
-        animator.SetFloat(GameManager.Instance.itemCycleOffsetFloatHash, Random.Range(0, 1f));
+        itemCycleOffset = Random.Range(0, 1f);
+        animator.SetFloat(GameManager.Instance.itemCycleOffsetFloatHash, itemCycleOffset);
         switch (itemDataSO.itemTier)
         {
             case ItemTier.Normal:
                 uIEffect.Clear();
-                animator.SetFloat(GameManager.Instance.itemTierBlendHash, 0);
+                itemTierBlend = 0;
+                animator.SetFloat(GameManager.Instance.itemTierBlendHash, itemTierBlend);
                 break;
             case ItemTier.Rare:
                 uIEffect.LoadPreset(GameManager.Instance.rareItemEffectPreset);
-                animator.SetFloat(GameManager.Instance.itemTierBlendHash, 1);
+                itemTierBlend = 1;
+                animator.SetFloat(GameManager.Instance.itemTierBlendHash, itemTierBlend);
                 break;
             case ItemTier.Epic:
                 uIEffect.LoadPreset(GameManager.Instance.epicItemEffectPreset);
-                animator.SetFloat(GameManager.Instance.itemTierBlendHash, 1);
+                itemTierBlend = 1;
+                animator.SetFloat(GameManager.Instance.itemTierBlendHash, itemTierBlend);
                 break;
             case ItemTier.Legendary:
             default:

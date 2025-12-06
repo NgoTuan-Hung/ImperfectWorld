@@ -34,20 +34,13 @@ public partial class GameManager
                             )
                         )
                     );
-
-                    championPools[nERI.roomEnemyInfos[i].prefab].handleCachedComponentRefs += (
-                        p_poolObject
-                    ) =>
-                    {
-                        p_poolObject.CustomMono.stat.currentHealthPointReachZeroEvent += () =>
-                            PawnDeathHandler(p_poolObject.CustomMono);
-                    };
                 }
 
                 var t_customMono = championPools[nERI.roomEnemyInfos[i].prefab]
                     .PickOne()
                     .CustomMono;
                 t_customMono.transform.position = nERI.roomEnemyInfos[i].position;
+                t_customMono.stat.currentHealthPointReachZeroEvent += PawnDeathHandler;
                 MarkGridNodeAsEnemyNode(t_customMono.transform.position);
                 GetEnemyTeamChampions().Add(t_customMono);
                 enemyCount++;
@@ -85,6 +78,7 @@ public partial class GameManager
         var t_customMono = t_pool.PickOne().CustomMono;
         t_customMono.transform.position = new Vector3(0, 0, 0);
         SwithTeam(t_customMono, "Team1");
+        DisableBattleMode(t_customMono);
         return true;
     }
 

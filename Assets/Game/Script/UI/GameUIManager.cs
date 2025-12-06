@@ -298,11 +298,11 @@ public class GameUIManager : MonoEditorSingleton<GameUIManager>
 
         for (int i = 0; i < 2; i++)
         {
+            helperTextTMPA.ResetTime();
             List<StatUpgrade> sUs = GameManager.Instance.GetRandomStatUpgrades(3);
 
             finishedReward = false;
             yield return _waitForSeconds1;
-            helperTextTMPA.ResetTime();
             for (int j = 0; j < statUpgrades.Count; j++)
             {
                 statUpgrades[j].SetUpgrade(sUs[j]);

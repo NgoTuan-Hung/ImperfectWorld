@@ -70,7 +70,7 @@ public class StatusEffect : CustomMonoPal
         customMono.stat.currentHealthPointReachZeroEvent += StopAll;
     }
 
-    void StopAll()
+    void StopAll(CustomMono customMono)
     {
         StopAllCoroutines();
         if (CheckEffect(StatusEffectState.DamageEffect))

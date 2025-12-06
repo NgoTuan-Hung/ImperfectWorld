@@ -120,7 +120,7 @@ public partial class BaseAction : MonoEditor
     /// </summary>
     public virtual void RecalculateStat() { }
 
-    public virtual void StopAndDisable()
+    public virtual void StopAndDisable(CustomMono customMono)
     {
         if (customMono.currentAction == this)
         {
