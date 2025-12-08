@@ -26,7 +26,7 @@ public class GameUIManager : MonoEditorSingleton<GameUIManager>
         inventory,
         inventoryContent,
         freeZone,
-        menuContent,
+        menu,
         upgradeZone,
         championRewardSelectZone;
     ObjectPool healthAndManaIndicator,
@@ -37,7 +37,7 @@ public class GameUIManager : MonoEditorSingleton<GameUIManager>
     Dictionary<CustomMono, ChampInfoPanel> champInfoPanelDict = new();
     Vector3 cameraMoveVector;
     public float cameraMovementSpeed = 0.1f;
-    GameObject cameraFollowObject;
+    public GameObject cameraFollowObject;
     public float planeDistance = 5f;
     public List<GameObject> inventorySlots = new();
     public List<Item> playerItemUIs = new();
@@ -85,7 +85,7 @@ public class GameUIManager : MonoEditorSingleton<GameUIManager>
         {
             foreach (var item in champInfoPanelDict)
             {
-                ShowChampUI(item.Value);
+                item.Value.ShowIfAlive();
                 item.Value.OnTabClick(item.Value.statIPTB);
             }
             menuCharStateOn = true;
@@ -131,17 +131,31 @@ public class GameUIManager : MonoEditorSingleton<GameUIManager>
         }
     }
 
+    public void ActivateAllChampInfoPanelGlassEffect()
+    {
+        foreach (var item in champInfoPanelDict)
+        {
+            item.Value.ActivateGlassEffect();
+        }
+    }
+
+    public void DeactivateAllChampInfoPanelGlassEffect()
+    {
+        foreach (var item in champInfoPanelDict)
+        {
+            item.Value.DeactivateGlassEffect();
+        }
+    }
+
     private void FindChilds()
     {
         mapBackground = transform.Find("MapBackground").gameObject;
         inventoryContent = inventory.transform.Find("Viewport/Content").gameObject;
-        menuContent = transform.Find("Menu/Viewport/Content").gameObject;
-        menuCharButton = menuContent.transform.Find("MenuCharButton").GetComponent<Button>();
-        menuMapButton = menuContent.transform.Find("MenuMapButton").GetComponent<Button>();
-        menuInventoryButton = menuContent
-            .transform.Find("MenuInventoryButton")
-            .GetComponent<Button>();
-        menuSettingButton = menuContent.transform.Find("MenuSettingButton").GetComponent<Button>();
+        menu = transform.Find("Menu").gameObject;
+        menuCharButton = menu.transform.Find("MenuCharButton").GetComponent<Button>();
+        menuMapButton = menu.transform.Find("MenuMapButton").GetComponent<Button>();
+        menuInventoryButton = menu.transform.Find("MenuInventoryButton").GetComponent<Button>();
+        menuSettingButton = menu.transform.Find("MenuSettingButton").GetComponent<Button>();
         upgradeZone = transform.Find("MainScreen/UpgradeZone").gameObject;
         statUpgrades = upgradeZone.transform.GetComponentsInChildren<StatUpgradeUI>(true).ToList();
         championRewards = upgradeZone

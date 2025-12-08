@@ -252,4 +252,5 @@ public partial class GameManager
     public Action<GameState> onGameStateChange = (newState) => { };
     public List<ItemDataSO> itemDataSOs;
     public float[] itemDataSOWeights;
+    public int formationIndex = 0;
 }

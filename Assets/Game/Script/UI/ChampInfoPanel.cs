@@ -38,6 +38,7 @@ public class ChampInfoPanel : MonoBehaviour, IPointerDownHandler
         statIPTB,
         abilityIPTB,
         itemIPTB;
+    CanvasGroup canvasGroup;
 
     private void Awake()
     {
@@ -72,6 +73,7 @@ public class ChampInfoPanel : MonoBehaviour, IPointerDownHandler
         tooltipTMP = tooltip
             .transform.Find("Background/TooltipSV/Viewport/Content")
             .GetComponent<TextMeshProUGUI>();
+        canvasGroup = GetComponent<CanvasGroup>();
         InitTabButtons();
         AddEvents();
         InitOtherButtons();
@@ -323,5 +325,21 @@ public class ChampInfoPanel : MonoBehaviour, IPointerDownHandler
     public void OnPointerDown(PointerEventData eventData)
     {
         transform.SetAsLastSibling();
+    }
+
+    public void ShowIfAlive()
+    {
+        if (owner.stat.alive)
+            gameObject.SetActive(true);
+    }
+
+    public void ActivateGlassEffect()
+    {
+        canvasGroup.alpha = 0.3f;
+    }
+
+    public void DeactivateGlassEffect()
+    {
+        canvasGroup.alpha = 1f;
     }
 }

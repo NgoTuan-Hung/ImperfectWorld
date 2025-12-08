@@ -2603,6 +2603,7 @@ GameObject:
   - component: {fileID: 8860118612598844244}
   - component: {fileID: 3709002772457921369}
   - component: {fileID: 204999344532855701}
+  - component: {fileID: 9159950675006711883}
   m_Layer: 0
   m_Name: ChampInfoPanel
   m_TagString: ChampInfoPanel
@@ -2802,7 +2803,7 @@ MonoBehaviour:
   m_EdgeMode: 1
   m_EdgeWidth: 0.25
   m_EdgeColorFilter: 1
-  m_EdgeColor: {r: 2, g: 0, b: 1.9125729, a: 1}
+  m_EdgeColor: {r: 0.9911022, g: 0.000303527, b: 0.65837497, a: 1}
   m_EdgeColorGlow: 1
   m_EdgeShinyRate: 0
   m_EdgeShinyWidth: 0.25
@@ -2838,6 +2839,18 @@ MonoBehaviour:
   statIPTB: {fileID: 0}
   abilityIPTB: {fileID: 0}
   itemIPTB: {fileID: 0}
+--- !u!225 &9159950675006711883
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3599401370469671159}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &3813933903934587315
 GameObject:
   m_ObjectHideFlags: 0

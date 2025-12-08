@@ -300,7 +300,7 @@ public class ChampionRewardUI : DoubleTapUI, IDragHandler, IBeginDragHandler, IE
             }
             case ChampionRewardType.Select:
             {
-                GameManager.Instance.SpawnChampionForPlayer(championReward.prefab);
+                GameManager.Instance.RewardChampion(championReward.prefab);
                 GameUIManager.Instance.FinishReward();
                 gameObject.SetActive(false);
                 break;

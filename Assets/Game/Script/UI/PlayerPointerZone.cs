@@ -90,9 +90,13 @@ public class PlayerPointerZone
 
     public void OnEndDrag(PointerEventData eventData)
     {
+        GameUIManager.Instance.DeactivateAllChampInfoPanelGlassEffect();
         previousRaycastNode?.SwitchToDefaultVisual();
         previousRaycastNode = null;
     }
 
-    public void OnBeginDrag(PointerEventData eventData) { }
+    public void OnBeginDrag(PointerEventData eventData)
+    {
+        GameUIManager.Instance.ActivateAllChampInfoPanelGlassEffect();
+    }
 }

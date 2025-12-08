@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Coffee.UIEffects;
+using DG.Tweening;
 using Map;
 using Unity.Cinemachine;
 using UnityEngine;
@@ -74,6 +75,8 @@ public partial class GameManager : MonoBehaviour
     Dictionary<string, Dictionary<GameEventType, GameEvent>> teamBasedEvents = new();
     public Action battleEndCallback = () => { };
     public GameState gameState = GameState.MapTravelingPhase;
+    public GameObject mapArea;
+    List<Vector2> formationPositions = new();
 
     public static IEnumerator VoidIE()
     {
@@ -94,6 +97,7 @@ public partial class GameManager : MonoBehaviour
         InitGameEvents();
         InitOtherFields();
         AddTeam();
+        BuildFormation();
     }
 
     private void InitOtherPools()
@@ -329,7 +333,7 @@ public partial class GameManager : MonoBehaviour
             ChangeGameState(GameState.RewardPhase);
             ClearEnemyNodes();
             battleEndCallback();
-            ShowRewardForPlayer();
+            ReorganizeFormationAfterBattle();
         }
     }
 
@@ -759,5 +763,75 @@ public partial class GameManager : MonoBehaviour
                     break;
             }
         }
+    }
+
+    public bool RewardChampion(GameObject champPrefab)
+    {
+        if (champPrefab == null)
+            return false;
+
+        if (!championPools.TryGetValue(champPrefab, out ObjectPool t_pool))
+        {
+            championPools.Add(
+                champPrefab,
+                new ObjectPool(
+                    champPrefab,
+                    new PoolArgument(ComponentType.CustomMono, PoolArgument.WhereComponent.Self)
+                )
+            );
+
+            t_pool = championPools[champPrefab];
+        }
+
+        var t_customMono = t_pool.PickOne().CustomMono;
+        t_customMono.transform.position = new Vector3(0, 0, 0);
+        SwithTeam(t_customMono, "Team1");
+        DisableBattleMode(t_customMono);
+        FallIn(t_customMono);
+
+        return true;
+    }
+
+    void BuildFormation()
+    {
+        Vector2 upperRight = mapArea.transform.localScale / 2;
+        Vector2 upperLeft = new(-upperRight.x + 1, upperRight.y - 1);
+        Vector2 lowerRight = new(upperRight.x - 1, -upperRight.y);
+
+        var pointer = upperLeft;
+        int level = 0;
+        while (pointer.y >= lowerRight.y)
+        {
+            formationPositions.Add(pointer);
+            pointer.x += 2;
+            if (pointer.x >= lowerRight.x)
+            {
+                pointer.x = level % 2 == 0 ? upperLeft.x : upperLeft.x + 1;
+                pointer.y--;
+                level++;
+            }
+        }
+    }
+
+    public void ReorganizeFormationAfterBattle()
+    {
+        formationIndex = 0;
+        GameUIManager
+            .Instance.cameraFollowObject.transform.DOMove(formationPositions[formationIndex], 1)
+            .SetEase(Ease.OutQuad)
+            .OnComplete(ShowRewardForPlayer);
+        GetPlayerTeamChampions()
+            .ForEach(c =>
+            {
+                if (c.stat.alive)
+                    FallIn(c);
+            });
+    }
+
+    void FallIn(CustomMono customMono)
+    {
+        customMono
+            .transform.DOMove(formationPositions[formationIndex++], Random.Range(3, 5f))
+            .SetEase(Ease.OutQuint);
     }
 }
