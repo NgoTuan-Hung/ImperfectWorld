@@ -16,7 +16,6 @@ public enum ChampionRewardType
 
 public class ChampionRewardUI : DoubleTapUI, IDragHandler, IBeginDragHandler, IEndDragHandler
 {
-    public static Vector3 dragScale = new Vector3(0.25f, 0.25f, 1f);
     Vector3 originalAnchorLoc;
     RectTransform rectTransform;
     TextMeshProUGUI nameTMP,
