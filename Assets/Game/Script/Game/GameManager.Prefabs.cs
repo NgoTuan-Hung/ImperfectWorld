@@ -5,7 +5,8 @@ using UnityEngine;
 
 public partial class GameManager
 {
-    GameObject item;
+    GameObject item,
+        championRewardUI;
     GameObject moonSlashExplode,
         magicLaserImpact,
         slaughterProjectile,

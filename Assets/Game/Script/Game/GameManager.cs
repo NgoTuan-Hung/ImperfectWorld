@@ -106,6 +106,10 @@ public partial class GameManager : MonoBehaviour
             item,
             new PoolArgument(ComponentType.Item, PoolArgument.WhereComponent.Self)
         );
+        championRewardUIPool = new(
+            championRewardUI,
+            new PoolArgument(ComponentType.ChampionRewardUI, PoolArgument.WhereComponent.Self)
+        );
     }
 
     private void InitOtherFields()
@@ -145,6 +149,7 @@ public partial class GameManager : MonoBehaviour
         rareItemEffectPreset = Resources.Load<UIEffectPreset>("UIEffectPreset/RareItem");
         epicItemEffectPreset = Resources.Load<UIEffectPreset>("UIEffectPreset/EpicItem");
         item = Resources.Load<GameObject>("Item");
+        championRewardUI = Resources.Load<GameObject>("ChampionRewardUI");
         itemDataSOs = Resources.LoadAll<ItemDataSO>("ScriptableObject/ItemDataSO").ToList();
     }
 
@@ -232,12 +237,12 @@ public partial class GameManager : MonoBehaviour
     {
         MapPlayerTracker.Instance.onNodeEnter += (p_mapNode) =>
         {
-            GameUIManager.Instance.startBattleButton.Show();
             switch (p_mapNode.Node.nodeType)
             {
                 case NodeType.MinorEnemy:
                 {
                     Debug.Log("Room Minor Enemy Encountered");
+                    GameUIManager.Instance.startBattleButton.Show();
                     LoadNormalEnemyRoom();
                     break;
                 }
@@ -248,7 +253,10 @@ public partial class GameManager : MonoBehaviour
                 case NodeType.Treasure:
                     break;
                 case NodeType.Store:
+                {
+                    LoadShopRoom();
                     break;
+                }
                 case NodeType.Boss:
                     break;
                 case NodeType.Mystery:
@@ -291,6 +299,14 @@ public partial class GameManager : MonoBehaviour
         }
 
         GetEnemyTeamChampions().ForEach(cRE => DisableBattleMode(cRE));
+    }
+
+    void LoadShopRoom()
+    {
+        raft.SetActive(true);
+        ChangeGameState(GameState.ShopPhase);
+        GameUIManager.Instance.TurnOffMap();
+        GameUIManager.Instance.HandleTraderUI(GetRandomChampionRewardUIs(6));
     }
 
     /// <summary>
@@ -612,6 +628,33 @@ public partial class GameManager : MonoBehaviour
         }
 
         return cRs;
+    }
+
+    public List<ChampionRewardUI> GetRandomChampionRewardUIs(int count)
+    {
+        if (championRewards.Count < count)
+            return null;
+
+        List<ChampionReward> cRs = new();
+
+        for (int i = 0; i < count; i++)
+            cRs.Add(championRewards[i]);
+        for (int i = count; i < championRewards.Count; i++)
+        {
+            int r = Random.Range(0, i + 1);
+            if (r < count)
+                cRs[r] = championRewards[i];
+        }
+
+        List<ChampionRewardUI> cRUs = new();
+
+        for (int i = 0; i < cRs.Count; i++)
+        {
+            cRUs.Add(championRewardUIPool.PickOne().ChampionRewardUI);
+            cRUs[i].Init(cRs[i]);
+        }
+
+        return cRUs;
     }
 
     public List<Item> GetRandomItemRewards(int count)

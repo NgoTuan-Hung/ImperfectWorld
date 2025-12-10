@@ -28,6 +28,8 @@ public class DevConsole : MonoBehaviour
             LoadNormalEnemyRoomVariant
         );
 
+        DebugLogConsole.AddCommand("load-shop-room", "Load Shop Room", LoadShopRoom);
+
         DebugLogConsole.AddCommand(
             "get-all-available-champion",
             "Get all available champions",
@@ -79,6 +81,11 @@ public class DevConsole : MonoBehaviour
             "Load Normal Enemy Room Variant: "
                 + GameManager.Instance.LoadNormalEnemyRoomVariant(p_index)
         );
+    }
+
+    void LoadShopRoom()
+    {
+        GameManager.Instance.LoadShopRoomDebug();
     }
 
     void GetAllAvailableChampion()

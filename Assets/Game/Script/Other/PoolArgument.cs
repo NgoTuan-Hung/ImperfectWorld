@@ -8,6 +8,7 @@ public enum ComponentType
     CustomMono,
     TextPopupUI,
     Item,
+    ChampionRewardUI,
 };
 
 public class PoolArgument

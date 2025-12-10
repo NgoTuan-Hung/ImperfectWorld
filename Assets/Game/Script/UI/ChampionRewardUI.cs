@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Coffee.UIEffects;
@@ -6,6 +7,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
+using Random = UnityEngine.Random;
 
 public enum ChampionRewardType
 {
@@ -14,8 +16,20 @@ public enum ChampionRewardType
     None,
 }
 
-public class ChampionRewardUI : DoubleTapUI, IDragHandler, IBeginDragHandler, IEndDragHandler
+public enum ChampionRewardUIState
 {
+    Reward,
+    ShopWare,
+}
+
+public class ChampionRewardUI
+    : MonoSelfAware,
+        IDragHandler,
+        IBeginDragHandler,
+        IEndDragHandler,
+        IPointerClickHandler
+{
+    ChampionRewardUIState state = ChampionRewardUIState.Reward;
     Vector3 originalAnchorLoc;
     RectTransform rectTransform;
     TextMeshProUGUI nameTMP,
@@ -48,9 +62,26 @@ public class ChampionRewardUI : DoubleTapUI, IDragHandler, IBeginDragHandler, IE
         abilityDTU,
         offerDTU;
 
-    public void SetReward(ChampionReward cR)
+    public void SetAsReward(Transform parent, Vector2 localPos)
     {
-        gameObject.SetActive(true);
+        originalAnchorLoc = localPos;
+        transform.SetParent(parent, false);
+        transform.localPosition = localPos;
+        transform.localScale = Vector3.one;
+        StartCoroutine(EntranceIE());
+        SwitchState(ChampionRewardUIState.Reward);
+    }
+
+    public void SetAsShopWare(Transform parent)
+    {
+        transform.SetParent(parent, false);
+        transform.localPosition = Vector3.zero;
+        transform.localScale = GameManager.Instance.championRewardUIWareScale;
+        SwitchState(ChampionRewardUIState.ShopWare);
+    }
+
+    public void Init(ChampionReward cR)
+    {
         championReward = cR;
         rewardSkill = cR.prefab.GetComponent<Skill>();
         rewardCD = cR.prefab.GetComponent<CustomMono>().championData;
@@ -61,7 +92,6 @@ public class ChampionRewardUI : DoubleTapUI, IDragHandler, IBeginDragHandler, IE
         SetStatText();
         SetAbilityText();
         SetOfferText();
-        StartCoroutine(EntranceIE());
     }
 
     private void SetAbilityText()
@@ -102,8 +132,9 @@ public class ChampionRewardUI : DoubleTapUI, IDragHandler, IBeginDragHandler, IE
         OnTabClick(statIPTB);
     }
 
-    private void Awake()
+    public override void Awake()
     {
+        base.Awake();
         GetChildAndComponents();
         RegisterEvents();
         InitTabButtons();
@@ -293,14 +324,14 @@ public class ChampionRewardUI : DoubleTapUI, IDragHandler, IBeginDragHandler, IE
             case ChampionRewardType.Sacrifice:
             {
                 GameManager.Instance.SacrificeChampionRewardAsStat(rewardCD, attachedTo.owner);
-                GameUIManager.Instance.FinishReward();
+                GameUIManager.Instance.FinishChampionReward();
                 gameObject.SetActive(false);
                 break;
             }
             case ChampionRewardType.Select:
             {
                 GameManager.Instance.RewardChampion(championReward.prefab);
-                GameUIManager.Instance.FinishReward();
+                GameUIManager.Instance.FinishChampionReward();
                 gameObject.SetActive(false);
                 break;
             }
@@ -315,5 +346,20 @@ public class ChampionRewardUI : DoubleTapUI, IDragHandler, IBeginDragHandler, IE
                 break;
         }
         uIEffect.Clear();
+    }
+
+    public Action<PointerEventData> doubleTapEvent = (p_eventData) => { };
+    public float lastClickTime = 0f;
+
+    public void OnPointerClick(PointerEventData eventData)
+    {
+        if (eventData.clickTime - lastClickTime < 0.25f)
+            doubleTapEvent(eventData);
+        lastClickTime = eventData.clickTime;
+    }
+
+    void SwitchState(ChampionRewardUIState championRewardUIState)
+    {
+        state = championRewardUIState;
     }
 }

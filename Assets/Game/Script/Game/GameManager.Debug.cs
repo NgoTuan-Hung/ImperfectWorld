@@ -57,6 +57,11 @@ public partial class GameManager
         return true;
     }
 
+    public void LoadShopRoomDebug()
+    {
+        LoadShopRoom();
+    }
+
     public bool SpawnChampionForPlayer(GameObject champPrefab)
     {
         if (champPrefab == null)

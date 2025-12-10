@@ -11,6 +11,7 @@ public enum GameState
     PositioningPhase,
     BattlePhase,
     RewardPhase,
+    ShopPhase,
 }
 
 public enum ComplexTextID
@@ -253,4 +254,6 @@ public partial class GameManager
     public List<ItemDataSO> itemDataSOs;
     public float[] itemDataSOWeights;
     public int formationIndex = 0;
+    public GameObject raft;
+    public Vector3 championRewardUIWareScale;
 }

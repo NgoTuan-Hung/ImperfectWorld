@@ -28,7 +28,9 @@ public class GameUIManager : MonoEditorSingleton<GameUIManager>
         freeZone,
         menu,
         upgradeZone,
-        championRewardSelectZone;
+        championRewardSelectZone,
+        traderZone,
+        championWare;
     ObjectPool healthAndManaIndicator,
         textPopupUIPool;
     public MapViewUI mapViewUI;
@@ -44,7 +46,7 @@ public class GameUIManager : MonoEditorSingleton<GameUIManager>
     public Vector2 ItemInventoryAnchorPos = new(0.5f, 0.5f);
     bool mapState = true;
     public List<StatUpgradeUI> statUpgrades;
-    public List<ChampionRewardUI> championRewards;
+    public List<ChampionRewardUI> championRewardUIs;
     bool finishedReward = false;
     bool menuCharStateOn = false;
     bool menuItemStateOn = false;
@@ -52,7 +54,9 @@ public class GameUIManager : MonoEditorSingleton<GameUIManager>
     public Animator screenEffectAnimator;
     TMPAnimator helperTextTMPA;
     public Vector2[] itemRewardPos = new Vector2[3];
+    public Vector2[] championRewardPos = new Vector2[3];
     List<Item> itemRewards;
+    List<TraderWare> championWares;
 
     private void Awake()
     {
@@ -158,12 +162,12 @@ public class GameUIManager : MonoEditorSingleton<GameUIManager>
         menuSettingButton = menu.transform.Find("MenuSettingButton").GetComponent<Button>();
         upgradeZone = transform.Find("MainScreen/UpgradeZone").gameObject;
         statUpgrades = upgradeZone.transform.GetComponentsInChildren<StatUpgradeUI>(true).ToList();
-        championRewards = upgradeZone
-            .transform.GetComponentsInChildren<ChampionRewardUI>(true)
-            .ToList();
         helperTextTMP = transform.Find("MainScreen/HelperText").GetComponent<TextMeshProUGUI>();
         helperTextTMPA = helperTextTMP.GetComponent<TMPAnimator>();
         championRewardSelectZone = transform.Find("MainScreen/ChampionRewardSelectZone").gameObject;
+        traderZone = worldSpaceCanvas.transform.Find("TraderZone").gameObject;
+        championWare = traderZone.transform.Find("ChampionWare").gameObject;
+        championWares = championWare.GetComponentsInChildren<TraderWare>(true).ToList();
 
         /* Temp */
         playerItemUIs = inventoryContent.transform.GetComponentsInChildren<Item>().ToList();
@@ -335,12 +339,14 @@ public class GameUIManager : MonoEditorSingleton<GameUIManager>
 
     IEnumerator SpawnChampionRewardIE()
     {
-        List<ChampionReward> cRs = GameManager.Instance.GetRandomChampionRewards(3);
+        championRewardUIs = GameManager.Instance.GetRandomChampionRewardUIs(3);
 
         finishedReward = false;
         yield return _waitForSeconds1;
-        for (int i = 0; i < championRewards.Count; i++)
-            championRewards[i].SetReward(cRs[i]);
+        for (int i = 0; i < championRewardUIs.Count; i++)
+        {
+            championRewardUIs[i].SetAsReward(upgradeZone.transform, championRewardPos[i]);
+        }
 
         while (!finishedReward)
             yield return null;
@@ -362,6 +368,19 @@ public class GameUIManager : MonoEditorSingleton<GameUIManager>
     }
 
     public void FinishReward() => finishedReward = true;
+
+    /// <summary>
+    /// Finish champion reward and schedule destroy rewards that are not selected.
+    /// </summary>
+    /// <param name="championRewardUI"></param>
+    public void FinishChampionReward()
+    {
+        finishedReward = true;
+        championRewardUIs.ForEach(cRUI =>
+        {
+            cRUI.deactivate();
+        });
+    }
 
     /// <summary>
     /// Finish item reward and schedule destroy rewards that are not selected.
@@ -388,10 +407,10 @@ public class GameUIManager : MonoEditorSingleton<GameUIManager>
 
     public void ShowOnlyChampionRewardUI(ChampionRewardUI championRewardUI)
     {
-        for (int i = 0; i < championRewards.Count; i++)
+        for (int i = 0; i < championRewardUIs.Count; i++)
         {
-            if (championRewards[i] != championRewardUI)
-                championRewards[i].gameObject.SetActive(false);
+            if (championRewardUIs[i] != championRewardUI)
+                championRewardUIs[i].gameObject.SetActive(false);
         }
     }
 
@@ -414,9 +433,9 @@ public class GameUIManager : MonoEditorSingleton<GameUIManager>
 
     public void ShowChampionRewardUIs()
     {
-        for (int i = 0; i < championRewards.Count; i++)
+        for (int i = 0; i < championRewardUIs.Count; i++)
         {
-            championRewards[i].gameObject.SetActive(true);
+            championRewardUIs[i].gameObject.SetActive(true);
         }
     }
 
@@ -436,4 +455,14 @@ public class GameUIManager : MonoEditorSingleton<GameUIManager>
         screenEffectAnimator.runtimeAnimatorController = animatorController;
 
     public void DisableScreenEffect() => screenEffectAnimator.runtimeAnimatorController = null;
+
+    public void HandleTraderUI(List<ChampionRewardUI> championRewardUIs)
+    {
+        traderZone.SetActive(true);
+
+        for (int i = 0; i < championRewardUIs.Count; i++)
+        {
+            championRewardUIs[i].SetAsShopWare(championWares[i].transform);
+        }
+    }
 }

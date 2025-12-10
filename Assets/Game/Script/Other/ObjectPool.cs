@@ -56,7 +56,7 @@ public class ObjectPool
                     handleCachedComponentRefs += (poolObject) =>
                     {
                         poolObject.AddComponent(
-                            PoolObjectComponent.HealthAndManaIndicator,
+                            ComponentType.HealthAndManaIndicator,
                             getComponentInLocation(typeof(HealthAndManaIndicator), poolObject)
                         );
                     };
@@ -65,7 +65,7 @@ public class ObjectPool
                     handleCachedComponentRefs += (poolObject) =>
                     {
                         poolObject.AddComponent(
-                            PoolObjectComponent.GameEffect,
+                            ComponentType.GameEffect,
                             getComponentInLocation(typeof(GameEffect), poolObject)
                         );
 
@@ -76,7 +76,7 @@ public class ObjectPool
                     handleCachedComponentRefs += (poolObject) =>
                     {
                         poolObject.AddComponent(
-                            PoolObjectComponent.WorldSpaceUI,
+                            ComponentType.WorldSpaceUI,
                             getComponentInLocation(typeof(WorldSpaceUI), poolObject)
                         );
 
@@ -87,7 +87,7 @@ public class ObjectPool
                     handleCachedComponentRefs += (poolObject) =>
                     {
                         poolObject.AddComponent(
-                            PoolObjectComponent.CustomMono,
+                            ComponentType.CustomMono,
                             getComponentInLocation(typeof(CustomMono), poolObject)
                         );
 
@@ -98,7 +98,7 @@ public class ObjectPool
                     handleCachedComponentRefs += (poolObject) =>
                     {
                         poolObject.AddComponent(
-                            PoolObjectComponent.TextPopupUI,
+                            ComponentType.TextPopupUI,
                             getComponentInLocation(typeof(TextPopupUI), poolObject)
                         );
 
@@ -109,11 +109,22 @@ public class ObjectPool
                     handleCachedComponentRefs += (poolObject) =>
                     {
                         poolObject.AddComponent(
-                            PoolObjectComponent.Item,
+                            ComponentType.Item,
                             getComponentInLocation(typeof(Item), poolObject)
                         );
 
                         poolObject.Item.deactivate += () => IdleScheme(poolObject);
+                    };
+                    break;
+                case ComponentType.ChampionRewardUI:
+                    handleCachedComponentRefs += (poolObject) =>
+                    {
+                        poolObject.AddComponent(
+                            ComponentType.ChampionRewardUI,
+                            getComponentInLocation(typeof(ChampionRewardUI), poolObject)
+                        );
+
+                        poolObject.ChampionRewardUI.deactivate += () => IdleScheme(poolObject);
                     };
                     break;
                 default:

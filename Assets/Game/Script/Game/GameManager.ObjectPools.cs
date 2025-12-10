@@ -5,7 +5,8 @@ using UnityEngine;
 
 public partial class GameManager
 {
-    public ObjectPool itemPool;
+    public ObjectPool itemPool,
+        championRewardUIPool;
     public ObjectPool moonSlashExplodePool,
         magicLaserImpactPool,
         slaughterProjectilePool,
