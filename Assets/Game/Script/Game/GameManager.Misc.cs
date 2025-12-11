@@ -43,6 +43,7 @@ public enum ComplexTextID
 
 public partial class GameManager
 {
+    public int playerGold;
     public Material team1DirectionIndicatorMat;
     public Material team2DirectionIndicatorMat;
     public Material damagePopupMat,

@@ -76,6 +76,12 @@ public class ChampionData : ScriptableObject
     [Header("<color='#FFD447'>ATTACK RANGE")]
     public float attackRange = new();
 
+    [Header("<color='#2ECC71'>Price")]
+    public int price;
+
+    [Header("<color='#D4AF37'>GOLD DROP")]
+    public int goldDrop;
+
     ChampionDataPrecompute championDataPrecompute;
 
     public GameEffect GetMeleeAttackEffect(int p_variant) =>

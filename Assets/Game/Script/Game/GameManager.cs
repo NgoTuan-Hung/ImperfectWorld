@@ -29,6 +29,7 @@ public partial class GameManager : MonoBehaviour
     Dictionary<int, CustomMono> customMonos = new();
     public new Camera camera;
     public CinemachineCamera cinemachineCamera;
+    public CinemachinePositionComposer cinemachinePositionComposer;
     public Dictionary<GameEffectSO, ObjectPool> poolLink = new();
     public int attackBoolHash = Animator.StringToHash("Attack"),
         attackBlendHash = Animator.StringToHash("AttackBlend"),
@@ -876,5 +877,18 @@ public partial class GameManager : MonoBehaviour
         customMono
             .transform.DOMove(formationPositions[formationIndex++], Random.Range(3, 5f))
             .SetEase(Ease.OutQuint);
+    }
+
+    public bool BuyChampion(ChampionReward championReward, ChampionData championData)
+    {
+        if (playerGold >= championData.price)
+        {
+            playerGold -= championData.price;
+            GameUIManager.Instance.UpdatePlayerGold(playerGold);
+            RewardChampion(championReward.prefab);
+            return true;
+        }
+        else
+            return false;
     }
 }

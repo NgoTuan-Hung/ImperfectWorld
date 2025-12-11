@@ -30,6 +30,7 @@ public class GameUIManager : MonoEditorSingleton<GameUIManager>
         upgradeZone,
         championRewardSelectZone,
         traderZone,
+        buyZone,
         championWare;
     ObjectPool healthAndManaIndicator,
         textPopupUIPool;
@@ -40,7 +41,8 @@ public class GameUIManager : MonoEditorSingleton<GameUIManager>
     Vector3 cameraMoveVector;
     public float cameraMovementSpeed = 0.1f;
     public GameObject cameraFollowObject;
-    public float planeDistance = 5f;
+    public float planeDistance = 5f,
+        worldSpacePlaneDistance;
     public List<GameObject> inventorySlots = new();
     public List<Item> playerItemUIs = new();
     public Vector2 ItemInventoryAnchorPos = new(0.5f, 0.5f);
@@ -57,6 +59,7 @@ public class GameUIManager : MonoEditorSingleton<GameUIManager>
     public Vector2[] championRewardPos = new Vector2[3];
     List<Item> itemRewards;
     List<TraderWare> championWares;
+    PlayerGold playerGold;
 
     private void Awake()
     {
@@ -160,12 +163,14 @@ public class GameUIManager : MonoEditorSingleton<GameUIManager>
         menuMapButton = menu.transform.Find("MenuMapButton").GetComponent<Button>();
         menuInventoryButton = menu.transform.Find("MenuInventoryButton").GetComponent<Button>();
         menuSettingButton = menu.transform.Find("MenuSettingButton").GetComponent<Button>();
+        playerGold = menu.transform.Find("PlayerGold").GetComponent<PlayerGold>();
         upgradeZone = transform.Find("MainScreen/UpgradeZone").gameObject;
         statUpgrades = upgradeZone.transform.GetComponentsInChildren<StatUpgradeUI>(true).ToList();
         helperTextTMP = transform.Find("MainScreen/HelperText").GetComponent<TextMeshProUGUI>();
         helperTextTMPA = helperTextTMP.GetComponent<TMPAnimator>();
         championRewardSelectZone = transform.Find("MainScreen/ChampionRewardSelectZone").gameObject;
         traderZone = worldSpaceCanvas.transform.Find("TraderZone").gameObject;
+        buyZone = traderZone.transform.Find("BuyZone").gameObject;
         championWare = traderZone.transform.Find("ChampionWare").gameObject;
         championWares = championWare.GetComponentsInChildren<TraderWare>(true).ToList();
 
@@ -234,6 +239,7 @@ public class GameUIManager : MonoEditorSingleton<GameUIManager>
         };
 
         canvas.planeDistance = planeDistance;
+        worldSpacePlaneDistance = GameManager.Instance.cinemachinePositionComposer.CameraDistance;
         mapBackground.SetActive(true);
     }
 
@@ -451,6 +457,10 @@ public class GameUIManager : MonoEditorSingleton<GameUIManager>
 
     public void TurnOffChampionRewardSelectZone() => championRewardSelectZone.SetActive(false);
 
+    public void TurnOnBuyZone() => buyZone.SetActive(true);
+
+    public void TurnOffBuyZone() => buyZone.SetActive(false);
+
     public void ApplyScreenEffect(AnimatorController animatorController) =>
         screenEffectAnimator.runtimeAnimatorController = animatorController;
 
@@ -465,4 +475,6 @@ public class GameUIManager : MonoEditorSingleton<GameUIManager>
             championRewardUIs[i].SetAsShopWare(championWares[i].transform);
         }
     }
+
+    public void UpdatePlayerGold(int gold) => playerGold.SetGold(gold);
 }

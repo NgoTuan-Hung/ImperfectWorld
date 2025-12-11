@@ -9,10 +9,11 @@ using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using Random = UnityEngine.Random;
 
-public enum ChampionRewardType
+public enum ChampionRewardResult
 {
     Sacrifice,
     Select,
+    Buy,
     None,
 }
 
@@ -48,7 +49,7 @@ public class ChampionRewardUI
     ChampionReward championReward;
     Skill rewardSkill;
     ChampionData rewardCD;
-    ChampionRewardType championRewardType = ChampionRewardType.None;
+    ChampionRewardResult championRewardResult = ChampionRewardResult.None;
     List<RaycastResult> rcResults = new();
     ChampInfoPanel attachedTo = null;
     Image image;
@@ -285,60 +286,117 @@ public class ChampionRewardUI
     public void OnBeginDrag(PointerEventData eventData)
     {
         uIEffect.LoadPreset(GameManager.Instance.championRewardSelectedEffectPreset);
-        GameUIManager.Instance.ShowOnlyChampionRewardUI(this);
-        GameUIManager.Instance.TurnOnChampionRewardSelectZone();
+        switch (state)
+        {
+            case ChampionRewardUIState.Reward:
+                GameUIManager.Instance.ShowOnlyChampionRewardUI(this);
+                GameUIManager.Instance.TurnOnChampionRewardSelectZone();
+                break;
+            case ChampionRewardUIState.ShopWare:
+                GameUIManager.Instance.TurnOnBuyZone();
+                break;
+            default:
+                break;
+        }
     }
 
     public void OnDrag(PointerEventData eventData)
     {
-        transform.position = GameManager.Instance.camera.ScreenToWorldPoint(
-            eventData.position.WithZ(GameUIManager.Instance.planeDistance)
-        );
+        switch (state)
+        {
+            case ChampionRewardUIState.Reward:
+                transform.position = GameManager.Instance.camera.ScreenToWorldPoint(
+                    eventData.position.WithZ(GameUIManager.Instance.planeDistance)
+                );
+
+                break;
+            case ChampionRewardUIState.ShopWare:
+                transform.position = GameManager.Instance.camera.ScreenToWorldPoint(
+                    eventData.position.WithZ(GameUIManager.Instance.worldSpacePlaneDistance)
+                );
+
+                break;
+            default:
+                break;
+        }
 
         rcResults.Clear();
         EventSystem.current.RaycastAll(eventData, rcResults);
 
-        championRewardType = ChampionRewardType.None;
-
+        championRewardResult = ChampionRewardResult.None;
+        bool breakLoop = false;
         for (int i = 0; i < rcResults.Count; i++)
         {
-            if (rcResults[i].gameObject.CompareTag("ChampInfoPanel"))
+            switch (rcResults[i].gameObject.tag)
             {
-                attachedTo = rcResults[i].gameObject.GetComponent<ChampInfoPanel>();
-                championRewardType = ChampionRewardType.Sacrifice;
-                break;
+                case "ChampInfoPanel":
+                    attachedTo = rcResults[i].gameObject.GetComponent<ChampInfoPanel>();
+                    championRewardResult = ChampionRewardResult.Sacrifice;
+                    breakLoop = true;
+                    break;
+                case "ChampionRewardSelectZone":
+                    championRewardResult = ChampionRewardResult.Select;
+                    breakLoop = true;
+                    break;
+                case "BuyZone":
+                    championRewardResult = ChampionRewardResult.Buy;
+                    breakLoop = true;
+                    break;
+                default:
+                    break;
             }
-            else if (rcResults[i].gameObject.CompareTag("ChampionRewardSelectZone"))
-            {
-                championRewardType = ChampionRewardType.Select;
+
+            if (breakLoop)
                 break;
-            }
         }
     }
 
     public void OnEndDrag(PointerEventData eventData)
     {
         GameUIManager.Instance.TurnOffChampionRewardSelectZone();
-        switch (championRewardType)
+        GameUIManager.Instance.TurnOffBuyZone();
+        switch (championRewardResult)
         {
-            case ChampionRewardType.Sacrifice:
+            case ChampionRewardResult.Sacrifice:
             {
                 GameManager.Instance.SacrificeChampionRewardAsStat(rewardCD, attachedTo.owner);
                 GameUIManager.Instance.FinishChampionReward();
                 gameObject.SetActive(false);
                 break;
             }
-            case ChampionRewardType.Select:
+            case ChampionRewardResult.Select:
             {
                 GameManager.Instance.RewardChampion(championReward.prefab);
                 GameUIManager.Instance.FinishChampionReward();
                 gameObject.SetActive(false);
                 break;
             }
-            case ChampionRewardType.None:
+            case ChampionRewardResult.Buy:
             {
-                rectTransform.DOAnchorPos(originalAnchorLoc, 0.5f).SetEase(Ease.OutQuint);
-                GameUIManager.Instance.ShowChampionRewardUIs();
+                if (GameManager.Instance.BuyChampion(championReward, rewardCD))
+                    deactivate();
+                else
+                    ToShop();
+                break;
+            }
+            case ChampionRewardResult.None:
+            {
+                switch (state)
+                {
+                    case ChampionRewardUIState.Reward:
+                    {
+                        rectTransform.DOAnchorPos(originalAnchorLoc, 0.5f).SetEase(Ease.OutQuint);
+                        GameUIManager.Instance.ShowChampionRewardUIs();
+                        break;
+                    }
+                    case ChampionRewardUIState.ShopWare:
+                    {
+                        ToShop();
+                        break;
+                    }
+                    default:
+                        break;
+                }
 
                 break;
             }
@@ -346,6 +404,11 @@ public class ChampionRewardUI
                 break;
         }
         uIEffect.Clear();
+    }
+
+    void ToShop()
+    {
+        rectTransform.DOAnchorPos(Vector2.zero, 0.5f).SetEase(Ease.OutQuart);
     }
 
     public Action<PointerEventData> doubleTapEvent = (p_eventData) => { };
