@@ -117,6 +117,8 @@ public partial class GameManager : MonoBehaviour
     {
         itemDataSOWeights = new float[itemDataSOs.Count];
         BuildItemDataSOWeights();
+        halfInvisibleWallW = invisibleWall.transform.localScale.x / 2;
+        halfInvisibleWallH = invisibleWall.transform.localScale.y / 2;
     }
 
     private void AddTeam()
@@ -307,7 +309,10 @@ public partial class GameManager : MonoBehaviour
         raft.SetActive(true);
         ChangeGameState(GameState.ShopPhase);
         GameUIManager.Instance.TurnOffMap();
-        GameUIManager.Instance.HandleTraderUI(GetRandomChampionRewardUIs(6));
+        GameUIManager.Instance.HandleTraderUI(
+            GetRandomChampionRewardUIs(6),
+            GetRandomItemRewards(6)
+        );
     }
 
     /// <summary>
@@ -879,16 +884,26 @@ public partial class GameManager : MonoBehaviour
             .SetEase(Ease.OutQuint);
     }
 
-    public bool BuyChampion(ChampionReward championReward, ChampionData championData)
+    public bool BuyChampion(ChampionRewardUI championRewardUI)
     {
-        if (playerGold >= championData.price)
+        if (playerGold >= championRewardUI.rewardCD.price)
         {
-            playerGold -= championData.price;
+            playerGold -= championRewardUI.rewardCD.price;
             GameUIManager.Instance.UpdatePlayerGold(playerGold);
-            RewardChampion(championReward.prefab);
+            RewardChampion(championRewardUI.championReward.prefab);
             return true;
         }
         else
             return false;
+    }
+
+    public bool CheckInsideGlobalWall(Vector2 point)
+    {
+        return (
+            point.x >= -halfInvisibleWallW
+            && point.x <= halfInvisibleWallW
+            && point.y >= -halfInvisibleWallH
+            && point.y <= halfInvisibleWallH
+        );
     }
 }

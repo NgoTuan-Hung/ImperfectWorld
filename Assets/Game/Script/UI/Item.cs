@@ -11,6 +11,7 @@ public enum ItemState
     Inventory,
     Equipped,
     Reward,
+    ShopWare,
     None,
 }
 
@@ -47,6 +48,8 @@ public class Item : MonoSelfAware, IDragHandler, IEndDragHandler, IBeginDragHand
     {
         animator.SetFloat(GameManager.Instance.itemCycleOffsetFloatHash, itemCycleOffset);
         animator.SetFloat(GameManager.Instance.itemTierBlendHash, itemTierBlend);
+        image.raycastTarget = true;
+        transform.localScale = Vector3.one;
     }
 
     void InitTooltip()
@@ -94,10 +97,19 @@ public class Item : MonoSelfAware, IDragHandler, IEndDragHandler, IBeginDragHand
 
     public void SetAsReward(Transform parent, Vector2 localPos)
     {
-        rewardPos = localPos;
         transform.SetParent(parent, false);
+        rewardPos = localPos;
         StartCoroutine(EntranceIE(localPos));
         SwitchState(ItemState.Reward);
+    }
+
+    public void SetAsShopWare(Transform parent)
+    {
+        transform.SetParent(parent, false);
+        transform.localPosition = Vector3.zero;
+        transform.localScale = GameManager.Instance.screenSpaceToWorldSpaceUIScale;
+        image.raycastTarget = false;
+        SwitchState(ItemState.ShopWare);
     }
 
     IEnumerator EntranceIE(Vector2 localPos)

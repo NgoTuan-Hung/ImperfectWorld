@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -31,7 +32,8 @@ public class GameUIManager : MonoEditorSingleton<GameUIManager>
         championRewardSelectZone,
         traderZone,
         buyZone,
-        championWare;
+        championWare,
+        itemWare;
     ObjectPool healthAndManaIndicator,
         textPopupUIPool;
     public MapViewUI mapViewUI;
@@ -58,7 +60,8 @@ public class GameUIManager : MonoEditorSingleton<GameUIManager>
     public Vector2[] itemRewardPos = new Vector2[3];
     public Vector2[] championRewardPos = new Vector2[3];
     List<Item> itemRewards;
-    List<TraderWare> championWares;
+    List<TraderWare> championWares,
+        itemWares;
     PlayerGold playerGold;
 
     private void Awake()
@@ -173,6 +176,8 @@ public class GameUIManager : MonoEditorSingleton<GameUIManager>
         buyZone = traderZone.transform.Find("BuyZone").gameObject;
         championWare = traderZone.transform.Find("ChampionWare").gameObject;
         championWares = championWare.GetComponentsInChildren<TraderWare>(true).ToList();
+        itemWare = traderZone.transform.Find("ItemWare").gameObject;
+        itemWares = itemWare.GetComponentsInChildren<TraderWare>(true).ToList();
 
         /* Temp */
         playerItemUIs = inventoryContent.transform.GetComponentsInChildren<Item>().ToList();
@@ -194,7 +199,9 @@ public class GameUIManager : MonoEditorSingleton<GameUIManager>
 
     private void MoveCamera()
     {
-        cameraFollowObject.transform.position += cameraMoveVector;
+        var newPos = cameraFollowObject.transform.position + cameraMoveVector;
+        if (GameManager.Instance.CheckInsideGlobalWall(newPos))
+            cameraFollowObject.transform.position = newPos;
     }
 
     void InitPrefabAndPool()
@@ -239,7 +246,9 @@ public class GameUIManager : MonoEditorSingleton<GameUIManager>
         };
 
         canvas.planeDistance = planeDistance;
-        worldSpacePlaneDistance = GameManager.Instance.cinemachinePositionComposer.CameraDistance;
+        worldSpacePlaneDistance = Math.Abs(
+            GameManager.Instance.cinemachineCamera.transform.localScale.z
+        );
         mapBackground.SetActive(true);
     }
 
@@ -466,13 +475,14 @@ public class GameUIManager : MonoEditorSingleton<GameUIManager>
 
     public void DisableScreenEffect() => screenEffectAnimator.runtimeAnimatorController = null;
 
-    public void HandleTraderUI(List<ChampionRewardUI> championRewardUIs)
+    public void HandleTraderUI(List<ChampionRewardUI> championRewardUIs, List<Item> items)
     {
         traderZone.SetActive(true);
 
         for (int i = 0; i < championRewardUIs.Count; i++)
         {
-            championRewardUIs[i].SetAsShopWare(championWares[i].transform);
+            championWares[i].SetChampionWare(championRewardUIs[i]);
+            itemWares[i].SetItemWare(items[i]);
         }
     }
 

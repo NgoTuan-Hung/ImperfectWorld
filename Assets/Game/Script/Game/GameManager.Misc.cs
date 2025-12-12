@@ -256,5 +256,8 @@ public partial class GameManager
     public float[] itemDataSOWeights;
     public int formationIndex = 0;
     public GameObject raft;
-    public Vector3 championRewardUIWareScale;
+    public Vector3 screenSpaceToWorldSpaceUIScale;
+    public GameObject invisibleWall;
+    float halfInvisibleWallW,
+        halfInvisibleWallH;
 }

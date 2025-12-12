@@ -13,7 +13,6 @@ public enum ChampionRewardResult
 {
     Sacrifice,
     Select,
-    Buy,
     None,
 }
 
@@ -46,9 +45,9 @@ public class ChampionRewardUI
         activeContent,
         tooltip;
     PointerDownUI tooltipCloseButton;
-    ChampionReward championReward;
+    public ChampionReward championReward;
     Skill rewardSkill;
-    ChampionData rewardCD;
+    public ChampionData rewardCD;
     ChampionRewardResult championRewardResult = ChampionRewardResult.None;
     List<RaycastResult> rcResults = new();
     ChampInfoPanel attachedTo = null;
@@ -69,6 +68,7 @@ public class ChampionRewardUI
         transform.SetParent(parent, false);
         transform.localPosition = localPos;
         transform.localScale = Vector3.one;
+        image.raycastTarget = true;
         StartCoroutine(EntranceIE());
         SwitchState(ChampionRewardUIState.Reward);
     }
@@ -77,7 +77,8 @@ public class ChampionRewardUI
     {
         transform.SetParent(parent, false);
         transform.localPosition = Vector3.zero;
-        transform.localScale = GameManager.Instance.championRewardUIWareScale;
+        transform.localScale = GameManager.Instance.screenSpaceToWorldSpaceUIScale;
+        image.raycastTarget = false;
         SwitchState(ChampionRewardUIState.ShopWare);
     }
 
@@ -286,39 +287,15 @@ public class ChampionRewardUI
     public void OnBeginDrag(PointerEventData eventData)
     {
         uIEffect.LoadPreset(GameManager.Instance.championRewardSelectedEffectPreset);
-        switch (state)
-        {
-            case ChampionRewardUIState.Reward:
-                GameUIManager.Instance.ShowOnlyChampionRewardUI(this);
-                GameUIManager.Instance.TurnOnChampionRewardSelectZone();
-                break;
-            case ChampionRewardUIState.ShopWare:
-                GameUIManager.Instance.TurnOnBuyZone();
-                break;
-            default:
-                break;
-        }
+        GameUIManager.Instance.ShowOnlyChampionRewardUI(this);
+        GameUIManager.Instance.TurnOnChampionRewardSelectZone();
     }
 
     public void OnDrag(PointerEventData eventData)
     {
-        switch (state)
-        {
-            case ChampionRewardUIState.Reward:
-                transform.position = GameManager.Instance.camera.ScreenToWorldPoint(
-                    eventData.position.WithZ(GameUIManager.Instance.planeDistance)
-                );
-
-                break;
-            case ChampionRewardUIState.ShopWare:
-                transform.position = GameManager.Instance.camera.ScreenToWorldPoint(
-                    eventData.position.WithZ(GameUIManager.Instance.worldSpacePlaneDistance)
-                );
-
-                break;
-            default:
-                break;
-        }
+        transform.position = GameManager.Instance.camera.ScreenToWorldPoint(
+            eventData.position.WithZ(GameUIManager.Instance.planeDistance)
+        );
 
         rcResults.Clear();
         EventSystem.current.RaycastAll(eventData, rcResults);
@@ -338,10 +315,6 @@ public class ChampionRewardUI
                     championRewardResult = ChampionRewardResult.Select;
                     breakLoop = true;
                     break;
-                case "BuyZone":
-                    championRewardResult = ChampionRewardResult.Buy;
-                    breakLoop = true;
-                    break;
                 default:
                     break;
             }
@@ -354,7 +327,6 @@ public class ChampionRewardUI
     public void OnEndDrag(PointerEventData eventData)
     {
         GameUIManager.Instance.TurnOffChampionRewardSelectZone();
-        GameUIManager.Instance.TurnOffBuyZone();
         switch (championRewardResult)
         {
             case ChampionRewardResult.Sacrifice:
@@ -371,44 +343,16 @@ public class ChampionRewardUI
                 gameObject.SetActive(false);
                 break;
             }
-            case ChampionRewardResult.Buy:
-            {
-                if (GameManager.Instance.BuyChampion(championReward, rewardCD))
-                    deactivate();
-                else
-                    ToShop();
-                break;
-            }
             case ChampionRewardResult.None:
             {
-                switch (state)
-                {
-                    case ChampionRewardUIState.Reward:
-                    {
-                        rectTransform.DOAnchorPos(originalAnchorLoc, 0.5f).SetEase(Ease.OutQuint);
-                        GameUIManager.Instance.ShowChampionRewardUIs();
-                        break;
-                    }
-                    case ChampionRewardUIState.ShopWare:
-                    {
-                        ToShop();
-                        break;
-                    }
-                    default:
-                        break;
-                }
-
+                rectTransform.DOAnchorPos(originalAnchorLoc, 0.5f).SetEase(Ease.OutQuint);
+                GameUIManager.Instance.ShowChampionRewardUIs();
                 break;
             }
             default:
                 break;
         }
         uIEffect.Clear();
-    }
-
-    void ToShop()
-    {
-        rectTransform.DOAnchorPos(Vector2.zero, 0.5f).SetEase(Ease.OutQuart);
     }
 
     public Action<PointerEventData> doubleTapEvent = (p_eventData) => { };
