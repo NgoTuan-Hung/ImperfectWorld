@@ -9,7 +9,7 @@ using UnityEditor.Animations;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class GameUIManager : MonoEditorSingleton<GameUIManager>
+public partial class GameUIManager : MonoEditorSingleton<GameUIManager>
 {
     private static WaitForSeconds _waitForSeconds1 = new(1f);
     Canvas canvas;
@@ -37,7 +37,8 @@ public class GameUIManager : MonoEditorSingleton<GameUIManager>
     ObjectPool healthAndManaIndicator,
         textPopupUIPool;
     public MapViewUI mapViewUI;
-    public InteractiveButtonUI startBattleButton;
+    public InteractiveButtonUI gameInteractionButton;
+    public TextMeshProUGUI gameInteractionButtonTMP;
     GameObject champInfoPanel;
     Dictionary<CustomMono, ChampInfoPanel> champInfoPanelDict = new();
     Vector3 cameraMoveVector;
@@ -178,6 +179,7 @@ public class GameUIManager : MonoEditorSingleton<GameUIManager>
         championWares = championWare.GetComponentsInChildren<TraderWare>(true).ToList();
         itemWare = traderZone.transform.Find("ItemWare").gameObject;
         itemWares = itemWare.GetComponentsInChildren<TraderWare>(true).ToList();
+        gameInteractionButtonTMP = gameInteractionButton.GetComponentInChildren<TextMeshProUGUI>();
 
         /* Temp */
         playerItemUIs = inventoryContent.transform.GetComponentsInChildren<Item>().ToList();
@@ -479,12 +481,35 @@ public class GameUIManager : MonoEditorSingleton<GameUIManager>
     {
         traderZone.SetActive(true);
 
-        for (int i = 0; i < championRewardUIs.Count; i++)
+        for (int i = 0; i < championWares.Count; i++)
         {
             championWares[i].SetChampionWare(championRewardUIs[i]);
             itemWares[i].SetItemWare(items[i]);
         }
     }
 
+    public void CloseTraderUI()
+    {
+        traderZone.SetActive(false);
+        for (int i = 0; i < championWares.Count; i++)
+        {
+            championWares[i].ScheduleClearWare();
+            itemWares[i].ScheduleClearWare();
+        }
+    }
+
     public void UpdatePlayerGold(int gold) => playerGold.SetGold(gold);
+
+    public void SpawnGoldFromDeadEnemies(int gold, Vector3 pos, BasicUI goldUI)
+    {
+        goldUI.image.sprite = GameManager.Instance.GetRandomGoldSprite();
+        goldUI.transform.SetParent(freeZone.transform, false);
+        goldUI.transform.position = pos;
+        goldUI.LocalMoveTo(
+            freeZone.transform.InverseTransformPoint(playerGold.textMeshProUGUI.transform.position),
+            2,
+            DG.Tweening.Ease.InBack,
+            () => GameManager.Instance.UpdateGold(gold)
+        );
+    }
 }

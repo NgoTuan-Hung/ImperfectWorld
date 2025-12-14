@@ -111,6 +111,10 @@ public partial class GameManager : MonoBehaviour
             championRewardUI,
             new PoolArgument(ComponentType.ChampionRewardUI, PoolArgument.WhereComponent.Self)
         );
+        goldPool = new(
+            gold,
+            new PoolArgument(ComponentType.BasicUI, PoolArgument.WhereComponent.Self)
+        );
     }
 
     private void InitOtherFields()
@@ -154,6 +158,7 @@ public partial class GameManager : MonoBehaviour
         item = Resources.Load<GameObject>("Item");
         championRewardUI = Resources.Load<GameObject>("ChampionRewardUI");
         itemDataSOs = Resources.LoadAll<ItemDataSO>("ScriptableObject/ItemDataSO").ToList();
+        gold = Resources.Load<GameObject>("Gold");
     }
 
     void ConstructActionFieldInfoDict()
@@ -233,7 +238,7 @@ public partial class GameManager : MonoBehaviour
 
     private void BattleInitialize()
     {
-        GameUIManager.Instance.startBattleButton.pointerClickEvent += BattleRoomStart;
+        GameUIManager.Instance.gameInteractionButton.pointerClickEvent += HandleInteractionButton;
     }
 
     private void HandleMapInteraction()
@@ -245,7 +250,7 @@ public partial class GameManager : MonoBehaviour
                 case NodeType.MinorEnemy:
                 {
                     Debug.Log("Room Minor Enemy Encountered");
-                    GameUIManager.Instance.startBattleButton.Show();
+                    GameUIManager.Instance.gameInteractionButton.Show();
                     LoadNormalEnemyRoom();
                     break;
                 }
@@ -308,11 +313,25 @@ public partial class GameManager : MonoBehaviour
     {
         raft.SetActive(true);
         ChangeGameState(GameState.ShopPhase);
+        GameUIManager.Instance.ChangeGameInteractionButtonShop();
         GameUIManager.Instance.TurnOffMap();
         GameUIManager.Instance.HandleTraderUI(
             GetRandomChampionRewardUIs(6),
             GetRandomItemRewards(6)
         );
+
+        GameUIManager
+            .Instance.cameraFollowObject.transform.DOMove(trader.transform.position, 1)
+            .SetEase(Ease.OutQuart);
+    }
+
+    void GetOutOfShopRoom()
+    {
+        raft.SetActive(false);
+        ChangeGameState(GameState.MapTravelingPhase);
+        GameUIManager.Instance.ChangeGameInteractionButtonBattle();
+        GameUIManager.Instance.TurnOnMap();
+        GameUIManager.Instance.CloseTraderUI();
     }
 
     /// <summary>
@@ -335,19 +354,34 @@ public partial class GameManager : MonoBehaviour
         enemyNodes.Clear();
     }
 
-    void BattleRoomStart(PointerEventData p_pED)
+    void HandleInteractionButton(PointerEventData p_pED)
     {
-        ChangeGameState(GameState.BattlePhase);
-        GameUIManager.Instance.startBattleButton.Hide();
-        GetEnemyTeamChampions().ForEach(cRE => EnableBattleMode(cRE));
+        switch (gameState)
+        {
+            case GameState.PositioningPhase:
+            {
+                ChangeGameState(GameState.BattlePhase);
+                GameUIManager.Instance.gameInteractionButton.Hide();
+                GetEnemyTeamChampions().ForEach(cRE => EnableBattleMode(cRE));
 
-        GetPlayerTeamChampions().ForEach(pC => EnableBattleMode(pC));
+                GetPlayerTeamChampions().ForEach(pC => EnableBattleMode(pC));
+                break;
+            }
+            case GameState.ShopPhase:
+            {
+                GetOutOfShopRoom();
+                break;
+            }
+            default:
+                break;
+        }
     }
 
     void PawnDeathHandler(CustomMono p_customMono)
     {
         enemyCount--;
         p_customMono.stat.currentHealthPointReachZeroEvent -= PawnDeathHandler;
+        SpawnGoldFromDeadEnemy(p_customMono);
         GetEnemyTeamChampions().Remove(p_customMono);
         if (enemyCount <= 0)
         {
@@ -357,6 +391,15 @@ public partial class GameManager : MonoBehaviour
             battleEndCallback();
             ReorganizeFormationAfterBattle();
         }
+    }
+
+    void SpawnGoldFromDeadEnemy(CustomMono customMono)
+    {
+        GameUIManager.Instance.SpawnGoldFromDeadEnemies(
+            customMono.championData.goldDrop,
+            customMono.transform.position,
+            goldPool.PickOne().BasicUI
+        );
     }
 
     public void FinishReward()
@@ -888,13 +931,30 @@ public partial class GameManager : MonoBehaviour
     {
         if (playerGold >= championRewardUI.rewardCD.price)
         {
-            playerGold -= championRewardUI.rewardCD.price;
-            GameUIManager.Instance.UpdatePlayerGold(playerGold);
+            UpdateGold(-championRewardUI.rewardCD.price);
             RewardChampion(championRewardUI.championReward.prefab);
             return true;
         }
         else
             return false;
+    }
+
+    public bool BuyItem(Item item)
+    {
+        if (playerGold >= item.itemDataSO.price)
+        {
+            UpdateGold(-item.itemDataSO.price);
+            item.GetBought();
+            return true;
+        }
+        else
+            return false;
+    }
+
+    public void UpdateGold(int gold)
+    {
+        playerGold += gold;
+        GameUIManager.Instance.UpdatePlayerGold(playerGold);
     }
 
     public bool CheckInsideGlobalWall(Vector2 point)

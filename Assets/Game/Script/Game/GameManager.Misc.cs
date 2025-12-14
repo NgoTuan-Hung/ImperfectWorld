@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Coffee.UIEffects;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public enum GameState
 {
@@ -260,4 +261,9 @@ public partial class GameManager
     public GameObject invisibleWall;
     float halfInvisibleWallW,
         halfInvisibleWallH;
+    public Trader trader;
+    public ListSpriteSO goldSprite;
+
+    public Sprite GetRandomGoldSprite() =>
+        goldSprite.sprites[Random.Range(0, goldSprite.sprites.Count)];
 }

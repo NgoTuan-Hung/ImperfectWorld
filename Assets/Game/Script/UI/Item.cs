@@ -124,7 +124,7 @@ public class Item : MonoSelfAware, IDragHandler, IEndDragHandler, IBeginDragHand
         doubleTapUI.doubleTapEvent = ShowTooltip;
     }
 
-    void ShowTooltip(PointerEventData pointerEventData)
+    public void ShowTooltip(PointerEventData pointerEventData)
     {
         ShowTooltip();
     }
@@ -256,5 +256,13 @@ public class Item : MonoSelfAware, IDragHandler, IEndDragHandler, IBeginDragHand
     void OnDestroy()
     {
         Destroy(itemTooltip);
+    }
+
+    public void GetBought()
+    {
+        GameUIManager.Instance.AddToInventory(this);
+        image.raycastTarget = true;
+        transform.localScale = Vector3.one;
+        SwitchState(ItemState.Inventory);
     }
 }

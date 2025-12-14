@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using DG.Tweening;
 using TMPro;
@@ -16,7 +17,7 @@ public enum TraderWareResult
     None,
 }
 
-public class TraderWare : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
+public class TraderWare : DoubleTapUI, IBeginDragHandler, IDragHandler, IEndDragHandler
 {
     TextMeshProUGUI priceTMP;
     public WareType type;
@@ -27,14 +28,43 @@ public class TraderWare : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDr
 
     ChampionRewardUI ChampionRewardUI() => ware as ChampionRewardUI;
 
+    Item Item() => ware as Item;
+
     private void Awake()
     {
         priceTMP = transform.Find("PriceTMP").GetComponent<TextMeshProUGUI>();
         localPos = transform.localPosition;
+        RegisterEvents();
+    }
+
+    private void RegisterEvents()
+    {
+        doubleTapEvent += HandleDoubleTap;
+    }
+
+    void HandleDoubleTap(PointerEventData pointerEventData)
+    {
+        switch (type)
+        {
+            case WareType.Champion:
+            {
+                ChampionRewardUI().ShowInfoPanel(null);
+                break;
+            }
+            case WareType.Item:
+            {
+                Item().ShowTooltip(null);
+                break;
+            }
+            default:
+                break;
+        }
+        transform.SetAsLastSibling();
     }
 
     public void SetChampionWare(ChampionRewardUI championRewardUI)
     {
+        Show();
         ware = championRewardUI;
         type = WareType.Champion;
         priceTMP.text = championRewardUI.rewardCD.price.ToString();
@@ -43,6 +73,7 @@ public class TraderWare : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDr
 
     public void SetItemWare(Item item)
     {
+        Show();
         ware = item;
         type = WareType.Item;
         priceTMP.text = item.itemDataSO.price.ToString();
@@ -84,13 +115,20 @@ public class TraderWare : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDr
                 case WareType.Champion:
                 {
                     if (GameManager.Instance.BuyChampion(ChampionRewardUI()))
-                        ChampionRewardUI().deactivate();
+                    {
+                        Hide();
+                    }
 
                     EndBuy();
                     break;
                 }
                 case WareType.Item:
                 {
+                    if (GameManager.Instance.BuyItem(Item()))
+                    {
+                        ware = null;
+                        Hide();
+                    }
                     EndBuy();
                     break;
                 }
@@ -111,4 +149,30 @@ public class TraderWare : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDr
     }
 
     void ToOriginalPosition() => transform.DOLocalMove(localPos, 0.5f).SetEase(Ease.OutQuart);
+
+    public void Hide() => gameObject.SetActive(false);
+
+    public void Show() => gameObject.SetActive(true);
+
+    public void ScheduleClearWare()
+    {
+        if (ware != null)
+        {
+            switch (type)
+            {
+                case WareType.Champion:
+                {
+                    ChampionRewardUI().deactivate();
+                    break;
+                }
+                case WareType.Item:
+                {
+                    Item().deactivate();
+                    break;
+                }
+                default:
+                    break;
+            }
+        }
+    }
 }

@@ -255,14 +255,14 @@ public class ChampionRewardUI
 
     private void RegisterEvents()
     {
-        doubleTapEvent += DoubleTapShowInfoPanel;
+        doubleTapEvent += ShowInfoPanel;
         statDTU.doubleTapEvent += ShowTooltipForStat;
         abilityDTU.doubleTapEvent += ShowTooltipForAbility;
         offerDTU.doubleTapEvent += ShowTooltipForOffer;
         tooltipCloseButton.pointerDownEvent += CloseTooltip;
     }
 
-    void DoubleTapShowInfoPanel(PointerEventData eventData) => infoPanel.SetActive(true);
+    public void ShowInfoPanel(PointerEventData eventData) => infoPanel.SetActive(true);
 
     void ShowTooltipForStat(PointerEventData eventData)
     {

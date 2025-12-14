@@ -20,5 +20,5 @@ public class ItemDataSO : ScriptableObject
     [TextArea(1, 15)]
     public string itemDescription;
     public ItemTier itemTier;
-    public float price;
+    public int price;
 }

@@ -27,4 +27,5 @@ public class PoolObject
     public Item Item => GetComponent<Item>(ComponentType.Item);
     public ChampionRewardUI ChampionRewardUI =>
         GetComponent<ChampionRewardUI>(ComponentType.ChampionRewardUI);
+    public BasicUI BasicUI => GetComponent<BasicUI>(ComponentType.BasicUI);
 }
