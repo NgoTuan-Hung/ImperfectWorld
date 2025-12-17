@@ -69,6 +69,9 @@ public partial class Stat : MonoEditor
         currentManaPoint.Value = 0;
     }
 
+    /// <summary>
+    /// Clear all stat modifiers, recalculation will be done in LateEnable
+    /// </summary>
     void Reborn()
     {
         alive = true;
@@ -329,29 +332,7 @@ public partial class Stat : MonoEditor
 
         item.itemDataSO.statBuffs.ForEach(sB =>
         {
-            switch (sB.statBuffType)
-            {
-                case StatBuffType.HP:
-                    healthPoint.AddModifier(sB.modifier);
-                    break;
-                case StatBuffType.MP:
-                    manaPoint.AddModifier(sB.modifier);
-                    break;
-                case StatBuffType.MIGHT:
-                    might.AddModifier(sB.modifier);
-                    break;
-                case StatBuffType.REFLEX:
-                    reflex.AddModifier(sB.modifier);
-                    break;
-                case StatBuffType.WISDOM:
-                    wisdom.AddModifier(sB.modifier);
-                    break;
-                case StatBuffType.ATK:
-                    attackDamage.AddModifier(sB.modifier);
-                    break;
-                default:
-                    break;
-            }
+            GameManager.Instance.AddBuff(customMono, sB);
         });
 
         item.itemDataSO.itemBehaviours.ForEach(iB =>
@@ -362,6 +343,7 @@ public partial class Stat : MonoEditor
             behaviorComp.OnAttach(customMono, item);
         });
 
+        GameUIManager.Instance.GetChampInfoPanel(customMono).AttachItem(item);
         equippedItems.Add(item);
         return true;
     }
@@ -370,29 +352,7 @@ public partial class Stat : MonoEditor
     {
         item.itemDataSO.statBuffs.ForEach(sB =>
         {
-            switch (sB.statBuffType)
-            {
-                case StatBuffType.HP:
-                    healthPoint.RemoveModifier(sB.modifier);
-                    break;
-                case StatBuffType.MP:
-                    manaPoint.RemoveModifier(sB.modifier);
-                    break;
-                case StatBuffType.MIGHT:
-                    might.RemoveModifier(sB.modifier);
-                    break;
-                case StatBuffType.REFLEX:
-                    reflex.RemoveModifier(sB.modifier);
-                    break;
-                case StatBuffType.WISDOM:
-                    wisdom.RemoveModifier(sB.modifier);
-                    break;
-                case StatBuffType.ATK:
-                    attackDamage.RemoveModifier(sB.modifier);
-                    break;
-                default:
-                    break;
-            }
+            GameManager.Instance.RemoveBuff(customMono, sB);
         });
 
         item.itemDataSO.itemBehaviours.ForEach(iB =>
@@ -404,6 +364,7 @@ public partial class Stat : MonoEditor
             Destroy((MonoBehaviour)behaviorComp);
         });
 
+        GameUIManager.Instance.GetChampInfoPanel(customMono).DetachItem(item);
         equippedItems.Remove(item);
     }
 }

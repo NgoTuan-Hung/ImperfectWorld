@@ -29,7 +29,6 @@ public partial class GameManager : MonoBehaviour
     Dictionary<int, CustomMono> customMonos = new();
     public new Camera camera;
     public CinemachineCamera cinemachineCamera;
-    public CinemachinePositionComposer cinemachinePositionComposer;
     public Dictionary<GameEffectSO, ObjectPool> poolLink = new();
     public int attackBoolHash = Animator.StringToHash("Attack"),
         attackBlendHash = Animator.StringToHash("AttackBlend"),
@@ -272,6 +271,8 @@ public partial class GameManager : MonoBehaviour
                 default:
                     throw new ArgumentOutOfRangeException();
             }
+            enemyItemCount++;
+            enemyStatUpgradeCount++;
         };
     }
 
@@ -306,6 +307,8 @@ public partial class GameManager : MonoBehaviour
             enemyCount++;
         }
 
+        StartCoroutine(DistributeItemForEnemies());
+        StartCoroutine(DistributeStatUpgradeForEnemies());
         GetEnemyTeamChampions().ForEach(cRE => DisableBattleMode(cRE));
     }
 
@@ -383,6 +386,7 @@ public partial class GameManager : MonoBehaviour
         p_customMono.stat.currentHealthPointReachZeroEvent -= PawnDeathHandler;
         SpawnGoldFromDeadEnemy(p_customMono);
         GetEnemyTeamChampions().Remove(p_customMono);
+        ClearItemsForEnemy(p_customMono);
         if (enemyCount <= 0)
         {
             GetPlayerTeamChampions().ForEach(pC => DisableBattleMode(pC));
@@ -428,6 +432,23 @@ public partial class GameManager : MonoBehaviour
     {
         teamChampions[customMono.tag].Remove(customMono);
         customMono.allyTags.Clear();
+
+        switch (customMono.tag)
+        {
+            case "Team1":
+            {
+                customMono.stat.currentHealthPointReachZeroEvent -= PlayerChampionDeathHandler;
+                break;
+            }
+            case "Team2":
+            {
+                customMono.stat.currentHealthPointReachZeroEvent -= PawnDeathHandler;
+                break;
+            }
+            default:
+                break;
+        }
+
         switch (newTeam)
         {
             case "Team1":
@@ -435,6 +456,7 @@ public partial class GameManager : MonoBehaviour
                 customMono.tag = "Team1";
                 customMono.allyTags.Add("Team1");
                 customMono.arrowIndicator.material = team1DirectionIndicatorMat;
+                customMono.stat.currentHealthPointReachZeroEvent += PlayerChampionDeathHandler;
                 break;
             }
             case "Team2":
@@ -442,6 +464,7 @@ public partial class GameManager : MonoBehaviour
                 customMono.tag = "Team2";
                 customMono.allyTags.Add("Team2");
                 customMono.arrowIndicator.material = team2DirectionIndicatorMat;
+                customMono.stat.currentHealthPointReachZeroEvent += PawnDeathHandler;
                 break;
             }
             default:
@@ -722,10 +745,10 @@ public partial class GameManager : MonoBehaviour
 
     public void UpgradeStat(CustomMono customMono, StatUpgrade statUpgrade)
     {
-        UpgradeStat(customMono, statUpgrade.statBuff);
+        AddBuff(customMono, statUpgrade.statBuff);
     }
 
-    public void UpgradeStat(CustomMono customMono, StatBuff statBuff)
+    public void AddBuff(CustomMono customMono, StatBuff statBuff)
     {
         switch (statBuff.statBuffType)
         {
@@ -791,6 +814,66 @@ public partial class GameManager : MonoBehaviour
                 break;
             case StatBuffType.ATKRANGE:
                 customMono.stat.attackRange.AddModifier(statBuff.modifier);
+                break;
+            default:
+                break;
+        }
+    }
+
+    public void RemoveBuff(CustomMono customMono, StatBuff statBuff)
+    {
+        switch (statBuff.statBuffType)
+        {
+            case StatBuffType.HP:
+                customMono.stat.healthPoint.RemoveModifier(statBuff.modifier);
+                break;
+            case StatBuffType.MP:
+                customMono.stat.manaPoint.RemoveModifier(statBuff.modifier);
+                break;
+            case StatBuffType.MIGHT:
+                customMono.stat.might.RemoveModifier(statBuff.modifier);
+                break;
+            case StatBuffType.REFLEX:
+                customMono.stat.reflex.RemoveModifier(statBuff.modifier);
+                break;
+            case StatBuffType.WISDOM:
+                customMono.stat.wisdom.RemoveModifier(statBuff.modifier);
+                break;
+            case StatBuffType.ATK:
+                customMono.stat.attackDamage.RemoveModifier(statBuff.modifier);
+                break;
+            case StatBuffType.ASPD:
+                customMono.stat.attackSpeed.RemoveModifier(statBuff.modifier);
+                break;
+            case StatBuffType.ARMOR:
+                customMono.stat.armor.RemoveModifier(statBuff.modifier);
+                break;
+            case StatBuffType.HPREGEN:
+                customMono.stat.healthRegen.RemoveModifier(statBuff.modifier);
+                break;
+            case StatBuffType.MPREGEN:
+                customMono.stat.manaRegen.RemoveModifier(statBuff.modifier);
+                break;
+            case StatBuffType.MSPD:
+                customMono.stat.moveSpeed.RemoveModifier(statBuff.modifier);
+                break;
+            case StatBuffType.DMGMOD:
+                customMono.stat.damageModifier.RemoveModifier(statBuff.modifier);
+                break;
+            case StatBuffType.OMNIVAMP:
+                customMono.stat.omnivamp.RemoveModifier(statBuff.modifier);
+                break;
+            case StatBuffType.CRIT:
+                customMono.stat.critChance.RemoveModifier(statBuff.modifier);
+                break;
+            case StatBuffType.CRITMOD:
+                customMono.stat.critDamageModifier.RemoveModifier(statBuff.modifier);
+                break;
+            case StatBuffType.DMGREDUC:
+                customMono.stat.damageReduction.RemoveModifier(statBuff.modifier);
+                break;
+            case StatBuffType.ATKRANGE:
+                customMono.stat.attackRange.RemoveModifier(statBuff.modifier);
                 break;
             default:
                 break;

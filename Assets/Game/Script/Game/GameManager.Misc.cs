@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Coffee.UIEffects;
@@ -266,4 +267,80 @@ public partial class GameManager
 
     public Sprite GetRandomGoldSprite() =>
         goldSprite.sprites[Random.Range(0, goldSprite.sprites.Count)];
+
+    public int enemyItemCount = 0,
+        enemyStatUpgradeCount = 0;
+
+    IEnumerator DistributeItemForEnemies()
+    {
+        /* Wait for UI to finish in CustomMono Start,
+        store this value since it might change next frame */
+        int itemToDistribute = enemyItemCount;
+        yield return null;
+
+        List<Item> items = GetRandomItemRewards(itemToDistribute);
+        List<CustomMono> enemiesToDistribute = new(GetEnemyTeamChampions());
+
+        items.ForEach(item =>
+        {
+            var randomEnemy = enemiesToDistribute[Random.Range(0, enemiesToDistribute.Count)];
+            while (!randomEnemy.stat.EquipItem(item))
+            {
+                enemiesToDistribute.Remove(randomEnemy);
+                if (enemiesToDistribute.Count == 0)
+                    return;
+                randomEnemy = enemiesToDistribute[Random.Range(0, enemiesToDistribute.Count)];
+            }
+        });
+    }
+
+    void ClearItemsForEnemy(CustomMono customMono)
+    {
+        var items = customMono.stat.equippedItems;
+
+        for (int i = items.Count - 1; i >= 0; i--)
+        {
+            var item = items[i];
+            RemoveItemFromChampionAndScheduleDestroy(customMono, item);
+        }
+    }
+
+    public void RemoveItemFromChampionAndScheduleDestroy(CustomMono customMono, Item item)
+    {
+        customMono.stat.UnEquipItem(item);
+        item.deactivate();
+    }
+
+    IEnumerator DistributeStatUpgradeForEnemies()
+    {
+        int statUpgradeToDistribute = enemyStatUpgradeCount;
+        yield return null;
+
+        List<StatUpgrade> statUpgrades = GetRandomStatUpgradesCanDuplicate(statUpgradeToDistribute);
+        var enemies = GetEnemyTeamChampions();
+
+        statUpgrades.ForEach(statUpgrade =>
+            UpgradeStat(enemies[Random.Range(0, enemies.Count)], statUpgrade)
+        );
+    }
+
+    public List<StatUpgrade> GetRandomStatUpgradesCanDuplicate(int count)
+    {
+        List<StatUpgrade> sUs = new();
+
+        for (int i = 0; i < count; i++)
+            sUs.Add(statUpgrades[Random.Range(0, statUpgrades.Count)]);
+
+        return sUs;
+    }
+
+    public void PlayerChampionDeathHandler(CustomMono customMono)
+    {
+        ClearItemsForEnemy(customMono);
+    }
+
+    public void ReturnItemToInventoryOnDeath(CustomMono customMono)
+    {
+        //
+    }
 }

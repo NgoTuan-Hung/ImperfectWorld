@@ -302,24 +302,19 @@ public class ChampInfoPanel : MonoBehaviour, IPointerDownHandler
         transform.position = owner.transform.position + offset;
     }
 
-    public bool AttachItem(Item itemUI)
+    public void AttachItem(Item itemUI)
     {
-        if (owner.stat.EquipItem(itemUI))
-        {
-            itemUI.transform.SetParent(itemSVContent.transform);
-            itemUI.rectTransform.anchoredPosition = Vector2.zero;
-            return true;
-        }
-        else
-        {
-            return false;
-        }
+        itemUI.transform.SetParent(itemSVContent.transform);
+        itemUI.rectTransform.anchoredPosition = Vector2.zero;
+        itemUI.Attach(this);
+        itemUI.SetAsEquipped();
     }
 
     public void DetachItem(Item itemUI)
     {
         itemUI.transform.SetParent(GameUIManager.Instance.freeZone.transform);
-        owner.stat.UnEquipItem(itemUI);
+        itemUI.Detach();
+        itemUI.SetAsNone();
     }
 
     public void OnPointerDown(PointerEventData eventData)

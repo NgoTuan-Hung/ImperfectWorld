@@ -48,8 +48,6 @@ public class Item : MonoSelfAware, IDragHandler, IEndDragHandler, IBeginDragHand
     {
         animator.SetFloat(GameManager.Instance.itemCycleOffsetFloatHash, itemCycleOffset);
         animator.SetFloat(GameManager.Instance.itemTierBlendHash, itemTierBlend);
-        image.raycastTarget = true;
-        transform.localScale = Vector3.one;
     }
 
     void InitTooltip()
@@ -77,22 +75,24 @@ public class Item : MonoSelfAware, IDragHandler, IEndDragHandler, IBeginDragHand
             case ItemTier.Normal:
                 uIEffect.Clear();
                 itemTierBlend = 0;
-                animator.SetFloat(GameManager.Instance.itemTierBlendHash, itemTierBlend);
                 break;
             case ItemTier.Rare:
                 uIEffect.LoadPreset(GameManager.Instance.rareItemEffectPreset);
                 itemTierBlend = 1;
-                animator.SetFloat(GameManager.Instance.itemTierBlendHash, itemTierBlend);
                 break;
             case ItemTier.Epic:
                 uIEffect.LoadPreset(GameManager.Instance.epicItemEffectPreset);
                 itemTierBlend = 1;
-                animator.SetFloat(GameManager.Instance.itemTierBlendHash, itemTierBlend);
                 break;
             case ItemTier.Legendary:
             default:
                 break;
         }
+
+        animator.SetFloat(GameManager.Instance.itemTierBlendHash, itemTierBlend);
+        image.raycastTarget = true;
+        transform.localScale = Vector3.one;
+        SwitchState(ItemState.None);
     }
 
     public void SetAsReward(Transform parent, Vector2 localPos)
@@ -111,6 +111,18 @@ public class Item : MonoSelfAware, IDragHandler, IEndDragHandler, IBeginDragHand
         image.raycastTarget = false;
         SwitchState(ItemState.ShopWare);
     }
+
+    public void SetAsEquipped()
+    {
+        SwitchState(ItemState.Equipped);
+    }
+
+    public void SetAsInventory()
+    {
+        SwitchState(ItemState.Inventory);
+    }
+
+    public void SetAsNone() => SwitchState(ItemState.None);
 
     IEnumerator EntranceIE(Vector2 localPos)
     {
@@ -137,6 +149,10 @@ public class Item : MonoSelfAware, IDragHandler, IEndDragHandler, IBeginDragHand
 
     public void OnDrag(PointerEventData eventData)
     {
+        if (state == ItemState.Equipped)
+            if (!attachedTo.owner.CompareTag("Team1"))
+                return;
+
         transform.position = GameManager.Instance.camera.ScreenToWorldPoint(
             eventData.position.WithZ(GameUIManager.Instance.planeDistance)
         );
@@ -167,12 +183,19 @@ public class Item : MonoSelfAware, IDragHandler, IEndDragHandler, IBeginDragHand
             }
             case ItemState.Equipped:
             {
+                if (!attachedTo.owner.CompareTag("Team1"))
+                    return;
                 EquipOrToInventory();
                 break;
             }
             case ItemState.Reward:
             {
                 EquipOrToReward();
+                break;
+            }
+            case ItemState.None:
+            {
+                EquipOrToInventory();
                 break;
             }
             default:
@@ -184,11 +207,8 @@ public class Item : MonoSelfAware, IDragHandler, IEndDragHandler, IBeginDragHand
     {
         if (attachedTo != null)
         {
-            if (attachedTo.AttachItem(this))
-            {
-                SwitchState(ItemState.Equipped);
+            if (attachedTo.owner.stat.EquipItem(this))
                 return;
-            }
         }
 
         GameUIManager.Instance.AddToInventory(this);
@@ -199,10 +219,9 @@ public class Item : MonoSelfAware, IDragHandler, IEndDragHandler, IBeginDragHand
     {
         if (attachedTo != null)
         {
-            if (attachedTo.AttachItem(this))
+            if (attachedTo.owner.stat.EquipItem(this))
             {
                 GameUIManager.Instance.FinishItemReward(this);
-                SwitchState(ItemState.Equipped);
                 return;
             }
         }
@@ -222,8 +241,9 @@ public class Item : MonoSelfAware, IDragHandler, IEndDragHandler, IBeginDragHand
             }
             case ItemState.Equipped:
             {
-                attachedTo.DetachItem(this);
-                attachedTo = null;
+                if (!attachedTo.owner.CompareTag("Team1"))
+                    return;
+                attachedTo.owner.stat.UnEquipItem(this);
                 break;
             }
             case ItemState.Reward:
@@ -263,6 +283,16 @@ public class Item : MonoSelfAware, IDragHandler, IEndDragHandler, IBeginDragHand
         GameUIManager.Instance.AddToInventory(this);
         image.raycastTarget = true;
         transform.localScale = Vector3.one;
-        SwitchState(ItemState.Inventory);
+        SetAsInventory();
+    }
+
+    public void Attach(ChampInfoPanel champInfoPanel)
+    {
+        attachedTo = champInfoPanel;
+    }
+
+    public void Detach()
+    {
+        attachedTo = null;
     }
 }

@@ -20,24 +20,6 @@ public class PlayerPointerZone
         layerMask = 1 << LayerMask.NameToLayer("CombatCollidee");
     }
 
-#if false
-    PointerDown(eventData){
-        raycastHit2D = Physics2D.Raycast(
-                Camera.main.ScreenToWorldPoint(eventData.position),
-                Vector3.forward,
-                10,
-                layerMask
-            );
-        
-            if (raycastHit2D.collider != null)
-            {
-                currentRaycastCM = GameManager.Instance.GetCustomMono(raycastHit2D.collider);
-
-                GameUIManager.Instance.ShowChampUI(currentRaycastCM);
-            }
-    }
-#endif
-
     public void OnPointerDown(PointerEventData eventData)
     {
         if (currentRaycastCM == null)
@@ -54,7 +36,11 @@ public class PlayerPointerZone
 
                 GameManager.Instance.gridManager.ShowVisual();
                 if (currentRaycastCM != null)
+                {
                     GameUIManager.Instance.ShowChampUI(currentRaycastCM);
+                    if (!currentRaycastCM.CompareTag("Team1"))
+                        currentRaycastCM = null;
+                }
             }
         }
     }

@@ -299,6 +299,9 @@ public partial class GameUIManager : MonoEditorSingleton<GameUIManager>
     public void ShowChampUI(ChampInfoPanel p_champInfoPanel) =>
         p_champInfoPanel.gameObject.SetActive(true);
 
+    public ChampInfoPanel GetChampInfoPanel(CustomMono p_customMono) =>
+        champInfoPanelDict[p_customMono];
+
     public void RemoveFromInventory(Item itemUI)
     {
         itemUI.transform.parent.SetAsLastSibling();
