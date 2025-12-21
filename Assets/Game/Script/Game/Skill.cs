@@ -6,6 +6,8 @@ public class Skill : CustomMonoPal
 {
     public List<SkillDataSO> skillDataSOs = new();
     public List<SkillBase> skillBases = new();
+    public Attack attack;
+    public SkillBase mainSkill;
 
     public override void Awake()
     {
@@ -16,6 +18,17 @@ public class Skill : CustomMonoPal
                 gameObject.AddComponent(Type.GetType(skillDataSO.skillName)) as SkillBase;
             skillBases.Add(skill);
         });
+
+        GetSkillAndAttack();
+    }
+
+    void GetSkillAndAttack()
+    {
+        attack = skillBases[0] as Attack;
+        if (skillBases.Count > 1)
+        {
+            mainSkill = skillBases[1];
+        }
     }
 
     public override void Start() { }

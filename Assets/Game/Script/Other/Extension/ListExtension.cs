@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using UnityEngine;
 
 public static class ListExtension
 {
@@ -33,5 +34,11 @@ public static class ListExtension
             start = mid + 1;
             return CumulativeDistributionBinarySearch(list, start, end, searchValue);
         }
+    }
+
+    public static T GetRandomElement<T>(this List<T> list)
+        where T : class
+    {
+        return list[Random.Range(0, list.Count)];
     }
 }

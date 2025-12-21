@@ -3,11 +3,15 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEditor.UIElements;
 using UnityEngine;
-using UnityEngine.Rendering;
 using UnityEngine.UIElements;
 
 public class BattleRoomPopulator : EditorWindow
 {
+    public VisualTreeAsset vTA;
+    IntegerField floorIntegerField;
+    Button addButton;
+    ListGameObjectSO listGameObjectSO;
+
     [MenuItem("Window/Battle Room Populator")]
     public static void ShowMyEditor()
     {
@@ -22,19 +26,25 @@ public class BattleRoomPopulator : EditorWindow
 
     void CreateGUI()
     {
-        ScrollView root = new ScrollView();
+        GetVisualElements();
+        AddHandler();
+    }
 
+    private void AddHandler()
+    {
+        addButton.clicked += () => AddRoom(listGameObjectSO.gameObjects);
+    }
+
+    private void GetVisualElements()
+    {
         var inspectorListView = new InspectorElement();
-        ListGameObjectSO listGameObjectSO = CreateInstance<ListGameObjectSO>();
+        listGameObjectSO = CreateInstance<ListGameObjectSO>();
         inspectorListView.Bind(new SerializedObject(listGameObjectSO));
+        rootVisualElement.Add(inspectorListView);
 
-        Button button = new();
-        button.text = "ADD ROOM";
-        button.clicked += () => AddRoom(listGameObjectSO.gameObjects);
-
-        root.Add(inspectorListView);
-        root.Add(button);
-        rootVisualElement.Add(root);
+        vTA.CloneTree(rootVisualElement);
+        floorIntegerField = rootVisualElement.Q<IntegerField>("floor-if");
+        addButton = rootVisualElement.Q<Button>("add-b");
     }
 
     void AddRoom(List<GameObject> gameObjects)
@@ -46,7 +56,7 @@ public class BattleRoomPopulator : EditorWindow
                 new(PrefabUtility.GetCorrespondingObjectFromSource(gO), gO.transform.position)
             )
         );
-        gameManager.AddNormalEnemyRoom(normalEnemyRoomInfo);
+        gameManager.AddNormalEnemyRoom(normalEnemyRoomInfo, floorIntegerField.value);
     }
 }
 #endif

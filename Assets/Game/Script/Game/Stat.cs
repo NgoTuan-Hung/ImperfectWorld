@@ -16,33 +16,28 @@ public partial class Stat : MonoEditor
 
     private void OnEnable()
     {
-        Reborn();
         onEnable();
     }
 
     private void OnDisable()
     {
-        // if (healthRadialProgress != null)
-        // {
-        //     if (healthRadialProgress.gameEffect != null)
-        //         healthRadialProgress.gameEffect.deactivate();
-        // }
+        //
     }
 
     public override void Start()
     {
-        InitUI();
-        StartCoroutine(LateEnable());
-        onEnable += () =>
-        {
-            InitUI();
-            StartCoroutine(LateEnable());
-        };
         SetupGameEvent();
     }
 
-    IEnumerator LateEnable()
+    public void SetupForReuse()
     {
+        StartCoroutine(SetupForReuseIE());
+    }
+
+    IEnumerator SetupForReuseIE()
+    {
+        ResetFields();
+        InitUI();
         yield return null;
         CalculateFinalStats();
         StartRegen();
@@ -72,7 +67,7 @@ public partial class Stat : MonoEditor
     /// <summary>
     /// Clear all stat modifiers, recalculation will be done in LateEnable
     /// </summary>
-    void Reborn()
+    void ResetFields()
     {
         alive = true;
         healthPoint.ClearModifiersWithoutRecalculate(customMono.championData.healthPoint);
@@ -95,9 +90,6 @@ public partial class Stat : MonoEditor
         damageReduction.ClearModifiersWithoutRecalculate(customMono.championData.damageReduction);
         attackRange.ClearModifiersWithoutRecalculate(customMono.championData.attackRange);
         actionMoveSpeedReduceRate.ClearModifiersWithoutRecalculate();
-
-        customMono.actionBlocking = false;
-        customMono.movementActionBlocking = false;
     }
 
     void InitUI()
@@ -366,5 +358,20 @@ public partial class Stat : MonoEditor
 
         GameUIManager.Instance.GetChampInfoPanel(customMono).DetachItem(item);
         equippedItems.Remove(item);
+    }
+
+    /// <summary>
+    /// Hide health and mana UI
+    /// </summary>
+    public void Hide()
+    {
+        healthAndManaIndicatorPO.gameObject.SetActive(false);
+    }
+
+    public void Reveal() => Show();
+
+    public void Show()
+    {
+        healthAndManaIndicatorPO.gameObject.SetActive(true);
     }
 }

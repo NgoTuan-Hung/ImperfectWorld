@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Coffee.UIEffects;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using Random = UnityEngine.Random;
 
 public enum GameState
@@ -311,6 +312,13 @@ public partial class GameManager
         item.deactivate();
     }
 
+    public void PutChampionItemToInventory(CustomMono customMono, Item item)
+    {
+        customMono.stat.UnEquipItem(item);
+        GameUIManager.Instance.AddToInventory(item);
+        item.SetAsInventory();
+    }
+
     IEnumerator DistributeStatUpgradeForEnemies()
     {
         int statUpgradeToDistribute = enemyStatUpgradeCount;
@@ -336,11 +344,63 @@ public partial class GameManager
 
     public void PlayerChampionDeathHandler(CustomMono customMono)
     {
-        ClearItemsForEnemy(customMono);
+        ReturnItemToInventoryOnDeath(customMono);
     }
 
     public void ReturnItemToInventoryOnDeath(CustomMono customMono)
     {
-        //
+        for (int i = customMono.stat.equippedItems.Count - 1; i >= 0; i--)
+            PutChampionItemToInventory(customMono, customMono.stat.equippedItems[i]);
+    }
+
+    public List<GameObject> startingChampions = new();
+
+    public void SpawnStartingChampions()
+    {
+        startingChampions.ForEach(champion => RewardChampion(champion));
+    }
+
+    public Dictionary<int, NPC> nPCs = new();
+
+    public void AddNPC(NPC nPC)
+    {
+        nPCs.Add(nPC.boxCollider2D.GetHashCode(), nPC);
+    }
+
+    public NPC GetNPC(Collider2D collider2D)
+    {
+        return nPCs.GetValueOrDefault(collider2D.GetHashCode());
+    }
+
+    public NPC guide;
+    public Color transparentWhite = new(1, 1, 1, 0.5f);
+
+    void HideAllEnemies()
+    {
+        GetEnemyTeamChampions().ForEach(enemy => enemy.Hide());
+    }
+
+    void RevealAllEnemies()
+    {
+        GetEnemyTeamChampions().ForEach(enemy => enemy.Reveal());
+    }
+
+    void ShowAllEnemies()
+    {
+        GetEnemyTeamChampions().ForEach(enemy => enemy.Show());
+    }
+
+    IEnumerator WaitHideAllEnemies()
+    {
+        yield return null;
+        HideAllEnemies();
+    }
+
+    void HandleGuideBribe(PointerEventData pointerEventData)
+    {
+        if (BuyWithValue(25))
+            RevealAllEnemies();
+
+        GameUIManager.Instance.GuideBribeSuccess();
     }
 }

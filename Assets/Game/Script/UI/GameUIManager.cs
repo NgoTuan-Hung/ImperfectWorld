@@ -64,6 +64,7 @@ public partial class GameUIManager : MonoEditorSingleton<GameUIManager>
     List<TraderWare> championWares,
         itemWares;
     PlayerGold playerGold;
+    public DialogBox guideDialogBox;
 
     private void Awake()
     {
@@ -80,6 +81,7 @@ public partial class GameUIManager : MonoEditorSingleton<GameUIManager>
         menuCharButton.onClick.AddListener(ClickMenuCharButton);
         menuMapButton.onClick.AddListener(ClickMenuMapButton);
         menuInventoryButton.onClick.AddListener(ClickMenuItemButton);
+        guideDialogBox.pointerDownEvent += HandleGuideDialog;
     }
 
     void ClickMenuCharButton()
@@ -514,5 +516,10 @@ public partial class GameUIManager : MonoEditorSingleton<GameUIManager>
             DG.Tweening.Ease.InBack,
             () => GameManager.Instance.UpdateGold(gold)
         );
+    }
+
+    public void ShowGuideDialogBox()
+    {
+        guideDialogBox.Show();
     }
 }

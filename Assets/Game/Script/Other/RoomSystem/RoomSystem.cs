@@ -5,4 +5,5 @@ using System.Collections.Generic;
 public class RoomSystem
 {
     public List<NormalEnemyRoomInfo> allNormalEnemyRooms = new();
+    public List<NormalEnemyFloor> normalEnemyFloors = new();
 }

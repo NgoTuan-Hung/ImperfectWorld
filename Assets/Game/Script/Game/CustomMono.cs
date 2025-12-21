@@ -64,6 +64,8 @@ public partial class CustomMono : MonoSelfAware
         set => animatorWrapper = value;
     }
     public Skill skill;
+    public Attack attack => skill.attack;
+    public SkillBase mainSkill => skill.mainSkill;
 
     public override void Awake()
     {
@@ -207,5 +209,34 @@ public partial class CustomMono : MonoSelfAware
             default:
                 break;
         }
+    }
+
+    public void Hide()
+    {
+        gameObject.SetActive(false);
+        stat.Hide();
+    }
+
+    public void Reveal()
+    {
+        gameObject.SetActive(true);
+        stat.Reveal();
+        spriteRenderer.color = GameManager.Instance.transparentWhite;
+        boxCollider2D.enabled = false;
+    }
+
+    public void Show()
+    {
+        gameObject.SetActive(true);
+        stat.Show();
+        spriteRenderer.color = Color.white;
+        boxCollider2D.enabled = true;
+    }
+
+    public void SetupForReuse()
+    {
+        actionBlocking = false;
+        movementActionBlocking = false;
+        stat.SetupForReuse();
     }
 }

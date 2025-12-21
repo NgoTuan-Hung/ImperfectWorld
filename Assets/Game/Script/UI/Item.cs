@@ -212,7 +212,7 @@ public class Item : MonoSelfAware, IDragHandler, IEndDragHandler, IBeginDragHand
         }
 
         GameUIManager.Instance.AddToInventory(this);
-        SwitchState(ItemState.Inventory);
+        SetAsInventory();
     }
 
     void EquipOrToReward()

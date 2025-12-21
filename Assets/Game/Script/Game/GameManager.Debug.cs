@@ -5,7 +5,7 @@ public partial class GameManager
 {
     public bool LoadNormalEnemyRoomVariant(int p_index)
     {
-        GameUIManager.Instance.gameInteractionButton.Show();
+        /* GameUIManager.Instance.gameInteractionButton.Show();
         if (enemyCount > 0)
             return false;
         else
@@ -52,7 +52,7 @@ public partial class GameManager
                     cRE.botAIManager.aiBehavior.pausableScript.pauseFixedUpdate();
                     cRE.botSensor.pausableScript.pauseFixedUpdate();
                 });
-        }
+        } */
 
         return true;
     }
@@ -64,54 +64,28 @@ public partial class GameManager
 
     public bool SpawnChampionForPlayer(GameObject champPrefab)
     {
-        if (champPrefab == null)
+        if (RewardChampion(champPrefab) != null)
+            return true;
+        else
             return false;
-
-        if (!championPools.TryGetValue(champPrefab, out ObjectPool t_pool))
-        {
-            championPools.Add(
-                champPrefab,
-                new ObjectPool(
-                    champPrefab,
-                    new PoolArgument(ComponentType.CustomMono, PoolArgument.WhereComponent.Self)
-                )
-            );
-
-            t_pool = championPools[champPrefab];
-        }
-
-        var t_customMono = t_pool.PickOne().CustomMono;
-        t_customMono.transform.position = new Vector3(0, 0, 0);
-        SwithTeam(t_customMono, "Team1");
-        DisableBattleMode(t_customMono);
-        return true;
     }
 
     public bool SpawnChampionForPlayerForBattle(GameObject champPrefab)
     {
-        if (champPrefab == null)
+        var t_customMono = RewardChampion(champPrefab);
+
+        if (t_customMono == null)
             return false;
 
-        if (!championPools.TryGetValue(champPrefab, out ObjectPool t_pool))
-        {
-            championPools.Add(
-                champPrefab,
-                new ObjectPool(
-                    champPrefab,
-                    new PoolArgument(ComponentType.CustomMono, PoolArgument.WhereComponent.Self)
-                )
-            );
-
-            t_pool = championPools[champPrefab];
-        }
-
-        var t_customMono = t_pool.PickOne().CustomMono;
-        t_customMono.transform.position = new Vector3(0, 0, 0);
-        SwithTeam(t_customMono, "Team1");
         StartCoroutine(EnableBattleModeIE(t_customMono));
         return true;
     }
 
+    /// <summary>
+    /// Wait one frame after CustomMono initialization
+    /// </summary>
+    /// <param name="customMono"></param>
+    /// <returns></returns>
     IEnumerator EnableBattleModeIE(CustomMono customMono)
     {
         yield return null;

@@ -98,6 +98,13 @@ public partial class GameManager : MonoBehaviour
         InitOtherFields();
         AddTeam();
         BuildFormation();
+        RegisterOtherEvents();
+    }
+
+    private void RegisterOtherEvents()
+    {
+        guide.interact += GameUIManager.Instance.ShowGuideDialogBox;
+        GameUIManager.Instance.guideBribeButton.pointerClickEvent += HandleGuideBribe;
     }
 
     private void InitOtherPools()
@@ -233,6 +240,7 @@ public partial class GameManager : MonoBehaviour
 
         HandleMapInteraction();
         BattleInitialize();
+        SpawnStartingChampions();
     }
 
     private void BattleInitialize()
@@ -244,13 +252,14 @@ public partial class GameManager : MonoBehaviour
     {
         MapPlayerTracker.Instance.onNodeEnter += (p_mapNode) =>
         {
+            print(p_mapNode.Node.point.y);
             switch (p_mapNode.Node.nodeType)
             {
                 case NodeType.MinorEnemy:
                 {
                     Debug.Log("Room Minor Enemy Encountered");
                     GameUIManager.Instance.gameInteractionButton.Show();
-                    LoadNormalEnemyRoom();
+                    LoadNormalEnemyRoom(p_mapNode);
                     break;
                 }
                 case NodeType.EliteEnemy:
@@ -276,14 +285,15 @@ public partial class GameManager : MonoBehaviour
         };
     }
 
-    void LoadNormalEnemyRoom()
+    void LoadNormalEnemyRoom(MapNode mapNode)
     {
         ChangeGameState(GameState.PositioningPhase);
         GameUIManager.Instance.TurnOffMap();
         enemyCount = 0;
-        var nERI = roomSystem.allNormalEnemyRooms[
-            Random.Range(0, roomSystem.allNormalEnemyRooms.Count)
-        ];
+
+        var nERI = roomSystem
+            .normalEnemyFloors[mapNode.Node.point.y]
+            .normalEnemyRoomInfos.GetRandomElement();
         GetEnemyTeamChampions().Clear();
 
         for (int i = 0; i < nERI.roomEnemyInfos.Count; i++)
@@ -301,6 +311,7 @@ public partial class GameManager : MonoBehaviour
 
             var t_customMono = championPools[nERI.roomEnemyInfos[i].prefab].PickOne().CustomMono;
             t_customMono.transform.position = nERI.roomEnemyInfos[i].position;
+            t_customMono.SetupForReuse();
             t_customMono.stat.currentHealthPointReachZeroEvent += PawnDeathHandler;
             MarkGridNodeAsEnemyNode(t_customMono.transform.position);
             GetEnemyTeamChampions().Add(t_customMono);
@@ -310,6 +321,7 @@ public partial class GameManager : MonoBehaviour
         StartCoroutine(DistributeItemForEnemies());
         StartCoroutine(DistributeStatUpgradeForEnemies());
         GetEnemyTeamChampions().ForEach(cRE => DisableBattleMode(cRE));
+        StartCoroutine(WaitHideAllEnemies());
     }
 
     void LoadShopRoom()
@@ -365,6 +377,7 @@ public partial class GameManager : MonoBehaviour
             {
                 ChangeGameState(GameState.BattlePhase);
                 GameUIManager.Instance.gameInteractionButton.Hide();
+                ShowAllEnemies();
                 GetEnemyTeamChampions().ForEach(cRE => EnableBattleMode(cRE));
 
                 GetPlayerTeamChampions().ForEach(pC => EnableBattleMode(pC));
@@ -653,8 +666,13 @@ public partial class GameManager : MonoBehaviour
         scaledFixedDeltaTime = defaultFixedDeltaTime / Time.timeScale;
     }
 
-    public void AddNormalEnemyRoom(NormalEnemyRoomInfo normalEnemyRoomInfo) =>
-        roomSystem.allNormalEnemyRooms.Add(normalEnemyRoomInfo);
+    public void AddNormalEnemyRoom(NormalEnemyRoomInfo normalEnemyRoomInfo, int floor)
+    {
+        while (roomSystem.normalEnemyFloors.Count <= floor)
+            roomSystem.normalEnemyFloors.Add(new());
+
+        roomSystem.normalEnemyFloors[floor].normalEnemyRoomInfos.Add(normalEnemyRoomInfo);
+    }
 
     void ShowRewardForPlayer()
     {
@@ -885,23 +903,31 @@ public partial class GameManager : MonoBehaviour
         var hp = recipient.stat.healthPoint.FinalValue;
         var offer = offering.GetPrecomputeData();
 
-        recipient.stat.healthPoint.BaseValue += offer.offerHealthPoint;
-        recipient.stat.healthRegen.BaseValue += offer.offerHealthRegen;
-        recipient.stat.manaPoint.BaseValue += offer.offerManaPoint;
-        recipient.stat.manaRegen.BaseValue += offer.offerManaRegen;
-        recipient.stat.might.BaseValue += offer.offerMight;
-        recipient.stat.reflex.BaseValue += offer.offerReflex;
-        recipient.stat.wisdom.BaseValue += offer.offerWisdom;
-        recipient.stat.attackSpeed.BaseValue += offer.offerAttackSpeed;
-        recipient.stat.armor.BaseValue += offer.offerArmor;
-        recipient.stat.moveSpeed.BaseValue += offer.offerMoveSpeed;
-        recipient.stat.damageModifier.BaseValue += offer.offerDamageModifier;
-        recipient.stat.omnivamp.BaseValue += offer.offerOmnivamp;
-        recipient.stat.attackDamage.BaseValue += offer.offerAttackDamage;
-        recipient.stat.critChance.BaseValue += offer.offerCritChance;
-        recipient.stat.critDamageModifier.BaseValue += offer.offerCritDamageModifier;
-        recipient.stat.damageReduction.BaseValue += offer.offerDamageReduction;
-        recipient.stat.attackRange.BaseValue += offer.offerAttackRange;
+        recipient.stat.healthPoint.AddModifier(new(offer.offerHealthPoint, ModifierType.Additive));
+        recipient.stat.healthRegen.AddModifier(new(offer.offerHealthRegen, ModifierType.Additive));
+        recipient.stat.manaPoint.AddModifier(new(offer.offerManaPoint, ModifierType.Additive));
+        recipient.stat.manaRegen.AddModifier(new(offer.offerManaRegen, ModifierType.Additive));
+        recipient.stat.might.AddModifier(new(offer.offerMight, ModifierType.Additive));
+        recipient.stat.reflex.AddModifier(new(offer.offerReflex, ModifierType.Additive));
+        recipient.stat.wisdom.AddModifier(new(offer.offerWisdom, ModifierType.Additive));
+        recipient.stat.attackSpeed.AddModifier(new(offer.offerAttackSpeed, ModifierType.Additive));
+        recipient.stat.armor.AddModifier(new(offer.offerArmor, ModifierType.Additive));
+        recipient.stat.moveSpeed.AddModifier(new(offer.offerMoveSpeed, ModifierType.Additive));
+        recipient.stat.damageModifier.AddModifier(
+            new(offer.offerDamageModifier, ModifierType.Additive)
+        );
+        recipient.stat.omnivamp.AddModifier(new(offer.offerOmnivamp, ModifierType.Additive));
+        recipient.stat.attackDamage.AddModifier(
+            new(offer.offerAttackDamage, ModifierType.Additive)
+        );
+        recipient.stat.critChance.AddModifier(new(offer.offerCritChance, ModifierType.Additive));
+        recipient.stat.critDamageModifier.AddModifier(
+            new(offer.offerCritDamageModifier, ModifierType.Additive)
+        );
+        recipient.stat.damageReduction.AddModifier(
+            new(offer.offerDamageReduction, ModifierType.Additive)
+        );
+        recipient.stat.attackRange.AddModifier(new(offer.offerAttackRange, ModifierType.Additive));
 
         recipient.stat.currentHealthPoint.Value += recipient.stat.healthPoint.FinalValue - hp;
         recipient
@@ -940,10 +966,10 @@ public partial class GameManager : MonoBehaviour
         }
     }
 
-    public bool RewardChampion(GameObject champPrefab)
+    public CustomMono RewardChampion(GameObject champPrefab)
     {
         if (champPrefab == null)
-            return false;
+            return null;
 
         if (!championPools.TryGetValue(champPrefab, out ObjectPool t_pool))
         {
@@ -960,11 +986,12 @@ public partial class GameManager : MonoBehaviour
 
         var t_customMono = t_pool.PickOne().CustomMono;
         t_customMono.transform.position = new Vector3(0, 0, 0);
+        t_customMono.SetupForReuse();
         SwithTeam(t_customMono, "Team1");
         DisableBattleMode(t_customMono);
         FallIn(t_customMono);
 
-        return true;
+        return t_customMono;
     }
 
     void BuildFormation()
@@ -1038,6 +1065,17 @@ public partial class GameManager : MonoBehaviour
     {
         playerGold += gold;
         GameUIManager.Instance.UpdatePlayerGold(playerGold);
+    }
+
+    public bool BuyWithValue(int gold)
+    {
+        if (playerGold >= gold)
+        {
+            UpdateGold(-gold);
+            return true;
+        }
+        else
+            return false;
     }
 
     public bool CheckInsideGlobalWall(Vector2 point)

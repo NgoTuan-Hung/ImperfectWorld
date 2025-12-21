@@ -70,7 +70,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2033591479864052884}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 4.74, y: -2.69, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -115,7 +115,7 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: -0.08631897, y: 0.1898675}
+  m_Offset: {x: 0, y: 0}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -125,7 +125,7 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 0.9412918, y: 0.25033092}
+  m_Size: {x: 0.1, y: 0.1}
   m_EdgeRadius: 0
 --- !u!50 &8114733469124053382
 Rigidbody2D:
@@ -271,12 +271,10 @@ MonoBehaviour:
   healthPoint:
     baseValue: 55
     finalValue: 55
-    referenceModifiers: []
     modifiers: []
   healthRegen:
     baseValue: 0
     finalValue: 0
-    referenceModifiers: []
     modifiers: []
   currentManaPoint:
     value: 0
@@ -284,86 +282,76 @@ MonoBehaviour:
   manaPoint:
     baseValue: 65
     finalValue: 65
-    referenceModifiers: []
     modifiers: []
   manaRegen:
     baseValue: 10
     finalValue: 10
-    referenceModifiers: []
     modifiers: []
   might:
     baseValue: 1
     finalValue: 1
-    referenceModifiers: []
     modifiers: []
   reflex:
     baseValue: 1
     finalValue: 1
-    referenceModifiers: []
     modifiers: []
   wisdom:
     baseValue: 1
     finalValue: 1
-    referenceModifiers: []
     modifiers: []
   attackSpeed:
     baseValue: 0.8
     finalValue: 0.8
-    referenceModifiers: []
     modifiers: []
   armor:
     baseValue: 1
     finalValue: 1
-    referenceModifiers: []
     modifiers: []
   moveSpeed:
     baseValue: 2
     finalValue: 2
-    referenceModifiers: []
     modifiers: []
   damageModifier:
     baseValue: 1
     finalValue: 1
-    referenceModifiers: []
     modifiers: []
   omnivamp:
     baseValue: 0
     finalValue: 0
-    referenceModifiers: []
     modifiers: []
   attackDamage:
     baseValue: 3.8
     finalValue: 3.8
-    referenceModifiers: []
     modifiers: []
   critChance:
     baseValue: 0.25
     finalValue: 0.25
-    referenceModifiers: []
     modifiers: []
   critDamageModifier:
     baseValue: 1
     finalValue: 1
-    referenceModifiers: []
     modifiers: []
   damageReduction:
     baseValue: 0
     finalValue: 0
-    referenceModifiers: []
     modifiers: []
   attackRange:
     baseValue: 1.25
     finalValue: 1.25
-    referenceModifiers: []
     modifiers: []
+  itemSlot:
+    baseValue: 3
+    finalValue: 3
+    modifiers: []
+  equippedItems: []
   actionMoveSpeedReduceRate:
     baseValue: -0.9
     finalValue: -0.9
-    referenceModifiers: []
     modifiers: []
   actionSlowModifier:
     value: 0
     type: 1
+    liveTime: 1
 --- !u!114 &6067036460992605854
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -432,8 +420,6 @@ MonoBehaviour:
   botAIManager: {fileID: 0}
   stat: {fileID: 0}
   arrowIndicator: {fileID: 0}
-  actionInterval: 0
-  movementActionInterval: 0
   actionBlocking: 0
   movementActionBlocking: 0
   combatCollision: {fileID: 0}

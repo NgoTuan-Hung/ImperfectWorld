@@ -1,13 +1,10 @@
 using System;
 using System.Collections;
-using System.Diagnostics;
 using UnityEngine;
 
 public class AutoBattleAIBehavior : BaseAIBehavior
 {
-    Attack attack;
-    SkillBase skill;
-    Stopwatch stopwatch = new();
+    float timer = 0;
 
     public override void Awake()
     {
@@ -17,18 +14,7 @@ public class AutoBattleAIBehavior : BaseAIBehavior
     public override void Start()
     {
         base.Start();
-        StartCoroutine(LateStart());
         pausableScript.pauseFixedUpdate += StopMove;
-    }
-
-    IEnumerator LateStart()
-    {
-        yield return null;
-        attack = GetComponent<Attack>();
-        if (customMono.skill.skillBases.Count > 1)
-        {
-            skill = customMono.skill.skillBases[1];
-        }
     }
 
     public override void FixedUpdate()
@@ -57,8 +43,8 @@ public class AutoBattleAIBehavior : BaseAIBehavior
             {
                 customMono.movable.StopMove();
 
-                if (!attack.onCooldown)
-                    attack.Trigger(
+                if (!customMono.attack.onCooldown)
+                    customMono.attack.Trigger(
                         p_direction: customMono.botSensor.centerToTargetCenterDirection,
                         p_customMono: customMono.botSensor.currentNearestEnemy
                     );
@@ -68,27 +54,31 @@ public class AutoBattleAIBehavior : BaseAIBehavior
 
     void UseSkill()
     {
-        if (skill != null)
+        if (customMono.mainSkill != null)
         {
             if (
                 customMono.stat.currentManaPoint.Value >= customMono.stat.manaPoint.FinalValue
                 && customMono.botSensor.distanceToNearestEnemy
-                    < skill.GetActionField<ActionFloatField>(ActionFieldName.Range).value
+                    < customMono
+                        .mainSkill.GetActionField<ActionFloatField>(ActionFieldName.Range)
+                        .value
             )
             {
-                skill.botActionManual.botDoAction(GetDAPI());
-                if (skill.botActionManual.requireContinuous)
-                    StartCoroutine(DoActionContinous(skill.botActionManual));
+                customMono.mainSkill.botActionManual.botDoAction(GetDAPI());
+                if (customMono.mainSkill.botActionManual.requireContinuous)
+                    StartCoroutine(DoActionContinous(customMono.mainSkill.botActionManual));
             }
         }
     }
 
     IEnumerator DoActionContinous(BotActionManual p_botActionManual)
     {
-        while (stopwatch.Elapsed.TotalSeconds < p_botActionManual.continousDuration)
+        timer = 0;
+        while (timer < p_botActionManual.continousDuration)
         {
             p_botActionManual.botDoActionContinuous(GetDAPI());
             yield return new WaitForSeconds(Time.fixedDeltaTime);
+            timer += Time.fixedDeltaTime;
         }
     }
 

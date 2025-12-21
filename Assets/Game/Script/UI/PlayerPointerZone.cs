@@ -14,10 +14,14 @@ public class PlayerPointerZone
     RaycastHit2D raycastHit2D;
     HexGridNode raycastNode = null,
         previousRaycastNode = null;
+    int combatCollideeLayer,
+        nPCLayer;
 
     private void Awake()
     {
-        layerMask = 1 << LayerMask.NameToLayer("CombatCollidee");
+        combatCollideeLayer = LayerMask.NameToLayer("CombatCollidee");
+        nPCLayer = LayerMask.NameToLayer("NPC");
+        layerMask = (1 << combatCollideeLayer) | (1 << nPCLayer);
     }
 
     public void OnPointerDown(PointerEventData eventData)
@@ -32,17 +36,29 @@ public class PlayerPointerZone
             );
             if (raycastHit2D.collider != null)
             {
-                currentRaycastCM = GameManager.Instance.GetCustomMono(raycastHit2D.collider);
-
-                GameManager.Instance.gridManager.ShowVisual();
-                if (currentRaycastCM != null)
+                if (raycastHit2D.collider.gameObject.layer == combatCollideeLayer)
                 {
-                    GameUIManager.Instance.ShowChampUI(currentRaycastCM);
-                    if (!currentRaycastCM.CompareTag("Team1"))
-                        currentRaycastCM = null;
+                    currentRaycastCM = GameManager.Instance.GetCustomMono(raycastHit2D.collider);
+
+                    if (currentRaycastCM != null)
+                    {
+                        GameUIManager.Instance.ShowChampUI(currentRaycastCM);
+                        if (!currentRaycastCM.CompareTag("Team1"))
+                            currentRaycastCM = null;
+                    }
+                }
+                else if (raycastHit2D.collider.gameObject.layer == nPCLayer)
+                {
+                    var npc = GameManager.Instance.GetNPC(raycastHit2D.collider);
+
+                    if (npc != null)
+                    {
+                        npc.interact();
+                    }
                 }
             }
         }
+        GameManager.Instance.gridManager.ShowVisual();
     }
 
     public void OnDrag(PointerEventData eventData)
