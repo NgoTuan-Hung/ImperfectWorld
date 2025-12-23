@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using Priority_Queue;
-using Unity.VisualScripting;
 using UnityEngine;
 
 [DefaultExecutionOrder(0)]
@@ -27,7 +26,6 @@ public class HexGridManager : MonoBehaviour
     List<HexGridNode> open = new(),
         next = new();
 
-    public Dictionary<HexGridNode, GameObject> debugNodeDict = new();
     float q1,
         r1,
         x1,
@@ -46,10 +44,12 @@ public class HexGridManager : MonoBehaviour
     public static HexGridNode border = new(new AxialCoord(int.MaxValue, int.MaxValue));
     public static Color defaultNodeColor = Color.green.WithAlpha(0.5f);
     public static Color highlightedNodeColor = Color.white,
-        enemyPositionColor = Color.white;
+        occupiedColor = Color.white;
     public static Material defaultNodeMaterial,
         highlightedNodeMaterial,
-        enemyNodeMaterial;
+        occupiedNodeMaterial;
+    Dictionary<HexGridNode, CustomMono> occupiers = new();
+    Dictionary<CustomMono, HexGridNode> nodeOccupy = new();
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Awake()
@@ -57,7 +57,7 @@ public class HexGridManager : MonoBehaviour
         Instance = this;
         defaultNodeMaterial = Resources.Load("Material/HexNode") as Material;
         highlightedNodeMaterial = Resources.Load("Material/HexNodeHighlighted") as Material;
-        enemyNodeMaterial = Resources.Load("Material/HexNodeEnemy") as Material;
+        occupiedNodeMaterial = Resources.Load("Material/HexNodeOccupied") as Material;
         hexNodeParent = GameObject.Find("HexGrid");
         border.type = HexGridNodeType.Obstacle;
         HexGridNode origin = SetupNewNode(new AxialCoord(0, 0));
@@ -216,11 +216,6 @@ public class HexGridManager : MonoBehaviour
     public void MarkNodeAsNormal(Vector2 pos) =>
         GetNodeAtPosition(pos).type = HexGridNodeType.Normal;
 
-    public SpriteRenderer GetHexSpriteDebug(Vector2 pos)
-    {
-        return debugNodeDict[GetNodeAtPosition(pos)].GetComponent<SpriteRenderer>();
-    }
-
     private void FixedUpdate()
     {
         ResetGrid();
@@ -246,5 +241,82 @@ public class HexGridManager : MonoBehaviour
     public void RemoveFromResetGrid(HexGridNode node)
     {
         resetGrid -= node.Reset;
+    }
+
+    public void SetOccupiedNode(CustomMono customMono, Vector2 position)
+    {
+        var node = GetNodeAtPosition(position);
+        SetOccupiedNode(customMono, node);
+    }
+
+    public void SetOccupiedNode(CustomMono customMono, HexGridNode node)
+    {
+        occupiers[node] = customMono;
+        nodeOccupy[customMono] = node;
+        customMono.transform.position = node.pos;
+        node.SwitchToOccupiedVisual();
+    }
+
+    public void SetOccupyNextAvailable(CustomMono customMono)
+    {
+        foreach (var node in grid.Values)
+        {
+            if (node.type != HexGridNodeType.Obstacle && !IsOccupied(node))
+            {
+                SetOccupiedNode(customMono, node);
+                return;
+            }
+        }
+    }
+
+    public void SetOccupiedNodeHighlight(CustomMono customMono, HexGridNode node)
+    {
+        occupiers[node] = customMono;
+        nodeOccupy[customMono] = node;
+        node.SwitchToHighlightedVisual();
+    }
+
+    public HexGridNode GetOccupyNode(CustomMono customMono) => nodeOccupy[customMono];
+
+    public CustomMono GetOccupier(HexGridNode node) => occupiers[node];
+
+    public void RemoveOccupy(CustomMono customMono)
+    {
+        var node = nodeOccupy[customMono];
+        if (node != null)
+        {
+            occupiers.Remove(node);
+            nodeOccupy.Remove(customMono);
+            node.SwitchToDefaultVisual();
+        }
+    }
+
+    public void RemoveOccupy(HexGridNode node)
+    {
+        if (node != null)
+        {
+            var customMono = occupiers[node];
+            occupiers.Remove(node);
+            nodeOccupy.Remove(customMono);
+            node.SwitchToDefaultVisual();
+        }
+    }
+
+    public void ClearAllOccupy()
+    {
+        foreach (var node in occupiers.Keys)
+        {
+            node.SwitchToDefaultVisual();
+        }
+
+        occupiers.Clear();
+        nodeOccupy.Clear();
+    }
+
+    public bool IsOccupied(HexGridNode node)
+    {
+        if (occupiers.ContainsKey(node))
+            return true;
+        return false;
     }
 }

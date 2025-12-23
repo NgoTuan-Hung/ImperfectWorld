@@ -17,11 +17,13 @@ public partial class Stat : MonoEditor
     private void OnEnable()
     {
         onEnable();
+        StartCoroutine(LateEnable());
     }
 
-    private void OnDisable()
+    IEnumerator LateEnable()
     {
-        //
+        yield return null;
+        StartRegen();
     }
 
     public override void Start()
@@ -40,7 +42,6 @@ public partial class Stat : MonoEditor
         InitUI();
         yield return null;
         CalculateFinalStats();
-        StartRegen();
     }
 
     private void CalculateFinalStats()
@@ -373,5 +374,6 @@ public partial class Stat : MonoEditor
     public void Show()
     {
         healthAndManaIndicatorPO.gameObject.SetActive(true);
+        GameUIManager.Instance.ReHandleHPAndMPUIWithFollowing(healthAndManaIndicatorPO, transform);
     }
 }

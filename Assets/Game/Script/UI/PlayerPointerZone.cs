@@ -6,7 +6,6 @@ public class PlayerPointerZone
         IPointerDownHandler,
         IPointerUpHandler,
         IDragHandler,
-        IEndDragHandler,
         IBeginDragHandler
 {
     CustomMono currentRaycastCM;
@@ -71,14 +70,17 @@ public class PlayerPointerZone
             raycastNode = GameManager.Instance.gridManager.GetNodeAtPosition(
                 Camera.main.ScreenToWorldPoint(eventData.position)
             );
-            if (raycastNode.type != HexGridNodeType.Obstacle && !raycastNode.isEnemyPosition)
+            if (
+                raycastNode.type != HexGridNodeType.Obstacle
+                && !HexGridManager.Instance.IsOccupied(raycastNode)
+            )
             {
+                previousRaycastNode = HexGridManager.Instance.GetOccupyNode(currentRaycastCM);
                 if (raycastNode != previousRaycastNode)
                 {
-                    previousRaycastNode?.SwitchToDefaultVisual();
-                    raycastNode.SwitchToHighlightedVisual();
+                    HexGridManager.Instance.RemoveOccupy(previousRaycastNode);
+                    HexGridManager.Instance.SetOccupiedNodeHighlight(currentRaycastCM, raycastNode);
                     currentRaycastCM.transform.position = raycastNode.pos;
-                    previousRaycastNode = raycastNode;
                 }
             }
         }
@@ -87,14 +89,12 @@ public class PlayerPointerZone
     public void OnPointerUp(PointerEventData eventData)
     {
         GameManager.Instance.gridManager.HideVisual();
-        currentRaycastCM = null;
-    }
-
-    public void OnEndDrag(PointerEventData eventData)
-    {
         GameUIManager.Instance.DeactivateAllChampInfoPanelGlassEffect();
-        previousRaycastNode?.SwitchToDefaultVisual();
-        previousRaycastNode = null;
+        if (currentRaycastCM != null)
+        {
+            HexGridManager.Instance.GetOccupyNode(currentRaycastCM).SwitchToOccupiedVisual();
+        }
+        currentRaycastCM = null;
     }
 
     public void OnBeginDrag(PointerEventData eventData)

@@ -13,28 +13,11 @@ public partial class GameUIManager
         State2,
     }
 
-    public GuideDialogState guideDialogState = GuideDialogState.State1;
     public InteractiveButtonUI guideBribeButton;
 
-    public void HandleGuideDialog()
+    public void CloseGuideDialog()
     {
-        switch (guideDialogState)
-        {
-            case GuideDialogState.State1:
-            {
-                guideDialogBox.Show();
-                guideDialogState = GuideDialogState.State2;
-                break;
-            }
-            case GuideDialogState.State2:
-            {
-                guideDialogBox.Hide();
-                guideDialogState = GuideDialogState.State1;
-                break;
-            }
-            default:
-                break;
-        }
+        guideDialogBox.Hide();
     }
 
     public void GuideBribeSuccess()

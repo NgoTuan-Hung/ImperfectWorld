@@ -80,7 +80,6 @@
     <Compile Include="Assets\CustomPackage\STSMapGeneration\OneLine\OneLine\Example\Details\Scripts\NestedArrayExample.cs" />
     <Compile Include="Assets\Game\Script\UI\DialogBox.cs" />
     <Compile Include="Assets\Game\Script\Other\Extension\FloatExtension.cs" />
-    <Compile Include="Assets\Test\HexGeneration\HexGenTest.cs" />
     <Compile Include="Assets\Test\TestExecutionOrder\TestChildOnEnable.cs" />
     <Compile Include="Assets\Game\Script\MapGeneration\MapGenerator.cs" />
     <Compile Include="Assets\Game\Script\Ability\AirRollSkill.cs" />
@@ -144,6 +143,7 @@
     <Compile Include="Assets\CustomPackage\STSMapGeneration\OneLine\OneLine\Example\Tests\Scripts\SlicesTest.cs" />
     <Compile Include="Assets\Game\Script\Other\Stat\FloatStatModifier.cs" />
     <Compile Include="Assets\Game\Script\Ability\Slaughter.cs" />
+    <Compile Include="Assets\Test\TestExecutionOrder\TestUIEventAndFixedUpdateOrder\TestUIEventAndFixedUpdateOrder1.cs" />
     <Compile Include="Assets\CustomPackage\STSMapGeneration\OneLine\OneLine\Attributes\ArrayLengthAttribute.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_ExampleScript_01.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMPro_InstructionOverlay.cs" />
@@ -242,6 +242,7 @@
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\VertexShakeA.cs" />
     <Compile Include="Assets\Game\Script\Other\Misc\Test\RectSizeTest.cs" />
     <Compile Include="Assets\Game\Script\MapGeneration\UI Lines\UIPrimitiveBase.cs" />
+    <Compile Include="Assets\Test\TestExecutionOrder\TestUIEventAndFixedUpdateOrder\TestUIEventAndFixedUpdateOrderManager.cs" />
     <Compile Include="Assets\CustomPackage\STSMapGeneration\OneLine\OneLine\Example\Benchmark\Scripts\SeparateFieldsBenchmark.cs" />
     <Compile Include="Assets\Game\Script\Other\ItemBehaviour\PhoenixHeartBehaviour.cs" />
     <Compile Include="Assets\Game\Script\Other\RoomSystem\RoomSystem.cs" />
@@ -263,6 +264,7 @@
     <Compile Include="Assets\Test\TestObjectPoolRevamp\PoolRevampPoolObject.cs" />
     <Compile Include="Assets\Game\Script\UI\PlayerPointerZone.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\ChatController.cs" />
+    <Compile Include="Assets\Test\TestExecutionOrder\TestUIEventAndFixedUpdateOrder\TestUIEventAndFixedUpdateOrder2.cs" />
     <Compile Include="Assets\Test\StopNullIE\StopNullIE.cs" />
     <Compile Include="Assets\Game\Script\Other\ObjectPool.cs" />
     <Compile Include="Assets\Game\Script\Ability\SilentDraw.cs" />
@@ -344,6 +346,7 @@
     <Compile Include="Assets\CustomPackage\Cainos\Pixel Art Top Down - Basic\Script\SpriteColorAnimation.cs" />
     <Compile Include="Assets\Game\Script\Game\GameManager.Prefabs.cs" />
     <Compile Include="Assets\Game\Script\ScriptableObject\ListGameEffectBehavior.cs" />
+    <Compile Include="Assets\Test\TestExecutionOrder\TestUIEventAndFixedUpdateOrder\TestUIEventAndFixedUpdateOrderOnDrag.cs" />
     <Compile Include="Assets\CustomPackage\Cainos\Pixel Art Top Down - Basic\Script\LayerTrigger.cs" />
     <Compile Include="Assets\Game\Script\Other\MonoSelfAware.cs" />
     <Compile Include="Assets\CustomPackage\STSMapGeneration\OneLine\OneLine\Example\Details\Scripts\OneLineExample.cs" />

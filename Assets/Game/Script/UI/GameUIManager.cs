@@ -81,7 +81,7 @@ public partial class GameUIManager : MonoEditorSingleton<GameUIManager>
         menuCharButton.onClick.AddListener(ClickMenuCharButton);
         menuMapButton.onClick.AddListener(ClickMenuMapButton);
         menuInventoryButton.onClick.AddListener(ClickMenuItemButton);
-        guideDialogBox.pointerDownEvent += HandleGuideDialog;
+        guideDialogBox.pointerDownEvent += CloseGuideDialog;
     }
 
     void ClickMenuCharButton()
@@ -261,6 +261,11 @@ public partial class GameUIManager : MonoEditorSingleton<GameUIManager>
         PoolObject healthAndManaIndicatorObj = healthAndManaIndicator.PickOne();
         healthAndManaIndicatorObj.WorldSpaceUI.FollowSlowly(transform);
         return healthAndManaIndicatorObj;
+    }
+
+    public void ReHandleHPAndMPUIWithFollowing(PoolObject poolObject, Transform transform)
+    {
+        poolObject.WorldSpaceUI.FollowSlowly(transform);
     }
 
     public PoolObject PickOneTextPopupUI() => textPopupUIPool.PickOne();

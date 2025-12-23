@@ -396,11 +396,65 @@ public partial class GameManager
         HideAllEnemies();
     }
 
+    bool bribed = false;
+
+    void GuideInteraction()
+    {
+        if (!bribed)
+        {
+            GameUIManager.Instance.ShowGuideDialogBox();
+        }
+    }
+
     void HandleGuideBribe(PointerEventData pointerEventData)
     {
         if (BuyWithValue(25))
             RevealAllEnemies();
 
         GameUIManager.Instance.GuideBribeSuccess();
+        bribed = true;
+    }
+
+    void NewFloorReachCallback()
+    {
+        bribed = false;
+    }
+
+    void SetOccupyNodeForPlayerChampion()
+    {
+        GetPlayerTeamChampions()
+            .ForEach(c => HexGridManager.Instance.SetOccupiedNode(c, c.transform.position));
+    }
+
+    void ShoveAsidePlayerChampion()
+    {
+        GetEnemyTeamChampions()
+            .ForEach(e =>
+            {
+                var node = HexGridManager.Instance.GetNodeAtPosition(e.transform.position);
+                if (HexGridManager.Instance.IsOccupied(node))
+                {
+                    var playerChamp = HexGridManager.Instance.GetOccupier(node);
+                    HexGridManager.Instance.RemoveOccupy(node);
+                    HexGridManager.Instance.SetOccupiedNode(e, node);
+
+                    bool shoved = false;
+                    foreach (var n in node.neighbors)
+                    {
+                        if (
+                            n.type != HexGridNodeType.Obstacle
+                            && !HexGridManager.Instance.IsOccupied(n)
+                        )
+                        {
+                            HexGridManager.Instance.SetOccupiedNode(playerChamp, n);
+                            shoved = true;
+                            break;
+                        }
+                    }
+
+                    if (!shoved)
+                        HexGridManager.Instance.SetOccupyNextAvailable(playerChamp);
+                }
+            });
     }
 }

@@ -124,7 +124,8 @@ public partial class GameManager
         rubyRoseProjectile,
         gooRushSmoke,
         mukaiRock,
-        mukaiPillar;
+        mukaiPillar,
+        championTeleportEffect;
 
     List<string> prefabNames = new()
     {
@@ -245,6 +246,7 @@ public partial class GameManager
         "gooRushSmoke",
         "mukaiRock",
         "mukaiPillar",
+        "championTeleportEffect",
     };
 
     void LoadGameEffectPrefabs()

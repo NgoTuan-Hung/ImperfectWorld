@@ -66,11 +66,6 @@ public partial class GameManager : MonoBehaviour
     /// Team 2 = Enemy
     /// </summary>
     public Dictionary<string, List<CustomMono>> teamChampions = new();
-
-    /// <summary>
-    /// Hex grid nodes where enemy stand
-    /// </summary>
-    public List<HexGridNode> enemyNodes = new();
     Dictionary<CustomMono, Dictionary<GameEventType, GameEvent>> selfEvents = new();
     Dictionary<string, Dictionary<GameEventType, GameEvent>> teamBasedEvents = new();
     public Action battleEndCallback = () => { };
@@ -103,7 +98,7 @@ public partial class GameManager : MonoBehaviour
 
     private void RegisterOtherEvents()
     {
-        guide.interact += GameUIManager.Instance.ShowGuideDialogBox;
+        guide.interact += GuideInteraction;
         GameUIManager.Instance.guideBribeButton.pointerClickEvent += HandleGuideBribe;
     }
 
@@ -252,7 +247,7 @@ public partial class GameManager : MonoBehaviour
     {
         MapPlayerTracker.Instance.onNodeEnter += (p_mapNode) =>
         {
-            print(p_mapNode.Node.point.y);
+            NewFloorReachCallback();
             switch (p_mapNode.Node.nodeType)
             {
                 case NodeType.MinorEnemy:
@@ -310,10 +305,11 @@ public partial class GameManager : MonoBehaviour
             }
 
             var t_customMono = championPools[nERI.roomEnemyInfos[i].prefab].PickOne().CustomMono;
-            t_customMono.transform.position = nERI.roomEnemyInfos[i].position;
+            t_customMono.transform.position = HexGridManager
+                .Instance.GetNodeAtPosition(nERI.roomEnemyInfos[i].position)
+                .pos;
             t_customMono.SetupForReuse();
             t_customMono.stat.currentHealthPointReachZeroEvent += PawnDeathHandler;
-            MarkGridNodeAsEnemyNode(t_customMono.transform.position);
             GetEnemyTeamChampions().Add(t_customMono);
             enemyCount++;
         }
@@ -349,26 +345,6 @@ public partial class GameManager : MonoBehaviour
         GameUIManager.Instance.CloseTraderUI();
     }
 
-    /// <summary>
-    /// Paint enemies hex grid node as red and remember them
-    /// </summary>
-    /// <param name="p_pos"></param>
-    void MarkGridNodeAsEnemyNode(Vector3 p_pos)
-    {
-        var t_node = gridManager.GetNodeAtPosition(p_pos);
-        t_node.SetAsEnemyPosition();
-        enemyNodes.Add(t_node);
-    }
-
-    /// <summary>
-    /// Paint enemies hex grid node back to normal
-    /// </summary>
-    void ClearEnemyNodes()
-    {
-        enemyNodes.ForEach(eN => eN.ClearEnemyPosition());
-        enemyNodes.Clear();
-    }
-
     void HandleInteractionButton(PointerEventData p_pED)
     {
         switch (gameState)
@@ -378,9 +354,10 @@ public partial class GameManager : MonoBehaviour
                 ChangeGameState(GameState.BattlePhase);
                 GameUIManager.Instance.gameInteractionButton.Hide();
                 ShowAllEnemies();
+                ShoveAsidePlayerChampion();
                 GetEnemyTeamChampions().ForEach(cRE => EnableBattleMode(cRE));
-
                 GetPlayerTeamChampions().ForEach(pC => EnableBattleMode(pC));
+                HexGridManager.Instance.ClearAllOccupy();
                 break;
             }
             case GameState.ShopPhase:
@@ -404,7 +381,6 @@ public partial class GameManager : MonoBehaviour
         {
             GetPlayerTeamChampions().ForEach(pC => DisableBattleMode(pC));
             ChangeGameState(GameState.RewardPhase);
-            ClearEnemyNodes();
             battleEndCallback();
             ReorganizeFormationAfterBattle();
         }
@@ -1032,9 +1008,12 @@ public partial class GameManager : MonoBehaviour
 
     void FallIn(CustomMono customMono)
     {
-        customMono
-            .transform.DOMove(formationPositions[formationIndex++], Random.Range(3, 5f))
-            .SetEase(Ease.OutQuint);
+        var finalPos = formationPositions[formationIndex];
+        HexGridManager.Instance.SetOccupiedNode(customMono, finalPos);
+        championTeleportEffectPool.PickOne().gameObject.transform.position = customMono
+            .transform
+            .position;
+        formationIndex++;
     }
 
     public bool BuyChampion(ChampionRewardUI championRewardUI)

@@ -20,7 +20,6 @@ public class HexGridNode : FastPriorityQueueNode
     public bool visited = false;
     public bool inQueue = false;
     public SpriteRenderer visual;
-    public bool isEnemyPosition = false;
 
     public HexGridNode(AxialCoord axialCoord)
     {
@@ -70,16 +69,9 @@ public class HexGridNode : FastPriorityQueueNode
         visual.sharedMaterial = HexGridManager.highlightedNodeMaterial;
     }
 
-    public void SetAsEnemyPosition()
+    public void SwitchToOccupiedVisual()
     {
-        isEnemyPosition = true;
-        visual.color = HexGridManager.enemyPositionColor;
-        visual.sharedMaterial = HexGridManager.enemyNodeMaterial;
-    }
-
-    public void ClearEnemyPosition()
-    {
-        isEnemyPosition = false;
-        SwitchToDefaultVisual();
+        visual.color = HexGridManager.occupiedColor;
+        visual.sharedMaterial = HexGridManager.occupiedNodeMaterial;
     }
 }

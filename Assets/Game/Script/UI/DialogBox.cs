@@ -32,7 +32,7 @@ public class DialogBox : MonoBehaviour, IPointerDownHandler
     {
         gameObject.SetActive(true);
         transform.localScale = Vector3.zero;
-        rectTransform.DOScale(Vector3.one, 1).SetEase(Ease.InOutBack);
+        rectTransform.DOScale(Vector3.one, 0.75f).SetEase(Ease.OutBack);
     }
 
     public void OnPointerDown(PointerEventData eventData)

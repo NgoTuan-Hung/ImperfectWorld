@@ -124,7 +124,8 @@ public partial class GameManager
         rubyRoseProjectilePool,
         gooRushSmokePool,
         mukaiRockPool,
-        mukaiPillarPool;
+        mukaiPillarPool,
+        championTeleportEffectPool;
     List<string> objectPoolNames = new()
     {
         "moonSlashExplodePool",
@@ -244,6 +245,7 @@ public partial class GameManager
         "gooRushSmokePool",
         "mukaiRockPool",
         "mukaiPillarPool",
+        "championTeleportEffectPool",
     };
 
     void InitAllEffectPools()
