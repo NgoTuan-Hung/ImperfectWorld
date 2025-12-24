@@ -375,11 +375,6 @@ public partial class GameManager
     public NPC guide;
     public Color transparentWhite = new(1, 1, 1, 0.5f);
 
-    void HideAllEnemies()
-    {
-        GetEnemyTeamChampions().ForEach(enemy => enemy.Hide());
-    }
-
     void RevealAllEnemies()
     {
         GetEnemyTeamChampions().ForEach(enemy => enemy.Reveal());
@@ -387,20 +382,24 @@ public partial class GameManager
 
     void ShowAllEnemies()
     {
-        GetEnemyTeamChampions().ForEach(enemy => enemy.Show());
-    }
-
-    IEnumerator WaitHideAllEnemies()
-    {
-        yield return null;
-        HideAllEnemies();
+        GetEnemyTeamChampions()
+            .ForEach(enemy =>
+            {
+                enemy.Show();
+                var showupEffect = enemyShowupEffectPool.PickOne();
+                showupEffect.gameObject.transform.position = enemy.transform.position;
+                showupEffect.gameObject.transform.SetParent(
+                    enemy.rotationAndCenterObject.transform,
+                    true
+                );
+            });
     }
 
     bool bribed = false;
 
     void GuideInteraction()
     {
-        if (!bribed)
+        if (!bribed && gameState == GameState.PositioningPhase)
         {
             GameUIManager.Instance.ShowGuideDialogBox();
         }
@@ -418,6 +417,7 @@ public partial class GameManager
     void NewFloorReachCallback()
     {
         bribed = false;
+        shoveTurn++;
     }
 
     void SetOccupyNodeForPlayerChampion()
@@ -425,6 +425,8 @@ public partial class GameManager
         GetPlayerTeamChampions()
             .ForEach(c => HexGridManager.Instance.SetOccupiedNode(c, c.transform.position));
     }
+
+    int shoveTurn = 0;
 
     void ShoveAsidePlayerChampion()
     {
@@ -454,6 +456,47 @@ public partial class GameManager
 
                     if (!shoved)
                         HexGridManager.Instance.SetOccupyNextAvailable(playerChamp);
+                }
+            });
+    }
+
+    void ShoveAsideEnemyChampion()
+    {
+        GetEnemyTeamChampions()
+            .ForEach(e =>
+            {
+                var node = HexGridManager.Instance.GetNodeAtPosition(e.transform.position);
+                if (HexGridManager.Instance.IsOccupied(node))
+                    HexGridManager.Instance.RemoveOccupy(node);
+                HexGridManager.Instance.SetOccupiedNode(e, node);
+            });
+
+        GetPlayerTeamChampions()
+            .ForEach(a =>
+            {
+                var node = HexGridManager.Instance.GetNodeAtPosition(a.transform.position);
+                if (HexGridManager.Instance.IsOccupied(node))
+                {
+                    var enemy = HexGridManager.Instance.GetOccupier(node);
+                    HexGridManager.Instance.RemoveOccupy(node);
+                    HexGridManager.Instance.SetOccupiedNode(a, node);
+
+                    bool shoved = false;
+                    foreach (var n in node.neighbors)
+                    {
+                        if (
+                            n.type != HexGridNodeType.Obstacle
+                            && !HexGridManager.Instance.IsOccupied(n)
+                        )
+                        {
+                            HexGridManager.Instance.SetOccupiedNode(enemy, n);
+                            shoved = true;
+                            break;
+                        }
+                    }
+
+                    if (!shoved)
+                        HexGridManager.Instance.SetOccupyNextAvailable(enemy);
                 }
             });
     }

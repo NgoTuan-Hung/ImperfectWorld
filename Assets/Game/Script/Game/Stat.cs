@@ -29,19 +29,13 @@ public partial class Stat : MonoEditor
     public override void Start()
     {
         SetupGameEvent();
+        customMono.scriptExecutionCore.lateEnable0 += CalculateFinalStats;
     }
 
-    public void SetupForReuse()
-    {
-        StartCoroutine(SetupForReuseIE());
-    }
-
-    IEnumerator SetupForReuseIE()
+    public void SetupForReuseIE()
     {
         ResetFields();
         InitUI();
-        yield return null;
-        CalculateFinalStats();
     }
 
     private void CalculateFinalStats()

@@ -125,7 +125,8 @@ public partial class GameManager
         gooRushSmoke,
         mukaiRock,
         mukaiPillar,
-        championTeleportEffect;
+        championTeleportEffect,
+        enemyShowupEffect;
 
     List<string> prefabNames = new()
     {
@@ -247,6 +248,7 @@ public partial class GameManager
         "mukaiRock",
         "mukaiPillar",
         "championTeleportEffect",
+        "enemyShowupEffect",
     };
 
     void LoadGameEffectPrefabs()

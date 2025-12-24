@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -11,7 +12,7 @@ public enum UpdateDirectionIndicatorPriority
     VeryHigh = 0,
 }
 
-[RequireComponent(typeof(BotSensor), typeof(BotAIManager))]
+[RequireComponent(typeof(BotSensor), typeof(BotAIManager), typeof(ScriptExecutionCore))]
 [DefaultExecutionOrder(0)]
 public partial class CustomMono : MonoSelfAware
 {
@@ -66,6 +67,7 @@ public partial class CustomMono : MonoSelfAware
     public Skill skill;
     public Attack attack => skill.attack;
     public SkillBase mainSkill => skill.mainSkill;
+    public ScriptExecutionCore scriptExecutionCore;
 
     public override void Awake()
     {
@@ -98,6 +100,7 @@ public partial class CustomMono : MonoSelfAware
         arrowIndicator = directionIndicator
             .transform.Find("ArrowIndicator")
             .GetComponent<SpriteRenderer>();
+        scriptExecutionCore = GetComponent<ScriptExecutionCore>();
     }
 
     void GetAllChildObject()
@@ -116,6 +119,15 @@ public partial class CustomMono : MonoSelfAware
         GameUIManager.Instance.GenerateAndBindChampUI(this);
         GameManager.Instance.onGameStateChange += ConfigChampionForPhase;
         allyTags.Add(gameObject.tag);
+#if false
+        cm
+            Invoke()
+            LateStart(){
+
+            }
+        gm.hae()
+
+#endif
     }
 
     private void FixedUpdate()
@@ -182,6 +194,7 @@ public partial class CustomMono : MonoSelfAware
         GameManager.Instance.RemoveCustomMono(this);
         GameUIManager.Instance.DestroyChampUI(this);
         GameManager.Instance.onGameStateChange -= ConfigChampionForPhase;
+        RemoveChildEffectsBeforeDestroy();
     }
 
     /// <summary>
@@ -237,6 +250,20 @@ public partial class CustomMono : MonoSelfAware
     {
         actionBlocking = false;
         movementActionBlocking = false;
-        stat.SetupForReuse();
+        stat.SetupForReuseIE();
+    }
+
+    public void SetupForReuseAsNewEnemy()
+    {
+        actionBlocking = false;
+        movementActionBlocking = false;
+        stat.SetupForReuseIE();
+        scriptExecutionCore.lateEnableOnce += Hide;
+    }
+
+    void RemoveChildEffectsBeforeDestroy()
+    {
+        for (int i = 0; i < rotationAndCenterObject.transform.childCount; i++)
+            rotationAndCenterObject.transform.GetChild(i).SetParent(null);
     }
 }

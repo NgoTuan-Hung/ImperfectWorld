@@ -125,7 +125,8 @@ public partial class GameManager
         gooRushSmokePool,
         mukaiRockPool,
         mukaiPillarPool,
-        championTeleportEffectPool;
+        championTeleportEffectPool,
+        enemyShowupEffectPool;
     List<string> objectPoolNames = new()
     {
         "moonSlashExplodePool",
@@ -246,6 +247,7 @@ public partial class GameManager
         "mukaiRockPool",
         "mukaiPillarPool",
         "championTeleportEffectPool",
+        "enemyShowupEffectPool",
     };
 
     void InitAllEffectPools()

@@ -3,6 +3,7 @@ using System.Collections;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
+[DefaultExecutionOrder(1)]
 public class Attack : SkillBase
 {
     Func<Vector2, Vector2, CustomMono, IEnumerator> triggerIE;
@@ -23,7 +24,7 @@ public class Attack : SkillBase
     public override void Start()
     {
         base.Start();
-        StatChangeRegister();
+        customMono.scriptExecutionCore.lateAwake0 += StatChangeRegister;
     }
 
     public override void Config()

@@ -180,105 +180,11 @@ public class ObjectPool
         GameObject.Destroy(p_poolObject.gameObject);
     }
 
-    public PoolObject PickOne(Action<PoolObject> initAction)
-    {
-        for (int i = 0; i < pool.Count; i++)
-        {
-            if (!pool[i].gameObject.activeSelf)
-            {
-                initAction(pool[i]);
-                pool[i].gameObject.SetActive(true);
-                if (pool[i].idleScheme != null)
-                    GameManager.Instance.StopCoroutine(pool[i].idleScheme);
-                return pool[i];
-            }
-        }
-
-        PoolObject t_poolObject = new() { gameObject = GameObject.Instantiate(prefab) };
-        handleCachedComponentRefs(t_poolObject);
-        initAction(t_poolObject);
-        pool.Add(t_poolObject);
-
-        return t_poolObject;
-    }
-
-    public List<PoolObject> Pick(int n)
-    {
-        int count = 0;
-        List<PoolObject> poolObjects = new List<PoolObject>();
-        for (int i = 0; i < pool.Count; i++)
-        {
-            if (count >= n)
-                return poolObjects;
-
-            if (!pool[i].gameObject.activeSelf)
-            {
-                pool[i].gameObject.SetActive(true);
-                if (pool[i].idleScheme != null)
-                    GameManager.Instance.StopCoroutine(pool[i].idleScheme);
-                poolObjects.Add(pool[i]);
-                count++;
-            }
-        }
-
-        /* In case the list is not enough */
-        while (count < n)
-        {
-            PoolObject t_poolObject = new() { gameObject = GameObject.Instantiate(prefab) };
-            handleCachedComponentRefs(t_poolObject);
-            pool.Add(t_poolObject);
-            poolObjects.Add(t_poolObject);
-            count++;
-        }
-
-        return poolObjects;
-    }
-
-    public List<PoolObject> PickAndPlace(int n, Vector3 position)
-    {
-        int count = 0;
-        List<PoolObject> poolObjects = new List<PoolObject>();
-        for (int i = 0; i < pool.Count; i++)
-        {
-            if (count >= n)
-                return poolObjects;
-
-            if (!pool[i].gameObject.activeSelf)
-            {
-                pool[i].gameObject.SetActive(true);
-                pool[i].gameObject.transform.position = position;
-                if (pool[i].idleScheme != null)
-                    GameManager.Instance.StopCoroutine(pool[i].idleScheme);
-                poolObjects.Add(pool[i]);
-                count++;
-            }
-        }
-
-        /* In case the list is not enough */
-        while (count < n)
-        {
-            PoolObject t_poolObject = new() { gameObject = GameObject.Instantiate(prefab) };
-            handleCachedComponentRefs(t_poolObject);
-            t_poolObject.gameObject.transform.position = position;
-            pool.Add(t_poolObject);
-            poolObjects.Add(t_poolObject);
-            count++;
-        }
-
-        return poolObjects;
-    }
-
     Component GetComponent(Type type, PoolObject poolObject) =>
         poolObject.gameObject.GetComponent(type);
 
     Component GetComponentInChildren(Type type, PoolObject poolObject) =>
         poolObject.gameObject.GetComponentInChildren(type);
-
-    public void ForEach(Action<PoolObject> action)
-    {
-        for (int i = 0; i < pool.Count; i++)
-            action(pool[i]);
-    }
 
     public GameEffect PickOneGameEffect() => PickOne().GameEffect;
 }

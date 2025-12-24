@@ -308,16 +308,14 @@ public partial class GameManager : MonoBehaviour
             t_customMono.transform.position = HexGridManager
                 .Instance.GetNodeAtPosition(nERI.roomEnemyInfos[i].position)
                 .pos;
-            t_customMono.SetupForReuse();
+            t_customMono.SetupForReuseAsNewEnemy();
             t_customMono.stat.currentHealthPointReachZeroEvent += PawnDeathHandler;
-            GetEnemyTeamChampions().Add(t_customMono);
             enemyCount++;
         }
 
         StartCoroutine(DistributeItemForEnemies());
         StartCoroutine(DistributeStatUpgradeForEnemies());
         GetEnemyTeamChampions().ForEach(cRE => DisableBattleMode(cRE));
-        StartCoroutine(WaitHideAllEnemies());
     }
 
     void LoadShopRoom()
@@ -354,7 +352,10 @@ public partial class GameManager : MonoBehaviour
                 ChangeGameState(GameState.BattlePhase);
                 GameUIManager.Instance.gameInteractionButton.Hide();
                 ShowAllEnemies();
-                ShoveAsidePlayerChampion();
+                if (shoveTurn % 2 == 0)
+                    ShoveAsidePlayerChampion();
+                else
+                    ShoveAsideEnemyChampion();
                 GetEnemyTeamChampions().ForEach(cRE => EnableBattleMode(cRE));
                 GetPlayerTeamChampions().ForEach(pC => EnableBattleMode(pC));
                 HexGridManager.Instance.ClearAllOccupy();
