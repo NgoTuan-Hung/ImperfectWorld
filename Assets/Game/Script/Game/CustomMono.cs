@@ -266,4 +266,10 @@ public partial class CustomMono : MonoSelfAware
         for (int i = 0; i < rotationAndCenterObject.transform.childCount; i++)
             rotationAndCenterObject.transform.GetChild(i).SetParent(null);
     }
+
+    public void StopPhysic()
+    {
+        rigidbody2D.linearVelocity = Vector2.zero;
+        rigidbody2D.totalForce = Vector2.zero;
+    }
 }

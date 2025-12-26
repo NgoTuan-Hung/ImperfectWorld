@@ -9,6 +9,7 @@ namespace Map
         private static MapConfig config;
 
         private static List<float> layerDistances;
+
         // ALL nodes by layer:
         private static readonly List<List<Node>> nodes = new List<List<Node>>();
 
@@ -37,10 +38,19 @@ namespace Map
             RemoveCrossConnections();
 
             // select all the nodes with connections:
-            List<Node> nodesList = nodes.SelectMany(n => n).Where(n => n.incoming.Count > 0 || n.outgoing.Count > 0).ToList();
+            List<Node> nodesList = nodes
+                .SelectMany(n => n)
+                .Where(n => n.incoming.Count > 0 || n.outgoing.Count > 0)
+                .ToList();
+
+            SetupNodeTypes(nodesList);
 
             // pick a random name of the boss level for this map:
-            string bossNodeName = config.nodeBlueprints.Where(b => b.nodeType == NodeType.Boss).ToList().Random().name;
+            string bossNodeName = config
+                .nodeBlueprints.Where(b => b.nodeType == NodeType.Boss)
+                .ToList()
+                .Random()
+                .name;
             return new Map(conf.name, bossNodeName, nodesList, new List<Vector2Int>());
         }
 
@@ -53,7 +63,8 @@ namespace Map
 
         private static float GetDistanceToLayer(int layerIndex)
         {
-            if (layerIndex < 0 || layerIndex > layerDistances.Count) return 0f;
+            if (layerIndex < 0 || layerIndex > layerDistances.Count)
+                return 0f;
 
             return layerDistances.Take(layerIndex + 1).Sum();
         }
@@ -68,20 +79,123 @@ namespace Map
 
             for (int i = 0; i < config.GridWidth; i++)
             {
-                var supportedRandomNodeTypes =
-                    config.randomNodes.Where(t => config.nodeBlueprints.Any(b => b.nodeType == t)).ToList();
-                NodeType nodeType = Random.Range(0f, 1f) < layer.randomizeNodes && supportedRandomNodeTypes.Count > 0
-                    ? supportedRandomNodeTypes.Random()
-                    : layer.nodeType;
-                string blueprintName = config.nodeBlueprints.Where(b => b.nodeType == nodeType).ToList().Random().name;
+                var supportedRandomNodeTypes = config
+                    .randomNodes.Where(t => config.nodeBlueprints.Any(b => b.nodeType == t))
+                    .ToList();
+
+                NodeType? nodeType;
+                string blueprintName;
+                if (layer.randomizeNodes)
+                {
+                    nodeType = null;
+                    blueprintName = "";
+                }
+                else
+                {
+                    nodeType = layer.nodeType;
+                    blueprintName = config
+                        .nodeBlueprints.Where(b => b.nodeType == nodeType)
+                        .ToList()
+                        .Random()
+                        .name;
+                }
+
                 Node node = new Node(nodeType, blueprintName, new Vector2Int(i, layerIndex))
                 {
-                    position = new Vector2(-offset + i * layer.nodesApartDistance, GetDistanceToLayer(layerIndex))
+                    position = new Vector2(
+                        -offset + i * layer.nodesApartDistance,
+                        GetDistanceToLayer(layerIndex)
+                    ),
                 };
                 nodesOnThisLayer.Add(node);
             }
 
             nodes.Add(nodesOnThisLayer);
+        }
+
+        static void SetupNodeTypes(List<Node> nodes)
+        {
+            List<Node> pendingNodes = nodes.Where(n => n.nodeType == null).ToList();
+
+            var picker = new WeightedPicker<NodeType>(
+                new[]
+                {
+                    new WeightedItem<NodeType>(NodeType.MinorEnemy, 53),
+                    new WeightedItem<NodeType>(NodeType.Store, 5),
+                    new WeightedItem<NodeType>(NodeType.Mystery, 22),
+                    new WeightedItem<NodeType>(NodeType.RestSite, 12),
+                    new WeightedItem<NodeType>(NodeType.EliteEnemy, 8),
+                }
+            );
+
+            List<Node> uNHandledNodes = new();
+            foreach (Node node in pendingNodes)
+            {
+                var type = picker.Pick();
+                switch (type)
+                {
+                    case NodeType.MinorEnemy:
+                        SetupNode(node, NodeType.MinorEnemy);
+                        break;
+                    case NodeType.Store:
+                        if (!CheckSameTypeConnection(node, NodeType.Store))
+                            SetupNode(node, NodeType.Store);
+                        else
+                            uNHandledNodes.Add(node);
+                        break;
+                    case NodeType.Mystery:
+                        SetupNode(node, NodeType.Mystery);
+                        break;
+                    case NodeType.RestSite:
+                        if (!CheckSameTypeConnection(node, NodeType.RestSite))
+                            SetupNode(node, NodeType.RestSite);
+                        else
+                            uNHandledNodes.Add(node);
+                        break;
+                    case NodeType.EliteEnemy:
+                        if (!CheckSameTypeConnection(node, NodeType.EliteEnemy))
+                        {
+                            if (node.point.y > 5)
+                                SetupNode(node, NodeType.EliteEnemy);
+                            else
+                                uNHandledNodes.Add(node);
+                        }
+                        else
+                            uNHandledNodes.Add(node);
+                        break;
+                    default:
+                        break;
+                }
+            }
+
+            uNHandledNodes.ForEach(n => SetupNode(n, NodeType.MinorEnemy));
+        }
+
+        static bool CheckSameTypeConnection(Node node, NodeType type)
+        {
+            foreach (var i in node.incoming)
+            {
+                if (GetNode(i).nodeType == type)
+                    return true;
+            }
+
+            foreach (var o in node.outgoing)
+            {
+                if (GetNode(o).nodeType == type)
+                    return true;
+            }
+
+            return false;
+        }
+
+        static void SetupNode(Node node, NodeType type)
+        {
+            string blueprintName = config
+                .nodeBlueprints.Where(b => b.nodeType == type)
+                .ToList()
+                .Random()
+                .name;
+            node.SetupNode(type, blueprintName);
         }
 
         private static void RandomizeNodePositions()
@@ -90,9 +204,8 @@ namespace Map
             {
                 List<Node> list = nodes[index];
                 MapLayer layer = config.layers[index];
-                float distToNextLayer = index + 1 >= layerDistances.Count
-                    ? 0f
-                    : layerDistances[index + 1];
+                float distToNextLayer =
+                    index + 1 >= layerDistances.Count ? 0f : layerDistances[index + 1];
                 float distToPreviousLayer = layerDistances[index];
 
                 foreach (Node node in list)
@@ -101,7 +214,7 @@ namespace Map
                     float yRnd = Random.Range(-0.5f, 0.5f);
 
                     float x = xRnd * layer.nodesApartDistance;
-                    float y = yRnd < 0 ? distToPreviousLayer * yRnd: distToNextLayer * yRnd;
+                    float y = yRnd < 0 ? distToPreviousLayer * yRnd : distToNextLayer * yRnd;
 
                     node.position += new Vector2(x, y) * layer.randomizePosition;
                 }
@@ -125,61 +238,69 @@ namespace Map
         private static void RemoveCrossConnections()
         {
             for (int i = 0; i < config.GridWidth - 1; ++i)
-                for (int j = 0; j < config.layers.Count - 1; ++j)
+            for (int j = 0; j < config.layers.Count - 1; ++j)
+            {
+                Node node = GetNode(new Vector2Int(i, j));
+                if (node == null || node.HasNoConnections())
+                    continue;
+                Node right = GetNode(new Vector2Int(i + 1, j));
+                if (right == null || right.HasNoConnections())
+                    continue;
+                Node top = GetNode(new Vector2Int(i, j + 1));
+                if (top == null || top.HasNoConnections())
+                    continue;
+                Node topRight = GetNode(new Vector2Int(i + 1, j + 1));
+                if (topRight == null || topRight.HasNoConnections())
+                    continue;
+
+                // Debug.Log("Inspecting node for connections: " + node.point);
+                if (!node.outgoing.Any(element => element.Equals(topRight.point)))
+                    continue;
+                if (!right.outgoing.Any(element => element.Equals(top.point)))
+                    continue;
+
+                // Debug.Log("Found a cross node: " + node.point);
+
+                // we managed to find a cross node:
+                // 1) add direct connections:
+                node.AddOutgoing(top.point);
+                top.AddIncoming(node.point);
+
+                right.AddOutgoing(topRight.point);
+                topRight.AddIncoming(right.point);
+
+                float rnd = Random.Range(0f, 1f);
+                if (rnd < 0.2f)
                 {
-                    Node node = GetNode(new Vector2Int(i, j));
-                    if (node == null || node.HasNoConnections()) continue;
-                    Node right = GetNode(new Vector2Int(i + 1, j));
-                    if (right == null || right.HasNoConnections()) continue;
-                    Node top = GetNode(new Vector2Int(i, j + 1));
-                    if (top == null || top.HasNoConnections()) continue;
-                    Node topRight = GetNode(new Vector2Int(i + 1, j + 1));
-                    if (topRight == null || topRight.HasNoConnections()) continue;
-
-                    // Debug.Log("Inspecting node for connections: " + node.point);
-                    if (!node.outgoing.Any(element => element.Equals(topRight.point))) continue;
-                    if (!right.outgoing.Any(element => element.Equals(top.point))) continue;
-
-                    // Debug.Log("Found a cross node: " + node.point);
-
-                    // we managed to find a cross node:
-                    // 1) add direct connections:
-                    node.AddOutgoing(top.point);
-                    top.AddIncoming(node.point);
-
-                    right.AddOutgoing(topRight.point);
-                    topRight.AddIncoming(right.point);
-
-                    float rnd = Random.Range(0f, 1f);
-                    if (rnd < 0.2f)
-                    {
-                        // remove both cross connections:
-                        // a) 
-                        node.RemoveOutgoing(topRight.point);
-                        topRight.RemoveIncoming(node.point);
-                        // b) 
-                        right.RemoveOutgoing(top.point);
-                        top.RemoveIncoming(right.point);
-                    }
-                    else if (rnd < 0.6f)
-                    {
-                        // a) 
-                        node.RemoveOutgoing(topRight.point);
-                        topRight.RemoveIncoming(node.point);
-                    }
-                    else
-                    {
-                        // b) 
-                        right.RemoveOutgoing(top.point);
-                        top.RemoveIncoming(right.point);
-                    }
+                    // remove both cross connections:
+                    // a)
+                    node.RemoveOutgoing(topRight.point);
+                    topRight.RemoveIncoming(node.point);
+                    // b)
+                    right.RemoveOutgoing(top.point);
+                    top.RemoveIncoming(right.point);
                 }
+                else if (rnd < 0.6f)
+                {
+                    // a)
+                    node.RemoveOutgoing(topRight.point);
+                    topRight.RemoveIncoming(node.point);
+                }
+                else
+                {
+                    // b)
+                    right.RemoveOutgoing(top.point);
+                    top.RemoveIncoming(right.point);
+                }
+            }
         }
 
         private static Node GetNode(Vector2Int p)
         {
-            if (p.y >= nodes.Count) return null;
-            if (p.x >= nodes[p.y].Count) return null;
+            if (p.y >= nodes.Count)
+                return null;
+            if (p.x >= nodes[p.y].Count)
+                return null;
 
             return nodes[p.y][p.x];
         }
@@ -208,13 +329,20 @@ namespace Map
 
             candidateXs.Shuffle();
             IEnumerable<int> startingXs = candidateXs.Take(numOfStartingNodes);
-            List<Vector2Int> startingPoints = (from x in startingXs select new Vector2Int(x, 0)).ToList();
+            List<Vector2Int> startingPoints = (
+                from x in startingXs
+                select new Vector2Int(x, 0)
+            ).ToList();
 
             candidateXs.Shuffle();
             IEnumerable<int> preBossXs = candidateXs.Take(numOfPreBossNodes);
-            List<Vector2Int> preBossPoints = (from x in preBossXs select new Vector2Int(x, finalNode.y - 1)).ToList();
+            List<Vector2Int> preBossPoints = (
+                from x in preBossXs
+                select new Vector2Int(x, finalNode.y - 1)
+            ).ToList();
 
-            int numOfPaths = Mathf.Max(numOfStartingNodes, numOfPreBossNodes) + Mathf.Max(0, config.extraPaths);
+            int numOfPaths =
+                Mathf.Max(numOfStartingNodes, numOfPreBossNodes) + Mathf.Max(0, config.extraPaths);
             for (int i = 0; i < numOfPaths; ++i)
             {
                 Vector2Int startNode = startingPoints[i % numOfStartingNodes];

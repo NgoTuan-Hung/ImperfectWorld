@@ -1009,6 +1009,7 @@ public partial class GameManager : MonoBehaviour
 
     void FallIn(CustomMono customMono)
     {
+        customMono.StopPhysic();
         var finalPos = formationPositions[formationIndex];
         HexGridManager.Instance.SetOccupiedNode(customMono, finalPos);
         championTeleportEffectPool.PickOne().gameObject.transform.position = customMono
