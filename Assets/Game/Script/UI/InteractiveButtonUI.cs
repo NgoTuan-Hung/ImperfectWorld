@@ -12,7 +12,7 @@ public class InteractiveButtonUI
     Image image;
     Color defaultImageColor;
 
-    private void Awake()
+    public virtual void Awake()
     {
         image = GetComponent<Image>();
         defaultImageColor = image.color;

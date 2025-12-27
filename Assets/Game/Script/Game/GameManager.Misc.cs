@@ -15,6 +15,7 @@ public enum GameState
     BattlePhase,
     RewardPhase,
     ShopPhase,
+    MysteryEventPhase,
 }
 
 public enum ComplexTextID
@@ -499,5 +500,15 @@ public partial class GameManager
                         HexGridManager.Instance.SetOccupyNextAvailable(enemy);
                 }
             });
+    }
+
+    List<MysteryEventDataSO> mysteryEventDataSOs;
+
+    public void LoadMysteryEventRoom()
+    {
+        ChangeGameState(GameState.MysteryEventPhase);
+        GameUIManager.Instance.TurnOffMap();
+        var mysteryEventDataSO = mysteryEventDataSOs[Random.Range(0, mysteryEventDataSOs.Count)];
+        GameUIManager.Instance.ShowMysteryEvent(mysteryEventDataSO);
     }
 }

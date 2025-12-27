@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d6127669ddade1a4687c93b83c2abdbe, type: 3}
+  m_Name: TreasureUnderTheSea
+  m_EditorClassIdentifier: Assembly-CSharp::MysteryEventDataSO
+  eventType: 0
+  description: "View from above the water, looking down into the sea. Just beneath
+    the water\u2019s surface, a mysterious treasure-like object floats at a short
+    distance. Below it, dozens of dark silhouettes of dangerous sharks circle in
+    the water. The sharks vary in size, their shapes partially obscured by depth
+    and water distortion, but clearly identifiable as predatory fish. The water surface
+    reflects light, creating an ominous underwater atmosphere. You decide to..."
+  sprite: {fileID: 21300000, guid: 464df2c5c374fba4bbc61bafcb937ccd, type: 3}
+  choices:
+  - '<color=white> Try grabbing it [<color=green>25%</color> success]  [units HP
+    reduce by <color=red>10%</color>] '
+  - I'm outta here

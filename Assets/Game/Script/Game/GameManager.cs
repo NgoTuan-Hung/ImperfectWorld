@@ -160,6 +160,9 @@ public partial class GameManager : MonoBehaviour
         championRewardUI = Resources.Load<GameObject>("ChampionRewardUI");
         itemDataSOs = Resources.LoadAll<ItemDataSO>("ScriptableObject/ItemDataSO").ToList();
         gold = Resources.Load<GameObject>("Gold");
+        mysteryEventDataSOs = Resources
+            .LoadAll<MysteryEventDataSO>("ScriptableObject/MysteryEventDataSO")
+            .ToList();
     }
 
     void ConstructActionFieldInfoDict()
@@ -271,7 +274,10 @@ public partial class GameManager : MonoBehaviour
                 case NodeType.Boss:
                     break;
                 case NodeType.Mystery:
+                {
+                    LoadMysteryEventRoom();
                     break;
+                }
                 default:
                     throw new ArgumentOutOfRangeException();
             }

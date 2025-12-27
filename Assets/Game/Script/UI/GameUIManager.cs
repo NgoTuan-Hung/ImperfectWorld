@@ -2,11 +2,13 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Coffee.UIEffects;
 using Map;
 using TMPEffects.Components;
 using TMPro;
 using UnityEditor.Animations;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public partial class GameUIManager : MonoEditorSingleton<GameUIManager>
@@ -65,6 +67,10 @@ public partial class GameUIManager : MonoEditorSingleton<GameUIManager>
         itemWares;
     PlayerGold playerGold;
     public DialogBox guideDialogBox;
+    public UIWithEffect eventZone,
+        eventImage;
+    MysteryEventDescription mysteryEventDescription;
+    List<EventChoiceButton> eventChoices;
 
     private void Awake()
     {
@@ -82,6 +88,8 @@ public partial class GameUIManager : MonoEditorSingleton<GameUIManager>
         menuMapButton.onClick.AddListener(ClickMenuMapButton);
         menuInventoryButton.onClick.AddListener(ClickMenuItemButton);
         guideDialogBox.pointerDownEvent += CloseGuideDialog;
+        mysteryEventDescription.onFinishWriter += ShowEventChoices;
+        eventZone.onComplete += WriteEventDescription;
     }
 
     void ClickMenuCharButton()
@@ -182,6 +190,14 @@ public partial class GameUIManager : MonoEditorSingleton<GameUIManager>
         itemWare = traderZone.transform.Find("ItemWare").gameObject;
         itemWares = itemWare.GetComponentsInChildren<TraderWare>(true).ToList();
         gameInteractionButtonTMP = gameInteractionButton.GetComponentInChildren<TextMeshProUGUI>();
+        eventZone = transform.Find("MainScreen/EventZone").GetComponent<UIWithEffect>();
+        eventImage = eventZone.transform.Find("EventImage").GetComponent<UIWithEffect>();
+        mysteryEventDescription = eventZone
+            .transform.Find("EventDescription")
+            .GetComponent<MysteryEventDescription>();
+        eventChoices = eventZone
+            .transform.GetComponentsInChildren<EventChoiceButton>(true)
+            .ToList();
 
         /* Temp */
         playerItemUIs = inventoryContent.transform.GetComponentsInChildren<Item>().ToList();
@@ -526,5 +542,39 @@ public partial class GameUIManager : MonoEditorSingleton<GameUIManager>
     public void ShowGuideDialogBox()
     {
         guideDialogBox.Show();
+    }
+
+    public void ShowMysteryEvent(MysteryEventDataSO mysteryEventDataSO)
+    {
+        choicesShown = false;
+        eventZone.gameObject.SetActive(true);
+        eventZone.tweener.ResetTime();
+        eventImage.tweener.ResetTime();
+        mysteryEventDescription.tMPWriter.ResetWriter();
+        eventChoices.ForEach(c => c.ResetChoice());
+        for (int i = 0; i < mysteryEventDataSO.choices.Count; i++)
+        {
+            eventChoices[i].SetupChoice(i, mysteryEventDataSO.choices[i]);
+        }
+    }
+
+    void WriteEventDescription()
+    {
+        mysteryEventDescription.tMPWriter.StartWriter();
+    }
+
+    bool choicesShown = false;
+
+    void ShowEventChoices()
+    {
+        if (!choicesShown)
+        {
+            foreach (var eC in eventChoices)
+            {
+                if (eC.isAvailable)
+                    eC.ShowButton();
+            }
+            choicesShown = true;
+        }
     }
 }

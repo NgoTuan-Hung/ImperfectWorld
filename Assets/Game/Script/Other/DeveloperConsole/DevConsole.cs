@@ -28,6 +28,12 @@ public class DevConsole : MonoBehaviour
             LoadNormalEnemyRoomVariant
         );
 
+        DebugLogConsole.AddCommand(
+            "load-mystery-event-room",
+            "Load Mystery Event Room",
+            LoadMysteryEventRoom
+        );
+
         DebugLogConsole.AddCommand("load-shop-room", "Load Shop Room", LoadShopRoom);
 
         DebugLogConsole.AddCommand(
@@ -81,6 +87,12 @@ public class DevConsole : MonoBehaviour
             "Load Normal Enemy Room Variant: "
                 + GameManager.Instance.LoadNormalEnemyRoomVariant(p_index)
         );
+    }
+
+    void LoadMysteryEventRoom()
+    {
+        Debug.Log("Loaded Mystery Event Room !!");
+        GameManager.Instance.LoadMysteryEventRoom();
     }
 
     void LoadShopRoom()
