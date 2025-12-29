@@ -6,7 +6,7 @@ using UnityEngine;
 /// Contains all the stats of the champion like HP, MP, ...
 /// </summary>
 [DefaultExecutionOrder(0)]
-public partial class Stat : MonoEditor
+public partial class Stat : MonoBehaviour
 {
     private void Awake()
     {
@@ -26,7 +26,7 @@ public partial class Stat : MonoEditor
         StartRegen();
     }
 
-    public override void Start()
+    public void Start()
     {
         SetupGameEvent();
         customMono.scriptExecutionCore.lateEnable0 += CalculateFinalStats;

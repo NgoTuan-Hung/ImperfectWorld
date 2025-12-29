@@ -11,9 +11,8 @@ public class AutoBattleAIBehavior : BaseAIBehavior
         base.Awake();
     }
 
-    public override void Start()
+    void Start()
     {
-        base.Start();
         pausableScript.pauseFixedUpdate += StopMove;
     }
 

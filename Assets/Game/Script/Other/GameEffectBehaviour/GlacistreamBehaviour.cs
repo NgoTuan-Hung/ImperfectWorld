@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
-public class GlacistreamBehaviour : MonoEditor, IGameEffectBehaviour
+public class GlacistreamBehaviour : MonoBehaviour, IGameEffectBehaviour
 {
     public CustomMono owner;
     public float firstCollisionDamage = 1f;
@@ -13,11 +13,6 @@ public class GlacistreamBehaviour : MonoEditor, IGameEffectBehaviour
     List<Collider2D> collidersThisTrig = new();
 
     public void Awake() { }
-
-    public override void Start()
-    {
-        base.Start();
-    }
 
     float t_randomBias;
 

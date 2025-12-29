@@ -49,9 +49,8 @@ public class StatusEffect : CustomMonoPal
         base.Awake();
     }
 
-    public override void Start()
+    public void Start()
     {
-        base.Start();
         statusEffectIndicator = customMono
             .directionModifier.transform.Find("StatusEffectIndicator")
             .gameObject;

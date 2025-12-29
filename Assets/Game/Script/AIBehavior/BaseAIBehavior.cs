@@ -18,11 +18,6 @@ public class BaseAIBehavior : CustomMonoPal
         pausableScript.Setup(NoFixedUpdate, DoFixedUpdate);
     }
 
-    public override void Start()
-    {
-        base.Start();
-    }
-
     public virtual void DoFixedUpdate() { }
 
     public virtual void FixedUpdate()

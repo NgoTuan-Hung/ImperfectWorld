@@ -6,7 +6,6 @@ public class PoolObject
 {
     public GameObject gameObject;
     public IEnumerator idleScheme;
-    public PoolRevampPoolObject poolRevampPoolObject;
     Dictionary<ComponentType, Component> components = new();
 
     T GetComponent<T>(ComponentType p_pOC)

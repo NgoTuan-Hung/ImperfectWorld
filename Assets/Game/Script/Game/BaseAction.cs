@@ -20,7 +20,7 @@ public enum ActionUse
 }
 
 [RequireComponent(typeof(CustomMono))]
-public partial class BaseAction : MonoEditor
+public partial class BaseAction : MonoBehaviour
 {
     public CustomMono customMono;
     public bool onCooldown;
@@ -51,9 +51,8 @@ public partial class BaseAction : MonoEditor
         canUse = true;
     }
 
-    public override void Start()
+    public virtual void Start()
     {
-        base.Start();
         /* Stop action when we die */
         customMono.stat.currentHealthPointReachZeroEvent += StopAndDisable;
         LoadActionFields();

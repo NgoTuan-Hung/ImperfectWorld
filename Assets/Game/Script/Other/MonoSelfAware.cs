@@ -1,17 +1,13 @@
 using System;
+using UnityEngine;
 
-public class MonoSelfAware : MonoEditor
+public class MonoSelfAware : MonoBehaviour
 {
     public Action deactivate;
 
     public virtual void Awake()
     {
         deactivate = Deactivate;
-    }
-
-    public override void Start()
-    {
-        base.Start();
     }
 
     void Deactivate()

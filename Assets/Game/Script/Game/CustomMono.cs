@@ -114,20 +114,11 @@ public partial class CustomMono : MonoSelfAware
         rotationAndCenterObject = transform.Find("RotationAndCenterObject").gameObject;
     }
 
-    public override void Start()
+    void Start()
     {
         GameUIManager.Instance.GenerateAndBindChampUI(this);
         GameManager.Instance.onGameStateChange += ConfigChampionForPhase;
         allyTags.Add(gameObject.tag);
-#if false
-        cm
-            Invoke()
-            LateStart(){
-
-            }
-        gm.hae()
-
-#endif
     }
 
     private void FixedUpdate()

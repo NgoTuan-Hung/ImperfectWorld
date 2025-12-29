@@ -1,13 +1,14 @@
+using UnityEngine;
+
 /// <summary>
 /// Any class which has a connection with CustomMono.
 /// </summary>
-public class CustomMonoPal : MonoEditor
+public class CustomMonoPal : MonoBehaviour
 {
     public CustomMono customMono;
-    public override void Start()
+
+    public virtual void Awake()
     {
-        base.Start();
+        customMono = GetComponent<CustomMono>();
     }
-    
-    public virtual void Awake() {customMono = GetComponent<CustomMono>();}
 }

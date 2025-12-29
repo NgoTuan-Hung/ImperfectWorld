@@ -15,7 +15,7 @@ public enum OneTimeContactInteraction
     StrikeLock,
 }
 
-public class CollideAndDamage : MonoEditor, IGameEffectBehaviour
+public class CollideAndDamage : MonoBehaviour, IGameEffectBehaviour
 {
     public CustomMono owner;
     public float collideDamage = 1f;
@@ -39,11 +39,6 @@ public class CollideAndDamage : MonoEditor, IGameEffectBehaviour
     Dictionary<GameEffectBehaviourField, object> gameEffectBehaviourFields = new();
 
     public void Awake() { }
-
-    public override void Start()
-    {
-        base.Start();
-    }
 
     float t_randomBias;
 

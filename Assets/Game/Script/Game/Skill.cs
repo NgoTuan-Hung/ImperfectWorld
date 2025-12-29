@@ -30,6 +30,4 @@ public class Skill : CustomMonoPal
             mainSkill = skillBases[1];
         }
     }
-
-    public override void Start() { }
 }

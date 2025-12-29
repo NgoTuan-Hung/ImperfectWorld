@@ -1,9 +1,12 @@
+using System;
 using DG.Tweening;
 using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class EventChoiceButton : InteractiveButtonUI
 {
+    MysteryEventDataSO mysteryEventDataSO;
     public bool isAvailable = false;
     CanvasGroup canvasGroup;
     TextMeshProUGUI textMeshProUGUI;
@@ -15,6 +18,12 @@ public class EventChoiceButton : InteractiveButtonUI
         canvasGroup = GetComponent<CanvasGroup>();
         textMeshProUGUI = GetComponentInChildren<TextMeshProUGUI>();
         gameObject.SetActive(false);
+        RegisterEvents();
+    }
+
+    private void RegisterEvents()
+    {
+        pointerClickEvent += OnSelected;
     }
 
     public void ShowButton()
@@ -24,10 +33,11 @@ public class EventChoiceButton : InteractiveButtonUI
         canvasGroup.DOFade(1, 1).SetEase(Ease.OutQuint);
     }
 
-    public void SetupChoice(int index, string choiceText)
+    public void SetupChoice(int index, MysteryEventDataSO mysteryEventDataSO)
     {
         choiceIndex = index;
-        textMeshProUGUI.text = choiceText;
+        this.mysteryEventDataSO = mysteryEventDataSO;
+        textMeshProUGUI.text = mysteryEventDataSO.choices[index];
         isAvailable = true;
     }
 
@@ -36,4 +46,7 @@ public class EventChoiceButton : InteractiveButtonUI
         gameObject.SetActive(false);
         isAvailable = false;
     }
+
+    void OnSelected(PointerEventData pointerEventData) =>
+        GameManager.Instance.MysteryEventChoiceSelectedCallback(choiceIndex, mysteryEventDataSO);
 }

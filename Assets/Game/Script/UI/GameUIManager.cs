@@ -11,7 +11,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public partial class GameUIManager : MonoEditorSingleton<GameUIManager>
+public partial class GameUIManager : MonoSingleton<GameUIManager>
 {
     private static WaitForSeconds _waitForSeconds1 = new(1f);
     Canvas canvas;
@@ -205,11 +205,6 @@ public partial class GameUIManager : MonoEditorSingleton<GameUIManager>
         {
             inventorySlots.Add(inventoryContent.transform.GetChild(i).gameObject);
         }
-    }
-
-    public override void Start()
-    {
-        base.Start();
     }
 
     private void FixedUpdate()
@@ -554,7 +549,7 @@ public partial class GameUIManager : MonoEditorSingleton<GameUIManager>
         eventChoices.ForEach(c => c.ResetChoice());
         for (int i = 0; i < mysteryEventDataSO.choices.Count; i++)
         {
-            eventChoices[i].SetupChoice(i, mysteryEventDataSO.choices[i]);
+            eventChoices[i].SetupChoice(i, mysteryEventDataSO);
         }
     }
 

@@ -58,11 +58,6 @@ public class Item : MonoSelfAware, IDragHandler, IEndDragHandler, IBeginDragHand
         itemTooltip.gameObject.SetActive(false);
     }
 
-    public override void Start()
-    {
-        base.Start();
-    }
-
     public void Init(ItemDataSO itemDataSO)
     {
         this.itemDataSO = itemDataSO;

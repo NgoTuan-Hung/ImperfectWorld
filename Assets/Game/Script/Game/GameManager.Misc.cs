@@ -511,4 +511,47 @@ public partial class GameManager
         var mysteryEventDataSO = mysteryEventDataSOs[Random.Range(0, mysteryEventDataSOs.Count)];
         GameUIManager.Instance.ShowMysteryEvent(mysteryEventDataSO);
     }
+
+    public void HealAllPlayerAlliesByPercentage(float ammount)
+    {
+        if (ammount < 0 || ammount > 1)
+            return;
+
+        GetPlayerTeamChampions()
+            .ForEach(c => c.statusEffect.Heal(ammount * c.stat.healthPoint.FinalValue));
+    }
+
+    Dictionary<ERelicBehavior, Type> behaviorMapper = new()
+    {
+        { ERelicBehavior.BloodWingBlessingBehavior, typeof(BloodWingBlessingBehavior) },
+        { ERelicBehavior.None, null },
+    };
+
+    public Type GetRelicBehaviorType(ERelicBehavior behavior) => behaviorMapper[behavior];
+
+    public void MysteryEventChoiceSelectedCallback(
+        int choiceIndex,
+        MysteryEventDataSO mysteryEventDataSO
+    )
+    {
+        switch (mysteryEventDataSO.eventType)
+        {
+            case MysteryEventType.TreasureUnderTheSea:
+                HandleTreasureUnderTheSeaEvent(choiceIndex);
+                break;
+            default:
+                break;
+        }
+    }
+
+    void HandleTreasureUnderTheSeaEvent(int choice)
+    {
+        switch (choice)
+        {
+            case 0:
+                break;
+            case 1:
+                break;
+        }
+    }
 }

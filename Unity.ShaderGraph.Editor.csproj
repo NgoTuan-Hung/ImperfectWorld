@@ -103,9 +103,9 @@
     <Compile Include="Library\PackageCache\com.unity.shadergraph@f8b69e83dfdd\Editor\Generation\Targets\PreviewTarget.cs" />
     <Compile Include="Library\PackageCache\com.unity.shadergraph@f8b69e83dfdd\Editor\Generation\Descriptors\BlockFieldDescriptor.cs" />
     <Compile Include="Library\PackageCache\com.unity.shadergraph@f8b69e83dfdd\Editor\Drawing\Views\Slots\PropertyConnectionStateSlotControlView.cs" />
-    <Compile Include="Library\PackageCache\com.unity.shadergraph@f8b69e83dfdd\Editor\Data\Graphs\Vector2MaterialSlot.cs" />
     <Compile Include="Library\PackageCache\com.unity.shadergraph@f8b69e83dfdd\Editor\Generation\Processors\PropertyCollector.cs" />
     <Compile Include="Library\PackageCache\com.unity.shadergraph@f8b69e83dfdd\Editor\Data\Graphs\BitangentMaterialSlot.cs" />
+    <Compile Include="Library\PackageCache\com.unity.shadergraph@f8b69e83dfdd\Editor\Data\Graphs\Vector2MaterialSlot.cs" />
     <Compile Include="Library\PackageCache\com.unity.shadergraph@f8b69e83dfdd\Editor\Data\Nodes\Input\Scene\CameraNode.cs" />
     <Compile Include="Library\PackageCache\com.unity.shadergraph@f8b69e83dfdd\Editor\Drawing\ViewModels\BlackboardViewModel.cs" />
     <Compile Include="Library\PackageCache\com.unity.shadergraph@f8b69e83dfdd\Editor\Util\AssertHelpers.cs" />
@@ -1272,6 +1272,22 @@
     </Reference>
     <Reference Include="nunit.framework">
       <HintPath>Library\PackageCache\com.unity.ext.nunit@031a54704bff\net40\unity-custom\nunit.framework.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="unityplastic">
+      <HintPath>Library\PackageCache\com.unity.collab-proxy@c854d1f7d97f\Lib\Editor\unityplastic.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Unity.Plastic.Antlr3.Runtime">
+      <HintPath>Library\PackageCache\com.unity.collab-proxy@c854d1f7d97f\Lib\Editor\Unity.Plastic.Antlr3.Runtime.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Unity.Plastic.Newtonsoft.Json">
+      <HintPath>Library\PackageCache\com.unity.collab-proxy@c854d1f7d97f\Lib\Editor\Unity.Plastic.Newtonsoft.Json.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="log4netPlastic">
+      <HintPath>Library\PackageCache\com.unity.collab-proxy@c854d1f7d97f\Lib\Editor\log4netPlastic.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Unity.VisualScripting.IonicZip">
