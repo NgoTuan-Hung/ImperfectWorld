@@ -5,8 +5,9 @@ using UnityEngine;
 
 public partial class GameManager
 {
-    GameObject item,
-        championRewardUI,
+    GameObject itemPF,
+        championRewardPF,
+        relicPF,
         gold;
     GameObject moonSlashExplode,
         magicLaserImpact,

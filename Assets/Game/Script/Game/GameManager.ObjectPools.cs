@@ -7,6 +7,7 @@ public partial class GameManager
 {
     public ObjectPool itemPool,
         championRewardUIPool,
+        relicPool,
         goldPool;
     public ObjectPool moonSlashExplodePool,
         magicLaserImpactPool,

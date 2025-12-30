@@ -127,6 +127,17 @@ public class ObjectPool
                         poolObject.ChampionRewardUI.deactivate += () => IdleScheme(poolObject);
                     };
                     break;
+                case ComponentType.Relic:
+                    handleCachedComponentRefs += (poolObject) =>
+                    {
+                        poolObject.AddComponent(
+                            ComponentType.Relic,
+                            getComponentInLocation(typeof(Relic), poolObject)
+                        );
+
+                        poolObject.Relic.deactivate += () => IdleScheme(poolObject);
+                    };
+                    break;
                 case ComponentType.BasicUI:
                     handleCachedComponentRefs += (poolObject) =>
                     {

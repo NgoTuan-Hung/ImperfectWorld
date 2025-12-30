@@ -9,6 +9,7 @@ public enum ComponentType
     TextPopupUI,
     Item,
     ChampionRewardUI,
+    Relic,
     BasicUI,
 };
 

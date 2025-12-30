@@ -105,12 +105,16 @@ public partial class GameManager : MonoBehaviour
     private void InitOtherPools()
     {
         itemPool = new(
-            item,
+            itemPF,
             new PoolArgument(ComponentType.Item, PoolArgument.WhereComponent.Self)
         );
         championRewardUIPool = new(
-            championRewardUI,
+            championRewardPF,
             new PoolArgument(ComponentType.ChampionRewardUI, PoolArgument.WhereComponent.Self)
+        );
+        relicPool = new(
+            relicPF,
+            new PoolArgument(ComponentType.Relic, PoolArgument.WhereComponent.Self)
         );
         goldPool = new(
             gold,
@@ -156,8 +160,9 @@ public partial class GameManager : MonoBehaviour
         );
         rareItemEffectPreset = Resources.Load<UIEffectPreset>("UIEffectPreset/RareItem");
         epicItemEffectPreset = Resources.Load<UIEffectPreset>("UIEffectPreset/EpicItem");
-        item = Resources.Load<GameObject>("Item");
-        championRewardUI = Resources.Load<GameObject>("ChampionRewardUI");
+        itemPF = Resources.Load<GameObject>("Item");
+        championRewardPF = Resources.Load<GameObject>("ChampionRewardUI");
+        relicPF = Resources.Load<GameObject>("Relic");
         itemDataSOs = Resources.LoadAll<ItemDataSO>("ScriptableObject/ItemDataSO").ToList();
         gold = Resources.Load<GameObject>("Gold");
         mysteryEventDataSOs = Resources

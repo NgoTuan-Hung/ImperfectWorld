@@ -374,7 +374,8 @@ public partial class GameManager
     }
 
     public NPC guide;
-    public Color transparentWhite = new(1, 1, 1, 0.5f);
+    public Color transparentWhite = new(1, 1, 1, 0.5f),
+        transparentRed = new(1, 0, 0, 0.5f);
 
     void RevealAllEnemies()
     {
@@ -512,6 +513,13 @@ public partial class GameManager
         GameUIManager.Instance.ShowMysteryEvent(mysteryEventDataSO);
     }
 
+    public void ExitMysteryEventRoom()
+    {
+        ChangeGameState(GameState.MapTravelingPhase);
+        GameUIManager.Instance.TurnOnMap();
+        GameUIManager.Instance.CloseMysteryEvent();
+    }
+
     public void HealAllPlayerAlliesByPercentage(float ammount)
     {
         if (ammount < 0 || ammount > 1)
@@ -544,13 +552,27 @@ public partial class GameManager
         }
     }
 
+    public List<RelicDataSO> relicDataSOs;
+
     void HandleTreasureUnderTheSeaEvent(int choice)
     {
+        GameUIManager.Instance.HideAllEventChoices();
         switch (choice)
         {
             case 0:
+                if (Random.Range(0, 1f) < 0.25f)
+                {
+                    var relic = relicPool
+                        .PickOne()
+                        .Relic.Setup(relicDataSOs.First(r => r.name.Equals("BloodWingBlessing")));
+
+                    GameUIManager.Instance.RewardRelicFromEvent(relic, ExitMysteryEventRoom);
+                }
+                else
+                    GameUIManager.Instance.TakeDamageFromEvent(ExitMysteryEventRoom);
                 break;
             case 1:
+                ExitMysteryEventRoom();
                 break;
         }
     }

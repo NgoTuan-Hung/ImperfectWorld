@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Coffee.UIEffects;
+using DG.Tweening;
 using Map;
 using TMPEffects.Components;
 using TMPro;
@@ -35,7 +36,10 @@ public partial class GameUIManager : MonoSingleton<GameUIManager>
         traderZone,
         buyZone,
         championWare,
-        itemWare;
+        itemWare,
+        relic,
+        relicContent,
+        eventContainer;
     ObjectPool healthAndManaIndicator,
         textPopupUIPool;
     public MapViewUI mapViewUI;
@@ -57,7 +61,8 @@ public partial class GameUIManager : MonoSingleton<GameUIManager>
     bool finishedReward = false;
     bool menuCharStateOn = false;
     bool menuItemStateOn = false;
-    public Image screenEffectImg;
+    public Image screenEffectImg,
+        eventEffect;
     public Animator screenEffectAnimator;
     TMPAnimator helperTextTMPA;
     public Vector2[] itemRewardPos = new Vector2[3];
@@ -191,13 +196,17 @@ public partial class GameUIManager : MonoSingleton<GameUIManager>
         itemWares = itemWare.GetComponentsInChildren<TraderWare>(true).ToList();
         gameInteractionButtonTMP = gameInteractionButton.GetComponentInChildren<TextMeshProUGUI>();
         eventZone = transform.Find("MainScreen/EventZone").GetComponent<UIWithEffect>();
-        eventImage = eventZone.transform.Find("EventImage").GetComponent<UIWithEffect>();
-        mysteryEventDescription = eventZone
+        eventContainer = eventZone.transform.Find("EventContainer").gameObject;
+        eventEffect = eventZone.transform.Find("EventEffect").GetComponent<Image>();
+        eventImage = eventContainer.transform.Find("EventImage").GetComponent<UIWithEffect>();
+        mysteryEventDescription = eventContainer
             .transform.Find("EventDescription")
             .GetComponent<MysteryEventDescription>();
-        eventChoices = eventZone
+        eventChoices = eventContainer
             .transform.GetComponentsInChildren<EventChoiceButton>(true)
             .ToList();
+        relic = transform.Find("MainScreen/Relic").gameObject;
+        relicContent = relic.transform.Find("Viewport/Content").gameObject;
 
         /* Temp */
         playerItemUIs = inventoryContent.transform.GetComponentsInChildren<Item>().ToList();
@@ -553,6 +562,13 @@ public partial class GameUIManager : MonoSingleton<GameUIManager>
         }
     }
 
+    public void CloseMysteryEvent()
+    {
+        eventZone.gameObject.SetActive(false);
+    }
+
+    public void HideAllEventChoices() => eventChoices.ForEach(c => c.Hide());
+
     void WriteEventDescription()
     {
         mysteryEventDescription.tMPWriter.StartWriter();
@@ -571,5 +587,39 @@ public partial class GameUIManager : MonoSingleton<GameUIManager>
             }
             choicesShown = true;
         }
+    }
+
+    public void ShowRelic(Relic relic)
+    {
+        relic.transform.SetParent(relicContent.transform, false);
+    }
+
+    public void TakeDamageFromEvent(Action finishCallback)
+    {
+        eventContainer.transform.DOShakePosition(1, 10).OnComplete(() => finishCallback?.Invoke());
+        eventEffect.color = GameManager.Instance.transparentRed;
+        eventEffect.DOColor(Vector4.zero, 1);
+    }
+
+    public void RewardRelicFromEvent(Relic relic, Action finishCallback)
+    {
+        relic.transform.SetParent(eventZone.transform, false);
+        relic.transform.localPosition = Vector3.zero;
+        RectTransform relicRT = relic.transform as RectTransform;
+        relicRT
+            .DOSizeDelta(new Vector2(300, 300), 1)
+            .SetEase(Ease.OutQuint)
+            .OnComplete(() =>
+            {
+                relicRT.transform.DOMove(relicContent.transform.position, 1).SetEase(Ease.InQuint);
+                relicRT
+                    .DOSizeDelta(new Vector2(50, 50), 1)
+                    .SetEase(Ease.OutQuint)
+                    .OnComplete(() =>
+                    {
+                        relic.transform.SetParent(relicContent.transform, false);
+                        finishCallback?.Invoke();
+                    });
+            });
     }
 }
