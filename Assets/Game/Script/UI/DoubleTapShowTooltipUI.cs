@@ -1,60 +1,66 @@
-using TMPro;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using UnityEngine.UIElements;
 
 public class DoubleTapShowTooltipUI : DoubleTapUI
 {
-    protected TextMeshProUGUI nameTMP,
-        descriptionTMP;
-    DoubleTapUI textContainer;
-    GameObject tooltip;
-    PointerDownUI exitButton;
+    DoubleTapTooltip tooltip;
+    IDoubleTapShowTooltipBehavior doubleTapShowTooltipBehavior;
 
-#if false
-    AC
-        MB own
-        ctor()
-
-    DTSTU : AC{
-        tmp n, dsc;
-        dtu tc;
-        tt;
-        eb;
-
-        ctor : b()
-            tt = own.
-    }
-#endif
-
-    private void Awake()
+    public void Init(
+        IDoubleTapShowTooltipBehavior doubleTapShowTooltipBehavior,
+        Vector3 tooltipOffset,
+        Color tooltipColor
+    )
     {
-        tooltip = transform.Find("Tooltip").gameObject;
-        nameTMP = tooltip.transform.Find("NameBackground/Name").GetComponent<TextMeshProUGUI>();
-        textContainer = tooltip
-            .transform.Find("TooltipSV/Viewport/Content")
-            .GetComponent<DoubleTapUI>();
-        descriptionTMP = textContainer.GetComponent<TextMeshProUGUI>();
-        exitButton = tooltip.transform.Find("X").GetComponent<PointerDownUI>();
+        this.doubleTapShowTooltipBehavior = doubleTapShowTooltipBehavior;
+        tooltip = GameUIManager.Instance.GetNewDoubleTapTooltip().GetComponent<DoubleTapTooltip>();
+        tooltip.Init(transform, tooltipOffset, tooltipColor);
+        tooltip.gameObject.SetActive(false);
+    }
+
+    private void OnDisable()
+    {
+        tooltip.gameObject.SetActive(false);
+    }
+
+    private void Start()
+    {
         doubleTapEvent += ShowTooltip;
-        textContainer.doubleTapEvent += GetTooltipForDescription;
-        exitButton.pointerDownEvent += CloseTooltip;
+        tooltip.textContainer.doubleTapEvent +=
+            doubleTapShowTooltipBehavior.GetTooltipForDescription;
+        tooltip.exitButton.pointerDownEvent += CloseTooltip;
     }
 
-    void ShowTooltip(PointerEventData eventData)
+    public void ShowTooltip(PointerEventData eventData)
     {
-        tooltip.SetActive(true);
-        ResetDescription();
+        tooltip.gameObject.SetActive(true);
+        doubleTapShowTooltipBehavior.ResetDescription();
     }
 
     void CloseTooltip(PointerEventData eventData)
     {
-        tooltip.SetActive(false);
+        tooltip.gameObject.SetActive(false);
     }
 
-    public virtual void ResetDescription() { }
+    public void SetDescription(string description) => tooltip.descriptionTMP.text = description;
 
-    public virtual void GetTooltipForDescription(PointerEventData pointerDownEvent) { }
+    public void SetTooltipFor(string description)
+    {
+        if (TooltipHelper.GenerateTooltip(description) is { Length: > 0 } result)
+            tooltip.descriptionTMP.text = result;
+    }
 
-    public virtual void SetupTooltip() { }
+    public IEnumerator SetName(string name)
+    {
+        while (tooltip.nameTMP == null)
+            yield return null;
+
+        tooltip.nameTMP.text = name;
+    }
+
+    private void OnDestroy()
+    {
+        Destroy(tooltip.gameObject);
+    }
 }

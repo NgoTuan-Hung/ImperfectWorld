@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Linq;
 using UnityEngine;
 
 public partial class GameManager
@@ -90,5 +91,20 @@ public partial class GameManager
     {
         yield return null;
         EnableBattleMode(customMono);
+    }
+
+    public void TestRelic()
+    {
+        var relic = relicPool
+            .PickOne()
+            .Relic.Setup(relicDataSOs.First(r => r.name.Equals("BloodWingBlessing")));
+
+        relic.transform.SetParent(GameUIManager.Instance.relicContent.transform, false);
+    }
+
+    public void TestItem()
+    {
+        var item = GetRandomItemRewards(1);
+        GetPlayerTeamChampions()[0].stat.EquipItem(item[0]);
     }
 }

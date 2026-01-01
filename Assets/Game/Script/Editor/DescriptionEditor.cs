@@ -12,6 +12,7 @@ public class DescriptionEditor : EditorWindow
         Skill,
         Item,
         StatUpgrade,
+        Relic,
     }
 
     public CurrentSOType currentSOType = CurrentSOType.Skill;
@@ -100,7 +101,10 @@ public class DescriptionEditor : EditorWindow
                     descTextField.value = statUpgradeData.description;
                     currentSOType = CurrentSOType.StatUpgrade;
                     break;
-
+                case RelicDataSO relicData:
+                    descTextField.value = relicData.description;
+                    currentSOType = CurrentSOType.Relic;
+                    break;
                 default:
                     break;
             }
@@ -149,6 +153,12 @@ public class DescriptionEditor : EditorWindow
                 case CurrentSOType.StatUpgrade:
                 {
                     (scriptableObjectObjectField.value as StatUpgrade).description =
+                        descTextField.value;
+                    break;
+                }
+                case CurrentSOType.Relic:
+                {
+                    (scriptableObjectObjectField.value as RelicDataSO).description =
                         descTextField.value;
                     break;
                 }

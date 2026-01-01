@@ -304,7 +304,7 @@ public class ChampInfoPanel : MonoBehaviour, IPointerDownHandler
 
     public void AttachItem(Item itemUI)
     {
-        itemUI.transform.SetParent(itemSVContent.transform);
+        itemUI.transform.SetParent(itemSVContent.transform, false);
         itemUI.rectTransform.anchoredPosition = Vector2.zero;
         itemUI.Attach(this);
         itemUI.SetAsEquipped();
@@ -322,9 +322,9 @@ public class ChampInfoPanel : MonoBehaviour, IPointerDownHandler
         transform.SetAsLastSibling();
     }
 
-    public void ShowIfAlive()
+    public void ShowIfOwnerIsActivated()
     {
-        if (owner.stat.alive)
+        if (owner.gameObject.activeSelf)
             gameObject.SetActive(true);
     }
 

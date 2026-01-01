@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 3541006863794641708}
   - component: {fileID: 6111216673553884406}
   - component: {fileID: 890607067753677492}
-  - component: {fileID: 8948918513983636125}
+  - component: {fileID: 4311764165270604581}
   - component: {fileID: 8199590487559871541}
   - component: {fileID: 1254542356154368698}
   m_Layer: 5
@@ -94,7 +94,7 @@ MonoBehaviour:
   itemDataSO: {fileID: 11400000, guid: b635e26c922dd764b973060b77dc966f, type: 2}
   rectTransform: {fileID: 0}
   state: 0
---- !u!114 &8948918513983636125
+--- !u!114 &4311764165270604581
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -103,9 +103,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 8170054557514386097}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cf2c669edb7dedf48a989529ac699cf9, type: 3}
+  m_Script: {fileID: 11500000, guid: 11355852af1453d4d85ae3395447a85b, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::DoubleTapUI
+  m_EditorClassIdentifier: Assembly-CSharp::DoubleTapShowTooltipUI
   lastClickTime: 0
 --- !u!114 &8199590487559871541
 MonoBehaviour:

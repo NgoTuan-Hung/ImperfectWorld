@@ -65,6 +65,9 @@ public class DevConsole : MonoBehaviour
             "Upgrade stat for battler",
             UpgradeStatFor
         );
+
+        DebugLogConsole.AddCommand("test-relic", "Test relic", TestRelic);
+        DebugLogConsole.AddCommand("test-item", "Test item", TestItem);
     }
 
     void GetAllBattlers()
@@ -169,4 +172,11 @@ public class DevConsole : MonoBehaviour
         else
             Debug.LogError("Invalid battler ID: " + battlerID);
     }
+
+    void TestRelic()
+    {
+        GameManager.Instance.TestRelic();
+    }
+
+    void TestItem() => GameManager.Instance.TestItem();
 }

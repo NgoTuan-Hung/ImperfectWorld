@@ -53,7 +53,7 @@ public class TraderWare : DoubleTapUI, IBeginDragHandler, IDragHandler, IEndDrag
             }
             case WareType.Item:
             {
-                Item().ShowTooltip(null);
+                Item().ShowTooltip();
                 break;
             }
             default:

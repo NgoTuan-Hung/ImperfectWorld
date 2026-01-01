@@ -15,15 +15,18 @@ public enum ItemState
     None,
 }
 
-public class Item : MonoSelfAware, IDragHandler, IEndDragHandler, IBeginDragHandler
+public class Item
+    : MonoSelfAware,
+        IDragHandler,
+        IEndDragHandler,
+        IBeginDragHandler,
+        IDoubleTapShowTooltipBehavior
 {
     public ItemDataSO itemDataSO;
     public RectTransform rectTransform;
     List<RaycastResult> rcResults = new();
     ChampInfoPanel attachedTo = null;
     public ItemState state = ItemState.Inventory;
-    DoubleTapUI doubleTapUI;
-    ItemTooltip itemTooltip;
     public Dictionary<string, object> fields = new();
     UIEffect uIEffect;
     Animator animator;
@@ -31,17 +34,23 @@ public class Item : MonoSelfAware, IDragHandler, IEndDragHandler, IBeginDragHand
     Vector2 rewardPos;
     float itemCycleOffset = 0,
         itemTierBlend = 0;
+    DoubleTapShowTooltipUI doubleTapShowTooltipUI;
 
     public override void Awake()
     {
         base.Awake();
         rectTransform = GetComponent<RectTransform>();
-        doubleTapUI = GetComponent<DoubleTapUI>();
         uIEffect = GetComponent<UIEffect>();
         animator = GetComponent<Animator>();
         image = GetComponent<Image>();
+        doubleTapShowTooltipUI = GetComponent<DoubleTapShowTooltipUI>();
+        InitComponents();
         RegisterCallback();
-        InitTooltip();
+    }
+
+    private void InitComponents()
+    {
+        doubleTapShowTooltipUI.Init(this, new(0.24f, 0.22f), GameManager.Instance.itemTooltipColor);
     }
 
     private void OnEnable()
@@ -50,19 +59,11 @@ public class Item : MonoSelfAware, IDragHandler, IEndDragHandler, IBeginDragHand
         animator.SetFloat(GameManager.Instance.itemTierBlendHash, itemTierBlend);
     }
 
-    void InitTooltip()
-    {
-        itemTooltip = Instantiate(GameManager.Instance.itemTooltipPrefab)
-            .GetComponent<ItemTooltip>();
-        itemTooltip.Init(this);
-        itemTooltip.gameObject.SetActive(false);
-    }
-
     public void Init(ItemDataSO itemDataSO)
     {
         this.itemDataSO = itemDataSO;
         image.sprite = itemDataSO.icon;
-        itemTooltip.Setup();
+        SetupTooltip();
         itemCycleOffset = Random.Range(0, 1f);
         animator.SetFloat(GameManager.Instance.itemCycleOffsetFloatHash, itemCycleOffset);
         switch (itemDataSO.itemTier)
@@ -126,21 +127,7 @@ public class Item : MonoSelfAware, IDragHandler, IEndDragHandler, IBeginDragHand
         rectTransform.DOAnchorPos(localPos, 0.5f).SetEase(Ease.OutBack).OnComplete(ShowTooltip);
     }
 
-    private void RegisterCallback()
-    {
-        doubleTapUI.doubleTapEvent = ShowTooltip;
-    }
-
-    public void ShowTooltip(PointerEventData pointerEventData)
-    {
-        ShowTooltip();
-    }
-
-    void ShowTooltip()
-    {
-        itemTooltip.gameObject.SetActive(true);
-        itemTooltip.ResetText(itemDataSO.itemDescription);
-    }
+    private void RegisterCallback() { }
 
     public void OnDrag(PointerEventData eventData)
     {
@@ -259,18 +246,11 @@ public class Item : MonoSelfAware, IDragHandler, IEndDragHandler, IBeginDragHand
     public void HideReward()
     {
         gameObject.SetActive(false);
-        itemTooltip.gameObject.SetActive(false);
     }
 
     public void ShowReward()
     {
         gameObject.SetActive(true);
-        itemTooltip.gameObject.SetActive(true);
-    }
-
-    void OnDestroy()
-    {
-        Destroy(itemTooltip);
     }
 
     public void GetBought()
@@ -290,4 +270,21 @@ public class Item : MonoSelfAware, IDragHandler, IEndDragHandler, IBeginDragHand
     {
         attachedTo = null;
     }
+
+    public void ResetDescription()
+    {
+        doubleTapShowTooltipUI.SetDescription(itemDataSO.itemDescription);
+    }
+
+    public void GetTooltipForDescription(PointerEventData pointerDownEvent)
+    {
+        doubleTapShowTooltipUI.SetTooltipFor(itemDataSO.itemDescription);
+    }
+
+    public void SetupTooltip()
+    {
+        StartCoroutine(doubleTapShowTooltipUI.SetName(itemDataSO.itemName));
+    }
+
+    public void ShowTooltip() => doubleTapShowTooltipUI.ShowTooltip(null);
 }

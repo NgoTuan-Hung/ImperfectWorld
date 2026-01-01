@@ -53,7 +53,6 @@
   <ItemGroup>
     <Compile Include="Assets\Game\Script\UI\DoubleTapUI.cs" />
     <Compile Include="Assets\CustomPackage\STSMapGeneration\OneLine\RectEx\MoveToExtensions.cs" />
-    <Compile Include="Assets\Game\Script\Other\Misc\Test\MenuConfigButton.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_TextEventHandler.cs" />
     <Compile Include="Assets\Test\TestExecutionOrder\TestLateEnable\LateEnable1.cs" />
     <Compile Include="Assets\Game\Script\Game\CustomMono.cs" />
@@ -141,7 +140,6 @@
     <Compile Include="Assets\Test\StressTest\StressTest.cs" />
     <Compile Include="Assets\CustomPackage\Cainos\Pixel Art Top Down - Basic\Script\PropsAltar.cs" />
     <Compile Include="Assets\CustomPackage\STSMapGeneration\OneLine\RectEx\Internal\IEnumerableExtension.cs" />
-    <Compile Include="Assets\Game\Script\Other\Misc\TestEvent.cs" />
     <Compile Include="Assets\Test\C#\SizeOf.cs" />
     <Compile Include="Assets\CustomPackage\STSMapGeneration\OneLine\OneLine\Attributes\ExpandableAttribute.cs" />
     <Compile Include="Assets\Game\Script\Ability\BladeOfMinhKhai.cs" />
@@ -162,7 +160,6 @@
     <Compile Include="Assets\Game\Script\UI\InteractiveButtonUI.cs" />
     <Compile Include="Assets\Game\Script\Other\ActionResult.cs" />
     <Compile Include="Assets\CustomPackage\STSMapGeneration\OneLine\OneLine\Example\Details\Scripts\HighlightExample.cs" />
-    <Compile Include="Assets\Game\Script\Other\Misc\Testing.cs" />
     <Compile Include="Assets\Game\Script\ScriptableObject\ListAnimationClipSO.cs" />
     <Compile Include="Assets\Game\Script\UI\Relic.cs" />
     <Compile Include="Assets\CustomPackage\Cainos\Pixel Art Top Down - Basic\Script\TopDownCharacterController.cs" />
@@ -206,6 +203,7 @@
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\SkewTextExample.cs" />
     <Compile Include="Assets\Test\PrefabGetComponentTest\PrefabGetComponentTest2.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\WarpTextExample.cs" />
+    <Compile Include="Assets\Game\Script\UI\DoubleTapTooltip.cs" />
     <Compile Include="Assets\CustomPackage\STSMapGeneration\OneLine\RectEx\RowExtensions.cs" />
     <Compile Include="Assets\CustomPackage\STSMapGeneration\OneLine\OneLine\Example\Details\Scripts\RootArrayExample.cs" />
     <Compile Include="Assets\Game\Script\Other\DoActionParamInfo.cs" />
@@ -245,10 +243,10 @@
     <Compile Include="Assets\Game\Script\Ability\Scatter.cs" />
     <Compile Include="Assets\Game\Script\Ability\OrbitalNemesis.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\VertexShakeA.cs" />
-    <Compile Include="Assets\Game\Script\Other\Misc\Test\RectSizeTest.cs" />
     <Compile Include="Assets\Game\Script\MapGeneration\UI Lines\UIPrimitiveBase.cs" />
     <Compile Include="Assets\Test\TestExecutionOrder\TestUIEventAndFixedUpdateOrder\TestUIEventAndFixedUpdateOrderManager.cs" />
     <Compile Include="Assets\CustomPackage\STSMapGeneration\OneLine\OneLine\Example\Benchmark\Scripts\SeparateFieldsBenchmark.cs" />
+    <Compile Include="Assets\Game\Script\Interface\IDoubleTapShowTooltipBehavior.cs" />
     <Compile Include="Assets\Game\Script\Other\ItemBehaviour\PhoenixHeartBehaviour.cs" />
     <Compile Include="Assets\Game\Script\Other\RoomSystem\RoomSystem.cs" />
     <Compile Include="Assets\Game\Script\Game\SkillBase.cs" />
@@ -319,7 +317,6 @@
     <Compile Include="Assets\Game\Script\Ability\EyeOfTheReaper.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\CameraController.cs" />
     <Compile Include="Assets\Game\Script\MapGeneration\MapLayer.cs" />
-    <Compile Include="Assets\Game\Script\Other\Misc\BasicSpawnSchemeEnemyStat.cs" />
     <Compile Include="Assets\Test\RefTest\RefTest.cs" />
     <Compile Include="Assets\CustomPackage\STSMapGeneration\OneLine\RectEx\ColumnExtensions.cs" />
     <Compile Include="Assets\Game\Script\Other\Stat\FloatStatWithCap.cs" />
@@ -444,19 +441,16 @@
     <None Include="Assets\CustomPackage\Dotween\readme.txt" />
     <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />
     <None Include="Assets\CustomPackage\STSMapGeneration\Shaders\Scroll.shader" />
-    <None Include="Assets\Game\Script\Other\Misc\GameManager-13-08.txt" />
     <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF-Mobile Overlay.shader" />
     <None Include="Assets\Game\Graphics\UIToolkit\USS\StatInspector.uss" />
     <None Include="Assets\TextMesh Pro\Examples &amp; Extras\Fonts\Roboto-Bold - License.txt" />
     <None Include="Assets\CustomPackage\Dotween\DOTween.dll" />
     <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF-Mobile-2-Pass.shader" />
-    <None Include="Assets\Game\Script\Other\Misc\note2.txt" />
     <None Include="Assets\CustomPackage\STSMapGeneration\Sprites\game-icons.net\license.txt" />
     <None Include="Assets\Game\Graphics\UIToolkit\Uxml\TestEvent.uxml" />
     <None Include="Assets\Game\Graphics\UIToolkit\GameEffectBuilder\GameEffectBuilder.uss" />
     <None Include="Assets\Game\Graphics\UIToolkit\GameEffectBuilder\GameEffectBuilder.uxml" />
     <None Include="Assets\TextMesh Pro\Examples &amp; Extras\Fonts\Unity - OFL.txt" />
-    <None Include="Assets\Game\Script\Other\Misc\AsepritePivotChangeForImporter.txt" />
     <None Include="Assets\TextMesh Pro\Shaders\TMP_Bitmap.shader" />
     <None Include="Assets\CustomPackage\Cainos\Pixel Art Top Down - Basic\Changelog.txt" />
     <None Include="Assets\Game\Graphics\UIToolkit\PropertyDrawer\FloatStatWithCapInspector.uxml" />
@@ -476,9 +470,7 @@
     <None Include="Assets\Packages\Newtonsoft.Json.13.0.4\lib\netstandard2.0\Newtonsoft.Json.xml" />
     <None Include="Assets\TextMesh Pro\Shaders\SDFFunctions.hlsl" />
     <None Include="Assets\Game\Resources\VisualTreeAsset\DescriptionEditor.uxml" />
-    <None Include="Assets\Game\Script\Other\Misc\note1.txt" />
     <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF-Surface.shader" />
-    <None Include="Assets\Game\Script\Other\Misc\OrbitalNemesis-old.txt" />
     <None Include="Assets\TextMesh Pro\Sprites\EmojiOne Attribution.txt" />
     <None Include="Assets\TextMesh Pro\Shaders\TMP_Bitmap-Custom-Atlas.shader" />
     <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF.shader" />
@@ -497,7 +489,6 @@
     <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF-Mobile Masking.shader" />
     <None Include="Assets\Game\Graphics\UIToolkit\CharacterBuilder\CharacterBuilder.uxml" />
     <None Include="Assets\CustomPackage\STSMapGeneration\OneLine\OneLine\readme.txt" />
-    <None Include="Assets\Game\Script\Other\Misc\note0.txt" />
     <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF Overlay.shader" />
     <None Include="Assets\CustomPackage\Cainos\Pixel Art Top Down - Basic\Shader\SH Sprite Shadow Mask.shader" />
     <None Include="Assets\TextMesh Pro\Shaders\TMP_Bitmap-Mobile.shader" />

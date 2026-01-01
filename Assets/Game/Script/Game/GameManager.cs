@@ -154,7 +154,6 @@ public partial class GameManager : MonoBehaviour
         damagePopupMat = Resources.Load<Material>("Material/LiberationSans SDF - Damage");
         weakenPopupMat = Resources.Load<Material>("Material/LiberationSans SDF - Weaken");
         armorBuffPopupMat = Resources.Load<Material>("Material/LiberationSans SDF - Armor Buff");
-        itemTooltipPrefab = Resources.Load<GameObject>("ItemTooltip");
         championRewardSelectedEffectPreset = Resources.Load<UIEffectPreset>(
             "UIEffectPreset/ChampionRewardSelected"
         );

@@ -148,7 +148,6 @@ public partial class GameManager
                 + ": one affected by strike lock cannot attack."
         },
     };
-    public GameObject itemTooltipPrefab;
     Dictionary<ItemBehaviourType, Type> itemBehaviourMapper = new()
     {
         { ItemBehaviourType.KuraiKōraBehaviour, typeof(KuraiKōraBehaviour) },
@@ -420,6 +419,7 @@ public partial class GameManager
     {
         bribed = false;
         shoveTurn++;
+        ApplyRelicsEffect();
     }
 
     void SetOccupyNodeForPlayerChampion()
@@ -529,6 +529,11 @@ public partial class GameManager
             .ForEach(c => c.statusEffect.Heal(ammount * c.stat.healthPoint.FinalValue));
     }
 
+    public void DamageAllPlayerAlliesByPercentage(float ammount)
+    {
+        // TODO
+    }
+
     Dictionary<ERelicBehavior, Type> behaviorMapper = new()
     {
         { ERelicBehavior.BloodWingBlessingBehavior, typeof(BloodWingBlessingBehavior) },
@@ -566,14 +571,35 @@ public partial class GameManager
                         .PickOne()
                         .Relic.Setup(relicDataSOs.First(r => r.name.Equals("BloodWingBlessing")));
 
+                    playerRelics.Add(relic);
                     GameUIManager.Instance.RewardRelicFromEvent(relic, ExitMysteryEventRoom);
+                    DamageAllPlayerAlliesByPercentage(0.1f);
+                    GameUIManager.Instance.TakeDamageFromEvent(null);
                 }
                 else
+                {
+                    DamageAllPlayerAlliesByPercentage(0.1f);
                     GameUIManager.Instance.TakeDamageFromEvent(ExitMysteryEventRoom);
+                }
                 break;
             case 1:
                 ExitMysteryEventRoom();
                 break;
         }
+    }
+
+    public Color relicTooltipColor = ColorExtension.FromHex("#00B2FF"),
+        itemTooltipColor = ColorExtension.FromHex("#5E00FF");
+    List<Relic> playerRelics = new();
+
+    void ApplyRelicsEffect()
+    {
+        playerRelics.ForEach(r =>
+        {
+            if (r.relicDataSO.relicType == RelicType.PerFloor)
+            {
+                r.relicBehavior.PerFloorCallback();
+            }
+        });
     }
 }

@@ -52,7 +52,9 @@ public partial class GameUIManager : MonoSingleton<GameUIManager>
     public GameObject cameraFollowObject;
     public float planeDistance = 5f,
         worldSpacePlaneDistance;
+    public GameObject inventorySlotPF;
     public List<GameObject> inventorySlots = new();
+    int inventorySlotCount = 0;
     public List<Item> playerItemUIs = new();
     public Vector2 ItemInventoryAnchorPos = new(0.5f, 0.5f);
     bool mapState = true;
@@ -76,6 +78,7 @@ public partial class GameUIManager : MonoSingleton<GameUIManager>
         eventImage;
     MysteryEventDescription mysteryEventDescription;
     List<EventChoiceButton> eventChoices;
+    public GameObject doubleTapTooltipPrefab;
 
     private void Awake()
     {
@@ -101,18 +104,18 @@ public partial class GameUIManager : MonoSingleton<GameUIManager>
     {
         if (menuCharStateOn)
         {
-            foreach (var item in champInfoPanelDict)
+            foreach (var kvp in champInfoPanelDict)
             {
-                item.Value.OnTabClick(item.Value.xIPTB);
+                kvp.Value.OnTabClick(kvp.Value.xIPTB);
             }
             menuCharStateOn = false;
         }
         else
         {
-            foreach (var item in champInfoPanelDict)
+            foreach (var kvp in champInfoPanelDict)
             {
-                item.Value.ShowIfAlive();
-                item.Value.OnTabClick(item.Value.statIPTB);
+                kvp.Value.ShowIfOwnerIsActivated();
+                kvp.Value.OnTabClick(kvp.Value.statIPTB);
             }
             menuCharStateOn = true;
         }
@@ -150,7 +153,7 @@ public partial class GameUIManager : MonoSingleton<GameUIManager>
             inventory.SetActive(true);
             foreach (var item in champInfoPanelDict)
             {
-                ShowChampUI(item.Value);
+                item.Value.ShowIfOwnerIsActivated();
                 item.Value.OnTabClick(item.Value.itemIPTB);
             }
             menuItemStateOn = true;
@@ -209,7 +212,6 @@ public partial class GameUIManager : MonoSingleton<GameUIManager>
         relicContent = relic.transform.Find("Viewport/Content").gameObject;
 
         /* Temp */
-        playerItemUIs = inventoryContent.transform.GetComponentsInChildren<Item>().ToList();
         for (int i = 0; i < inventoryContent.transform.childCount; i++)
         {
             inventorySlots.Add(inventoryContent.transform.GetChild(i).gameObject);
@@ -323,15 +325,13 @@ public partial class GameUIManager : MonoSingleton<GameUIManager>
     public void ShowChampUI(CustomMono p_customMono) =>
         champInfoPanelDict[p_customMono].gameObject.SetActive(true);
 
-    public void ShowChampUI(ChampInfoPanel p_champInfoPanel) =>
-        p_champInfoPanel.gameObject.SetActive(true);
-
     public ChampInfoPanel GetChampInfoPanel(CustomMono p_customMono) =>
         champInfoPanelDict[p_customMono];
 
     public void RemoveFromInventory(Item itemUI)
     {
         itemUI.transform.parent.SetAsLastSibling();
+        /* The order in the list must be synced with the order in the UI hierarchy */
         inventorySlots.Remove(itemUI.transform.parent.gameObject);
         inventorySlots.Add(itemUI.transform.parent.gameObject);
         itemUI.transform.SetParent(freeZone.transform);
@@ -340,7 +340,25 @@ public partial class GameUIManager : MonoSingleton<GameUIManager>
 
     public void AddToInventory(Item itemUI)
     {
-        itemUI.transform.SetParent(inventorySlots[playerItemUIs.Count].transform);
+        int selectedInventorySlot = -1;
+        for (int i = 0; i < inventorySlots.Count; i++)
+        {
+            if (inventorySlots[i].transform.childCount == 0)
+            {
+                selectedInventorySlot = i;
+                break;
+            }
+        }
+
+        if (selectedInventorySlot == -1)
+        {
+            var newInvSlot = Instantiate(inventorySlotPF);
+            newInvSlot.transform.SetParent(inventoryContent.transform, false);
+            inventorySlots.Add(newInvSlot);
+            selectedInventorySlot = inventorySlots.Count - 1;
+        }
+
+        itemUI.transform.SetParent(inventorySlots[selectedInventorySlot].transform, false);
         itemUI.rectTransform.anchorMin = ItemInventoryAnchorPos;
         itemUI.rectTransform.anchorMax = ItemInventoryAnchorPos;
         itemUI.rectTransform.anchoredPosition = Vector2.zero;
@@ -621,5 +639,12 @@ public partial class GameUIManager : MonoSingleton<GameUIManager>
                         finishCallback?.Invoke();
                     });
             });
+    }
+
+    public GameObject GetNewDoubleTapTooltip()
+    {
+        GameObject doubleTapTooltip = Instantiate(doubleTapTooltipPrefab);
+        doubleTapTooltip.transform.SetParent(freeZone.transform, false);
+        return doubleTapTooltip;
     }
 }
