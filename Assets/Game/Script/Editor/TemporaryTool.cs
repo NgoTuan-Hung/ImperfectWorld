@@ -10,6 +10,8 @@ using UnityEngine.UIElements;
 
 public class TemporaryTool : EditorWindow
 {
+    ListGameObjectSO listGameObjectSO = null;
+
     [MenuItem("Window/Temporary Tool")]
     public static void ShowMyEditor()
     {
@@ -34,8 +36,22 @@ public class TemporaryTool : EditorWindow
         dialogButton.text = "Show Dialog";
         dialogButton.clicked += () => GameUIManager.Instance.ShowGuideDialogBox();
 
+        VisualElement champSpawner = new();
+        champSpawner.style.flexDirection = FlexDirection.Row;
+        var inspectorListView = new InspectorElement();
+        listGameObjectSO = CreateInstance<ListGameObjectSO>();
+        inspectorListView.Bind(new SerializedObject(listGameObjectSO));
+        IntegerField champNumber = new("Number To Spawn");
+        Button spawnChamp = new();
+        spawnChamp.text = "Spawn";
+        spawnChamp.clicked += () => SpawnChamp(champNumber.value);
+
         root.Add(button);
         root.Add(dialogButton);
+        champSpawner.Add(inspectorListView);
+        champSpawner.Add(champNumber);
+        champSpawner.Add(spawnChamp);
+        root.Add(champSpawner);
         rootVisualElement.Add(root);
     }
 
@@ -63,6 +79,20 @@ public class TemporaryTool : EditorWindow
             );
         });
         Debug.Log(result);
+    }
+
+    void SpawnChamp(int count)
+    {
+        GameObject champBelow = GameObject.Find("___CHAMP-BELOW___");
+        List<GameObject> pool = listGameObjectSO.gameObjects;
+
+        for (int i = 0; i < count; i++)
+        {
+            GameObject rand =
+                PrefabUtility.InstantiatePrefab(pool[Random.Range(0, pool.Count)]) as GameObject;
+            rand.transform.position = VectorExtension.RandomXYNormalized() * 7;
+            rand.transform.SetSiblingIndex(champBelow.transform.GetSiblingIndex());
+        }
     }
 }
 #endif

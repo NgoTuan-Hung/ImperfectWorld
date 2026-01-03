@@ -388,11 +388,10 @@ public partial class GameManager
             {
                 enemy.Show();
                 var showupEffect = enemyShowupEffectPool.PickOne();
-                showupEffect.gameObject.transform.position = enemy.transform.position;
-                showupEffect.gameObject.transform.SetParent(
-                    enemy.rotationAndCenterObject.transform,
-                    true
-                );
+                showupEffect.gameObject.transform.position = enemy
+                    .rotationAndCenterObject
+                    .transform
+                    .position;
             });
     }
 

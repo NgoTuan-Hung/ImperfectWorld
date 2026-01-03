@@ -2,18 +2,24 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using Coffee.UIEffects;
 using DG.Tweening;
 using Map;
 using TMPEffects.Components;
 using TMPro;
 using UnityEditor.Animations;
 using UnityEngine;
-using UnityEngine.EventSystems;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+
+public enum SceneMode
+{
+    MainMenu,
+    MainGame,
+}
 
 public partial class GameUIManager : MonoSingleton<GameUIManager>
 {
+    public SceneMode sceneMode = SceneMode.MainMenu;
     private static WaitForSeconds _waitForSeconds1 = new(1f);
     Canvas canvas;
     public Button menuCharButton,
@@ -82,12 +88,17 @@ public partial class GameUIManager : MonoSingleton<GameUIManager>
 
     private void Awake()
     {
+        // ScrollView
         canvas = GetComponent<Canvas>();
 
-        InitPrefabAndPool();
-        FindChilds();
-        Init();
-        RegisterEvents();
+        if (sceneMode == SceneMode.MainMenu) { }
+        else
+        {
+            InitPrefabAndPool();
+            FindChilds();
+            Init();
+            RegisterEvents();
+        }
     }
 
     private void RegisterEvents()
@@ -646,5 +657,20 @@ public partial class GameUIManager : MonoSingleton<GameUIManager>
         GameObject doubleTapTooltip = Instantiate(doubleTapTooltipPrefab);
         doubleTapTooltip.transform.SetParent(freeZone.transform, false);
         return doubleTapTooltip;
+    }
+
+    public void LoadScene(SceneMode sceneMode)
+    {
+        switch (sceneMode)
+        {
+            case SceneMode.MainMenu:
+                SceneManager.LoadSceneAsync("MainMenu");
+                break;
+            case SceneMode.MainGame:
+                SceneManager.LoadSceneAsync("MainGame");
+                break;
+            default:
+                break;
+        }
     }
 }

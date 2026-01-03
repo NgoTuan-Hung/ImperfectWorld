@@ -239,6 +239,7 @@ public partial class GameManager : MonoBehaviour
         /* Set the frame rate */
         Application.targetFrameRate = 60;
         QualitySettings.vSyncCount = 0;
+        MapView.Instance.mapManager.GenerateNewMap();
 
         HandleMapInteraction();
         BattleInitialize();
