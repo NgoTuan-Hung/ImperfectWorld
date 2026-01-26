@@ -39,8 +39,7 @@ public class StatusEffect : CustomMonoPal
     float poisonDamage;
     int actionBlockingFactors = 0,
         movementBlockingFactors = 0;
-    float finalTakenDamage,
-        totalDamageTaken;
+    float totalDamageTaken;
     DealDamageGameEventData dealDamageGameEventData = new();
     TakeDamageGameEventData takeDamageGameEventData = new(0);
 
@@ -84,35 +83,18 @@ public class StatusEffect : CustomMonoPal
             StopPoison();
     }
 
-    public float GetHit(CustomMono attacker, float p_damage)
+    public void GetHit(float p_damage)
     {
-        finalTakenDamage =
-            Math.Clamp(
-                attacker.stat.CalculateDamageDeal(p_damage) - customMono.stat.armor.FinalValue,
-                1f,
-                float.MaxValue
-            ) * (1 - customMono.stat.damageReduction.FinalValue);
-        totalDamageTaken += finalTakenDamage;
-        customMono.stat.currentHealthPoint.Value -= finalTakenDamage;
+        totalDamageTaken += p_damage;
+        customMono.stat.currentHealthPoint.Value -= p_damage;
 
         /* Damage Popup */
         GameUIManager
             .Instance.PickOneTextPopupUI()
             .TextPopupUI.StartDamagePopup(
                 customMono.rotationAndCenterObject.transform.position,
-                finalTakenDamage
+                p_damage
             );
-
-        /* Fire events */
-        takeDamageGameEventData.Setup(finalTakenDamage);
-        GameManager
-            .Instance.GetSelfEvent(customMono, GameEventType.TakeDamage)
-            .action(takeDamageGameEventData);
-
-        dealDamageGameEventData.Setup(attacker, customMono, finalTakenDamage);
-        GameManager
-            .Instance.GetSelfEvent(attacker, GameEventType.DealDamage)
-            .action(dealDamageGameEventData);
 
         /* Damage effect */
         if (CheckEffect(StatusEffectState.DamageEffect))
@@ -121,8 +103,6 @@ public class StatusEffect : CustomMonoPal
             StartCoroutine(DamageEffect());
         if (!CheckEffect(StatusEffectState.HitColorEffect))
             StartCoroutine(HitColorEffect());
-
-        return finalTakenDamage;
     }
 
     /// <summary>
@@ -283,7 +263,7 @@ public class StatusEffect : CustomMonoPal
         while (totalPoison > 0)
         {
             totalPoison--;
-            GetHit(p_poisonInfo.owner, poisonDamage);
+            GetHit(poisonDamage);
             poisonIndicator.Play();
 
             yield return new WaitForSeconds(0.2f);

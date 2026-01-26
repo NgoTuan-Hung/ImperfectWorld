@@ -219,82 +219,82 @@ public class ChampInfoPanel : MonoBehaviour, IPointerDownHandler
 
     void HPChange()
     {
-        hpTMP.text = $"HP: {owner.stat.healthPoint.FinalValue} ❤️";
+        hpTMP.text = $"HP: {owner.stat.healthPoint.FinalValue:F2} ❤️";
     }
 
     void HPRegenChange()
     {
-        hpRegenTMP.text = $"HPREGEN: {owner.stat.healthRegen.FinalValue} 🌿";
+        hpRegenTMP.text = $"HPREGEN: {owner.stat.healthRegen.FinalValue:F2} 🌿";
     }
 
     void MPChange()
     {
-        mpTMP.text = $"MP: {owner.stat.manaPoint.FinalValue} 💙";
+        mpTMP.text = $"MP: {owner.stat.manaPoint.FinalValue:F2} 💙";
     }
 
     void MPRegenChange()
     {
-        mpRegenTMP.text = $"MPREGEN: {owner.stat.manaRegen.FinalValue} 💧";
+        mpRegenTMP.text = $"MPREGEN: {owner.stat.manaRegen.FinalValue:F2} 💧";
     }
 
     void MightChange()
     {
-        mightTMP.text = $"MIGHT: {owner.stat.might.FinalValue} 💪";
+        mightTMP.text = $"MIGHT: {owner.stat.might.FinalValue:F2} 💪";
     }
 
     void ReflexChange()
     {
-        reflexTMP.text = $"REFLEX: {owner.stat.reflex.FinalValue} ⚡";
+        reflexTMP.text = $"REFLEX: {owner.stat.reflex.FinalValue:F2} ⚡";
     }
 
     void WisdomChange()
     {
-        wisdomTMP.text = $"WISDOM: {owner.stat.wisdom.FinalValue} 🧠";
+        wisdomTMP.text = $"WISDOM: {owner.stat.wisdom.FinalValue:F2} 🧠";
     }
 
     void ASPDChange()
     {
-        aspdTMP.text = $"ASPD: {owner.stat.attackSpeed.FinalValue} ⚔️";
+        aspdTMP.text = $"ASPD: {owner.stat.attackSpeed.FinalValue:F2} ⚔️";
     }
 
     void ArmorChange()
     {
-        armorTMP.text = $"ARMOR: {owner.stat.armor.FinalValue} 🛡️";
+        armorTMP.text = $"ARMOR: {owner.stat.armor.FinalValue:F2} 🛡️";
     }
 
     void MoveSpeedChange()
     {
-        mspdTMP.text = $"MSPD: {owner.stat.moveSpeed.FinalValue} 🏃";
+        mspdTMP.text = $"MSPD: {owner.stat.moveSpeed.FinalValue:F2} 🏃";
     }
 
     void DamageModifierChange()
     {
-        dmgmodTMP.text = $"DMGMOD: {owner.stat.damageModifier.FinalValue} 💥";
+        dmgmodTMP.text = $"DMGMOD: {owner.stat.damageModifier.FinalValue:F2} 💥";
     }
 
     void OmnivampChange()
     {
-        omnivampTMP.text = $"OMNIVAMP: {owner.stat.omnivamp.FinalValue} 🍃";
+        omnivampTMP.text = $"OMNIVAMP: {owner.stat.omnivamp.FinalValue:F2} 🍃";
     }
 
     void ATKChange()
     {
-        aTKTMP.text = $"ATK: {owner.stat.attackDamage.FinalValue} 🗡️";
+        aTKTMP.text = $"ATK: {owner.stat.attackDamage.FinalValue:F2} 🗡️";
     }
 
     void CritChange()
     {
-        critTMP.text = $"CRIT: {owner.stat.critChance.FinalValue} 🎯";
+        critTMP.text = $"CRIT: {owner.stat.critChance.FinalValue:F2} 🎯";
     }
 
     void CritModChange()
     {
-        critModTMP.text = $"CRITMOD: {owner.stat.critDamageModifier.FinalValue} 💢";
+        critModTMP.text = $"CRITMOD: {owner.stat.critDamageModifier.FinalValue:F2} 💢";
     }
 
     void AttackRangeChange()
     {
-        atkrangeTMP.text = $"ATKRANGE: {owner.stat.attackRange.FinalValue} 🎯";
+        atkrangeTMP.text = $"ATKRANGE: {owner.stat.attackRange.FinalValue:F2} 🎯";
     }
 
     void FixedUpdate()

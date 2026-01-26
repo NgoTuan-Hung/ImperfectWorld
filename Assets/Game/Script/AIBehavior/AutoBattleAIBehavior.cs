@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class AutoBattleAIBehavior : BaseAIBehavior
 {
-    float timer = 0;
+    float timer = 0,
+        minUsageRadius;
 
     public override void Awake()
     {
@@ -29,45 +30,47 @@ public class AutoBattleAIBehavior : BaseAIBehavior
         }
         else
         {
+            minUsageRadius =
+                customMono.stat.attackRange.FinalValue
+                > customMono.mainSkill.GetActionField<ActionFloatField>(ActionFieldName.Range).value
+                    ? customMono
+                        .mainSkill.GetActionField<ActionFloatField>(ActionFieldName.Range)
+                        .value
+                    : customMono.stat.attackRange.FinalValue;
+
             UseSkill();
-
-            if (
-                customMono.botSensor.originToTargetOriginDirection.magnitude
-                > customMono.stat.attackRange.FinalValue
-            )
-            {
-                customMono.movable.Move(customMono.botSensor.targetPathFindingDirection);
-            }
-            else
-            {
+            Attack();
+            if (customMono.botSensor.distanceToNearestEnemy <= minUsageRadius)
                 customMono.movable.StopMove();
-
-                if (!customMono.attack.onCooldown)
-                    customMono.attack.Trigger(
-                        p_direction: customMono.botSensor.centerToTargetCenterDirection,
-                        p_customMono: customMono.botSensor.currentNearestEnemy
-                    );
-            }
+            else
+                customMono.movable.Move(customMono.botSensor.originToTargetOriginDirection);
         }
     }
 
     void UseSkill()
     {
-        if (customMono.mainSkill != null)
+        if (
+            customMono.stat.currentManaPoint.Value >= customMono.stat.manaPoint.FinalValue
+            && customMono.botSensor.distanceToNearestEnemy
+                < customMono.mainSkill.GetActionField<ActionFloatField>(ActionFieldName.Range).value
+        )
         {
-            if (
-                customMono.stat.currentManaPoint.Value >= customMono.stat.manaPoint.FinalValue
-                && customMono.botSensor.distanceToNearestEnemy
-                    < customMono
-                        .mainSkill.GetActionField<ActionFloatField>(ActionFieldName.Range)
-                        .value
-            )
-            {
-                customMono.mainSkill.botActionManual.botDoAction(GetDAPI());
-                if (customMono.mainSkill.botActionManual.requireContinuous)
-                    StartCoroutine(DoActionContinous(customMono.mainSkill.botActionManual));
-            }
+            customMono.mainSkill.botActionManual.botDoAction(GetDAPI());
+            if (customMono.mainSkill.botActionManual.requireContinuous)
+                StartCoroutine(DoActionContinous(customMono.mainSkill.botActionManual));
         }
+    }
+
+    void Attack()
+    {
+        if (
+            !customMono.attack.onCooldown
+            && customMono.botSensor.distanceToNearestEnemy < customMono.stat.attackRange.FinalValue
+        )
+            customMono.attack.Trigger(
+                p_direction: customMono.botSensor.centerToTargetCenterDirection,
+                p_customMono: customMono.botSensor.currentNearestEnemy
+            );
     }
 
     IEnumerator DoActionContinous(BotActionManual p_botActionManual)

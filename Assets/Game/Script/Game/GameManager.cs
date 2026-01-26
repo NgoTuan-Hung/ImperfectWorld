@@ -68,7 +68,8 @@ public partial class GameManager : MonoBehaviour
     public Dictionary<string, List<CustomMono>> teamChampions = new();
     Dictionary<CustomMono, Dictionary<GameEventType, GameEvent>> selfEvents = new();
     Dictionary<string, Dictionary<GameEventType, GameEvent>> teamBasedEvents = new();
-    public Action battleEndCallback = () => { };
+    public Action battleEndCallback = () => { },
+        battleStartCallback = () => { };
     public GameState gameState = GameState.MapTravelingPhase;
     public GameObject mapArea;
     List<Vector2> formationPositions = new();
@@ -100,6 +101,7 @@ public partial class GameManager : MonoBehaviour
     {
         guide.interact += GuideInteraction;
         GameUIManager.Instance.guideBribeButton.pointerClickEvent += HandleGuideBribe;
+        campfire.interact += CampfireInteraction;
     }
 
     private void InitOtherPools()
@@ -124,8 +126,9 @@ public partial class GameManager : MonoBehaviour
 
     private void InitOtherFields()
     {
-        itemDataSOWeights = new float[itemDataSOs.Count];
-        BuildItemDataSOWeights();
+        itemRewardSOWeights = new float[normalItemDataSOs.Count + rareItemDataSOs.Count];
+        BuildItemRewewardSOs();
+        BuildItemRewardSOWeights();
         halfInvisibleWallW = invisibleWall.transform.localScale.x / 2;
         halfInvisibleWallH = invisibleWall.transform.localScale.y / 2;
     }
@@ -159,10 +162,22 @@ public partial class GameManager : MonoBehaviour
         );
         rareItemEffectPreset = Resources.Load<UIEffectPreset>("UIEffectPreset/RareItem");
         epicItemEffectPreset = Resources.Load<UIEffectPreset>("UIEffectPreset/EpicItem");
+        legendaryItemEffectPreset = Resources.Load<UIEffectPreset>("UIEffectPreset/LegendaryItem");
         itemPF = Resources.Load<GameObject>("Item");
         championRewardPF = Resources.Load<GameObject>("ChampionRewardUI");
         relicPF = Resources.Load<GameObject>("Relic");
-        itemDataSOs = Resources.LoadAll<ItemDataSO>("ScriptableObject/ItemDataSO").ToList();
+        normalItemDataSOs = Resources
+            .LoadAll<ItemDataSO>("ScriptableObject/ItemDataSO/Normal")
+            .ToList();
+        rareItemDataSOs = Resources
+            .LoadAll<ItemDataSO>("ScriptableObject/ItemDataSO/Rare")
+            .ToList();
+        epicItemDataSOs = Resources
+            .LoadAll<ItemDataSO>("ScriptableObject/ItemDataSO/Epic")
+            .ToList();
+        legendaryItemDataSOs = Resources
+            .LoadAll<ItemDataSO>("ScriptableObject/ItemDataSO/Legendary")
+            .ToList();
         gold = Resources.Load<GameObject>("Gold");
         mysteryEventDataSOs = Resources
             .LoadAll<MysteryEventDataSO>("ScriptableObject/MysteryEventDataSO")
@@ -260,24 +275,36 @@ public partial class GameManager : MonoBehaviour
             {
                 case NodeType.MinorEnemy:
                 {
-                    Debug.Log("Room Minor Enemy Encountered");
                     GameUIManager.Instance.gameInteractionButton.Show();
-                    LoadNormalEnemyRoom(p_mapNode);
+                    LoadBattleRoom(p_mapNode);
                     break;
                 }
                 case NodeType.EliteEnemy:
+                {
+                    GameUIManager.Instance.gameInteractionButton.Show();
+                    LoadBattleRoom(p_mapNode);
                     break;
+                }
                 case NodeType.RestSite:
+                {
+                    GameUIManager.Instance.gameInteractionButton.Show();
+                    LoadRestSiteRoom();
                     break;
+                }
                 case NodeType.Treasure:
                     break;
                 case NodeType.Store:
                 {
+                    GameUIManager.Instance.gameInteractionButton.Show();
                     LoadShopRoom();
                     break;
                 }
                 case NodeType.Boss:
+                {
+                    GameUIManager.Instance.gameInteractionButton.Show();
+                    LoadBattleRoom(p_mapNode);
                     break;
+                }
                 case NodeType.Mystery:
                 {
                     LoadMysteryEventRoom();
@@ -291,33 +318,56 @@ public partial class GameManager : MonoBehaviour
         };
     }
 
-    void LoadNormalEnemyRoom(MapNode mapNode)
+    void LoadBattleRoom(MapNode mapNode)
     {
+        GameUIManager.Instance.ChangeGameInteractionButtonBattle();
         ChangeGameState(GameState.PositioningPhase);
         GameUIManager.Instance.TurnOffMap();
         enemyCount = 0;
 
-        var nERI = roomSystem
-            .normalEnemyFloors[mapNode.Node.point.y]
-            .normalEnemyRoomInfos.GetRandomElement();
+        EnemyRoomInfo eRI = null;
+
+        switch (mapNode.Node.nodeType)
+        {
+            case NodeType.MinorEnemy:
+            {
+                eRI = roomSystem
+                    .normalEnemyFloors[mapNode.Node.point.y]
+                    .normalEnemyRoomInfos.GetRandomElement();
+                break;
+            }
+            case NodeType.EliteEnemy:
+            {
+                eRI = roomSystem.eliteEnemyRoomInfos.GetRandomElement();
+                break;
+            }
+            case NodeType.Boss:
+            {
+                eRI = roomSystem.bossRoomInfos.GetRandomElement();
+                break;
+            }
+            default:
+                break;
+        }
+
         GetEnemyTeamChampions().Clear();
 
-        for (int i = 0; i < nERI.roomEnemyInfos.Count; i++)
+        for (int i = 0; i < eRI.roomEnemyInfos.Count; i++)
         {
-            if (!championPools.TryGetValue(nERI.roomEnemyInfos[i].prefab, out ObjectPool t_pool))
+            if (!championPools.TryGetValue(eRI.roomEnemyInfos[i].prefab, out ObjectPool t_pool))
             {
                 championPools.Add(
-                    nERI.roomEnemyInfos[i].prefab,
+                    eRI.roomEnemyInfos[i].prefab,
                     new ObjectPool(
-                        nERI.roomEnemyInfos[i].prefab,
+                        eRI.roomEnemyInfos[i].prefab,
                         new PoolArgument(ComponentType.CustomMono, PoolArgument.WhereComponent.Self)
                     )
                 );
             }
 
-            var t_customMono = championPools[nERI.roomEnemyInfos[i].prefab].PickOne().CustomMono;
+            var t_customMono = championPools[eRI.roomEnemyInfos[i].prefab].PickOne().CustomMono;
             t_customMono.transform.position = HexGridManager
-                .Instance.GetNodeAtPosition(nERI.roomEnemyInfos[i].position)
+                .Instance.GetNodeAtPosition(eRI.roomEnemyInfos[i].position)
                 .pos;
             t_customMono.SetupForReuseAsNewEnemy();
             t_customMono.stat.currentHealthPointReachZeroEvent += PawnDeathHandler;
@@ -337,7 +387,7 @@ public partial class GameManager : MonoBehaviour
         GameUIManager.Instance.TurnOffMap();
         GameUIManager.Instance.HandleTraderUI(
             GetRandomChampionRewardUIs(6),
-            GetRandomItemRewards(6)
+            GetRandomItemForShop()
         );
 
         GameUIManager
@@ -349,7 +399,6 @@ public partial class GameManager : MonoBehaviour
     {
         raft.SetActive(false);
         ChangeGameState(GameState.MapTravelingPhase);
-        GameUIManager.Instance.ChangeGameInteractionButtonBattle();
         GameUIManager.Instance.TurnOnMap();
         GameUIManager.Instance.CloseTraderUI();
     }
@@ -370,11 +419,18 @@ public partial class GameManager : MonoBehaviour
                 GetEnemyTeamChampions().ForEach(cRE => EnableBattleMode(cRE));
                 GetPlayerTeamChampions().ForEach(pC => EnableBattleMode(pC));
                 HexGridManager.Instance.ClearAllOccupy();
+                battleStartCallback();
+
                 break;
             }
             case GameState.ShopPhase:
             {
                 GetOutOfShopRoom();
+                break;
+            }
+            case GameState.RestSitePhase:
+            {
+                ExitResiteRoom();
                 break;
             }
             default:
@@ -539,7 +595,7 @@ public partial class GameManager : MonoBehaviour
         return t_target;
     }
 
-    public CustomMono GetNearestAlly(CustomMono self)
+    public CustomMono FindNearestAlly(CustomMono self)
     {
         float minDistance = float.MaxValue;
         CustomMono t_target = null;
@@ -597,32 +653,6 @@ public partial class GameManager : MonoBehaviour
         return t_target;
     }
 
-    public Vector2 GetPathFindingDirectionToTarget(Vector2 p_currentPos, Vector2 p_targetPos)
-    {
-        /* Temporary removing self && target from grid because it will block the path */
-        RemoveObstacle(p_currentPos);
-        RemoveObstacle(p_targetPos);
-
-        returnPath = gridManager.SolvePath(
-            gridManager.GetNodeAtPosition(p_currentPos),
-            gridManager.GetNodeAtPosition(p_targetPos)
-        );
-
-        /* Adding self grid back */
-        SetObstacle(p_currentPos);
-        SetObstacle(p_targetPos);
-
-        if (returnPath.Count > 1)
-        {
-            return returnPath[^2].pos - p_currentPos;
-        }
-        else
-        {
-            print("No path found");
-            return p_targetPos - p_currentPos;
-        }
-    }
-
     public void SetObstacle(Vector2 p_pos) => gridManager.MarkNodeAsObstacle(p_pos);
 
     public void RemoveObstacle(Vector2 p_pos) => gridManager.MarkNodeAsNormal(p_pos);
@@ -654,7 +684,7 @@ public partial class GameManager : MonoBehaviour
         scaledFixedDeltaTime = defaultFixedDeltaTime / Time.timeScale;
     }
 
-    public void AddNormalEnemyRoom(NormalEnemyRoomInfo normalEnemyRoomInfo, int floor)
+    public void AddNormalEnemyRoom(EnemyRoomInfo normalEnemyRoomInfo, int floor)
     {
         while (roomSystem.normalEnemyFloors.Count <= floor)
             roomSystem.normalEnemyFloors.Add(new());
@@ -737,14 +767,33 @@ public partial class GameManager : MonoBehaviour
 
     public List<Item> GetRandomItemRewards(int count)
     {
-        List<int> pickedItemIndexes = WeightedSampler.SampleUnique(count, itemDataSOWeights);
+        List<int> pickedItemIndexes = WeightedSampler.SampleUnique(count, itemRewardSOWeights);
 
         List<Item> items = new();
         for (int i = 0; i < count; i++)
         {
             items.Add(itemPool.PickOne().Item);
-            items[i].Init(itemDataSOs[pickedItemIndexes[i]]);
+            items[i].Init(itemRewardSOs[pickedItemIndexes[i]]);
         }
+
+        return items;
+    }
+
+    public List<Item> GetRandomItemForShop()
+    {
+        List<Item> items = new();
+        for (int i = 0; i < 6; i++)
+            items.Add(itemPool.PickOne().Item);
+        items[0].Init(legendaryItemDataSOs[Random.Range(0, legendaryItemDataSOs.Count)]);
+        items[1].Init(epicItemDataSOs[Random.Range(0, epicItemDataSOs.Count)]);
+
+        List<int> pickedRareIndexes = rareItemDataSOs.UniqueSample(2),
+            pickedNormalIndexes = normalItemDataSOs.UniqueSample(4);
+
+        for (int i = 2; i < 4; i++)
+            items[i].Init(rareItemDataSOs[pickedRareIndexes[i - 2]]);
+        for (int i = 4; i < 6; i++)
+            items[i].Init(normalItemDataSOs[pickedNormalIndexes[i - 4]]);
 
         return items;
     }
@@ -918,10 +967,6 @@ public partial class GameManager : MonoBehaviour
         recipient.stat.attackRange.AddModifier(new(offer.offerAttackRange, ModifierType.Additive));
 
         recipient.stat.currentHealthPoint.Value += recipient.stat.healthPoint.FinalValue - hp;
-        recipient
-            .skill.skillBases[1]
-            .GetActionField<ActionFloatField>(ActionFieldName.Range)
-            .value += offering.attackRange * 0.05f;
     }
 
     void ChangeGameState(GameState newState)
@@ -930,23 +975,29 @@ public partial class GameManager : MonoBehaviour
         onGameStateChange(newState);
     }
 
-    void BuildItemDataSOWeights()
+    void BuildItemRewewardSOs()
     {
-        for (int i = 0; i < itemDataSOs.Count; i++)
+        normalItemDataSOs.ForEach(i => itemRewardSOs.Add(i));
+        rareItemDataSOs.ForEach(i => itemRewardSOs.Add(i));
+    }
+
+    void BuildItemRewardSOWeights()
+    {
+        for (int i = 0; i < itemRewardSOs.Count; i++)
         {
-            switch (itemDataSOs[i].itemTier)
+            switch (itemRewardSOs[i].itemTier)
             {
                 case ItemTier.Normal:
-                    itemDataSOWeights[i] = 1;
+                    itemRewardSOWeights[i] = 1;
                     break;
                 case ItemTier.Rare:
-                    itemDataSOWeights[i] = 0.3f;
+                    itemRewardSOWeights[i] = 0.3f;
                     break;
                 case ItemTier.Epic:
-                    itemDataSOWeights[i] = 0.1f;
+                    itemRewardSOWeights[i] = 0.1f;
                     break;
                 case ItemTier.Legendary:
-                    itemDataSOWeights[i] = 0.03f;
+                    itemRewardSOWeights[i] = 0.03f;
                     break;
                 default:
                     break;
@@ -984,22 +1035,26 @@ public partial class GameManager : MonoBehaviour
 
     void BuildFormation()
     {
-        Vector2 upperRight = mapArea.transform.localScale / 2;
-        Vector2 upperLeft = new(-upperRight.x + 1, upperRight.y - 1);
-        Vector2 lowerRight = new(upperRight.x - 1, -upperRight.y);
-
-        var pointer = upperLeft;
-        int level = 0;
-        while (pointer.y >= lowerRight.y)
+        Vector2 upperRight = mapArea.transform.localScale / 2,
+            lowerLeft = new(-upperRight.x, -upperRight.y),
+            originalPoint = new(-9f, 5.196f),
+            pointer = originalPoint;
+        int j = 0;
+        while (true)
         {
-            formationPositions.Add(pointer);
-            pointer.x += 2;
-            if (pointer.x >= lowerRight.x)
+            pointer.x = originalPoint.x + j * 1.5f;
+            if (pointer.x > upperRight.x)
             {
-                pointer.x = level % 2 == 0 ? upperLeft.x : upperLeft.x + 1;
-                pointer.y--;
-                level++;
+                j = 0;
+                pointer.y -= 2f;
+                pointer.x = originalPoint.x + j * 1.5f;
             }
+
+            if (pointer.y < lowerLeft.y)
+                break;
+
+            formationPositions.Add(pointer);
+            j++;
         }
     }
 

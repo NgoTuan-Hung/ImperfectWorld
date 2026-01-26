@@ -1,15 +1,4 @@
-using System;
-using System.Collections.Generic;
 using UnityEngine;
-
-public enum ModificationPriority
-{
-    VeryLow = 4,
-    Low = 3,
-    Medium = 2,
-    High = 1,
-    VeryHigh = 0,
-}
 
 /// <summary>
 /// A sensor system for bot, bot can see nearby enemies (field of view), select nearest one,
@@ -26,20 +15,9 @@ public class BotSensor : CustomMonoPal
     public Vector2 originToTargetOriginDirection,
         /* Center is the position of RotationAndCenterObject of a CustomMono */
         centerToTargetCenterDirection,
-        firePointToTargetCenterDirection,
-        targetPathFindingDirection;
+        firePointToTargetCenterDirection;
     public Vector3 targetOriginPosition,
         targetCenterPosition;
-
-    /// <summary>
-    /// OTTOD = Origin To Target Origin Direction, CTTCD = Center To Target Center Direction,
-    /// FPTTCD = Fire Point To Target Center Direction, ...
-    /// </summary>
-    public int current_OTTOD_ChangePriority = (int)ModificationPriority.VeryLow,
-        current_CTTCD_ChangePriority = (int)ModificationPriority.VeryLow,
-        current_FPTTCD_ChangePriority = (int)ModificationPriority.VeryLow,
-        current_TOP_ChangePriority = (int)ModificationPriority.VeryLow,
-        current_TCP_ChangePriority = (int)ModificationPriority.VeryLow;
     public float distanceToNearestEnemy;
 
     /// <summary>
@@ -56,17 +34,9 @@ public class BotSensor : CustomMonoPal
 
     void SetTargetToCenterMap()
     {
-        SetOriginToTargetOriginDirection(
-            Vector3.zero - transform.position,
-            ModificationPriority.VeryLow
-        );
+        SetOriginToTargetOriginDirection(Vector3.zero - transform.position);
         SetCenterToTargetCenterDirection(
-            Vector3.zero - customMono.rotationAndCenterObject.transform.position,
-            ModificationPriority.VeryLow
-        );
-        targetPathFindingDirection = GameManager.Instance.GetPathFindingDirectionToTarget(
-            transform.position,
-            Vector2.zero
+            Vector3.zero - customMono.rotationAndCenterObject.transform.position
         );
     }
 
@@ -85,7 +55,6 @@ public class BotSensor : CustomMonoPal
 
     void DoFixedUpdate()
     {
-        ResetField();
         EnemySensing();
     }
 
@@ -104,100 +73,46 @@ public class BotSensor : CustomMonoPal
         else
         {
             SetOriginToTargetOriginDirection(
-                currentNearestEnemy.transform.position - transform.position,
-                ModificationPriority.VeryLow
+                currentNearestEnemy.transform.position - transform.position
             );
             SetCenterToTargetCenterDirection(
                 currentNearestEnemy.rotationAndCenterObject.transform.position
-                    - customMono.rotationAndCenterObject.transform.position,
-                ModificationPriority.VeryLow
+                    - customMono.rotationAndCenterObject.transform.position
             );
             SetFirePointToTargetCenterDirection(
                 currentNearestEnemy.rotationAndCenterObject.transform.position
-                    - customMono.firePoint.transform.position,
-                ModificationPriority.VeryLow
+                    - customMono.firePoint.transform.position
             );
-            SetTargetOriginPosition(
-                currentNearestEnemy.transform.position,
-                ModificationPriority.VeryLow
-            );
-            SetTargetCenterPosition(
-                currentNearestEnemy.rotationAndCenterObject.transform.position,
-                ModificationPriority.VeryLow
-            );
+            SetTargetOriginPosition(currentNearestEnemy.transform.position);
+            SetTargetCenterPosition(currentNearestEnemy.rotationAndCenterObject.transform.position);
 
             distanceToNearestEnemy = originToTargetOriginDirection.magnitude;
-            targetPathFindingDirection = GameManager.Instance.GetPathFindingDirectionToTarget(
-                transform.position,
-                currentNearestEnemy.transform.position
-            );
         }
     }
 
-    /// <summary>
-    /// Should be called somewhere else to guarantee the order.
-    /// </summary>
-    public void ResetField()
+    void SetOriginToTargetOriginDirection(Vector2 p_direction)
     {
-        current_CTTCD_ChangePriority = (int)ModificationPriority.VeryLow;
-        current_OTTOD_ChangePriority = (int)ModificationPriority.VeryLow;
-        current_TCP_ChangePriority = (int)ModificationPriority.VeryLow;
-        current_TOP_ChangePriority = (int)ModificationPriority.VeryLow;
+        originToTargetOriginDirection = p_direction == Vector2.zero ? Vector2.one : p_direction;
     }
 
-    public void SetOriginToTargetOriginDirection(
-        Vector2 p_direction,
-        ModificationPriority p_priority
-    )
+    void SetCenterToTargetCenterDirection(Vector2 p_direction)
     {
-        if ((int)p_priority <= current_OTTOD_ChangePriority)
-        {
-            originToTargetOriginDirection = p_direction == Vector2.zero ? Vector2.one : p_direction;
-            current_OTTOD_ChangePriority = (int)p_priority;
-        }
+        centerToTargetCenterDirection = p_direction == Vector2.zero ? Vector2.one : p_direction;
     }
 
-    public void SetCenterToTargetCenterDirection(
-        Vector2 p_direction,
-        ModificationPriority p_priority
-    )
+    void SetFirePointToTargetCenterDirection(Vector2 p_direction)
     {
-        if ((int)p_priority <= current_CTTCD_ChangePriority)
-        {
-            centerToTargetCenterDirection = p_direction == Vector2.zero ? Vector2.one : p_direction;
-            current_CTTCD_ChangePriority = (int)p_priority;
-        }
+        firePointToTargetCenterDirection = p_direction == Vector2.zero ? Vector2.one : p_direction;
     }
 
-    public void SetFirePointToTargetCenterDirection(
-        Vector2 p_direction,
-        ModificationPriority p_priority
-    )
+    void SetTargetOriginPosition(Vector3 p_position)
     {
-        if ((int)p_priority <= current_FPTTCD_ChangePriority)
-        {
-            firePointToTargetCenterDirection =
-                p_direction == Vector2.zero ? Vector2.one : p_direction;
-            current_FPTTCD_ChangePriority = (int)p_priority;
-        }
+        targetOriginPosition = p_position;
     }
 
-    public void SetTargetOriginPosition(Vector3 p_position, ModificationPriority p_priority)
+    void SetTargetCenterPosition(Vector3 p_position)
     {
-        if ((int)p_priority <= current_TOP_ChangePriority)
-        {
-            targetOriginPosition = p_position;
-            current_TOP_ChangePriority = (int)p_priority;
-        }
-    }
-
-    public void SetTargetCenterPosition(Vector3 p_position, ModificationPriority p_priority)
-    {
-        if ((int)p_priority <= current_TCP_ChangePriority)
-        {
-            targetCenterPosition = p_position;
-            current_TCP_ChangePriority = (int)p_priority;
-        }
+        targetCenterPosition = p_position;
     }
 
     /// <summary>

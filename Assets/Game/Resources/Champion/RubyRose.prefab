@@ -5346,7 +5346,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6957075045759083756}
-  - component: {fileID: 4127992024796556639}
   - component: {fileID: 2512107891724836706}
   - component: {fileID: 3322979664608446191}
   - component: {fileID: 7830560597145756248}
@@ -5358,6 +5357,8 @@ GameObject:
   - component: {fileID: 6677134166732760278}
   - component: {fileID: 8134751301641040438}
   - component: {fileID: 1539668155085412910}
+  - component: {fileID: 749814714436994786}
+  - component: {fileID: 8445006318274206456}
   m_Layer: 0
   m_Name: RubyRose
   m_TagString: Team2
@@ -5384,52 +5385,6 @@ Transform:
   - {fileID: 797606899456478980}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!61 &4127992024796556639
-BoxCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6793604420465415451}
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_ForceSendLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ForceReceiveLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ContactCaptureLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_CallbackLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_CompositeOperation: 0
-  m_CompositeOrder: 0
-  m_Offset: {x: 0, y: 0}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0, y: 0}
-    oldSize: {x: 0, y: 0}
-    newSize: {x: 0, y: 0}
-    adaptiveTilingThreshold: 0
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
-  m_Size: {x: 0.1, y: 0.1}
-  m_EdgeRadius: 0
 --- !u!50 &2512107891724836706
 Rigidbody2D:
   serializedVersion: 5
@@ -5574,12 +5529,10 @@ MonoBehaviour:
   healthPoint:
     baseValue: 38
     finalValue: 38
-    referenceModifiers: []
     modifiers: []
   healthRegen:
     baseValue: 0
     finalValue: 0
-    referenceModifiers: []
     modifiers: []
   currentManaPoint:
     value: 0
@@ -5587,86 +5540,76 @@ MonoBehaviour:
   manaPoint:
     baseValue: 100
     finalValue: 100
-    referenceModifiers: []
     modifiers: []
   manaRegen:
     baseValue: 10
     finalValue: 10
-    referenceModifiers: []
     modifiers: []
   might:
     baseValue: 1
     finalValue: 1
-    referenceModifiers: []
     modifiers: []
   reflex:
     baseValue: 1
     finalValue: 1
-    referenceModifiers: []
     modifiers: []
   wisdom:
     baseValue: 1
     finalValue: 1
-    referenceModifiers: []
     modifiers: []
   attackSpeed:
     baseValue: 0.75
     finalValue: 0.75
-    referenceModifiers: []
     modifiers: []
   armor:
     baseValue: 0.75
     finalValue: 0.75
-    referenceModifiers: []
     modifiers: []
   moveSpeed:
     baseValue: 2
     finalValue: 2
-    referenceModifiers: []
     modifiers: []
   damageModifier:
     baseValue: 1
     finalValue: 1
-    referenceModifiers: []
     modifiers: []
   omnivamp:
     baseValue: 0
     finalValue: 0
-    referenceModifiers: []
     modifiers: []
   attackDamage:
     baseValue: 3.8
     finalValue: 3.8
-    referenceModifiers: []
     modifiers: []
   critChance:
     baseValue: 0.25
     finalValue: 0.25
-    referenceModifiers: []
     modifiers: []
   critDamageModifier:
     baseValue: 1
     finalValue: 1
-    referenceModifiers: []
     modifiers: []
   damageReduction:
     baseValue: 0
     finalValue: 0
-    referenceModifiers: []
     modifiers: []
   attackRange:
     baseValue: 10
     finalValue: 10
-    referenceModifiers: []
     modifiers: []
+  itemSlot:
+    baseValue: 3
+    finalValue: 3
+    modifiers: []
+  equippedItems: []
   actionMoveSpeedReduceRate:
     baseValue: -0.9
     finalValue: -0.9
-    referenceModifiers: []
     modifiers: []
   actionSlowModifier:
     value: 0
     type: 1
+    liveTime: 1
 --- !u!114 &4834425871059619844
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5716,6 +5659,8 @@ MonoBehaviour:
   - {fileID: 11400000, guid: d956062efdfc6274d972e2ef0fc25827, type: 2}
   - {fileID: 11400000, guid: d7c9678bd12fcec43b1775b5112b6e50, type: 2}
   skillBases: []
+  attack: {fileID: 0}
+  mainSkill: {fileID: 0}
 --- !u!114 &8029046366682306553
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5735,14 +5680,12 @@ MonoBehaviour:
   botAIManager: {fileID: 0}
   stat: {fileID: 0}
   arrowIndicator: {fileID: 0}
-  actionInterval: 0
-  movementActionInterval: 0
   actionBlocking: 0
   movementActionBlocking: 0
   combatCollision: {fileID: 0}
   firePoint: {fileID: 0}
-  boxCollider2D: {fileID: 0}
   combatCollider2D: {fileID: 0}
+  circleCollider2D: {fileID: 0}
   audioSource: {fileID: 0}
   rigidbody2D: {fileID: 0}
   championData: {fileID: 11400000, guid: 2cdb7eec924313d4c9045b9955a6418c, type: 2}
@@ -5752,6 +5695,7 @@ MonoBehaviour:
   currentAction: {fileID: 0}
   currentMovementAction: {fileID: 0}
   skill: {fileID: 0}
+  scriptExecutionCore: {fileID: 0}
 --- !u!114 &5538925871575093861
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5789,11 +5733,6 @@ MonoBehaviour:
   targetPathFindingDirection: {x: 0, y: 0}
   targetOriginPosition: {x: 0, y: 0, z: 0}
   targetCenterPosition: {x: 0, y: 0, z: 0}
-  current_OTTOD_ChangePriority: 4
-  current_CTTCD_ChangePriority: 4
-  current_FPTTCD_ChangePriority: 4
-  current_TOP_ChangePriority: 4
-  current_TCP_ChangePriority: 4
   distanceToNearestEnemy: 0
 --- !u!114 &8134751301641040438
 MonoBehaviour:
@@ -5822,6 +5761,54 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d569473e47cf17243ab80ca74698f122, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GridNodeObstacle
+--- !u!114 &749814714436994786
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6793604420465415451}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5574015e91f3d14ca209ebd3031e325, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ScriptExecutionCore
+--- !u!58 &8445006318274206456
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6793604420465415451}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_CompositeOperation: 0
+  m_CompositeOrder: 0
+  m_Offset: {x: 0, y: 0}
+  m_Radius: 0.433
 --- !u!1 &7092648132326817882
 GameObject:
   m_ObjectHideFlags: 0

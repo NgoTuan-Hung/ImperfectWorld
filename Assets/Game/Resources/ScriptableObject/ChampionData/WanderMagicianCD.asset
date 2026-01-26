@@ -17,15 +17,15 @@ MonoBehaviour:
   variant: 1
   rangedProjectileEffectSO: {fileID: 11400000, guid: 0152fa7a68a379f4dabe1a7053af1754, type: 2}
   rangedImpactEffectSO: {fileID: 11400000, guid: d28c11b9ade101044ad7831ae26b286a, type: 2}
-  healthPoint: 20
+  healthPoint: 38
   healthRegen: 0
-  manaPoint: 100
-  manaRegen: 0
+  manaPoint: 55
+  manaRegen: 10
   might: 1
   reflex: 1
   wisdom: 1
-  attackSpeed: 1
-  armor: 0
+  attackSpeed: 0.8
+  armor: 0.5
   moveSpeed: 2
   damageModifier: 1
   omnivamp: 0
@@ -34,3 +34,5 @@ MonoBehaviour:
   critDamageModifier: 1
   damageReduction: 0
   attackRange: 5
+  price: 55
+  goldDrop: 17

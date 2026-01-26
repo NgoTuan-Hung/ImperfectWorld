@@ -50,6 +50,15 @@ public class DescriptionEditor : EditorWindow
             GetColoredText(ComplexTextID.POSITIVENUMBER, "0")
         },
         { GetIDAsText(ComplexTextID.STRIKELOCK), GetMapper(ComplexTextID.STRIKELOCK) },
+        { GetIDAsText(ComplexTextID.BUFF), GetMapper(ComplexTextID.BUFF) },
+        { GetIDAsText(ComplexTextID.DEBUFF), GetMapper(ComplexTextID.DEBUFF) },
+        { GetIDAsText(ComplexTextID.SUMMON), GetColoredText(ComplexTextID.SUMMON, "summon") },
+        { GetIDAsText(ComplexTextID.MOVED), GetColoredText(ComplexTextID.MOVED, "moved") },
+        { GetIDAsText(ComplexTextID.GOLD), GetColoredText(ComplexTextID.GOLD, "gold") },
+        { GetIDAsText(ComplexTextID.ONATTACK), GetMapper(ComplexTextID.ONATTACK) },
+        { GetIDAsText(ComplexTextID.ONCAST), GetMapper(ComplexTextID.ONCAST) },
+        { GetIDAsText(ComplexTextID.ONTAKEDMG), GetMapper(ComplexTextID.ONTAKEDMG) },
+        { GetIDAsText(ComplexTextID.ONDEALDMG), GetMapper(ComplexTextID.ONDEALDMG) },
     };
     int lastCaretIndex = 0;
 

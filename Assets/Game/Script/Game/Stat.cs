@@ -32,7 +32,7 @@ public partial class Stat : MonoBehaviour
         customMono.scriptExecutionCore.lateEnable0 += CalculateFinalStats;
     }
 
-    public void SetupForReuseIE()
+    public void SetupForReuse()
     {
         ResetFields();
         InitUI();
@@ -306,7 +306,8 @@ public partial class Stat : MonoBehaviour
     /// </summary>
     /// <param name="p_damage"></param>
     /// <returns></returns>
-    public float CalculateDamageDeal(float damage) => damage * damageModifier.FinalValue;
+    public float CalculateDamageWithAppliedModifier(float damage) =>
+        damage * damageModifier.FinalValue;
 
     public void EnableRegen() => canRegen = true;
 

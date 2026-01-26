@@ -60,7 +60,11 @@ public class TheHollowShepherd : SkillBase
                 var aspdFSM = new FloatStatModifier(aspdBuff, ModifierType.Additive);
                 customMono.stat.attackSpeed.AddModifier(aspdFSM);
                 modifiers.Add(aspdFSM);
-                hpChangeGED.owner.statusEffect.GetHit(customMono, hpChangeGED.maxValue * 0.1f);
+                GameManager.Instance.ResolveDamage(
+                    customMono,
+                    hpChangeGED.owner,
+                    hpChangeGED.maxValue * 0.1f
+                );
             }
         }
     }

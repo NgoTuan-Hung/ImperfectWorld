@@ -282,19 +282,9 @@ public class GameEffectBuilder : EditorWindow
                         t_buildSO.collideAndDamageSO = collideAndDamageSO;
                         break;
                     }
-                    case EGameEffectBehaviour.BlueHole:
-                    {
-                        build.AddComponent<BlueHole>();
-                        break;
-                    }
                     case EGameEffectBehaviour.InfernalTideFanReceiver:
                     {
                         build.AddComponent<InfernalTideFanReceiver>();
-                        break;
-                    }
-                    case EGameEffectBehaviour.SovereignFlowBehaviour:
-                    {
-                        build.AddComponent<SovereignFlowBehaviour>();
                         break;
                     }
                     case EGameEffectBehaviour.PullingMissile:

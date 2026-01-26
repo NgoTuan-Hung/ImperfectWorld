@@ -1,0 +1,40 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c8394565e471a9e429770ab579f0bbd9, type: 3}
+  m_Name: "KuraiK\u014Dra"
+  m_EditorClassIdentifier: Assembly-CSharp::ItemDataSO
+  itemName: "Kurai K\u014Dra"
+  icon: {fileID: -4253206970694051259, guid: 9f94c86584685224f9615f120db10d80, type: 3}
+  statBuffs:
+  - statBuffType: 5
+    modifier:
+      value: 35
+      type: 0
+      liveTime: 0
+  - statBuffType: 2
+    modifier:
+      value: 25
+      type: 0
+      liveTime: 0
+  itemBehaviours: 00000000
+  itemDescription: '<color=green>+ 35 <link=ATK><color=#E53935>ATK</color></link></color>
+
+    <color=green>+
+    25 <link=MIGHT><color=#F39C12>MIGHT</color></link></color>
+
+    <color=#3498DB>passive:
+    </color>
+
+    Each attack has a <color=green>25%</color> chance (<color=green>15%</color>
+    for ranged attacks) to stun the target for <color=green>1.2</color> seconds.'
+  itemTier: 2
+  price: 500

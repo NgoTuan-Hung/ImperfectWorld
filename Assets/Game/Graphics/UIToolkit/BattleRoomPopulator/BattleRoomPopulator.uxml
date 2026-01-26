@@ -1,4 +1,5 @@
 <ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="True">
     <ui:IntegerField label="Floor" value="42" name="floor-if" />
+    <ui:DropdownField label="Room Type" choices="Normal,Elite,Boss" name="room-type-df" />
     <ui:Button text="ADD" name="add-b" />
 </ui:UXML>

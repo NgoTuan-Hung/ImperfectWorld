@@ -2,6 +2,9 @@ public enum ItemBehaviourType
 {
     KuraiKōraBehaviour,
     PhoenixHeartBehaviour,
+    MoonCleaverBehaviour,
+    BlinkspineScepterBehaviour,
+    MercuryGraspBehaviour,
 }
 
 public interface IItemBehaviour

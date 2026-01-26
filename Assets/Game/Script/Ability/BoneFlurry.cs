@@ -123,14 +123,15 @@ public class BoneFlurry : SkillBase
                 false
             );
 
-            p_customMono.statusEffect.GetHit(
+            GameManager.Instance.ResolveDamage(
                 customMono,
+                p_customMono,
                 customMono.stat.attackDamage.FinalValue * damageVariant[i]
             );
 
             SpawnEffectAtLoc(
                 p_customMono.rotationAndCenterObject.transform.position,
-                GameManager.Instance.bladeOfVuImpactPool.PickOneGameEffect()
+                GameManager.Instance.defaultImpactEffectPool.PickOneGameEffect()
             );
         }
 

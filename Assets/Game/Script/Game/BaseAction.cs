@@ -4,21 +4,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
-public enum ActionUse
-{
-    GetCloser,
-    GetAway,
-    Dodge,
-    Passive,
-    MeleeDamage,
-    RangedDamage,
-    Roam,
-    AirRoll,
-    SummonShortRange,
-    PushAway,
-    KeepDistance,
-}
-
 [RequireComponent(typeof(CustomMono))]
 public partial class BaseAction : MonoBehaviour
 {

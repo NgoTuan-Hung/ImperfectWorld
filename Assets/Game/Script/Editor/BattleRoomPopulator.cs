@@ -11,6 +11,7 @@ public class BattleRoomPopulator : EditorWindow
     IntegerField floorIntegerField;
     Button addButton;
     ListGameObjectSO listGameObjectSO;
+    DropdownField roomTypeDF;
 
     [MenuItem("Window/Battle Room Populator")]
     public static void ShowMyEditor()
@@ -44,19 +45,40 @@ public class BattleRoomPopulator : EditorWindow
 
         vTA.CloneTree(rootVisualElement);
         floorIntegerField = rootVisualElement.Q<IntegerField>("floor-if");
+        roomTypeDF = rootVisualElement.Q<DropdownField>("room-type-df");
         addButton = rootVisualElement.Q<Button>("add-b");
     }
 
     void AddRoom(List<GameObject> gameObjects)
     {
         GameManager gameManager = FindFirstObjectByType<GameManager>();
-        NormalEnemyRoomInfo normalEnemyRoomInfo = new();
+        EnemyRoomInfo enemyRoomInfo = new();
         gameObjects.ForEach(gO =>
-            normalEnemyRoomInfo.roomEnemyInfos.Add(
+            enemyRoomInfo.roomEnemyInfos.Add(
                 new(PrefabUtility.GetCorrespondingObjectFromSource(gO), gO.transform.position)
             )
         );
-        gameManager.AddNormalEnemyRoom(normalEnemyRoomInfo, floorIntegerField.value);
+
+        switch (roomTypeDF.value)
+        {
+            case "Normal":
+            {
+                gameManager.AddNormalEnemyRoom(enemyRoomInfo, floorIntegerField.value);
+                break;
+            }
+            case "Elite":
+            {
+                gameManager.AddEliteRoom(enemyRoomInfo);
+                break;
+            }
+            case "Boss":
+            {
+                gameManager.AddBossRoom(enemyRoomInfo);
+                break;
+            }
+            default:
+                break;
+        }
     }
 }
 #endif

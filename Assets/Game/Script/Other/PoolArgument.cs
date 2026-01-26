@@ -11,6 +11,7 @@ public enum ComponentType
     ChampionRewardUI,
     Relic,
     BasicUI,
+    NPC,
 };
 
 public class PoolArgument

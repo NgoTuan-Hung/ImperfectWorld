@@ -16,6 +16,7 @@ public enum GameState
     RewardPhase,
     ShopPhase,
     MysteryEventPhase,
+    RestSitePhase,
 }
 
 public enum ComplexTextID
@@ -43,10 +44,22 @@ public enum ComplexTextID
     DMGREDUC,
     ATKRANGE,
     STRIKELOCK,
+    BUFF,
+    DEBUFF,
+    SUMMON,
+    MOVED,
+    GOLD,
+    ONATTACK,
+    ONCAST,
+    ONTAKEDMG,
+    ONDEALDMG,
 }
 
 public partial class GameManager
 {
+    TakeDamageGameEventData takeDamageGameEventData = new(0);
+    DealDamageGameEventData dealDamageGameEventData = new();
+    bool isRestSiteHandled = false;
     public int playerGold;
     public Material team1DirectionIndicatorMat;
     public Material team2DirectionIndicatorMat;
@@ -95,7 +108,7 @@ public partial class GameManager
         {
             GetComplexTextIDAsText(ComplexTextID.WISDOM),
             ConstructComplexText(ComplexTextID.WISDOM)
-                + ": Decreases mana point by 0.25 and Increases mana point regeneration by 1.5."
+                + ": decreases mana point by 0.25 and Increases mana point regeneration by 1.5."
         },
         {
             GetComplexTextIDAsText(ComplexTextID.ASPD),
@@ -147,11 +160,43 @@ public partial class GameManager
             ConstructComplexText(ComplexTextID.STRIKELOCK)
                 + ": one affected by strike lock cannot attack."
         },
+        {
+            GetComplexTextIDAsText(ComplexTextID.BUFF),
+            ConstructComplexText(ComplexTextID.BUFF)
+                + ": A positive effect that benefits the character."
+        },
+        {
+            GetComplexTextIDAsText(ComplexTextID.DEBUFF),
+            ConstructComplexText(ComplexTextID.DEBUFF)
+                + ": A negative effect that hinders the character."
+        },
+        {
+            GetComplexTextIDAsText(ComplexTextID.ONATTACK),
+            ConstructComplexText(ComplexTextID.ONATTACK) + ": Triggered when character attack."
+        },
+        {
+            GetComplexTextIDAsText(ComplexTextID.ONCAST),
+            ConstructComplexText(ComplexTextID.ONCAST)
+                + ": Triggered when character cast main ability."
+        },
+        {
+            GetComplexTextIDAsText(ComplexTextID.ONTAKEDMG),
+            ConstructComplexText(ComplexTextID.ONTAKEDMG)
+                + ": Triggered when character take damage."
+        },
+        {
+            GetComplexTextIDAsText(ComplexTextID.ONDEALDMG),
+            ConstructComplexText(ComplexTextID.ONDEALDMG)
+                + ": Triggered when character deal damage."
+        },
     };
     Dictionary<ItemBehaviourType, Type> itemBehaviourMapper = new()
     {
         { ItemBehaviourType.KuraiKōraBehaviour, typeof(KuraiKōraBehaviour) },
         { ItemBehaviourType.PhoenixHeartBehaviour, typeof(PhoenixHeartBehaviour) },
+        { ItemBehaviourType.MoonCleaverBehaviour, typeof(MoonCleaverBehaviour) },
+        { ItemBehaviourType.BlinkspineScepterBehaviour, typeof(BlinkspineScepterBehaviour) },
+        { ItemBehaviourType.MercuryGraspBehaviour, typeof(MercuryGraspBehaviour) },
     };
 
     public Type MapItemBehaviour(ItemBehaviourType type) => itemBehaviourMapper[type];
@@ -160,7 +205,8 @@ public partial class GameManager
     public List<ChampionReward> championRewards = new();
     public UIEffectPreset championRewardSelectedEffectPreset,
         rareItemEffectPreset,
-        epicItemEffectPreset;
+        epicItemEffectPreset,
+        legendaryItemEffectPreset;
     public float largePositiveNumber = 999999f;
 
     /* Complex Text Colors */
@@ -187,6 +233,15 @@ public partial class GameManager
     public const string damageReductionColor = "#4A90E2";
     public const string attackRangeColor = "#FFD447";
     public const string strikeLockColor = "#fc03d7";
+    public const string buffColor = "#4CAF50";
+    public const string debuffColor = "#E53935";
+    public const string summonColor = "#9B6BFF";
+    public const string movedColor = "#2ECCB0";
+    public const string goldColor = "#F1C40F";
+    public const string onAttackColor = "#E04646";
+    public const string onCastColor = "#4AA8FF";
+    public const string onTakeDamageColor = "#F2A93B";
+    public const string onDealDamageColor = "#D64550";
     static Dictionary<ComplexTextID, string> linkDict = new()
     {
         { ComplexTextID.PASSIVE, "PASSIVE" },
@@ -212,6 +267,15 @@ public partial class GameManager
         { ComplexTextID.DMGREDUC, "DMGREDUC" },
         { ComplexTextID.ATKRANGE, "ATKRANGE" },
         { ComplexTextID.STRIKELOCK, "STRIKELOCK" },
+        { ComplexTextID.BUFF, "BUFF" },
+        { ComplexTextID.DEBUFF, "DEBUFF" },
+        { ComplexTextID.SUMMON, "SUMMON" },
+        { ComplexTextID.MOVED, "MOVED" },
+        { ComplexTextID.GOLD, "GOLD" },
+        { ComplexTextID.ONATTACK, "ONATTACK" },
+        { ComplexTextID.ONCAST, "ONCAST" },
+        { ComplexTextID.ONTAKEDMG, "ONTAKEDMG" },
+        { ComplexTextID.ONDEALDMG, "ONDEALDMG" },
     };
 
     static Dictionary<ComplexTextID, string> colorDict = new()
@@ -239,6 +303,15 @@ public partial class GameManager
         { ComplexTextID.DMGREDUC, damageReductionColor },
         { ComplexTextID.ATKRANGE, attackRangeColor },
         { ComplexTextID.STRIKELOCK, strikeLockColor },
+        { ComplexTextID.BUFF, buffColor },
+        { ComplexTextID.DEBUFF, debuffColor },
+        { ComplexTextID.SUMMON, summonColor },
+        { ComplexTextID.MOVED, movedColor },
+        { ComplexTextID.GOLD, goldColor },
+        { ComplexTextID.ONATTACK, onAttackColor },
+        { ComplexTextID.ONCAST, onCastColor },
+        { ComplexTextID.ONTAKEDMG, onTakeDamageColor },
+        { ComplexTextID.ONDEALDMG, onDealDamageColor },
     };
 
     public static string ConstructComplexText(ComplexTextID id, string innerText) =>
@@ -255,8 +328,12 @@ public partial class GameManager
     public static List<string> GetAllIDsAsText() => linkDict.Values.ToList();
 
     public Action<GameState> onGameStateChange = (newState) => { };
-    public List<ItemDataSO> itemDataSOs;
-    public float[] itemDataSOWeights;
+    public List<ItemDataSO> itemRewardSOs;
+    public List<ItemDataSO> normalItemDataSOs,
+        rareItemDataSOs,
+        epicItemDataSOs,
+        legendaryItemDataSOs;
+    public float[] itemRewardSOWeights;
     public int formationIndex = 0;
     public GameObject raft;
     public Vector3 screenSpaceToWorldSpaceUIScale;
@@ -271,6 +348,7 @@ public partial class GameManager
 
     public int enemyItemCount = 0,
         enemyStatUpgradeCount = 0;
+    public NPC campfire;
 
     IEnumerator DistributeItemForEnemies()
     {
@@ -600,5 +678,109 @@ public partial class GameManager
                 r.relicBehavior.PerFloorCallback();
             }
         });
+    }
+
+    public void AddEliteRoom(EnemyRoomInfo enemyRoomInfo)
+    {
+        roomSystem.eliteEnemyRoomInfos.Add(enemyRoomInfo);
+    }
+
+    public void AddBossRoom(EnemyRoomInfo enemyRoomInfo)
+    {
+        roomSystem.bossRoomInfos.Add(enemyRoomInfo);
+    }
+
+    public CustomMono FindLowestHPAlly(CustomMono self, float range)
+    {
+        float minHP = float.MaxValue;
+        CustomMono t_target = null;
+        foreach (var kvp in customMonos)
+        {
+            if (
+                !self.allyTags.Contains(kvp.Value.tag)
+                || !kvp.Value.stat.alive
+                || kvp.Value == self
+                || Vector2.Distance(kvp.Value.transform.position, self.transform.position) > range
+            )
+                continue;
+
+            if (kvp.Value.stat.currentHealthPoint.Value < minHP)
+            {
+                minHP = kvp.Value.stat.currentHealthPoint.Value;
+                t_target = kvp.Value;
+            }
+        }
+
+        return t_target;
+    }
+
+    void LoadRestSiteRoom()
+    {
+        ChangeGameState(GameState.RestSitePhase);
+        GameUIManager.Instance.ChangeGameInteractionButtonRestSite();
+        GameUIManager.Instance.TurnOffMap();
+
+        ShowCampfire();
+        isRestSiteHandled = false;
+    }
+
+    void ExitResiteRoom()
+    {
+        HideCampfire();
+        ChangeGameState(GameState.MapTravelingPhase);
+        GameUIManager.Instance.TurnOnMap();
+    }
+
+    public void ShowCampfire()
+    {
+        campfire.gameObject.SetActive(true);
+    }
+
+    public void HideCampfire()
+    {
+        campfire.gameObject.SetActive(false);
+    }
+
+    void CampfireInteraction()
+    {
+        if (!isRestSiteHandled)
+        {
+            GameUIManager.Instance.ShowCampfireDialogBox();
+        }
+    }
+
+    public void DisableCampfireInteraction()
+    {
+        isRestSiteHandled = true;
+    }
+
+    public float ResolveDamage(CustomMono attacker, CustomMono target, float damage)
+    {
+        var finalDamage =
+            Math.Clamp(
+                attacker.stat.CalculateDamageWithAppliedModifier(damage)
+                    - target.stat.armor.FinalValue,
+                1f,
+                float.MaxValue
+            ) * (1 - target.stat.damageReduction.FinalValue);
+
+        target.statusEffect.GetHit(finalDamage);
+
+        takeDamageGameEventData.Setup(finalDamage);
+        GetSelfEvent(target, GameEventType.TakeDamage).action(takeDamageGameEventData);
+
+        dealDamageGameEventData.Setup(attacker, target, finalDamage);
+        GetSelfEvent(attacker, GameEventType.DealDamage).action(dealDamageGameEventData);
+
+        return finalDamage;
+    }
+
+    public Vector2 GetRandomLocationOnMap()
+    {
+        var mapBound = mapArea.transform.localScale / 2;
+        return new Vector2(
+            Random.Range(-mapBound.x, mapBound.x),
+            Random.Range(-mapBound.y, mapBound.y)
+        );
     }
 }

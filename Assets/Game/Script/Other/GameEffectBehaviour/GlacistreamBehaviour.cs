@@ -43,7 +43,11 @@ public class GlacistreamBehaviour : MonoBehaviour, IGameEffectBehaviour
                     {
                         if (collider == GameEffect.boxCollider2Ds[0])
                         {
-                            t_customMono.statusEffect.GetHit(owner, firstCollisionDamage);
+                            GameManager.Instance.ResolveDamage(
+                                owner,
+                                t_customMono,
+                                firstCollisionDamage
+                            );
                             dealDamageEvent(firstCollisionDamage);
                         }
                     });
@@ -78,7 +82,11 @@ public class GlacistreamBehaviour : MonoBehaviour, IGameEffectBehaviour
                                     t_customMono
                                         .multipleCollideTimersDict[GetHashCode()]
                                         .currentTime = multipleCollideInterval;
-                                    t_customMono.statusEffect.GetHit(owner, secondCollisionDamage);
+                                    GameManager.Instance.ResolveDamage(
+                                        owner,
+                                        t_customMono,
+                                        secondCollisionDamage
+                                    );
                                     dealDamageEvent(secondCollisionDamage);
                                 }
                             }
@@ -88,7 +96,11 @@ public class GlacistreamBehaviour : MonoBehaviour, IGameEffectBehaviour
                                     GetHashCode(),
                                     multipleCollideInterval
                                 );
-                                t_customMono.statusEffect.GetHit(owner, secondCollisionDamage);
+                                GameManager.Instance.ResolveDamage(
+                                    owner,
+                                    t_customMono,
+                                    secondCollisionDamage
+                                );
                                 dealDamageEvent(secondCollisionDamage);
                             }
                         }

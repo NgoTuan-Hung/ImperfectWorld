@@ -4987,7 +4987,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6263607926728999208}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 96a288e6dfba76442b5a6df0d9151683, type: 3}
   m_Name: 
@@ -4997,6 +4997,7 @@ MonoBehaviour:
   menuMapButton: {fileID: 0}
   menuInventoryButton: {fileID: 0}
   menuSettingButton: {fileID: 0}
+  mainScreen: {fileID: 0}
   joystickZone: {fileID: 0}
   joystickPrefab: {fileID: 4105702365784704838, guid: 6095be0895780d644b33af8244a5be64, type: 3}
   healthAndManaIndicatorPrefab: {fileID: 0}
@@ -5018,6 +5019,8 @@ MonoBehaviour:
   eventContainer: {fileID: 0}
   mapViewUI: {fileID: 0}
   gameInteractionButton: {fileID: 0}
+  restSiteHealOneButton: {fileID: 0}
+  restSiteHealAllButton: {fileID: 0}
   gameInteractionButtonTMP: {fileID: 0}
   cameraMovementSpeed: 0.2
   cameraFollowObject: {fileID: 0}
@@ -5031,6 +5034,7 @@ MonoBehaviour:
   championRewardUIs: []
   screenEffectImg: {fileID: 0}
   eventEffect: {fileID: 0}
+  storyImage: {fileID: 0}
   screenEffectAnimator: {fileID: 0}
   itemRewardPos:
   - {x: 152, y: -115}
@@ -5041,9 +5045,11 @@ MonoBehaviour:
   - {x: 472, y: -115}
   - {x: 792, y: -115}
   guideDialogBox: {fileID: 0}
+  campfireDialogBox: {fileID: 0}
   eventZone: {fileID: 0}
   eventImage: {fileID: 0}
   doubleTapTooltipPrefab: {fileID: 4519744664177110145, guid: 71b723ff866d7a3479360248fd474ff8, type: 3}
+  currentStoryPage: {fileID: 0}
   guideBribeButton: {fileID: 0}
 --- !u!114 &5330272227783191529
 MonoBehaviour:

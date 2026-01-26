@@ -50,6 +50,7 @@ public class HexGridManager : MonoBehaviour
         occupiedNodeMaterial;
     Dictionary<HexGridNode, CustomMono> occupiers = new();
     Dictionary<CustomMono, HexGridNode> nodeOccupy = new();
+    public float boundTolerance = 0;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Awake()
@@ -228,10 +229,10 @@ public class HexGridManager : MonoBehaviour
 
     bool CheckPosInsideBound(Vector2 pos)
     {
-        return pos.x >= bound.bounds.min.x
-            && pos.x <= bound.bounds.max.x
-            && pos.y >= bound.bounds.min.y
-            && pos.y <= bound.bounds.max.y;
+        return pos.x >= bound.bounds.min.x - boundTolerance
+            && pos.x <= bound.bounds.max.x + boundTolerance
+            && pos.y >= bound.bounds.min.y - boundTolerance
+            && pos.y <= bound.bounds.max.y + boundTolerance;
     }
 
     public void ShowVisual() => showVisual();

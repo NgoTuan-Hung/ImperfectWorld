@@ -11,7 +11,7 @@ namespace Map
 
         public Map CurrentMap { get; private set; }
 
-        private void Start()
+        public void TryLoadingSavedMap()
         {
             if (PlayerPrefs.HasKey("Map"))
             {

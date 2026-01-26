@@ -167,7 +167,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5657838144334427520}
-  - component: {fileID: 503388096382920182}
   - component: {fileID: 1626271883579540366}
   - component: {fileID: 993325512569453520}
   - component: {fileID: 2294511856684483096}
@@ -179,6 +178,8 @@ GameObject:
   - component: {fileID: 5022457340166956942}
   - component: {fileID: 9028881113676336322}
   - component: {fileID: 603412092444917336}
+  - component: {fileID: 5788878942776093122}
+  - component: {fileID: 9013487914822223291}
   m_Layer: 0
   m_Name: JapaneseSamurai
   m_TagString: Team2
@@ -205,52 +206,6 @@ Transform:
   - {fileID: 2399025855072233399}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!61 &503388096382920182
-BoxCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6724394765168942705}
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_ForceSendLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ForceReceiveLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ContactCaptureLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_CallbackLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_CompositeOperation: 0
-  m_CompositeOrder: 0
-  m_Offset: {x: 0, y: 0.07473874}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0, y: 0}
-    oldSize: {x: 0, y: 0}
-    newSize: {x: 0, y: 0}
-    adaptiveTilingThreshold: 0
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
-  m_Size: {x: 0.6544037, y: 0.14610052}
-  m_EdgeRadius: 0
 --- !u!50 &1626271883579540366
 Rigidbody2D:
   serializedVersion: 5
@@ -395,12 +350,10 @@ MonoBehaviour:
   healthPoint:
     baseValue: 55
     finalValue: 55
-    referenceModifiers: []
     modifiers: []
   healthRegen:
     baseValue: 0
     finalValue: 0
-    referenceModifiers: []
     modifiers: []
   currentManaPoint:
     value: 0
@@ -408,86 +361,76 @@ MonoBehaviour:
   manaPoint:
     baseValue: 75
     finalValue: 75
-    referenceModifiers: []
     modifiers: []
   manaRegen:
     baseValue: 10
     finalValue: 10
-    referenceModifiers: []
     modifiers: []
   might:
     baseValue: 1
     finalValue: 1
-    referenceModifiers: []
     modifiers: []
   reflex:
     baseValue: 1
     finalValue: 1
-    referenceModifiers: []
     modifiers: []
   wisdom:
     baseValue: 1
     finalValue: 1
-    referenceModifiers: []
     modifiers: []
   attackSpeed:
     baseValue: 0.8
     finalValue: 0.8
-    referenceModifiers: []
     modifiers: []
   armor:
     baseValue: 1
     finalValue: 1
-    referenceModifiers: []
     modifiers: []
   moveSpeed:
     baseValue: 2
     finalValue: 2
-    referenceModifiers: []
     modifiers: []
   damageModifier:
     baseValue: 1
     finalValue: 1
-    referenceModifiers: []
     modifiers: []
   omnivamp:
     baseValue: 0
     finalValue: 0
-    referenceModifiers: []
     modifiers: []
   attackDamage:
     baseValue: 3.8
     finalValue: 3.8
-    referenceModifiers: []
     modifiers: []
   critChance:
     baseValue: 0.25
     finalValue: 0.25
-    referenceModifiers: []
     modifiers: []
   critDamageModifier:
     baseValue: 1
     finalValue: 1
-    referenceModifiers: []
     modifiers: []
   damageReduction:
     baseValue: 0
     finalValue: 0
-    referenceModifiers: []
     modifiers: []
   attackRange:
     baseValue: 1.25
     finalValue: 1.25
-    referenceModifiers: []
     modifiers: []
+  itemSlot:
+    baseValue: 3
+    finalValue: 3
+    modifiers: []
+  equippedItems: []
   actionMoveSpeedReduceRate:
     baseValue: -0.9
     finalValue: -0.9
-    referenceModifiers: []
     modifiers: []
   actionSlowModifier:
     value: 0
     type: 1
+    liveTime: 1
 --- !u!114 &7525494074642245837
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -507,14 +450,12 @@ MonoBehaviour:
   botAIManager: {fileID: 0}
   stat: {fileID: 0}
   arrowIndicator: {fileID: 0}
-  actionInterval: 0
-  movementActionInterval: 0
   actionBlocking: 0
   movementActionBlocking: 0
   combatCollision: {fileID: 0}
   firePoint: {fileID: 0}
-  boxCollider2D: {fileID: 0}
   combatCollider2D: {fileID: 0}
+  circleCollider2D: {fileID: 0}
   audioSource: {fileID: 0}
   rigidbody2D: {fileID: 0}
   championData: {fileID: 11400000, guid: 5becf2e8e539f9742b34fd6043db9910, type: 2}
@@ -524,6 +465,7 @@ MonoBehaviour:
   currentAction: {fileID: 0}
   currentMovementAction: {fileID: 0}
   skill: {fileID: 0}
+  scriptExecutionCore: {fileID: 0}
 --- !u!114 &5776027955895354842
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -574,6 +516,8 @@ MonoBehaviour:
   - {fileID: 11400000, guid: ce0123f1849375d49a041c6c87aa546c, type: 2}
   - {fileID: 11400000, guid: ab4bb2c4c372da04db12c9f8cb4a3ebe, type: 2}
   skillBases: []
+  attack: {fileID: 0}
+  mainSkill: {fileID: 0}
 --- !u!114 &1319466979024103620
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -611,11 +555,6 @@ MonoBehaviour:
   targetPathFindingDirection: {x: 0, y: 0}
   targetOriginPosition: {x: 0, y: 0, z: 0}
   targetCenterPosition: {x: 0, y: 0, z: 0}
-  current_OTTOD_ChangePriority: 4
-  current_CTTCD_ChangePriority: 4
-  current_FPTTCD_ChangePriority: 4
-  current_TOP_ChangePriority: 4
-  current_TCP_ChangePriority: 4
   distanceToNearestEnemy: 0
 --- !u!114 &9028881113676336322
 MonoBehaviour:
@@ -644,6 +583,54 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d569473e47cf17243ab80ca74698f122, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GridNodeObstacle
+--- !u!114 &5788878942776093122
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6724394765168942705}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5574015e91f3d14ca209ebd3031e325, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ScriptExecutionCore
+--- !u!58 &9013487914822223291
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6724394765168942705}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_CompositeOperation: 0
+  m_CompositeOrder: 0
+  m_Offset: {x: 0, y: 0}
+  m_Radius: 0.433
 --- !u!1 &8463561500055322668
 GameObject:
   m_ObjectHideFlags: 0
@@ -1006,6 +993,10 @@ PrefabInstance:
       propertyPath: m_SortingLayerID
       value: 1774004605
       objectReference: {fileID: 0}
+    - target: {fileID: 8796382656734288872, guid: c2ccbcfbd5d9d4f4f8c3d525e034dc53, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 2a1a0cd3c9b04724bb1ffbf29d7f9914, type: 2}
     m_RemovedComponents:
     - {fileID: 6865068975558897994, guid: c2ccbcfbd5d9d4f4f8c3d525e034dc53, type: 3}
     - {fileID: 2505409205952646092, guid: c2ccbcfbd5d9d4f4f8c3d525e034dc53, type: 3}

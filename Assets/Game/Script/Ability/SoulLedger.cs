@@ -151,7 +151,7 @@ public class SoulLedger : SkillBase
 
         customMono.animationEventFunctionCaller.SetSignal(EAnimationSignal.MainSkill1Signal, false);
 
-        p_customMono.statusEffect.GetHit(customMono, ledger[p_customMono]);
+        GameManager.Instance.ResolveDamage(customMono, p_customMono, ledger[p_customMono]);
         ledger.Remove(p_customMono);
 
         while (

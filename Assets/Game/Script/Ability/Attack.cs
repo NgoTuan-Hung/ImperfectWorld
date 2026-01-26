@@ -127,7 +127,11 @@ public class Attack : SkillBase
                 )
             );
 
-        p_customMono.statusEffect.GetHit(customMono, CalculateAttackDamage());
+        GameManager.Instance.ResolveDamage(
+            customMono,
+            p_customMono,
+            CalculateAttackDamageWithAppliedCrit()
+        );
         attackGED.Setup(customMono, p_customMono);
         GameManager.Instance.GetSelfEvent(customMono, GameEventType.Attack).action(attackGED);
 
@@ -166,7 +170,7 @@ public class Attack : SkillBase
             .championData.GetRangedProjectileEffect()
             .FireAsRangedAttackEffect(
                 customMono.rotationAndCenterObject.transform.position,
-                CalculateAttackDamage(),
+                CalculateAttackDamageWithAppliedCrit(),
                 customMono,
                 p_customMono,
                 customMono.championData.rangedImpactEffectSO,
@@ -199,7 +203,7 @@ public class Attack : SkillBase
     /// Calculate attack damage based on crit chance and crit damage modifier.
     /// </summary>
     /// <returns></returns>
-    float CalculateAttackDamage() =>
+    float CalculateAttackDamageWithAppliedCrit() =>
         customMono.stat.attackDamage.FinalValue
         * (
             1

@@ -143,10 +143,11 @@ GameObject:
   - component: {fileID: 1765170278504062600}
   - component: {fileID: 4334772538036549843}
   - component: {fileID: 9221185469736541080}
-  - component: {fileID: 5932531251206287754}
   - component: {fileID: 8778075788479322044}
   - component: {fileID: 3261071202894945024}
   - component: {fileID: 7676716729118508866}
+  - component: {fileID: 184915296791793959}
+  - component: {fileID: 6939324391224741808}
   m_Layer: 0
   m_Name: ElementalLeafRanger
   m_TagString: Team2
@@ -434,8 +435,8 @@ MonoBehaviour:
   movementActionBlocking: 0
   combatCollision: {fileID: 0}
   firePoint: {fileID: 0}
-  boxCollider2D: {fileID: 0}
   combatCollider2D: {fileID: 0}
+  circleCollider2D: {fileID: 0}
   audioSource: {fileID: 0}
   rigidbody2D: {fileID: 0}
   championData: {fileID: 11400000, guid: 34d14b183938c2142ab5da34271198b2, type: 2}
@@ -445,6 +446,7 @@ MonoBehaviour:
   currentAction: {fileID: 0}
   currentMovementAction: {fileID: 0}
   skill: {fileID: 0}
+  scriptExecutionCore: {fileID: 0}
 --- !u!114 &1765170278504062600
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -481,6 +483,8 @@ MonoBehaviour:
   - {fileID: 11400000, guid: d956062efdfc6274d972e2ef0fc25827, type: 2}
   - {fileID: 11400000, guid: 5d2023664fb455b42875ba90da1f7790, type: 2}
   skillBases: []
+  attack: {fileID: 0}
+  mainSkill: {fileID: 0}
 --- !u!114 &9221185469736541080
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -498,8 +502,68 @@ MonoBehaviour:
   osTime: 0
   ccImmune: 0
   stunTime: 0
---- !u!61 &5932531251206287754
-BoxCollider2D:
+--- !u!114 &8778075788479322044
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5800095605073204079}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6337cb9bacfc4834382883b026f7b941, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::BotSensor
+  customMono: {fileID: 0}
+  currentNearestEnemy: {fileID: 0}
+  originToTargetOriginDirection: {x: 0, y: 0}
+  centerToTargetCenterDirection: {x: 0, y: 0}
+  firePointToTargetCenterDirection: {x: 0, y: 0}
+  targetPathFindingDirection: {x: 0, y: 0}
+  targetOriginPosition: {x: 0, y: 0, z: 0}
+  targetCenterPosition: {x: 0, y: 0, z: 0}
+  distanceToNearestEnemy: 0
+--- !u!114 &3261071202894945024
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5800095605073204079}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b4a7ef3c47e0b2b47a24af0646489921, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::BotAIManager
+  customMono: {fileID: 0}
+  useBotAIBehavior: 0
+  aiBehavior: {fileID: 0}
+--- !u!114 &7676716729118508866
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5800095605073204079}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d569473e47cf17243ab80ca74698f122, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GridNodeObstacle
+--- !u!114 &184915296791793959
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5800095605073204079}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5574015e91f3d14ca209ebd3031e325, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ScriptExecutionCore
+--- !u!58 &6939324391224741808
+CircleCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -533,70 +597,7 @@ BoxCollider2D:
   m_CompositeOperation: 0
   m_CompositeOrder: 0
   m_Offset: {x: 0, y: 0}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0, y: 0}
-    oldSize: {x: 0, y: 0}
-    newSize: {x: 0, y: 0}
-    adaptiveTilingThreshold: 0
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
-  m_Size: {x: 0.1, y: 0.1}
-  m_EdgeRadius: 0
---- !u!114 &8778075788479322044
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5800095605073204079}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6337cb9bacfc4834382883b026f7b941, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::BotSensor
-  customMono: {fileID: 0}
-  currentNearestEnemy: {fileID: 0}
-  originToTargetOriginDirection: {x: 0, y: 0}
-  centerToTargetCenterDirection: {x: 0, y: 0}
-  firePointToTargetCenterDirection: {x: 0, y: 0}
-  targetPathFindingDirection: {x: 0, y: 0}
-  targetOriginPosition: {x: 0, y: 0, z: 0}
-  targetCenterPosition: {x: 0, y: 0, z: 0}
-  current_OTTOD_ChangePriority: 4
-  current_CTTCD_ChangePriority: 4
-  current_FPTTCD_ChangePriority: 4
-  current_TOP_ChangePriority: 4
-  current_TCP_ChangePriority: 4
-  distanceToNearestEnemy: 0
---- !u!114 &3261071202894945024
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5800095605073204079}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b4a7ef3c47e0b2b47a24af0646489921, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::BotAIManager
-  customMono: {fileID: 0}
-  useBotAIBehavior: 0
-  aiBehavior: {fileID: 0}
---- !u!114 &7676716729118508866
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5800095605073204079}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d569473e47cf17243ab80ca74698f122, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::GridNodeObstacle
+  m_Radius: 0.433
 --- !u!1 &8816088761046860172
 GameObject:
   m_ObjectHideFlags: 0
@@ -886,16 +887,10 @@ PrefabInstance:
       value: DirectionIndicator
       objectReference: {fileID: 0}
     - target: {fileID: 8796382656734288872, guid: c2ccbcfbd5d9d4f4f8c3d525e034dc53, type: 3}
-      propertyPath: m_SortingLayer
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8796382656734288872, guid: c2ccbcfbd5d9d4f4f8c3d525e034dc53, type: 3}
-      propertyPath: m_SortingLayerID
-      value: 1774004605
-      objectReference: {fileID: 0}
-    m_RemovedComponents:
-    - {fileID: 6865068975558897994, guid: c2ccbcfbd5d9d4f4f8c3d525e034dc53, type: 3}
-    - {fileID: 2505409205952646092, guid: c2ccbcfbd5d9d4f4f8c3d525e034dc53, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 2a1a0cd3c9b04724bb1ffbf29d7f9914, type: 2}
+    m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []

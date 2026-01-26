@@ -63,6 +63,11 @@ public partial class GameManager
         LoadShopRoom();
     }
 
+    public void LoadRestSiteRoomDebug()
+    {
+        LoadRestSiteRoom();
+    }
+
     public bool SpawnChampionForPlayer(GameObject champPrefab)
     {
         if (RewardChampion(champPrefab) != null)
@@ -106,5 +111,20 @@ public partial class GameManager
     {
         var item = GetRandomItemRewards(1);
         GetPlayerTeamChampions()[0].stat.EquipItem(item[0]);
+    }
+
+    public void TestItem(int rarity, string name)
+    {
+        var item = itemPool.PickOne().Item;
+        switch (rarity)
+        {
+            case 0:
+                item.Init(normalItemDataSOs.First(i => i.itemName.Contains(name)));
+                break;
+            default:
+                break;
+        }
+
+        GetPlayerTeamChampions()[0].stat.EquipItem(item);
     }
 }

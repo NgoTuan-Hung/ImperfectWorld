@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -5,6 +6,11 @@ public class HealthAndManaIndicator : MonoBehaviour
 {
     public Image healthImage,
         manaImage;
+
+    private void OnEnable()
+    {
+        StartCoroutine(InitIE());
+    }
 
     [ContextMenu("Test")]
     public void Test()
@@ -26,5 +32,14 @@ public class HealthAndManaIndicator : MonoBehaviour
     {
         manaImage.color = Color.Lerp(manaMin, manaMax, p_progress);
         manaImage.fillAmount = p_progress;
+    }
+
+    IEnumerator InitIE()
+    {
+        healthImage.transform.parent.gameObject.SetActive(false);
+        manaImage.transform.parent.gameObject.SetActive(false);
+        yield return null;
+        healthImage.transform.parent.gameObject.SetActive(true);
+        manaImage.transform.parent.gameObject.SetActive(true);
     }
 }

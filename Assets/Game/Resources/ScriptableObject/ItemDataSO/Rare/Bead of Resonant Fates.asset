@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c8394565e471a9e429770ab579f0bbd9, type: 3}
+  m_Name: Bead of Resonant Fates
+  m_EditorClassIdentifier: Assembly-CSharp::ItemDataSO
+  itemName: Bead of Resonant Fates
+  icon: {fileID: 2535843023269109195, guid: 9f94c86584685224f9615f120db10d80, type: 3}
+  statBuffs: []
+  itemBehaviours: 
+  itemDescription: Whenever you or an ally gains a <link=BUFF><color=#4CAF50>BUFF</color></link>,
+    a random enemy gains the corresponding <link=DEBUFF><color=#E53935>DEBUFF</color></link>
+    with equal strength and duration.
+  itemTier: 0
+  price: 45

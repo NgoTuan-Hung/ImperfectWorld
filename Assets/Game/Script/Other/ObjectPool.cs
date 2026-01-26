@@ -149,6 +149,17 @@ public class ObjectPool
                         poolObject.BasicUI.deactivate += () => IdleScheme(poolObject);
                     };
                     break;
+                case ComponentType.NPC:
+                    handleCachedComponentRefs += (poolObject) =>
+                    {
+                        poolObject.AddComponent(
+                            ComponentType.NPC,
+                            getComponentInLocation(typeof(NPC), poolObject)
+                        );
+
+                        poolObject.NPC.deactivate += () => IdleScheme(poolObject);
+                    };
+                    break;
                 default:
                     break;
             }

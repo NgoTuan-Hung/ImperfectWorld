@@ -17,9 +17,7 @@ public enum EGameEffectBehaviour
 {
     None,
     CollideAndDamage,
-    BlueHole,
     InfernalTideFanReceiver,
-    SovereignFlowBehaviour,
     PullingMissile,
     GlacistreamBehaviour,
 }
@@ -291,7 +289,7 @@ public class GameEffect : MonoSelfAware
             yield return new WaitForSeconds(Time.fixedDeltaTime);
         }
 
-        p_target.statusEffect.GetHit(p_owner, p_damage);
+        GameManager.Instance.ResolveDamage(p_owner, p_target, p_damage);
         p_attackGED.Setup(p_owner, p_target);
         GameManager
             .Instance.GetSelfEvent(p_attackGED.attacker, GameEventType.Attack)

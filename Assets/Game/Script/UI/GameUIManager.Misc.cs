@@ -7,6 +7,8 @@ public partial class GameUIManager
 
     public void ChangeGameInteractionButtonShop() => gameInteractionButtonTMP.text = "Finish !";
 
+    public void ChangeGameInteractionButtonRestSite() => gameInteractionButtonTMP.text = "Finish !";
+
     public enum GuideDialogState
     {
         State1,

@@ -28,4 +28,5 @@ public class PoolObject
         GetComponent<ChampionRewardUI>(ComponentType.ChampionRewardUI);
     public Relic Relic => GetComponent<Relic>(ComponentType.Relic);
     public BasicUI BasicUI => GetComponent<BasicUI>(ComponentType.BasicUI);
+    public NPC NPC => GetComponent<NPC>(ComponentType.NPC);
 }

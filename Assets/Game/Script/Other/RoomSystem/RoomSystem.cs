@@ -4,6 +4,7 @@ using System.Collections.Generic;
 [Serializable]
 public class RoomSystem
 {
-    public List<NormalEnemyRoomInfo> allNormalEnemyRooms = new();
-    public List<NormalEnemyFloor> normalEnemyFloors = new();
+    public List<EnemyFloor> normalEnemyFloors = new();
+    public List<EnemyRoomInfo> eliteEnemyRoomInfos = new();
+    public List<EnemyRoomInfo> bossRoomInfos = new();
 }

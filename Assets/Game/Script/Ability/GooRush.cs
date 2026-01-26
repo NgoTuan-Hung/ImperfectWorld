@@ -123,7 +123,7 @@ public class GooRush : SkillBase
             yield return null;
 
         ToggleAnim(GameManager.Instance.mainSkill1BoolHash, false);
-        var nearestAlly = GameManager.Instance.GetNearestAlly(customMono);
+        var nearestAlly = GameManager.Instance.FindNearestAlly(customMono);
         if (nearestAlly == null)
             customMono.statusEffect.BuffAttackSpeed(aspdBuff, 3.5f);
         else

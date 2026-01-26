@@ -118,8 +118,9 @@ public class TwinsOfCataclysm : SkillBase
                 false
             );
 
-            p_customMono.statusEffect.GetHit(
+            GameManager.Instance.ResolveDamage(
                 customMono,
+                p_customMono,
                 customMono.stat.attackDamage.FinalValue * i
             );
 
@@ -163,8 +164,9 @@ public class TwinsOfCataclysm : SkillBase
 
             if (i == 0)
             {
-                p_customMono.statusEffect.GetHit(
+                GameManager.Instance.ResolveDamage(
                     customMono,
+                    p_customMono,
                     customMono.stat.attackDamage.FinalValue
                 );
 

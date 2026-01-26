@@ -49,8 +49,8 @@ public partial class CustomMono : MonoSelfAware
     public bool movementActionBlocking;
     public GameObject combatCollision,
         firePoint;
-    public BoxCollider2D boxCollider2D,
-        combatCollider2D;
+    public BoxCollider2D combatCollider2D;
+    public CircleCollider2D circleCollider2D;
     public AudioSource audioSource;
     public new Rigidbody2D rigidbody2D;
     public ChampionData championData;
@@ -89,7 +89,7 @@ public partial class CustomMono : MonoSelfAware
         animatorWrapper = GetComponent<AnimatorWrapper>();
         stat = GetComponent<Stat>();
         movable = GetComponent<Movable>();
-        boxCollider2D = GetComponent<BoxCollider2D>();
+        circleCollider2D = GetComponent<CircleCollider2D>();
         combatCollider2D = combatCollision.GetComponent<BoxCollider2D>();
         audioSource = GetComponent<AudioSource>();
         rigidbody2D = GetComponent<Rigidbody2D>();
@@ -226,7 +226,7 @@ public partial class CustomMono : MonoSelfAware
         gameObject.SetActive(true);
         stat.Reveal();
         spriteRenderer.color = GameManager.Instance.transparentWhite;
-        boxCollider2D.enabled = false;
+        circleCollider2D.enabled = false;
     }
 
     public void Show()
@@ -234,21 +234,21 @@ public partial class CustomMono : MonoSelfAware
         gameObject.SetActive(true);
         stat.Show();
         spriteRenderer.color = Color.white;
-        boxCollider2D.enabled = true;
+        circleCollider2D.enabled = true;
     }
 
     public void SetupForReuse()
     {
         actionBlocking = false;
         movementActionBlocking = false;
-        stat.SetupForReuseIE();
+        stat.SetupForReuse();
     }
 
     public void SetupForReuseAsNewEnemy()
     {
         actionBlocking = false;
         movementActionBlocking = false;
-        stat.SetupForReuseIE();
+        stat.SetupForReuse();
         scriptExecutionCore.lateEnableOnce += Hide;
     }
 

@@ -43,8 +43,9 @@ public class BattleTempo : SkillBase
 
         if (attackGameEventData.count % 4 == 0)
         {
-            attackGameEventData.target.statusEffect.GetHit(
+            GameManager.Instance.ResolveDamage(
                 customMono,
+                attackGameEventData.target,
                 GetActionField<ActionFloatField>(ActionFieldName.Damage).value
             );
         }

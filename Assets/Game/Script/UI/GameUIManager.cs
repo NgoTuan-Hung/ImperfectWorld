@@ -8,6 +8,7 @@ using TMPEffects.Components;
 using TMPro;
 using UnityEditor.Animations;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
@@ -19,6 +20,8 @@ public enum SceneMode
 
 public partial class GameUIManager : MonoSingleton<GameUIManager>
 {
+    List<RestSiteHealSelector> restSiteHealSelectors = new();
+    ObjectPool restSiteHealSelectorPool;
     public SceneMode sceneMode = SceneMode.MainMenu;
     private static WaitForSeconds _waitForSeconds1 = new(1f);
     Canvas canvas;
@@ -27,7 +30,8 @@ public partial class GameUIManager : MonoSingleton<GameUIManager>
         menuInventoryButton,
         menuSettingButton;
     TextMeshProUGUI helperTextTMP;
-    public GameObject joystickZone,
+    public GameObject mainScreen,
+        joystickZone,
         joystickPrefab,
         healthAndManaIndicatorPrefab,
         worldSpaceCanvas,
@@ -49,7 +53,9 @@ public partial class GameUIManager : MonoSingleton<GameUIManager>
     ObjectPool healthAndManaIndicator,
         textPopupUIPool;
     public MapViewUI mapViewUI;
-    public InteractiveButtonUI gameInteractionButton;
+    public InteractiveButtonUI gameInteractionButton,
+        restSiteHealOneButton,
+        restSiteHealAllButton;
     public TextMeshProUGUI gameInteractionButtonTMP;
     GameObject champInfoPanel;
     Dictionary<CustomMono, ChampInfoPanel> champInfoPanelDict = new();
@@ -70,21 +76,27 @@ public partial class GameUIManager : MonoSingleton<GameUIManager>
     bool menuCharStateOn = false;
     bool menuItemStateOn = false;
     public Image screenEffectImg,
-        eventEffect;
+        eventEffect,
+        storyImage;
     public Animator screenEffectAnimator;
     TMPAnimator helperTextTMPA;
+    TMPWriter storyText;
     public Vector2[] itemRewardPos = new Vector2[3];
     public Vector2[] championRewardPos = new Vector2[3];
     List<Item> itemRewards;
     List<TraderWare> championWares,
         itemWares;
     PlayerGold playerGold;
-    public DialogBox guideDialogBox;
+    public DialogBox guideDialogBox,
+        campfireDialogBox;
     public UIWithEffect eventZone,
         eventImage;
     MysteryEventDescription mysteryEventDescription;
     List<EventChoiceButton> eventChoices;
     public GameObject doubleTapTooltipPrefab;
+    PointerDownUI story,
+        storySkip;
+    public StoryPageSO currentStoryPage;
 
     private void Awake()
     {
@@ -103,12 +115,16 @@ public partial class GameUIManager : MonoSingleton<GameUIManager>
 
     private void RegisterEvents()
     {
+        story.pointerDownEvent += ProgressStory;
+        storySkip.pointerDownEvent += CloseStory;
         menuCharButton.onClick.AddListener(ClickMenuCharButton);
         menuMapButton.onClick.AddListener(ClickMenuMapButton);
         menuInventoryButton.onClick.AddListener(ClickMenuItemButton);
         guideDialogBox.pointerDownEvent += CloseGuideDialog;
         mysteryEventDescription.onFinishWriter += ShowEventChoices;
         eventZone.onComplete += WriteEventDescription;
+        restSiteHealOneButton.pointerClickEvent += ShowAllRestSiteHealSelectors;
+        restSiteHealAllButton.pointerClickEvent += SelectRestSiteHealAll;
     }
 
     void ClickMenuCharButton()
@@ -189,6 +205,7 @@ public partial class GameUIManager : MonoSingleton<GameUIManager>
 
     private void FindChilds()
     {
+        mainScreen = transform.Find("MainScreen").gameObject;
         mapBackground = transform.Find("MapBackground").gameObject;
         inventoryContent = inventory.transform.Find("Viewport/Content").gameObject;
         menu = transform.Find("Menu").gameObject;
@@ -221,6 +238,16 @@ public partial class GameUIManager : MonoSingleton<GameUIManager>
             .ToList();
         relic = transform.Find("MainScreen/Relic").gameObject;
         relicContent = relic.transform.Find("Viewport/Content").gameObject;
+        story = transform.Find("Story").GetComponent<PointerDownUI>();
+        storyImage = story.transform.Find("StoryImage").GetComponent<Image>();
+        storyText = story.transform.Find("StoryText").GetComponent<TMPWriter>();
+        storySkip = story.transform.Find("StorySkip").GetComponent<PointerDownUI>();
+        restSiteHealOneButton = campfireDialogBox
+            .transform.Find("RestSiteHealOneButton")
+            .GetComponent<InteractiveButtonUI>();
+        restSiteHealAllButton = campfireDialogBox
+            .transform.Find("RestSiteHealAllButton")
+            .GetComponent<InteractiveButtonUI>();
 
         /* Temp */
         for (int i = 0; i < inventoryContent.transform.childCount; i++)
@@ -265,6 +292,10 @@ public partial class GameUIManager : MonoSingleton<GameUIManager>
             p_pO.gameObject.transform.SetParent(worldSpaceCanvas.transform, false);
 
         champInfoPanel = Resources.Load("UI/ChampInfoPanel") as GameObject;
+        restSiteHealSelectorPool = new(
+            Resources.Load("RestSiteHealSelector") as GameObject,
+            new PoolArgument(ComponentType.NPC, PoolArgument.WhereComponent.Self)
+        );
     }
 
     public void Init()
@@ -287,6 +318,7 @@ public partial class GameUIManager : MonoSingleton<GameUIManager>
             GameManager.Instance.cinemachineCamera.transform.localScale.z
         );
         mapBackground.SetActive(true);
+        story.gameObject.SetActive(true);
     }
 
     public PoolObject CreateAndHandleHPAndMPUIWithFollowing(Transform transform)
@@ -672,5 +704,68 @@ public partial class GameUIManager : MonoSingleton<GameUIManager>
             default:
                 break;
         }
+    }
+
+    void ProgressStory(PointerEventData pointerEventData)
+    {
+        if (storyText.IsWriting)
+        {
+            storyText.SkipWriter();
+        }
+        else
+        {
+            if (currentStoryPage.nextPage == null)
+                CloseStory(pointerEventData);
+            else
+            {
+                currentStoryPage = currentStoryPage.nextPage;
+                storyImage.sprite = currentStoryPage.sprite;
+                storyText.TextComponent.text = currentStoryPage.text;
+                storyText.RestartWriter();
+            }
+        }
+    }
+
+    void CloseStory(PointerEventData pointerEventData)
+    {
+        story.gameObject.SetActive(false);
+    }
+
+    public void FinishRestSiteHealOne()
+    {
+        GameManager.Instance.DisableCampfireInteraction();
+        CloseAllRestSiteHealSelectors(null);
+    }
+
+    public void ShowCampfireDialogBox()
+    {
+        campfireDialogBox.Show();
+        CloseAllRestSiteHealSelectors(null);
+    }
+
+    void ShowAllRestSiteHealSelectors(PointerEventData pointerEventData)
+    {
+        campfireDialogBox.Hide();
+        var playerUnits = GameManager.Instance.GetPlayerTeamChampions();
+        restSiteHealSelectors = new();
+        foreach (var unit in playerUnits)
+        {
+            var selector = restSiteHealSelectorPool.PickOne().NPC as RestSiteHealSelector;
+            selector.Setup(unit);
+            restSiteHealSelectors.Add(selector);
+        }
+    }
+
+    void CloseAllRestSiteHealSelectors(PointerEventData pointerEventData)
+    {
+        restSiteHealSelectors.ForEach(s => s.deactivate());
+        restSiteHealSelectors.Clear();
+    }
+
+    void SelectRestSiteHealAll(PointerEventData pointerEventData)
+    {
+        GameManager.Instance.HealAllPlayerAlliesByPercentage(0.25f);
+        campfireDialogBox.Hide();
+        GameManager.Instance.DisableCampfireInteraction();
     }
 }

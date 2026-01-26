@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -34,6 +35,8 @@ public class DevConsole : MonoBehaviour
             LoadMysteryEventRoom
         );
 
+        DebugLogConsole.AddCommand("load-rest-site-room", "Load Rest Site Room", LoadRestSiteRoom);
+
         DebugLogConsole.AddCommand("load-shop-room", "Load Shop Room", LoadShopRoom);
 
         DebugLogConsole.AddCommand(
@@ -68,6 +71,12 @@ public class DevConsole : MonoBehaviour
 
         DebugLogConsole.AddCommand("test-relic", "Test relic", TestRelic);
         DebugLogConsole.AddCommand("test-item", "Test item", TestItem);
+        DebugLogConsole.AddCommand<int, string>("test-item", "Test item with name", TestItem);
+    }
+
+    private void LoadRestSiteRoom()
+    {
+        GameManager.Instance.LoadRestSiteRoomDebug();
     }
 
     void GetAllBattlers()
@@ -179,4 +188,6 @@ public class DevConsole : MonoBehaviour
     }
 
     void TestItem() => GameManager.Instance.TestItem();
+
+    void TestItem(int rarity, string name) => GameManager.Instance.TestItem(rarity, name);
 }

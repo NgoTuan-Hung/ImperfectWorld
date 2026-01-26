@@ -13,9 +13,10 @@ public class PhoenixHeartBehaviour : MonoBehaviour, IItemBehaviour
         {
             Item.fields["phoenixHeartBehaviourFieldCreated"] = true;
             Item.fields["used"] = false;
-            GameManager.Instance.battleEndCallback += ResetUse;
         }
+
         customMono.stat.beforeDeathCallback += ReviveHandler;
+        GameManager.Instance.battleEndCallback += ResetUse;
     }
 
     void ResetUse() => Item.fields["used"] = false;
@@ -23,6 +24,7 @@ public class PhoenixHeartBehaviour : MonoBehaviour, IItemBehaviour
     public void OnDetach()
     {
         CustomMono.stat.beforeDeathCallback -= ReviveHandler;
+        GameManager.Instance.battleEndCallback -= ResetUse;
     }
 
     public void ReviveHandler()
@@ -33,10 +35,5 @@ public class PhoenixHeartBehaviour : MonoBehaviour, IItemBehaviour
             CustomMono.stat.currentManaPoint.Value = CustomMono.stat.manaPoint.FinalValue;
             Item.fields["used"] = true;
         }
-    }
-
-    private void OnDestroy()
-    {
-        GameManager.Instance.battleEndCallback -= ResetUse;
     }
 }

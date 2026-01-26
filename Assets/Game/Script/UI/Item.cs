@@ -81,6 +81,9 @@ public class Item
                 itemTierBlend = 1;
                 break;
             case ItemTier.Legendary:
+                uIEffect.LoadPreset(GameManager.Instance.legendaryItemEffectPreset);
+                itemTierBlend = 1;
+                break;
             default:
                 break;
         }

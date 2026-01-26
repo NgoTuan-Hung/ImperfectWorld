@@ -17,10 +17,11 @@ GameObject:
   - component: {fileID: 129344068055877134}
   - component: {fileID: 650291301480567568}
   - component: {fileID: 1476347193079585604}
-  - component: {fileID: 286406915546302702}
   - component: {fileID: 149995681210950202}
   - component: {fileID: 5724394742347734664}
   - component: {fileID: 5067667146741819561}
+  - component: {fileID: 4152737721469598390}
+  - component: {fileID: -7244183467023129209}
   m_Layer: 0
   m_Name: NovaKade
   m_TagString: Team2
@@ -191,12 +192,10 @@ MonoBehaviour:
   healthPoint:
     baseValue: 38
     finalValue: 38
-    referenceModifiers: []
     modifiers: []
   healthRegen:
     baseValue: 0
     finalValue: 0
-    referenceModifiers: []
     modifiers: []
   currentManaPoint:
     value: 0
@@ -204,86 +203,76 @@ MonoBehaviour:
   manaPoint:
     baseValue: 65
     finalValue: 65
-    referenceModifiers: []
     modifiers: []
   manaRegen:
     baseValue: 10
     finalValue: 10
-    referenceModifiers: []
     modifiers: []
   might:
     baseValue: 1
     finalValue: 1
-    referenceModifiers: []
     modifiers: []
   reflex:
     baseValue: 1
     finalValue: 1
-    referenceModifiers: []
     modifiers: []
   wisdom:
     baseValue: 1
     finalValue: 1
-    referenceModifiers: []
     modifiers: []
   attackSpeed:
     baseValue: 0.8
     finalValue: 0.8
-    referenceModifiers: []
     modifiers: []
   armor:
     baseValue: 0.75
     finalValue: 0.75
-    referenceModifiers: []
     modifiers: []
   moveSpeed:
     baseValue: 2
     finalValue: 2
-    referenceModifiers: []
     modifiers: []
   damageModifier:
     baseValue: 1
     finalValue: 1
-    referenceModifiers: []
     modifiers: []
   omnivamp:
     baseValue: 0
     finalValue: 0
-    referenceModifiers: []
     modifiers: []
   attackDamage:
     baseValue: 4
     finalValue: 4
-    referenceModifiers: []
     modifiers: []
   critChance:
     baseValue: 0.25
     finalValue: 0.25
-    referenceModifiers: []
     modifiers: []
   critDamageModifier:
     baseValue: 1
     finalValue: 1
-    referenceModifiers: []
     modifiers: []
   damageReduction:
     baseValue: 0
     finalValue: 0
-    referenceModifiers: []
     modifiers: []
   attackRange:
     baseValue: 10
     finalValue: 10
-    referenceModifiers: []
     modifiers: []
+  itemSlot:
+    baseValue: 3
+    finalValue: 3
+    modifiers: []
+  equippedItems: []
   actionMoveSpeedReduceRate:
     baseValue: -0.9
     finalValue: -0.9
-    referenceModifiers: []
     modifiers: []
   actionSlowModifier:
     value: 0
     type: 1
+    liveTime: 1
 --- !u!114 &9026273496553750984
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -316,14 +305,12 @@ MonoBehaviour:
   botAIManager: {fileID: 0}
   stat: {fileID: 0}
   arrowIndicator: {fileID: 0}
-  actionInterval: 0
-  movementActionInterval: 0
   actionBlocking: 0
   movementActionBlocking: 0
   combatCollision: {fileID: 0}
   firePoint: {fileID: 0}
-  boxCollider2D: {fileID: 0}
   combatCollider2D: {fileID: 0}
+  circleCollider2D: {fileID: 0}
   audioSource: {fileID: 0}
   rigidbody2D: {fileID: 0}
   championData: {fileID: 11400000, guid: 3c12a8eee1b28df4f94d0e5f788b38e6, type: 2}
@@ -333,6 +320,7 @@ MonoBehaviour:
   currentAction: {fileID: 0}
   currentMovementAction: {fileID: 0}
   skill: {fileID: 0}
+  scriptExecutionCore: {fileID: 0}
 --- !u!114 &129344068055877134
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -369,6 +357,8 @@ MonoBehaviour:
   - {fileID: 11400000, guid: d956062efdfc6274d972e2ef0fc25827, type: 2}
   - {fileID: 11400000, guid: b8d707058f435b240bae5a699cf42686, type: 2}
   skillBases: []
+  attack: {fileID: 0}
+  mainSkill: {fileID: 0}
 --- !u!114 &1476347193079585604
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -386,8 +376,68 @@ MonoBehaviour:
   osTime: 0
   ccImmune: 0
   stunTime: 0
---- !u!61 &286406915546302702
-BoxCollider2D:
+--- !u!114 &149995681210950202
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5009230093061811819}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6337cb9bacfc4834382883b026f7b941, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::BotSensor
+  customMono: {fileID: 0}
+  currentNearestEnemy: {fileID: 0}
+  originToTargetOriginDirection: {x: 0, y: 0}
+  centerToTargetCenterDirection: {x: 0, y: 0}
+  firePointToTargetCenterDirection: {x: 0, y: 0}
+  targetPathFindingDirection: {x: 0, y: 0}
+  targetOriginPosition: {x: 0, y: 0, z: 0}
+  targetCenterPosition: {x: 0, y: 0, z: 0}
+  distanceToNearestEnemy: 0
+--- !u!114 &5724394742347734664
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5009230093061811819}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b4a7ef3c47e0b2b47a24af0646489921, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::BotAIManager
+  customMono: {fileID: 0}
+  useBotAIBehavior: 0
+  aiBehavior: {fileID: 0}
+--- !u!114 &5067667146741819561
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5009230093061811819}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d569473e47cf17243ab80ca74698f122, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GridNodeObstacle
+--- !u!114 &4152737721469598390
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5009230093061811819}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5574015e91f3d14ca209ebd3031e325, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ScriptExecutionCore
+--- !u!58 &-7244183467023129209
+CircleCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -421,70 +471,7 @@ BoxCollider2D:
   m_CompositeOperation: 0
   m_CompositeOrder: 0
   m_Offset: {x: 0, y: 0}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0, y: 0}
-    oldSize: {x: 0, y: 0}
-    newSize: {x: 0, y: 0}
-    adaptiveTilingThreshold: 0
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
-  m_Size: {x: 0.1, y: 0.1}
-  m_EdgeRadius: 0
---- !u!114 &149995681210950202
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5009230093061811819}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6337cb9bacfc4834382883b026f7b941, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::BotSensor
-  customMono: {fileID: 0}
-  currentNearestEnemy: {fileID: 0}
-  originToTargetOriginDirection: {x: 0, y: 0}
-  centerToTargetCenterDirection: {x: 0, y: 0}
-  firePointToTargetCenterDirection: {x: 0, y: 0}
-  targetPathFindingDirection: {x: 0, y: 0}
-  targetOriginPosition: {x: 0, y: 0, z: 0}
-  targetCenterPosition: {x: 0, y: 0, z: 0}
-  current_OTTOD_ChangePriority: 4
-  current_CTTCD_ChangePriority: 4
-  current_FPTTCD_ChangePriority: 4
-  current_TOP_ChangePriority: 4
-  current_TCP_ChangePriority: 4
-  distanceToNearestEnemy: 0
---- !u!114 &5724394742347734664
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5009230093061811819}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b4a7ef3c47e0b2b47a24af0646489921, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::BotAIManager
-  customMono: {fileID: 0}
-  useBotAIBehavior: 0
-  aiBehavior: {fileID: 0}
---- !u!114 &5067667146741819561
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5009230093061811819}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d569473e47cf17243ab80ca74698f122, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::GridNodeObstacle
+  m_Radius: 0.433
 --- !u!1 &6869253413704764585
 GameObject:
   m_ObjectHideFlags: 0

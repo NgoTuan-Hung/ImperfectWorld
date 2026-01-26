@@ -190,14 +190,14 @@ public partial class BaseAction
 
     public IEnumerator Flash(Vector2 p_dir, float p_dist, float p_duration)
     {
-        customMono.boxCollider2D.enabled = false;
+        customMono.circleCollider2D.enabled = false;
         customMono.combatCollider2D.enabled = false;
         customMono.spriteRenderer.enabled = false;
         transform.AddPos(p_dir.normalized * p_dist);
 
         yield return new WaitForSeconds(p_duration);
 
-        customMono.boxCollider2D.enabled = true;
+        customMono.circleCollider2D.enabled = true;
         customMono.combatCollider2D.enabled = true;
         customMono.spriteRenderer.enabled = true;
     }

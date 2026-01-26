@@ -217,7 +217,7 @@ public class CollideAndDamage : MonoBehaviour, IGameEffectBehaviour
 
     void DealDamageOnTriggerEnter(CustomMono p_customMono, Collider2D p_collider2D)
     {
-        p_customMono.statusEffect.GetHit(owner, collideDamage);
+        GameManager.Instance.ResolveDamage(owner, p_customMono, collideDamage);
         dealDamageEvent(collideDamage);
     }
 
@@ -233,14 +233,14 @@ public class CollideAndDamage : MonoBehaviour, IGameEffectBehaviour
             {
                 p_customMono.multipleCollideTimersDict[GetHashCode()].currentTime =
                     multipleCollideInterval;
-                p_customMono.statusEffect.GetHit(owner, collideDamage);
+                GameManager.Instance.ResolveDamage(owner, p_customMono, collideDamage);
                 dealDamageEvent(collideDamage);
             }
         }
         catch (KeyNotFoundException)
         {
             p_customMono.AddMultipleCollideTimer(GetHashCode(), multipleCollideInterval);
-            p_customMono.statusEffect.GetHit(owner, collideDamage);
+            GameManager.Instance.ResolveDamage(owner, p_customMono, collideDamage);
             dealDamageEvent(collideDamage);
         }
     }

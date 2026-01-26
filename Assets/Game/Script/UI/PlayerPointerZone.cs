@@ -90,7 +90,10 @@ public class PlayerPointerZone
     {
         GameManager.Instance.gridManager.HideVisual();
         GameUIManager.Instance.DeactivateAllChampInfoPanelGlassEffect();
-        if (currentRaycastCM != null)
+        if (
+            GameManager.Instance.gameState == GameState.PositioningPhase
+            && currentRaycastCM != null
+        )
         {
             HexGridManager.Instance.GetOccupyNode(currentRaycastCM).SwitchToOccupiedVisual();
         }
